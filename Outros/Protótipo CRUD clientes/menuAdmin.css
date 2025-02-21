@@ -1,0 +1,85 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+header {
+    background-color: black;
+    color: white;
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 20px;
+    position: fixed;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Mantém o texto centralizado */
+}
+a {
+    display: flex;
+    align-items: center; /* Garante o alinhamento do link */
+    text-decoration: none; /* Opcional: remove o sublinhado do link */
+    color: white; /* Garantir que o texto do link seja visível */
+    font-size: 20px; /* Ajuste o tamanho do texto conforme necessário */
+    margin-left: 10px; /* Se quiser um pequeno espaço entre o logo e o link */
+}
+.header-logo {
+    position: absolute;
+    left: 20px; /* Define a posição da imagem à esquerda */
+    height: 40px; /* Ajuste conforme necessário */
+}
+.container {
+    margin-top: 60px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    max-width: 60%; /* Define um tamanho máximo para os filtros */
+    width: 100%; /* Garante que ele não ultrapasse o tamanho máximo */
+}
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+}
+.client-list {
+    width: 100%;
+}
+.client-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.client-actions button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.new-client {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    margin-top: 60px;
+    background-color: rgb(0, 164, 0);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}

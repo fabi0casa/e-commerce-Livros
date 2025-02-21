@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Clientes</title>
+    <link rel="stylesheet" href="menuAdmin.css">
+</head>
+<body>
+    <header>
+        <a href="admin.html"><img src="home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <button class="new-client">Cadastrar Novo Cliente</button>
+    <div class="container">
+        <h2>Gerenciamento de Clientes</h2>
+        <div class="filters">
+            <input type="text" placeholder="Nome do Cliente">
+            <input type="email" placeholder="Email">
+            <input type="tel" placeholder="Telefone">
+            <input type="text" placeholder="CPF">
+            <input type="text" placeholder="Data de Nascimento">
+            <input type="text" placeholder="Gênero">
+            <input type="text" placeholder="CEP">
+        </div>
+        <div class="filters">
+            <button>Pesquisar</button>
+        </div>
+        <div class="client-list">
+            <div class="client-item">
+                <div>João Silva - joao@email.com - (11) 99999-9999 - Masculino</div>
+                <div class="client-actions">
+                    <button>Editar</button>
+                    <button>Inativar</button>
+                    <button>Ver transações</button>
+                </div>
+            </div>
+            <div class="client-item">
+                <div>Maria Souza - maria@email.com - (21) 98888-8888 - Feminino</div>
+                <div class="client-actions">
+                    <button>Editar</button>
+                    <button>Inativar</button>
+                    <button>Ver transações</button>
+                </div>
+            </div>
+            <div class="client-item">
+                <div>Pedro Santos - pedro@email.com - (31) 97777-7777 - Masculino</div>
+                <div class="client-actions">
+                    <button>Editar</button>
+                    <button>Inativar</button>
+                    <button>Ver transações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
