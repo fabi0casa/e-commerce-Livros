@@ -64,6 +64,22 @@ input, button {
     margin-bottom: 10px;
     border-radius: 5px;
 }
+.client-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.client-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
+.client-details {
+    font-size: 14px;
+    color: #000000;
+    margin-top: 5px;
+}
+
 .client-actions button {
     margin-right: 5px;
     padding: 5px 10px;
@@ -82,4 +98,76 @@ input, button {
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.modal {
+    display: none; /* Agora começa invisível */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Conteúdo do Modal */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+.modal-content button{
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.modal-content button:hover {
+    transition: 0.2s;
+    background-color: #5900ff;
+}
+
+/* Botão de Fechar */
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.accordion {
+    background-color: #f1f1f1;
+    color: black;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    transition: 0.4s;
+    margin-bottom: 5px;
+}
+
+.accordion:hover {
+    background-color: #ddd;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+    border-left: 2px solid #ddd;
+    margin-bottom: 10px;
 }
