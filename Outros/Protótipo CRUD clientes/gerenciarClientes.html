@@ -11,7 +11,7 @@
         <a href="admin.html"><img src="home.png" alt="home" class="header-logo"></a>
         Página do Administrador
     </header>
-    <button class="new-client">Cadastrar Novo Cliente</button>
+    <a href ="cadastrarCliente.html"><button class="new-client">Cadastrar Novo Cliente</button></a>
     <div class="container">
         <h2>Gerenciamento de Clientes</h2>
         <div class="filters">
@@ -35,7 +35,7 @@
                 <div class="client-actions">
                     <button onclick="openModal('clientModal')">Ver</button>
                     <button>Editar</button>
-                    <button>Inativar</button>
+                    <button onclick="openModal('confirmModal')">Inativar</button>
                     <button>Ver transações</button>
                 </div>
             </div>
@@ -141,6 +141,17 @@
             </div>
         </div>
     </div>
+    <!-- Modal de Confirmação para Inativação -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('confirmModal')">&times;</span>
+            <h2>Aviso!</h2>
+            <p>Deseja mesmo inativar o cliente "João Silva"?</p>
+            <button>Inativar Cliente</button>
+            <button onclick="closeModal('confirmModal')">Cancelar</button>
+        </div>
+    </div>
+
     <script>
         function openModal(modalId) {
             document.getElementById(modalId).style.display = "flex";

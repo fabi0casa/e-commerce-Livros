@@ -135,7 +135,7 @@ input, button {
 
 .modal-content button:hover {
     transition: 0.2s;
-    background-color: #5900ff;
+    background-color: #1a1a1a;
 }
 
 /* Botão de Fechar */
