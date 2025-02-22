@@ -54,10 +54,20 @@
 
             <h3>Senha</h3>
             <label>Senha:</label>
-            <input type="password" id="senha" required>
+            <div class="password-container">
+                <input type="password" id="senha" required>
+                <span class="toggle-password" onclick="togglePassword('senha', this)">
+                    <img src="olhoaberto.png" alt="Mostrar senha">
+                </span>
+            </div>
 
             <label>Confirmar Senha:</label>
-            <input type="password" id="confirmarSenha" required>
+            <div class="password-container">
+                <input type="password" id="confirmarSenha" required>
+                <span class="toggle-password" onclick="togglePassword('confirmarSenha', this)">
+                    <img src="olhoaberto.png" alt="Mostrar senha">
+                </span>
+            </div>
 
             <h3>Endereço Residencial</h3>
             <label>Tipo de Residência:</label>
@@ -96,6 +106,7 @@
             <textarea></textarea>
 
             <button type="submit">Cadastrar Cliente</button>
+            <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
         </form>
     </div>
     <!-- Modal de erro -->
@@ -122,6 +133,26 @@
         function fecharModalSenha() {
             document.getElementById("senhaModal").style.display = "none"; // Fecha o modal
         }
+
+        function cancelarCadastro() {
+            if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
+                window.history.back(); // Volta para a página anterior
+            }
+        }
+
+        function togglePassword(inputId, icon) {
+            var input = document.getElementById(inputId);
+            var img = icon.querySelector("img"); // Seleciona a imagem dentro do span
+
+            if (input.type === "password") {
+                input.type = "text";
+                img.src = "olhofechado.png"; // Ícone de "olho fechado"
+            } else {
+                input.type = "password";
+                img.src = "olhoaberto.png"; // Ícone de "olho aberto"
+            }
+        }
+
     </script>
     
 </body>

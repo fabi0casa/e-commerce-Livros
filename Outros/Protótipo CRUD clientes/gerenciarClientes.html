@@ -34,9 +34,9 @@
                 </div>
                 <div class="client-actions">
                     <button onclick="openModal('clientModal')">Ver</button>
-                    <button>Editar</button>
+                    <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
-                    <button>Ver transações</button>
+                    <button onclick="redirecionarAoTransacoes()">Ver transações</button>
                 </div>
             </div>
             <div class="client-item">
@@ -46,9 +46,9 @@
                 </div>
                 <div class="client-actions">
                     <button onclick="openModal('clientModal')">Ver</button>
-                    <button>Editar</button>
-                    <button>Inativar</button>
-                    <button>Ver transações</button>
+                    <button onclick="openModal('editionModal')">Editar</button>
+                    <button onclick="openModal('confirmModal')">Inativar</button>
+                    <button onclick="redirecionarAoTransacoes()">Ver transações</button>
                 </div>
             </div>
             <div class="client-item">
@@ -58,9 +58,9 @@
                 </div>
                 <div class="client-actions">
                     <button onclick="openModal('clientModal')">Ver</button>
-                    <button>Editar</button>
-                    <button>Inativar</button>
-                    <button>Ver transações</button>
+                    <button onclick="openModal('editionModal')">Editar</button>
+                    <button onclick="openModal('confirmModal')">Inativar</button>
+                    <button onclick="redirecionarAoTransacoes()">Ver transações</button>
                 </div>
             </div>
         </div>
@@ -151,6 +151,16 @@
             <button onclick="closeModal('confirmModal')">Cancelar</button>
         </div>
     </div>
+    <!-- Modal da edição do cliente-->
+    <div id="editionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editionModal')">&times;</span>
+            <h2>Qual operação de edição deseja realizar?</h2>
+            <a href="editarCliente.html"><button>Editar dados do Cliente</button></a>
+            <a href="alterarSenha.html"><button>Alterar a senha do Cliente</button></a>
+            <a href="editarCliente.html"><button>Editar endereços do Cliente</button></a>
+        </div>
+    </div>
 
     <script>
         function openModal(modalId) {
@@ -175,6 +185,10 @@
                 });
             });
         });
+
+        function redirecionarAoTransacoes(){
+            window.location.href = "transacoes.html";
+        }
     </script>
 </body>
 </html>

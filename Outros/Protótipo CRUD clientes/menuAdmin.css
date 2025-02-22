@@ -17,6 +17,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center; /* Mantém o texto centralizado */
+    z-index: 1000;
 }
 a {
     display: flex;
@@ -124,6 +125,7 @@ input, button {
 }
 
 .modal-content button{
+    width: 100%;
     background-color: black;
     color: white;
     border: none;
@@ -131,6 +133,8 @@ input, button {
     font-size: 15px;
     cursor: pointer;
     border-radius: 5px;
+    display: block; /* Garante que os botões fiquem um abaixo do outro */
+    margin-bottom: 10px; /* Adiciona espaçamento apenas entre os botões */
 }
 
 .modal-content button:hover {

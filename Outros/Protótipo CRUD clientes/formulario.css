@@ -94,3 +94,37 @@
                 padding: 15px;
             }
         }
+        .botaoCancelar button{
+            background: #9e0000;
+        }
+        .botaoCancelar button:hover {
+            background: #cb0000;
+        }
+
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .password-container input {
+            width: 100%;
+            padding-right: 40px; /* Ajusta para evitar sobreposição do ícone */
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toggle-password img {
+            width: 25px; /* Ajuste o tamanho conforme necessário */
+            height: 20px;
+        }
+        
+        

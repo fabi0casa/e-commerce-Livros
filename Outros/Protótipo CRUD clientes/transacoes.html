@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transações dos Clientes</title>
+    <link rel="stylesheet" href="menuAdmin.css">
+    <link rel="stylesheet" href="tabelaTransacoes.css">
+</head>
+<body>
+    <header>
+        <a href="admin.html"><img src="home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <div class="container">
+        <h2>Transações de 'João Silva'</h2>
+        
+        <div class="filter-container">
+            <label for="filterDate">Filtrar por período:</label>
+            <input type="date" id="filterDate">
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Valor</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Status da Compra</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2025-02-21</td>
+                    <td>R$ 150,00</td>
+                    <td>Cartão de Crédito</td>
+                    <td><span class="status-btn processando">Em Processamento</span></td>
+                    <td>
+                        <button class="status-btn transito" onclick="alterarStatus(this, 'Em Trânsito')">Despachar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2025-02-20</td>
+                    <td>R$ 250,00</td>
+                    <td>Boleto</td>
+                    <td><span class="status-btn transito">Em Trânsito</span></td>
+                    <td>
+                        <button class="status-btn entregue" onclick="alterarStatus(this, 'Entregue')">Confirmar Entrega</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2025-02-19</td>
+                    <td>R$ 75,00</td>
+                    <td>Pix</td>
+                    <td><span class="status-btn troca">Em Troca</span></td>
+                    <td>
+                        <button class="status-btn processando" onclick="alterarStatus(this, 'Troca Autorizada')">Autorizar Troca</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function alterarStatus(button, novoStatus) {
+            var row = button.closest('tr');
+            var statusCell = row.cells[3];
+            statusCell.innerHTML = `<span class="status-btn ${getClass(novoStatus)}">${novoStatus}</span>`;
+            //button.remove();
+        }
+
+        function getClass(status) {
+            switch(status) {
+                case 'Em Processamento': return 'processando';
+                case 'Em Trânsito': return 'transito';
+                case 'Entregue': return 'entregue';
+                case 'Troca Autorizada': return 'troca';
+                default: return '';
+            }
+        }
+    </script>
+</body>
+</html>
