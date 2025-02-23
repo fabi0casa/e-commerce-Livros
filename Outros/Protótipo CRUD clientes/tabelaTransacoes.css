@@ -26,17 +26,64 @@ th {
     background-color: #000222;
     color: rgb(255, 255, 255);
 }
+
 .filter-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Faz com que os elementos fiquem um abaixo do outro */
+    align-items: center; /* Centraliza os itens na horizontal */
+    gap: 10px; /* Adiciona um espaçamento entre os elementos */
     margin-bottom: 20px;
 }
+
+.filter-container label {
+    font-weight: bold;
+}
+
 .filter-container input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    width: 200px; /* Define um tamanho padrão para os inputs */
+    text-align: center; /* Centraliza o texto dentro do input */
 }
+
+.filter-container button {
+    width: 220px; /* Mantém um tamanho uniforme */
+    background-color: #000222;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block;
+    text-align: center;
+}
+
+.filter-container button:hover {
+    transition: 0.2s;
+    background-color: #000222d2;
+}
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-weight: bold;
+    width: 75px; /* Define uma largura fixa para alinhar os textos */
+    text-align: right; /* Alinha o texto do label à direita */
+}
+
+.filter-group input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 120px;
+    text-align: center;
+}
+
 .status-btn {
     padding: 5px 10px;
     border: none;

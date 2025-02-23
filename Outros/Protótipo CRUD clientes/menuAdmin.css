@@ -1,3 +1,7 @@
+*{
+    font-family: Arial, sans-serif;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -47,6 +51,25 @@ a {
     justify-content: center; /* Centraliza os itens horizontalmente */
     max-width: 60%; /* Define um tamanho máximo para os filtros */
     width: 100%; /* Garante que ele não ultrapasse o tamanho máximo */
+}
+
+.filters button {
+    width: 120px;
+    height: 50px;
+    background-color: #000222;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block;
+    text-align: center;
+}
+
+.filters button:hover {
+    transition: 0.2s;
+    background-color: #000222d2;
 }
 
 input, button {
