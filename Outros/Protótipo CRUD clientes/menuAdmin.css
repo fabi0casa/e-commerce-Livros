@@ -124,6 +124,20 @@ input, button {
     border-radius: 5px;
 }
 
+.botao-return {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    margin-top: 60px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 .modal {
     display: none; /* Agora começa invisível */
     position: fixed;

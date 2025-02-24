@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Cartão</title>
+    <link rel="stylesheet" href="menuAdmin.css">
+    <link rel="stylesheet" href="formulario.css">
+</head>
+<body>
+    <header>
+        <a href="admin.html"><img src="home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <div class="container">
+        <h2>Cadastrar Cartão para 'João Silva'</h2>
+        <form id="cadastroClienteForm">
+            <h3>Cadastro de Cartão</h3>
+
+            <label>Número do Cartão:</label>
+            <input type="text" required>
+
+            <label>Nome Impresso:</label>
+            <input type="text" required>
+
+            <label>Bandeira:</label>
+            <select required>
+                <option value="">Selecione</option>
+                <option value="Visa">Visa</option>
+                <option value="Elo">Elo</option>
+                <option value="MasterCard">Mastercard</option>
+            </select>
+
+            <label>Código de segurança:</label>
+            <input type="text" required>
+
+            <label>Tornar esse cartão preferencial?</label>
+            <select required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <button type="submit">Cadastrar Cartão</button>
+            <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
+        </form>
+    </div>
+
+    <script>
+        function cancelarCadastro() {
+            if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
+                window.history.back(); // Volta para a página anterior
+            }
+        }
+    </script>
+    
+</body>
+</html>

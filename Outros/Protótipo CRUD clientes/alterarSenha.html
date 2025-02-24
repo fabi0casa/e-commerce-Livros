@@ -13,8 +13,9 @@
         Página do Administrador
     </header>
     <div class="container">
-        <h2>Alterar Senha de 'João Silva'</h2>
         <form id="cadastroClienteForm">
+            <h2>Alterar Senha de 'João Silva'</h2>
+            <h3>Trocar Senha</h3>
             <label>Senha Atual:</label>
             <div class="password-container">
                 <input type="password" id="senhaAtual" required>
@@ -54,7 +55,7 @@
 
     <script>
         document.getElementById("cadastroClienteForm").addEventListener("submit", function(event) {
-            var senha = document.getElementById("senha").value;
+            var senha = document.getElementById("novaSenha").value;
             var confirmarSenha = document.getElementById("confirmarSenha").value;
     
             if (senha !== confirmarSenha) {

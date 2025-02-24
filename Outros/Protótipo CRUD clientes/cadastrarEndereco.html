@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Endereço</title>
+    <link rel="stylesheet" href="menuAdmin.css">
+    <link rel="stylesheet" href="formulario.css">
+</head>
+<body>
+    <header>
+        <a href="admin.html"><img src="home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <div class="container">
+        <h2>Novo Endereço para 'João Silva'</h2>
+        <form id="cadastroClienteForm">
+            <h3>Cadastro de novo Endereço</h3>
+            <label>Tipo de Residência:</label>
+            <select required>
+                <option value="">Selecione</option>
+                <option value="casa">Casa</option>
+                <option value="apartamento">Apartamento</option>
+                <option value="outro">Outro</option>
+            </select>
+
+            <label>Tipo de Logradouro:</label>
+            <input type="text" required placeholder="Ex: Rua, Avenida...">
+
+            <label>Logradouro:</label>
+            <input type="text" required>
+
+            <label>Número:</label>
+            <input type="text" required>
+
+            <label>Bairro:</label>
+            <input type="text" required>
+
+            <label>CEP:</label>
+            <input type="text" required placeholder="00000-000">
+
+            <label>Cidade:</label>
+            <input type="text" required>
+
+            <label>Estado:</label>
+            <input type="text" required>
+
+            <label>País:</label>
+            <input type="text" required value="Brasil">
+
+            <label>Observação (Opcional):</label>
+            <textarea></textarea>
+
+            <button type="submit">Cadastrar Endereço</button>
+            <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
+        </form>
+    </div>
+
+    <script>
+        function cancelarCadastro() {
+            if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
+                window.history.back(); // Volta para a página anterior
+            }
+        }
+    </script>
+    
+</body>
+</html>

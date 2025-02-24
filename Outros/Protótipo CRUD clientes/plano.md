@@ -1,3 +1,5 @@
+Este `plano` foi elaborado pelo GPT, mas não seguirei ele a risca, usarei apenas como um apoio ou um 'checklist' 
+
 **Protótipo CRUD de Clientes - E-commerce de Livros**
 
 ## **Planejamento das Telas**
