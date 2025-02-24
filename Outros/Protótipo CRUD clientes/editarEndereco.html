@@ -14,7 +14,7 @@
     </header>
     <div class="container">
         <h2>Atualização de Endereço</h2>
-        <form id="cadastroClienteForm">
+        <form id="cadastroEnderecoForm">
             <h3>Edição de Endereço</h3>
             <label>Tipo de Residência:</label>
             <select required>
@@ -51,12 +51,68 @@
             <label>Observação (Opcional):</label>
             <textarea></textarea>
 
+            <h3>Tipos de Endereço</h3>
+            <label>Usar como Endereço de Residência?</label>
+            <select id="residencia" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Usar como Endereço de Entrega?</label>
+            <select id="entrega" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Usar como Endereço de Cobrança?</label>
+            <select id="cobranca" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <h6>*O endereço precisa ser pelo menos uma dessas opções acima</h6>
+            
             <button type="submit">Salvar Alterações</button>
             <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
         </form>
     </div>
 
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2>Erro!</h2>
+            <p>Você deve selecionar "Sim" em pelo menos um tipo de endereço.</p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+
     <script>
+        document.getElementById("cadastroEnderecoForm").addEventListener("submit", function (event) {
+            let residencia = document.getElementById("residencia").value;
+            let entrega = document.getElementById("entrega").value;
+            let cobranca = document.getElementById("cobranca").value;
+
+            // Verifica se pelo menos um campo tem "Sim"
+            if (residencia === "sim" || entrega === "sim" || cobranca === "sim") {
+
+            } else {
+                event.preventDefault();
+                abrirModal(); // Exibe o modal de erro
+            }
+        });
+
+        function abrirModal() {
+            document.getElementById("errorModal").style.display = "flex";
+        }
+
+        function fecharModal() {
+            document.getElementById("errorModal").style.display = "none";
+        }
+
         function cancelarCadastro() {
             if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
                 window.history.back(); // Volta para a página anterior

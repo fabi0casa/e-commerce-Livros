@@ -105,6 +105,23 @@
             <label>Observação (Opcional):</label>
             <textarea></textarea>
 
+            <h3>Tipos de Endereço</h3>
+            <label>Deseja usar esse Endereço para Entrega?</label>
+            <select required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Deseja usar esse Endereço para Cobrança?</label>
+            <select required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+            <h6>*é nescessário pelo menos um endereço de ENTREGA </br>
+            e um endereço de COBRANÇA para realizar compras no sistema</h6>
+
             <button type="submit">Cadastrar Cliente</button>
             <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
         </form>
