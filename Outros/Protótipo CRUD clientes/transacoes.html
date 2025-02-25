@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transações dos Clientes</title>
+    <title>Transações do Gerenciamento de Clientes</title>
     <link rel="stylesheet" href="menuAdmin.css">
     <link rel="stylesheet" href="tabelaTransacoes.css">
 </head>
@@ -12,135 +12,33 @@
         <a href="admin.html"><img src="home.png" alt="home" class="header-logo"></a>
         Página do Administrador
     </header>
-    <a href ="gerenciarClientes.html"><button class="botao-return">Voltar</button></a>
+    <a href="gerenciarClientes.html"><button class="botao-return">Voltar</button></a>
+
     <div class="container">
-        <h2>Transações de 'João Silva'</h2>
-        <div class="filter-container">
-            <div class="filter-group">
-                <label for="startDate">Do dia:</label>
-                <input type="date" id="startDate">
-            </div>
-            <div class="filter-group">
-                <label for="endDate">Até o dia:</label>
-                <input type="date" id="endDate">
-            </div>
-            <button>Pesquisar</button>
-        </div>
-        
+        <h2>Transações do Gerenciamento de Clientes</h2>
 
         <table>
             <thead>
                 <tr>
-                    <th>Data</th>
-                    <th>Valor</th>
-                    <th>Forma de Pagamento</th>
-                    <th>Status da Compra</th>
-                    <th>Ações</th>
+                    <th>Data da Transação</th>
+                    <th>Tipo de Operação</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>2025-02-21</td>
-                    <td>R$ 150,00</td>
-                    <td>Cartão de Crédito</td>
-                    <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
-                    <td>
-                        <button class="status-btn transito" onclick="confirmarAcao(this, 'Em Trânsito')">Despachar</button>
-                    </td>
+                    <td>2025-02-21 14:35 (GMT-3)</td>
+                    <td>Criação de Cadastro</td>
                 </tr>
                 <tr>
-                    <td>2025-02-20</td>
-                    <td>R$ 250,00</td>
-                    <td>Boleto</td>
-                    <td class="status-cell"><span class="status-btn transito">Em Trânsito</span></td>
-                    <td>
-                        <button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>
-                    </td>
+                    <td>2025-02-20 10:15 (GMT-3)</td>
+                    <td>Atualização de Dados do Cliente</td>
                 </tr>
                 <tr>
-                    <td>2025-02-19</td>
-                    <td>R$ 75,00</td>
-                    <td>Pix</td>
-                    <td class="status-cell"><span class="status-btn troca">Em Troca</span></td>
-                    <td>
-                        <button class="status-btn processando" onclick="confirmarAcao(this, 'Troca Autorizada', true)">Autorizar Troca</button>
-                    </td>
+                    <td>2025-02-19 08:50 (GMT-3)</td>
+                    <td>Alteração de Endereço</td>
                 </tr>
             </tbody>
         </table>
     </div>
-
-    <!-- Modal de Confirmação -->
-    <div id="modalConfirmacao" class="modal">
-        <div class="modal-content">
-            <h2>Confirmar Ação</h2>
-            <p id="modalText"></p>
-            <div id="checkboxContainer" style="display: none;">
-                <input type="checkbox" id="retornaEstoque">
-                <label for="retornaEstoque">Retornar itens ao estoque</label>
-            </div>
-            </br>
-            <button id="confirmarBtn">Confirmar</button>
-            <button onclick="fecharModal()">Cancelar</button>
-        </div>
-    </div>
-
-    <script>
-        let botaoClicado;
-        let novoStatus;
-        let precisaCheckbox = false;
-
-        function confirmarAcao(botao, status, checkbox = false) {
-            botaoClicado = botao;
-            novoStatus = status;
-            precisaCheckbox = checkbox;
-
-            document.getElementById("modalText").innerText = `Deseja realmente alterar o status para "${status}"?`;
-            document.getElementById("checkboxContainer").style.display = checkbox ? "block" : "none";
-            document.getElementById("modalConfirmacao").style.display = "flex";
-        }
-
-        function fecharModal() {
-            document.getElementById("modalConfirmacao").style.display = "none";
-        }
-
-        document.getElementById("confirmarBtn").addEventListener("click", function() {
-            alterarStatus(botaoClicado, novoStatus);
-            fecharModal();
-        });
-
-        function alterarStatus(botao, status) {
-            let row = botao.closest("tr");
-            let statusCell = row.querySelector(".status-cell");
-
-            if (!statusCell) return;
-
-            statusCell.innerHTML = `<span class="status-btn ${getClass(status)}">${status}</span>`;
-            botao.outerHTML = novoBotao(status);
-        }
-
-        function novoBotao(status) {
-            switch (status) {
-                case "Em Trânsito":
-                    return `<button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>`;
-                case "Entregue":
-                    return `<span class="status-btn finalizado">Finalizado</span>`;
-                case "Troca Autorizada":
-                    return `<span class="status-btn troca-autorizada">Troca Autorizada</span>`;
-                default:
-                    return "";
-            }
-        }
-
-        function getClass(status) {
-            switch (status) {
-                case "Em Processamento": return "processando";
-                case "Em Trânsito": return "transito";
-                case "Entregue": return "entregue";
-                case "Troca Autorizada": return "troca";
-                default: return "";
-            }
-        }
-    </script>
 </body>
 </html>

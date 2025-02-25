@@ -12,6 +12,7 @@
         Página do Administrador
     </header>
     <a href ="cadastrarCliente.html"><button class="new-client">Cadastrar Novo Cliente</button></a>
+    <a href ="transacoes.html"><button class="botao-return">Ver Transações</button></a>
     <div class="container">
         <h2>Gerenciamento de Clientes</h2>
         <div class="filters">
@@ -36,7 +37,6 @@
                     <button onclick="openModal('clientModal')">Ver</button>
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
-                    <button onclick="redirecionarAoTransacoes()">Ver transações</button>
                 </div>
             </div>
             <div class="client-item">
@@ -48,7 +48,6 @@
                     <button onclick="openModal('clientModal')">Ver</button>
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
-                    <button onclick="redirecionarAoTransacoes()">Ver transações</button>
                 </div>
             </div>
             <div class="client-item">
@@ -60,7 +59,6 @@
                     <button onclick="openModal('clientModal')">Ver</button>
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
-                    <button onclick="redirecionarAoTransacoes()">Ver transações</button>
                 </div>
             </div>
         </div>
@@ -78,7 +76,7 @@
             <p><strong>Data de Nascimento:</strong> 15/08/1990</p>
             <p><strong>Gênero:</strong> Masculino</p>
             <p><strong>CPF:</strong> 888.888.888-08</p>
-            <p><strong>Ranking:</strong> 1º</p>
+            <p><strong>Ranking:</strong> 1</p>
 
             <button onclick="openModal('addressModal')">Ver Endereços</button>
             <button onclick="openModal('cardModal')">Ver Cartões</button>
@@ -187,10 +185,6 @@
                 });
             });
         });
-
-        function redirecionarAoTransacoes(){
-            window.location.href = "transacoes.html";
-        }
     </script>
 </body>
 </html>
