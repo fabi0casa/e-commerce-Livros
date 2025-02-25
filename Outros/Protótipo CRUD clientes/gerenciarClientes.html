@@ -12,7 +12,6 @@
         Página do Administrador
     </header>
     <a href ="cadastrarCliente.html"><button class="new-client">Cadastrar Novo Cliente</button></a>
-    <a href ="transacoes.html"><button class="botao-return">Ver Transações</button></a>
     <div class="container">
         <h2>Gerenciamento de Clientes</h2>
         <div class="filters">
@@ -37,6 +36,7 @@
                     <button onclick="openModal('clientModal')">Ver</button>
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
+                    <button onclick="redirecioarAoTransacoes()">Ver Transações</button>
                 </div>
             </div>
             <div class="client-item">
@@ -48,6 +48,7 @@
                     <button onclick="openModal('clientModal')">Ver</button>
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
+                    <button onclick="redirecioarAoTransacoes()">Ver Transações</button>
                 </div>
             </div>
             <div class="client-item">
@@ -59,6 +60,7 @@
                     <button onclick="openModal('clientModal')">Ver</button>
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
+                    <button onclick="redirecioarAoTransacoes()">Ver Transações</button>
                 </div>
             </div>
         </div>
@@ -185,6 +187,10 @@
                 });
             });
         });
+
+        function redirecioarAoTransacoes(){
+            window.location.href = "transacoes.html";
+        }
     </script>
 </body>
 </html>
