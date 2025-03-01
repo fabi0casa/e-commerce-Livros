@@ -56,7 +56,7 @@ Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido pa
    mvn spring-boot:run
    ```
 
-4. **Executar apenas o frontend:**
+4. **Executar o frontend:**
    - Abra o arquivo `index.html` em um navegador
 
 ## 📌 Contribuição
