@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Endereços</title>
+    <link rel="stylesheet" href="../css/menuAdmin.css">
+    <style>
+        .new-client{
+            background-color: rgb(0, 85, 255);
+        }
+        .client-item {
+            background-color: rgba(175, 243, 255, 0.383);
+        }
+        /*.client-name {
+            color: #003eb0;
+        }
+        .client-details {
+            color: #003eb0;
+        }*/
+        .client-actions button {
+            background-color: rgba(175, 243, 255, 0.383);
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <a href ="cadastrarEndereco.html"><button class="new-client">Cadastrar Novo Endereço</button></a>
+    <a href ="gerenciarClientes.html"><button class="botao-return">Voltar</button></a>
+    <div class="container">
+        <h2>Gerenciamento de Endereços de 'João Silva'</h2>
+
+        <div class="client-list">
+            <div class="client-item">
+                <div class="client-info">
+                    <div class="client-name">Rua Exemplo, 123 - São Paulo, SP</div>
+                    <div class="client-details">CEP: 01000-000 - Centro</div>
+                </div>
+                <div class="client-actions">
+                    <button onclick="redirecionarEditarEndereco()">Editar</button>
+                </div>
+            </div>
+            <div class="client-item">
+                <div class="client-info">
+                    <div class="client-name">Av. Teste, 456 - Rio de Janeiro RJ</div>
+                    <div class="client-details">CEP: 22000-000 - Copacabana</div>
+                </div>
+                <div class="client-actions">
+                    <button onclick="redirecionarEditarEndereco()">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function redirecionarEditarEndereco(){
+            window.location.href = "editarEndereco.html";
+        }
+    </script>
+</body>
+</html>
