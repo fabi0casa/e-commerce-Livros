@@ -91,9 +91,11 @@ th {
     cursor: pointer;
 }
 .processando { background-color: rgb(196, 101, 0); color: white; }
-.transito { background-color: rgb(55, 48, 192); color: white; }
+.transito { background-color: rgb(33, 24, 212); color: white; }
 .entregue { background-color: rgb(0, 159, 0); color: white; }
-.troca { background-color: rgb(211, 0, 0); color: white; }
+.troca { background-color: #5900ff; color: white; }
+.aprovado { background-color: rgb(11, 184, 115); color: white; }
+.reprovado { background-color: rgb(211, 0, 0); color: white; }
 
 .selecao-produtos-categorias {
     display: flex;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Clientes</title>
+    <title>Gerenciamento de Vendas</title>
     <link rel="stylesheet" href="../css/menuAdmin.css">
     <link rel="stylesheet" href="../css/tabelaTransacoes.css">
 </head>
@@ -49,7 +49,8 @@
                     <td>Cartão de Crédito</td>
                     <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
                     <td>
-                        <button class="status-btn transito" onclick="confirmarAcao(this, 'Em Trânsito')">Despachar</button>
+                        <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
+                        <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
                     </td>
                 </tr>
                 <tr>
@@ -73,7 +74,7 @@
                     <td>Cartão de Crédito</td>
                     <td class="status-cell"><span class="status-btn troca">Em Troca</span></td>
                     <td>
-                        <button class="status-btn processando" onclick="confirmarAcao(this, 'Troca Autorizada', true)">Autorizar Troca</button>
+                        <button class="status-btn processando" onclick="confirmarAcao(this, 'Trocado', true)">Autorizar Troca</button>
                     </td>
                 </tr>
             </tbody>
@@ -123,20 +124,25 @@
         function alterarStatus(botao, status) {
             let row = botao.closest("tr");
             let statusCell = row.querySelector(".status-cell");
+            let actionsCell = botao.closest("td");
 
-            if (!statusCell) return;
+            if (!statusCell || !actionsCell) return;
 
             statusCell.innerHTML = `<span class="status-btn ${getClass(status)}">${status}</span>`;
-            botao.outerHTML = novoBotao(status);
+            actionsCell.innerHTML = novoBotao(status);
         }
 
         function novoBotao(status) {
             switch (status) {
+                case "Aprovada":
+                    return `<button class="status-btn transito" onclick="confirmarAcao(this, 'Em Trânsito')">Despachar</button>`;
+                case "Reprovada":
+                    return "";
                 case "Em Trânsito":
                     return `<button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>`;
                 case "Entregue":
                     return `<span class="status-btn finalizado">Finalizado</span>`;
-                case "Troca Autorizada":
+                case "Trocado":
                     return `<span class="status-btn troca-autorizada">Troca Autorizada</span>`;
                 default:
                     return "";
@@ -146,9 +152,11 @@
         function getClass(status) {
             switch (status) {
                 case "Em Processamento": return "processando";
+                case "Aprovada": return "aprovado";
+                case "Reprovada": return "reprovado";
                 case "Em Trânsito": return "transito";
                 case "Entregue": return "entregue";
-                case "Troca Autorizada": return "troca";
+                case "Trocado": return "troca";
                 default: return "";
             }
         }
