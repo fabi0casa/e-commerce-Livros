@@ -60,7 +60,7 @@
                     <td>2</td>
                     <td>R$ 250,00</td>
                     <td>Cupom</td>
-                    <td class="status-cell"><span class="status-btn transito">Em Trânsito</span></td>
+                    <td class="status-cell"><span class="status-btn transito">Em Transporte</span></td>
                     <td>
                         <button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>
                     </td>
@@ -135,10 +135,10 @@
         function novoBotao(status) {
             switch (status) {
                 case "Aprovada":
-                    return `<button class="status-btn transito" onclick="confirmarAcao(this, 'Em Trânsito')">Despachar</button>`;
+                    return `<button class="status-btn transito" onclick="confirmarAcao(this, 'Em Transporte')">Despachar</button>`;
                 case "Reprovada":
                     return "";
-                case "Em Trânsito":
+                case "Em Transporte":
                     return `<button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>`;
                 case "Entregue":
                     return `<span class="status-btn finalizado">Finalizado</span>`;
@@ -154,7 +154,7 @@
                 case "Em Processamento": return "processando";
                 case "Aprovada": return "aprovado";
                 case "Reprovada": return "reprovado";
-                case "Em Trânsito": return "transito";
+                case "Em Transporte": return "transito";
                 case "Entregue": return "entregue";
                 case "Trocado": return "troca";
                 default: return "";
