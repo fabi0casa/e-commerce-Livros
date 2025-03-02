@@ -141,7 +141,7 @@ input, button {
 .modal {
     display: none; /* Agora começa invisível */
     position: fixed;
-    z-index: 1;
+    z-index: 1001;
     left: 0;
     top: 0;
     width: 100%;
@@ -151,14 +151,27 @@ input, button {
     justify-content: center;
 }
 
-
 /* Conteúdo do Modal */
 .modal-content {
+    max-height: 70vh; /* Define a altura máxima como 70% da tela */
+    overflow-y: auto; /* Adiciona a barra de rolagem vertical quando necessário */
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     width: 300px;
     text-align: left; /* Alinhamento à esquerda */
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background: #000222;
+    border-radius: 20px;
+}
+.modal-content::-webkit-scrollbar-track {
+    background: #00022225;
 }
 
 .modal-content button{
