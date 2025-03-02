@@ -89,6 +89,11 @@ th {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+}
+.status-cell{
+    min-width: 160px;
 }
 .processando { background-color: rgb(196, 101, 0); color: white; }
 .transito { background-color: rgb(33, 24, 212); color: white; }
