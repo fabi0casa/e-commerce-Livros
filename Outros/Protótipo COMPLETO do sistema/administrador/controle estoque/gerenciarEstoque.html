@@ -6,6 +6,24 @@
     <title>Controle do Estoque</title>
     <link rel="stylesheet" href="../css/menuAdmin.css">
     <link rel="stylesheet" href="../css/tabelaTransacoes.css">
+    <style>
+        /*dando um pequeno diferencial pra variar um pouco*/
+        .new-client{
+            top: 35px;
+            right: 10%;
+            background-color: #5900ff;
+        }
+        table{
+            border: 2px solid #5900ff;
+        }
+        h3 {
+            margin-top: 20px;
+            color: #000000;
+            font-size: 18px;
+            border-bottom: 2px solid #1e1e2f;
+            padding-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -17,7 +35,7 @@
     <div class="container">
         <h2>Controle do Estoque</h2>
 
-        <h3>Itens no Estoque</h3>
+        <h3>Itens em Estoque</h3>
         <table>
             <thead>
                 <tr>
@@ -32,16 +50,53 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Livro</td>
-                    <td>Quantidade</td>
-                    <td>Valor de Custo (R$)</td>
-                    <td>Valor de Venda (R$)</td>
-                    <td>Margem de Lucro (%)</td>
-                    <td>Fornecedor</td>
-                    <td>Data de Entrada</td>
+                    <td>O Senhor dos Anéis</td>
+                    <td>15</td>
+                    <td>45,00</td>
+                    <td>67,50</td>
+                    <td>10%</td>
+                    <td>Distribuidora Alpha</td>
+                    <td>01/03/2025</td>
+                </tr>
+                <tr>
+                    <td>1984</td>
+                    <td>10</td>
+                    <td>30,00</td>
+                    <td>45,00</td>
+                    <td>10%</td>
+                    <td>Livros & Cia</td>
+                    <td>27/02/2025</td>
+                </tr>
+                <tr>
+                    <td>Dom Casmurro</td>
+                    <td>20</td>
+                    <td>20,00</td>
+                    <td>30,00</td>
+                    <td>10%</td>
+                    <td>Editora Nacional</td>
+                    <td>25/02/2025</td>
+                </tr>
+                <tr>
+                    <td>Harry Potter e a Pedra Filosofal</td>
+                    <td>12</td>
+                    <td>50,00</td>
+                    <td>75,00</td>
+                    <td>5%</td>
+                    <td>BookStore Ltda</td>
+                    <td>28/02/2025</td>
+                </tr>
+                <tr>
+                    <td>A Revolução dos Bichos</td>
+                    <td>8</td>
+                    <td>25,00</td>
+                    <td>37,50</td>
+                    <td>10%</td>
+                    <td>Distribuidora Beta</td>
+                    <td>26/02/2025</td>
                 </tr>
             </tbody>
         </table>
+        
     </div>
 
     <script>

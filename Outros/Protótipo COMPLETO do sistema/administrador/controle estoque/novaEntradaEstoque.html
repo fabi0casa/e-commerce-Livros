@@ -43,35 +43,12 @@
                 <option value="fornecedorB">Fornecedor B</option>
             </select>
 
-            <button type="button" onclick="adicionarEstoque()">Adicionar ao Estoque</button>
+            <button type="submit">Adicionar ao Estoque</button>
             <div class="botaoCancelar"><button type="submit" onclick="cancelarAlteracaoSenha()">Cancelar</button></div>
         </form>
     </div>
-    <!-- Modal de erro -->
-    <div id="senhaModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="fecharModalSenha()">&times;</span>
-            <h2>Erro!</h2>
-            <p>As senhas não coincidem. Tente novamente.</p>
-            <button onclick="fecharModalSenha()">OK</button>
-        </div>
-    </div>
 
     <script>
-        document.getElementById("cadastroClienteForm").addEventListener("submit", function(event) {
-            var senha = document.getElementById("novaSenha").value;
-            var confirmarSenha = document.getElementById("confirmarSenha").value;
-    
-            if (senha !== confirmarSenha) {
-                event.preventDefault(); // Impede o envio do formulário
-                document.getElementById("senhaModal").style.display = "flex"; // Exibe o modal
-            }
-        });
-    
-        function fecharModalSenha() {
-            document.getElementById("senhaModal").style.display = "none"; // Fecha o modal
-        }
-
         function cancelarAlteracaoSenha() {
             if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
                 window.history.back(); // Volta para a página anterior
