@@ -1,1 +1,57 @@
-<!--nada, ainda-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle do Estoque</title>
+    <link rel="stylesheet" href="../css/menuAdmin.css">
+    <link rel="stylesheet" href="../css/tabelaTransacoes.css">
+</head>
+<body>
+    <header>
+        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <a href ="novaEntradaEstoque.html"><button class="new-client">Nova Entrada no Estoque</button></a>
+
+    <div class="container">
+        <h2>Controle do Estoque</h2>
+
+        <h3>Itens no Estoque</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Livro</th>
+                    <th>Quantidade</th>
+                    <th>Valor de Custo (R$)</th>
+                    <th>Valor de Venda (R$)</th>
+                    <th>Margem de Lucro (%)</th>
+                    <th>Fornecedor</th>
+                    <th>Data de Entrada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Livro</td>
+                    <td>Quantidade</td>
+                    <td>Valor de Custo (R$)</td>
+                    <td>Valor de Venda (R$)</td>
+                    <td>Margem de Lucro (%)</td>
+                    <td>Fornecedor</td>
+                    <td>Data de Entrada</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+    
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+    </script>
+</body>
+</html>
