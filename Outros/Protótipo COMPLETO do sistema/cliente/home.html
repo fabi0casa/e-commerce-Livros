@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livraria</title>
+    <link rel="stylesheet" href="css/livraria.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Minha Loja</div>
+        <input type="text" class="search-bar" placeholder="Buscar livros...">
+        <div class="header-buttons">
+            <button class="account-btn">Conta</button>
+            <button class="cart-btn">Carrinho</button>
+        </div>
+    </header>
+    
+    <section class="carousel">
+        <div class="carousel-container">
+            <div class="carousel-item">Promoção 1</div>
+            <div class="carousel-item">Promoção 2</div>
+            <div class="carousel-item">Promoção 3</div>
+        </div>
+    </section>
+    
+    <section class="product-list">
+        <div class="product-card">Livro 1</div>
+        <div class="product-card">Livro 2</div>
+        <div class="product-card">Livro 3</div>
+        <div class="product-card">Livro 4</div>
+    </section>
+
+    <button class="chatbot-button" onclick="toggleChatbot()">Chatbot</button>
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">Assistente Virtual</div>
+        <div class="chatbot-messages" id="chatbot-messages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input" placeholder="Digite uma mensagem...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+    
+    <script>
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            if (chatbot.classList.contains('show')) {
+                chatbot.style.opacity = '0';
+                chatbot.style.transform = 'scale(0.9)';
+                setTimeout(() => chatbot.classList.remove('show'), 300);
+            } else {
+                chatbot.classList.add('show');
+                chatbot.style.opacity = '1';
+                chatbot.style.transform = 'scale(1)';
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            if (message === '') return;
+            
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const userMessage = document.createElement('div');
+            userMessage.textContent = message;
+            userMessage.classList.add('chatbot-message', 'user-message');
+            messagesContainer.appendChild(userMessage);
+            
+            setTimeout(() => {
+                const botMessage = document.createElement('div');
+                botMessage.textContent = getBotResponse(message);
+                botMessage.classList.add('chatbot-message', 'bot-message');
+                messagesContainer.appendChild(botMessage);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+            
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function getBotResponse(userMessage) {
+            return "Esta é uma mensagem de teste!";
+        }
+    </script>
+</body>
+</html>
