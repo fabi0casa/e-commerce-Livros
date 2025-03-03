@@ -12,18 +12,19 @@
         <div class="logo"></div>
         <input type="text" class="search-bar" placeholder="Buscar livros...">
         <div class="header-buttons">
-            <button class="account-btn"></button>
             <button class="cart-btn"></button>
+            <button class="account-btn"></button>
         </div>
     </header>
     
     <section class="carousel">
         <div class="carousel-container">
-            <div class="carousel-item">Promoção 1</div>
-            <div class="carousel-item">Promoção 2</div>
-            <div class="carousel-item">Promoção 3</div>
+            <div class="carousel-item"></div>
+            <div class="carousel-item"></div>
+            <div class="carousel-item"></div>
         </div>
     </section>
+    
     
     <section class="product-list">
         <div class="product-card">Livro 1</div>
@@ -82,6 +83,20 @@
         function getBotResponse(userMessage) {
             return "Esta é uma mensagem de teste!";
         }
+        
+        let currentIndex = 0;
+
+        function moveCarousel() {
+            const container = document.querySelector('.carousel-container');
+            const totalItems = document.querySelectorAll('.carousel-item').length;
+
+            currentIndex = (currentIndex + 1) % totalItems; 
+            const translateX = -currentIndex * 100 + '%';
+
+            container.style.transform = 'translateX(' + translateX + ')';
+        }
+
+        setInterval(moveCarousel, 3000); // Troca a imagem a cada 3 segundos
     </script>
 </body>
 </html>
