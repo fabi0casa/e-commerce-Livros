@@ -95,23 +95,49 @@ header {
     gap: 15px;
     flex-wrap: wrap;
     padding: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .product-card {
-    width: 200px;
-    height: 300px;
+    width: 265px;
+    height: 370px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-size: cover;
-    background-position: center;
     display: flex;
-    align-items: flex-end;
-    padding: 10px;
-    font-weight: bold;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
 
-.product-card:nth-child(1) { background-image: url('img/livro1.jpg'); }
-.product-card:nth-child(2) { background-image: url('img/livro2.jpg'); }
-.product-card:nth-child(3) { background-image: url('img/livro3.jpg'); }
-.product-card:nth-child(4) { background-image: url('img/livro4.jpg'); }
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-card img {
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
+}
+
+.product-info {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f8f8;
+}
+
+.product-info h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #252525;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+}
