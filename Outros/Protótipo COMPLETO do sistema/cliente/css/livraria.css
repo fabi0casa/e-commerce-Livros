@@ -85,8 +85,8 @@ header {
 }
 
 .carousel-item:nth-child(1) { background-image: url('banner1.png'); }
-.carousel-item:nth-child(2) { background-image: url('logo.png'); }
-.carousel-item:nth-child(3) { background-image: url('banner1.png'); }
+.carousel-item:nth-child(2) { background-image: url('banner2.png'); }
+.carousel-item:nth-child(3) { background-image: url('banner3.png'); }
 
 
 .product-list {
