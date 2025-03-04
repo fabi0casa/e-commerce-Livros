@@ -23,6 +23,7 @@ h1 {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ddd;
+    gap: 15px;
     padding: 15px 0;
 }
 
@@ -36,8 +37,8 @@ h1 {
 
 .cart-info {
     display: flex;
-    justify-content: space-between; /* Mantém os elementos alinhados nas extremidades */
-    align-items: center; /* Centraliza verticalmente */
+    flex-direction: column;
+    flex-grow: 1;
     width: 100%;
 }
 
