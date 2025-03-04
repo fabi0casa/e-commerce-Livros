@@ -36,9 +36,9 @@ header {
 
 .header-buttons {
     display: flex;
-    gap: 40%; /* Espaço entre os botões */
-    margin-left: 12%;
-    margin-right: 5%;
+    gap: 30%; /* Espaço entre os botões */
+    margin-left: 4%;
+    margin-right: 12%;
 }
 
 .btn {
