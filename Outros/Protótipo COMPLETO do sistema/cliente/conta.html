@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../icon.png">
+    <title>Minha Conta - Livraria</title>
+    <link rel="stylesheet" href="css/livraria.css">
+    <link rel="stylesheet" href="css/conta.css">
+    <style>
+    </style>
+</head>
+<body>
+    <script src="header.js"></script>
+    <div class="container">
+        <nav class="menu">
+            <button onclick="mostrarSecao('info')">Minha Conta</button>
+            <button onclick="mostrarSecao('alterar')">Alterar Dados</button>
+            <button onclick="mostrarSecao('endereco')">Novo Endereço</button>
+            <button onclick="mostrarSecao('cartao')">Novo Cartão</button>
+            <button onclick="mostrarSecao('pedidos')">Meus Pedidos</button>
+        </nav>
+        
+        <section class="conteudo">
+            <div id="info" class="secao ativa">
+                <h2>Minha Conta</h2>
+                <p><strong>Nome:</strong> João da Silva</p>
+                <p><strong>Email:</strong> joao@email.com</p>
+                <p><strong>Telefone:</strong> (11) 99999-9999</p>
+            </div>
+
+            <div id="alterar" class="secao">
+                <h2>Alterar Dados</h2>
+                <form class="formulario">
+                    <input type="text" placeholder="Novo Nome">
+                    <input type="email" placeholder="Novo Email">
+                    <input type="tel" placeholder="Novo Telefone">
+                    <button>Salvar Alterações</button>
+                </form>
+            </div>
+
+            <div id="endereco" class="secao">
+                <h2>Cadastrar Novo Endereço</h2>
+                <form class="formulario">
+                    <input type="text" placeholder="Rua">
+                    <input type="text" placeholder="Número">
+                    <input type="text" placeholder="Complemento">
+                    <input type="text" placeholder="CEP">
+                    <button>Salvar Endereço</button>
+                </form>
+            </div>
+
+            <div id="cartao" class="secao">
+                <h2>Cadastrar Novo Cartão</h2>
+                <form class="formulario">
+                    <input type="text" placeholder="Nome no Cartão">
+                    <input type="text" placeholder="Número do Cartão">
+                    <input type="text" placeholder="Validade (MM/AA)">
+                    <input type="text" placeholder="CVV">
+                    <button>Salvar Cartão</button>
+                </form>
+            </div>
+
+            <div id="pedidos" class="secao">
+                <h2>Meus Pedidos</h2>
+                <table>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Data</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>#00123</td>
+                        <td>01/03/2025</td>
+                        <td>R$ 150,00</td>
+                        <td>Entregue</td>
+                    </tr>
+                    <tr>
+                        <td>#00124</td>
+                        <td>10/02/2025</td>
+                        <td>R$ 89,90</td>
+                        <td>Em trânsito</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function mostrarSecao(secao) {
+            document.querySelectorAll('.secao').forEach(el => el.classList.remove('ativa'));
+            document.getElementById(secao).classList.add('ativa');
+        }
+    </script>
+
+</body>
+</html>
