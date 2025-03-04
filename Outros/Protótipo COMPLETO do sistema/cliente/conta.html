@@ -94,9 +94,41 @@
             <div id="alterar" class="secao">
                 <h2>Alterar Dados</h2>
                 <form class="formulario">
-                    <input type="text" placeholder="Novo Nome">
-                    <input type="email" placeholder="Novo Email">
-                    <input type="tel" placeholder="Novo Telefone">
+                    <label>Nome Completo:</label>
+                    <input type="text" required>
+
+                    <label>Data de Nascimento:</label>
+                    <input type="date" required>
+
+                    <label>CPF:</label>
+                    <input type="text" required placeholder="000.000.000-00">
+
+                    <label>Gênero:</label>
+                    <select required>
+                        <option value="">Selecione</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="outro">Outro</option>
+                        <option value="nao_informar">Prefiro não informar</option>
+                    </select>
+
+                    <h3>Contato</h3>
+                    <label>Tipo de Telefone:</label>
+                    <select required>
+                        <option value="">Selecione</option>
+                        <option value="celular">Celular</option>
+                        <option value="residencial">Residencial</option>
+                        <option value="comercial">Comercial</option>
+                    </select>
+
+                    <label>DDD:</label>
+                    <input type="text" required placeholder="Ex: 11">
+
+                    <label>Número:</label>
+                    <input type="text" required placeholder="Ex: 99999-9999">
+
+                    <label>Email:</label>
+                    <input type="email" required>
                     <button>Salvar Alterações</button>
                 </form>
             </div>
@@ -104,21 +136,103 @@
             <div id="endereco" class="secao">
                 <h2>Cadastrar Novo Endereço</h2>
                 <form class="formulario">
-                    <input type="text" placeholder="Rua">
-                    <input type="text" placeholder="Número">
-                    <input type="text" placeholder="Complemento">
-                    <input type="text" placeholder="CEP">
-                    <button>Salvar Endereço</button>
+                    <label>Tipo de Residência:</label>
+                    <select required>
+                        <option value="">Selecione</option>
+                        <option value="casa">Casa</option>
+                        <option value="apartamento">Apartamento</option>
+                        <option value="outro">Outro</option>
+                    </select>
+        
+                    <label>Tipo de Logradouro:</label>
+                    <input type="text" required placeholder="Ex: Rua, Avenida...">
+        
+                    <label>Logradouro:</label>
+                    <input type="text" required>
+        
+                    <label>Número:</label>
+                    <input type="text" required>
+        
+                    <label>Bairro:</label>
+                    <input type="text" required>
+        
+                    <label>CEP:</label>
+                    <input type="text" required placeholder="00000-000">
+        
+                    <label>Cidade:</label>
+                    <input type="text" required>
+        
+                    <label>Estado:</label>
+                    <input type="text" required>
+        
+                    <label>País:</label>
+                    <input type="text" required value="Brasil">
+                    
+                    <label>Observação (Opcional):</label>
+                    <textarea></textarea>
+        
+                    <h3>Tipos de Endereço</h3>
+                    <label>Usar como Endereço de Residência?</label>
+                    <select id="residencia" required>
+                        <option value="">Selecione</option>
+                        <option value="sim">Sim</option>
+                        <option value="nao">Não</option>
+                    </select>
+        
+                    <label>Usar como Endereço de Entrega?</label>
+                    <select id="entrega" required>
+                        <option value="">Selecione</option>
+                        <option value="sim">Sim</option>
+                        <option value="nao">Não</option>
+                    </select>
+        
+                    <label>Usar como Endereço de Cobrança?</label>
+                    <select id="cobranca" required>
+                        <option value="">Selecione</option>
+                        <option value="sim">Sim</option>
+                        <option value="nao">Não</option>
+                    </select>
+        
+                    <h6>*O endereço precisa ser pelo menos uma dessas opções acima</h6>
+                    <button type="submit">Salvar Endereço</button>
                 </form>
+            </div>
+            <!-- Modal de Erro -->
+            <div id="errorModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('errorModal')">&times;</span>
+                    <h2>Erro!</h2>
+                    <p>Você deve selecionar "Sim" em pelo menos um tipo de endereço.</p>
+                    <button onclick="closeModal('errorModal')">OK</button>
+                </div>
             </div>
 
             <div id="cartao" class="secao">
                 <h2>Cadastrar Novo Cartão</h2>
                 <form class="formulario">
-                    <input type="text" placeholder="Nome no Cartão">
-                    <input type="text" placeholder="Número do Cartão">
-                    <input type="text" placeholder="Validade (MM/AA)">
-                    <input type="text" placeholder="CVV">
+                    <label>Número do Cartão:</label>
+                    <input type="text" required>
+        
+                    <label>Nome Impresso:</label>
+                    <input type="text" required>
+        
+                    <label>Bandeira:</label>
+                    <select required>
+                        <option value="">Selecione</option>
+                        <option value="Visa">Visa</option>
+                        <option value="Elo">Elo</option>
+                        <option value="MasterCard">Mastercard</option>
+                    </select>
+        
+                    <label>Código de segurança:</label>
+                    <input type="text" required>
+        
+                    <label>Tornar esse cartão preferencial?</label>
+                    <select required>
+                        <option value="">Selecione</option>
+                        <option value="sim">Sim</option>
+                        <option value="nao">Não</option>
+                    </select>
                     <button>Salvar Cartão</button>
                 </form>
             </div>
@@ -154,6 +268,21 @@
             document.querySelectorAll('.secao').forEach(el => el.classList.remove('ativa'));
             document.getElementById(secao).classList.add('ativa');
         }
+
+        document.getElementById("endereco").addEventListener("submit", function (event) {
+            let residencia = document.getElementById("residencia").value;
+            let entrega = document.getElementById("entrega").value;
+            let cobranca = document.getElementById("cobranca").value;
+
+            // Verifica se pelo menos um campo tem "Sim"
+            if (residencia === "sim" || entrega === "sim" || cobranca === "sim") {
+
+            } else {
+                event.preventDefault();
+                openModal('errorModal'); // Exibe o modal de erro
+            }
+        });
+
         function openModal(modalId) {
             document.getElementById(modalId).style.display = "flex";
         }
@@ -176,10 +305,6 @@
                 });
             });
         });
-
-        function redirecioarAoTransacoes(){
-            window.location.href = "transacoes.html";
-        }
     </script>
 
 </body>
