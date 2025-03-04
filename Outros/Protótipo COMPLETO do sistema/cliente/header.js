@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="btn" id="notificationBtn">
                     <img src="css/notification.png" alt="Notificações">
                     <span>Notificações</span>
+                    <span class="notification-badge" id="notificationBadge">3</span>
                 </button>
                 <button class="btn" onclick="window.location.href='carrinho.html'">
                     <img src="css/cart.png" alt="Carrinho">
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     </li>
                     <li>
                         <div class="notification-title">⚠️ Carrinho</div>
-                        <span>Um item foi removido do seu carrinho devido a falta no estoque.</span>
+                        <span>Um item foi removido do seu carrinho devido à falta no estoque.</span>
                         <button class="ok-btn">OK</button>
                     </li>
                 </ul>
@@ -50,26 +51,38 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Exibir/ocultar popup ao clicar no botão de notificações
     const notificationBtn = document.getElementById("notificationBtn");
     const notificationPopup = document.getElementById("notificationPopup");
+    const notificationBadge = document.getElementById("notificationBadge");
+    const notificationList = document.getElementById("notificationList");
+
+    function updateNotificationCount() {
+        let count = notificationList.children.length;
+        if (count > 0) {
+            notificationBadge.textContent = count;
+            notificationBadge.style.display = "block";
+        } else {
+            notificationBadge.style.display = "none";
+        }
+    }
 
     notificationBtn.addEventListener("click", function(event) {
         event.stopPropagation();
         notificationPopup.classList.toggle("active");
     });
 
-    // Fechar popup ao clicar fora dele
     document.addEventListener("click", function(event) {
         if (!notificationBtn.contains(event.target) && !notificationPopup.contains(event.target)) {
             notificationPopup.classList.remove("active");
         }
     });
 
-    // Remover notificações individualmente ao clicar no "OK"
     document.querySelectorAll(".ok-btn").forEach(button => {
         button.addEventListener("click", function() {
             this.parentElement.remove();
+            updateNotificationCount();
         });
     });
+
+    updateNotificationCount();
 });
