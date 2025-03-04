@@ -2,7 +2,7 @@
 .anuncio-container {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 900px;
     margin: 50px auto;
     background: #fff;
     padding: 20px;
@@ -147,10 +147,9 @@ input[type="number"] {
 }
 
 .detalhes-adicionais {
-    width: 100%;
-    max-width: 300px;
+    max-width: 93%;
     padding: 20px;
-    background: #f8f8f8;
+    background: #5900ff0d;
     border-radius: 10px;
     margin-top: 20px;
     text-align: left;
