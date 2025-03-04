@@ -249,5 +249,21 @@ header {
     font-weight: bold;
 }
 
+.cart-badge {
+    position: fixed;
+    margin-right: 15px;
+    margin-bottom: 25px;
+    background: rgb(29, 75, 243);
+    color: white;
+    font-size: 12px;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
 
 
