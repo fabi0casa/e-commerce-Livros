@@ -237,7 +237,7 @@ header {
     position: fixed;
     margin-right: 15px;
     margin-bottom: 25px;
-    background: red;
+    background: rgb(207, 0, 0);
     color: white;
     font-size: 12px;
     width: 15px;
