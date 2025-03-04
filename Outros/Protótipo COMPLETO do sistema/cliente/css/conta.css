@@ -94,3 +94,91 @@ button {
 button:hover {
     background: #218838;
 }
+
+.modal {
+    display: none; /* Agora começa invisível */
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Conteúdo do Modal */
+.modal-content {
+    max-height: 70vh; /* Define a altura máxima como 70% da tela */
+    overflow-y: auto; /* Adiciona a barra de rolagem vertical quando necessário */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background: #000222;
+    border-radius: 20px;
+}
+.modal-content::-webkit-scrollbar-track {
+    background: #00022225;
+}
+
+.modal-content button{
+    width: 100%;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block; /* Garante que os botões fiquem um abaixo do outro */
+    margin-bottom: 10px; /* Adiciona espaçamento apenas entre os botões */
+}
+
+.modal-content button:hover {
+    transition: 0.2s;
+    background-color: #1a1a1a;
+}
+
+/* Botão de Fechar */
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.accordion {
+    background-color: #f1f1f1;
+    color: black;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    transition: 0.4s;
+    margin-bottom: 5px;
+}
+
+.accordion:hover {
+    background-color: #ddd;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+    border-left: 2px solid #ddd;
+    margin-bottom: 10px;
+}
