@@ -53,7 +53,7 @@ table {
 }
 
 table, th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #4a4863;
 }
 
 th, td {
@@ -62,7 +62,8 @@ th, td {
 }
 
 th {
-    background: #eee;
+    background: #010012;
+    color:white;
 }
 
 .formulario {
@@ -78,7 +79,7 @@ input, button {
     border-radius: 5px;
 }
 
-button {
+.conteudo button:not(.status-btn) {
     background-color: #010012;
     color: white;
     border: 2px solid #000000;
@@ -91,7 +92,7 @@ button {
     margin-bottom: 10px; /* Adiciona espaçamento apenas entre os botões */
 }
 
-button:hover {
+.conteudo button:not(.status-btn):hover {
     background: #22213e;
 }
 
@@ -217,3 +218,22 @@ input:focus, select:focus, textarea:focus {
     border-radius: 5px;
     box-sizing: border-box; /* Evita que padding aumente o tamanho total */
 }
+
+.status-btn {
+    all: unset;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+}
+.status-cell{
+    min-width: 160px;
+}
+.processando { background-color: rgb(196, 101, 0); color: white; }
+.transito { background-color: rgb(33, 24, 212); color: white; }
+.entregue { background-color: rgb(0, 159, 0); color: white; }
+.troca { background-color: #5900ff; color: white; }
+.aprovado { background-color: rgb(11, 184, 115); color: white; }
+.reprovado { background-color: rgb(211, 0, 0); color: white; }

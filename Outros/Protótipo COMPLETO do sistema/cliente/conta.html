@@ -243,7 +243,6 @@
                     <thead>
                         <tr>
                             <th>Data</th>
-                            <th>Cliente</th>
                             <th>Livro</th>
                             <th>Quantidade</th>
                             <th>Valor</th>
@@ -255,43 +254,49 @@
                     <tbody>
                         <tr>
                             <td>2025-02-21</td>
-                            <td>João Silva</td>
                             <td>O Senhor dos Anéis</td>
                             <td>1</td>
                             <td>R$ 150,00</td>
                             <td>Cartão de Crédito</td>
-                            <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
+                            <td class="status-cell"><span class="status-btn aprovado">Aprovado</span></td>
                             <td>
-                                <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
-                                <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
                             </td>
                         </tr>
                         <tr>
                             <td>2025-02-20</td>
-                            <td>Maria Oliveira</td>
                             <td>1984</td>
                             <td>2</td>
                             <td>R$ 250,00</td>
                             <td>Cupom</td>
                             <td class="status-cell"><span class="status-btn transito">Em Transporte</span></td>
                             <td>
-                                <button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>
                             </td>
                         </tr>
                         <tr>
                             <td>2025-02-19</td>
-                            <td>Lucas Souza</td>
                             <td>Dom Quixote</td>
                             <td>1</td>
                             <td>R$ 75,00</td>
                             <td>Cartão de Crédito</td>
-                            <td class="status-cell"><span class="status-btn troca">Em Troca</span></td>
+                            <td class="status-cell"><span class="status-btn entregue">Entregue</span></td>
                             <td>
-                                <button class="status-btn processando" onclick="confirmarAcao(this, 'Trocado', true)">Autorizar Troca</button>
+                                <button class="status-btn troca" onclick="confirmarAcao(this, 'Em Troca')">Solicitar Troca</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <!-- Modal de Confirmação -->
+            <div id="modalConfirmacao" class="modal">
+                <div class="modal-content">
+                    <h2>Confirmar Ação</h2>
+                    <p>Deseja realmente solicitar a Troca desse produto?</p>
+                    <div id="checkboxContainer" style="display: none;">
+                    </div>
+                    </br>
+                    <button id="confirmarBtn">Confirmar</button>
+                    <button onclick="fecharModal()">Cancelar</button>
+                </div>
             </div>
         </section>
     </div>
@@ -338,6 +343,66 @@
                 });
             });
         });
+
+        let botaoClicado;
+        let novoStatus;
+        let precisaCheckbox = false;
+
+        function confirmarAcao(botao, status) {
+            botaoClicado = botao;
+            novoStatus = status;
+
+            document.getElementById("modalConfirmacao").style.display = "flex";
+        }
+
+        function fecharModal() {
+            document.getElementById("modalConfirmacao").style.display = "none";
+        }
+
+        document.getElementById("confirmarBtn").addEventListener("click", function() {
+            alterarStatus(botaoClicado, novoStatus);
+            fecharModal();
+        });
+
+        function alterarStatus(botao, status) {
+            let row = botao.closest("tr");
+            let statusCell = row.querySelector(".status-cell");
+            let actionsCell = botao.closest("td");
+
+            if (!statusCell || !actionsCell) return;
+
+            statusCell.innerHTML = `<span class="status-btn ${getClass(status)}">${status}</span>`;
+            actionsCell.innerHTML = novoBotao(status);
+        }
+
+        function novoBotao(status) {
+            switch (status) {
+                case "Aprovada":
+                    return `<button class="status-btn transito" onclick="confirmarAcao(this, 'Em Transporte')">Despachar</button>`;
+                case "Reprovada":
+                    return "";
+                case "Em Transporte":
+                    return `<button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>`;
+                case "Entregue":
+                    return `<span class="status-btn finalizado">Finalizado</span>`;
+                case "Trocado":
+                    return `<span class="status-btn troca-autorizada">Troca Autorizada</span>`;
+                default:
+                    return "";
+            }
+        }
+
+        function getClass(status) {
+            switch (status) {
+                case "Em Processamento": return "processando";
+                case "Aprovada": return "aprovado";
+                case "Reprovada": return "reprovado";
+                case "Em Transporte": return "transito";
+                case "Entregue": return "entregue";
+                case "Em Troca": return "troca";
+                default: return "";
+            }
+        }
     </script>
 
 </body>
