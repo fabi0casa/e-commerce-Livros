@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../icon.png">
+    <title>Livraria</title>
+    <link rel="stylesheet" href="css/livraria.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body>
+    <script src="header.js"></script>
+    
+    <script src="chatbot.js"></script>
+
+    <button class="chatbot-button" onclick="toggleChatbot()">Chatbot</button>
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">Assistente Virtual</div>
+        <div class="chatbot-messages" id="chatbot-messages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input" placeholder="Digite uma mensagem...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+</body>
+</html>
