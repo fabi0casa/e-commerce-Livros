@@ -234,7 +234,7 @@ header {
 }
 
 .notification-badge {
-    position: fixed;
+    position: absolute;
     margin-right: 15px;
     margin-bottom: 25px;
     background: rgb(207, 0, 0);
@@ -250,7 +250,7 @@ header {
 }
 
 .cart-badge {
-    position: fixed;
+    position: absolute;
     margin-right: 15px;
     margin-bottom: 25px;
     background: rgb(29, 75, 243);

@@ -1,0 +1,131 @@
+/* Estilização da tela de anúncio */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.anuncio-container {
+    display: flex;
+    width: 70%;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.imagem-produto img {
+    width: 500px;
+    border-radius: 10px;
+    background-size: contain;
+    border: 2px solid #000000;
+}
+
+.detalhes-produto {
+    margin-left: 20px;
+    flex: 1;
+}
+
+.detalhes-produto h1 {
+    margin-top: 0;
+    font-size: 34px;
+}
+
+.detalhes-produto h6 {
+    margin-top: 20px;
+    color: #0000238c;
+}
+
+.detalhes-produto p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.preco {
+    font-size: 30px;
+    font-weight: bold;
+    color: #000229;
+}
+
+.acoes-produto {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.acoes-produto label {
+    margin-right: 10px;
+}
+
+input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.btn-comprar {
+    background-color: #28a745;
+    color: white;
+    margin-right: 10px;
+}
+
+.btn-comprar:hover {
+    background-color: #218838;
+}
+
+.btn-carrinho {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-carrinho:hover {
+    background-color: #0056b3;
+}
+
+.sinopse {
+    margin-top: 20px;
+}
+
+.sinopse h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .anuncio-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .imagem-produto img {
+        max-width: 100%;
+    }
+
+    .detalhes-produto {
+        margin-left: 0;
+    }
+
+    .acoes-produto {
+        flex-direction: column;
+    }
+
+    .acoes-produto button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
