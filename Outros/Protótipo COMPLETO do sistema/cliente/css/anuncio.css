@@ -1,11 +1,4 @@
 /* Estilização da tela de anúncio */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
 .anuncio-container {
     display: flex;
     width: 70%;
@@ -31,11 +24,13 @@ body {
 .detalhes-produto h1 {
     margin-top: 0;
     font-size: 34px;
+    margin-bottom: 10px;
 }
 
 .detalhes-produto h6 {
     margin-top: 20px;
     color: #0000238c;
+    margin-bottom: 15px;
 }
 
 .detalhes-produto p {
@@ -47,53 +42,59 @@ body {
     font-size: 30px;
     font-weight: bold;
     color: #000229;
+    margin-bottom: 20px;
+
 }
 
 .acoes-produto {
-    margin-top: 10px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20%;
 }
 
 .acoes-produto label {
-    margin-right: 10px;
+    font-weight: bold;
 }
 
-input[type="number"] {
-    width: 50px;
-    padding: 5px;
-    margin-right: 10px;
+#acoes-produto input[type="number"] {
+    width: 10px;
+    padding: 8px;
+    font-size: 16px;
+    text-align: center;
     border: 1px solid #ccc;
     border-radius: 5px;
-    text-align: center;
 }
 
-button {
-    padding: 10px 15px;
+.btn-comprar,
+.btn-carrinho {
+    width: 40%;
+    padding: 15px;
+    font-size: 18px;
     border: none;
-    cursor: pointer;
     border-radius: 5px;
-    font-size: 16px;
+    cursor: pointer;
     transition: 0.3s;
 }
 
 .btn-comprar {
-    background-color: #28a745;
+    background: #5900ff;
     color: white;
-    margin-right: 10px;
+    border: 2px solid #000000;
 }
 
 .btn-comprar:hover {
-    background-color: #218838;
+    background: #5900ffa5;
 }
 
 .btn-carrinho {
-    background-color: #007bff;
-    color: white;
+    background: white;
+    color: black;
+    border: 2px solid #5900ff;
 }
 
 .btn-carrinho:hover {
-    background-color: #0056b3;
+    background: #5900ff52;
 }
 
 .sinopse {
