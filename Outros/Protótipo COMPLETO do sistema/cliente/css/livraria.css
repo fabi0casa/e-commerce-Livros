@@ -265,5 +265,13 @@ header {
     font-weight: bold;
 }
 
+a {
+    display: flex;
+    align-items: center; /* Garante o alinhamento do link */
+    text-decoration: none; /* Opcional: remove o sublinhado do link */
+    color: white; /* Garantir que o texto do link seja visível */
+    font-size: 20px; /* Ajuste o tamanho do texto conforme necessário */
+    margin-left: 10px; /* Se quiser um pequeno espaço entre o logo e o link */
+}
 
 
