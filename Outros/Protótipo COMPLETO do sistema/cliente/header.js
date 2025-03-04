@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="btn" onclick="window.location.href='carrinho.html'">
                     <img src="css/cart.png" alt="Carrinho">
                     <span>Carrinho</span>
-                    <span class="cart-badge">2</span>
+                    <span class="cart-badge">0</span>
                 </button>
                 <button class="btn" onclick="window.location.href='conta.html'">
                     <img src="css/account.png" alt="Conta">
