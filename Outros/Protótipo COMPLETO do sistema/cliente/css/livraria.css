@@ -175,3 +175,62 @@ header {
     font-weight: bold;
     color: #000000;
 }
+
+.notification-popup {
+    position: absolute;
+    top: 50px;
+    right: 40vh;
+    width: 280px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    display: none;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.notification-popup ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-popup li {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+    color: black;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    position: relative;
+}
+
+.notification-title {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.ok-btn {
+    background-color: #00142a;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 3px;
+    align-self: flex-end;
+    transition: background-color 0.3s ease;
+}
+
+.ok-btn:hover {
+    background-color: #00142ab6;
+}
+
+/* Mostrar popup quando ativado */
+.notification-popup.active {
+    display: block;
+}
+
+

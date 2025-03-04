@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="home.html" class="logo"></a>
             <input type="text" class="search-bar" placeholder="Buscar livros..." id="searchInput">
             <div class="header-buttons">
-                <button class="btn">
+                <button class="btn" id="notificationBtn">
                     <img src="css/notification.png" alt="Notificações">
                     <span>Notificações</span>
                 </button>
@@ -16,18 +16,60 @@ document.addEventListener("DOMContentLoaded", function() {
                     <img src="css/account.png" alt="Conta">
                     <span>Conta</span>
                 </button>
-            </div>            
+            </div>
+            <div class="notification-popup" id="notificationPopup">
+                <ul id="notificationList">
+                    <li>
+                        <div class="notification-title">⚠️ Carrinho</div>
+                        <span>Seus itens no carrinho foram removidos por ultrapassarem o limite de tempo</span>
+                        <button class="ok-btn">OK</button>
+                    </li>
+                    <li>
+                        <div class="notification-title">✅ Troca</div>
+                        <span>A troca do seu pedido #1850 foi autorizada!</span>
+                        <button class="ok-btn">OK</button>
+                    </li>
+                    <li>
+                        <div class="notification-title">⚠️ Carrinho</div>
+                        <span>Um item foi removido do seu carrinho devido a falta no estoque.</span>
+                        <button class="ok-btn">OK</button>
+                    </li>
+                </ul>
+            </div>
         </header>
     `;
     
     document.body.insertAdjacentHTML("afterbegin", header);
 
-    //função pra redirecionar no input de busca
+    // Redirecionamento ao pressionar Enter na barra de busca
     document.getElementById("searchInput").addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
             event.preventDefault();
-            let query = encodeURIComponent(this.value); // Evita erros com espaços ou caracteres especiais
+            let query = encodeURIComponent(this.value);
             window.location.href = "buscar.html?q=" + query;
         }
+    });
+
+    // Exibir/ocultar popup ao clicar no botão de notificações
+    const notificationBtn = document.getElementById("notificationBtn");
+    const notificationPopup = document.getElementById("notificationPopup");
+
+    notificationBtn.addEventListener("click", function(event) {
+        event.stopPropagation();
+        notificationPopup.classList.toggle("active");
+    });
+
+    // Fechar popup ao clicar fora dele
+    document.addEventListener("click", function(event) {
+        if (!notificationBtn.contains(event.target) && !notificationPopup.contains(event.target)) {
+            notificationPopup.classList.remove("active");
+        }
+    });
+
+    // Remover notificações individualmente ao clicar no "OK"
+    document.querySelectorAll(".ok-btn").forEach(button => {
+        button.addEventListener("click", function() {
+            this.parentElement.remove();
+        });
     });
 });
