@@ -1,6 +1,7 @@
 /* Estilização da tela de anúncio */
 .anuncio-container {
     display: flex;
+    flex-direction: column;
     width: 70%;
     margin: 50px auto;
     background: #fff;
@@ -9,14 +10,28 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.produto-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espaço entre a imagem e os detalhes do produto */
+    width: 100%;
+    max-width: 900px;
+}
+
 .imagem-produto img {
     width: 500px;
+    height: auto;
     border-radius: 10px;
     background-size: contain;
     border: 2px solid #000000;
 }
 
 .detalhes-produto {
+    margin-left: 20px;
+    flex: 1;
+}
+
+.detalhes-produto-adicionais {
     margin-left: 20px;
     flex: 1;
 }
@@ -50,15 +65,15 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 20%;
+    margin-top: 170px;
 }
 
 .acoes-produto label {
     font-weight: bold;
 }
 
-#acoes-produto input[type="number"] {
-    width: 10px;
+input[type="number"] {
+    width: 40px;
     padding: 8px;
     font-size: 16px;
     text-align: center;
@@ -68,7 +83,7 @@
 
 .btn-comprar,
 .btn-carrinho {
-    width: 40%;
+    width: 300px;
     padding: 15px;
     font-size: 18px;
     border: none;
@@ -129,4 +144,19 @@
         width: 100%;
         margin-top: 10px;
     }
+}
+
+.detalhes-adicionais {
+    width: 100%;
+    max-width: 300px;
+    padding: 20px;
+    background: #f8f8f8;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.detalhes-adicionais p {
+    margin: 5px 0;
+    font-size: 16px;
 }
