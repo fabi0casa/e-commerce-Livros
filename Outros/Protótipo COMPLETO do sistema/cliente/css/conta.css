@@ -1,13 +1,7 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-}
 
 .container {
     display: flex;
-    max-width: 1000px;
+    width: 95%;
     margin: 30px auto;
     background: white;
     border-radius: 10px;
@@ -17,7 +11,7 @@ body {
 
 .menu {
     width: 250px;
-    background: #333;
+    background: #010012;
     color: white;
     padding: 20px;
     display: flex;
@@ -36,7 +30,7 @@ body {
 }
 
 .menu button:hover {
-    background: #444;
+    background: #22213e;
 }
 
 .conteudo {
@@ -85,14 +79,20 @@ input, button {
 }
 
 button {
-    background: #28a745;
+    background-color: #010012;
     color: white;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    padding: 10px 20px;
     cursor: pointer;
+    font-size: 15px;
     transition: 0.3s;
+    display: block; /* Garante que os botões fiquem um abaixo do outro */
+    margin-bottom: 10px; /* Adiciona espaçamento apenas entre os botões */
 }
 
 button:hover {
-    background: #218838;
+    background: #22213e;
 }
 
 .modal {
@@ -181,4 +181,39 @@ button:hover {
     overflow: hidden;
     border-left: 2px solid #ddd;
     margin-bottom: 10px;
+}
+
+/* Estilização dos inputs */
+.formulario input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 40px; /* Mantém todos com a mesma altura */
+    box-sizing: border-box;
+}
+
+/* Ajustando textarea */
+textarea {
+    resize: none;
+    height: 60px;
+}
+
+/* Efeito ao focar nos campos */
+input:focus, select:focus, textarea:focus {
+    border-color: #1e1e2f;
+    outline: none;
+    box-shadow: 0 0 5px rgba(30, 30, 47, 0.3);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 40px; /* Mantém todos com a mesma altura */
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Evita que padding aumente o tamanho total */
 }
