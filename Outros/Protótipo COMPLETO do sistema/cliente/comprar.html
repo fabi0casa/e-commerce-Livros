@@ -41,11 +41,11 @@
         </div>
 
         <div class="cart-summary">
+            <button class="coupon-btn" onclick="openModal('couponModal')">Usar Cupom</button>
             <h4><span>R$ 59,90</span></h4>
             <div><h4>+</h4></div>
             <div class="frete"><h4><span>R$ 10,80</span> - Frete</h4></div>
-            
-            <button class="coupon-btn" onclick="openModal('couponModal')">Usar Cupom</button>
+            <div class="cupom"></div>
         
             <div class="sumario">
                 <h4>Total: <span id="total-compra">R$ 61,70</span></h4>
@@ -66,7 +66,7 @@
                 <button onclick="aplicarCupom()">Aplicar</button>
             </div>
         </div>
-        
+
         <script src="js/comprar.js"></script>        
 </body>
 </html>

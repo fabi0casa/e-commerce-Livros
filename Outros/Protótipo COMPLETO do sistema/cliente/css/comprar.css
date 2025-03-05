@@ -91,6 +91,11 @@ h4 {
     color: rgb(7, 158, 7);
 }
 
+.cupom {
+    font-style: italic;
+    color: rgb(0, 81, 3);
+}
+
 /* Modal */
 .modal {
     display: none;
