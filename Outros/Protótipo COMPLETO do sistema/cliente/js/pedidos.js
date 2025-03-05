@@ -74,17 +74,23 @@ document.addEventListener("DOMContentLoaded", function() {
         fecharModal();
     });
 
-    function checkZoom() {
-        if (window.devicePixelRatio >= 1.75) {
-            document.getElementById("myTable").classList.add("zoomed");
+    function checkZoomAndSize() {
+        let table = document.getElementById("myTable");
+        
+        // Condições para reduzir a fonte
+        let isZoomed = window.devicePixelRatio >= 1.75;
+        let isSmallScreen = window.innerWidth <= 1100; // Ajuste conforme necessário
+
+        if (isZoomed || isSmallScreen) {
+            table.classList.add("zoomed");
         } else {
-            document.getElementById("myTable").classList.remove("zoomed");
+            table.classList.remove("zoomed");
         }
     }
 
-    // Checa o zoom ao carregar e quando a tela redimensiona
-    window.addEventListener("load", checkZoom);
-    window.addEventListener("resize", checkZoom);
+    // Checa ao carregar e quando a tela redimensiona
+    window.addEventListener("load", checkZoomAndSize);
+    window.addEventListener("resize", checkZoomAndSize);
     
 });
 
