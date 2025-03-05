@@ -69,9 +69,9 @@ h4 {
 }
 
 .checkout-btn {
-    background-color: green;
+    background-color: #5900ff;
     color: white;
-    border: 2px solid #000000;
+    border: 1px solid #000000;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
@@ -79,7 +79,7 @@ h4 {
     transition: 0.5s;
 }
 .checkout-btn:hover{
-    background-color: #5900ff;
+    background-color: #5900ffa1;
 }
 
 .sumario h4 {
@@ -96,6 +96,12 @@ h4 {
     color: rgb(0, 81, 3);
 }
 
+.coupon-btn{
+    background-color: #5900ff0d;
+    color: black;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
 /* Modal */
 .modal {
     display: none;
@@ -110,7 +116,7 @@ h4 {
 
 .modal-content {
     background-color: white;
-    margin: 10% auto;
+    margin: 15% auto;
     padding: 20px;
     width: 50%;
     border-radius: 8px;
