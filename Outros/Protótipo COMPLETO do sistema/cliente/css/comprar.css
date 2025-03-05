@@ -55,6 +55,19 @@ h4 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.cart-summary label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.cart-summary select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+}
+
 .checkout-btn {
     background-color: green;
     color: white;
@@ -76,4 +89,31 @@ h4 {
 .frete {
     font-style: italic;
     color: rgb(7, 158, 7);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    width: 50%;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
 }

@@ -7,6 +7,7 @@
     <title>Pagamento</title>
     <link rel="stylesheet" href="css/livraria.css">
     <link rel="stylesheet" href="css/comprar.css">
+    <link rel="stylesheet" href="css/conta.css">
 </head>
 <body>
     <script src="js/header.js"></script>
@@ -25,12 +26,47 @@
         </section>
 
         <div class="cart-summary">
-            <h4><span>R$ 59,90</span>
-            <div><h4>+</h4></div>
-            <div class="frete"><h4><span>R$ 10,80</span> - Frete</br></div>
-            <div class="sumario"><h4>Total: <span>R$ 61,70</span></h4></div>
+            <label>Selecione o Endereço de Entrega</label>
+            <select id="endereco" required>
+                <option value="">Selecione</option>
+                <option>Av. Teste, 458 - Rio de Janeiro RJ</option>
+            </select>
 
+            <label>Selecione a Forma de Pagamento</label>
+            <select id="formaPagamento" required>
+                <option value="">Selecione</option>
+                <option>Cartão **** **** **** 1234</option>
+                <option>Cartão **** **** **** 5678</option>
+            </select>
+        </div>
+
+        <div class="cart-summary">
+            <h4><span>R$ 59,90</span></h4>
+            <div><h4>+</h4></div>
+            <div class="frete"><h4><span>R$ 10,80</span> - Frete</h4></div>
+            
+            <button class="coupon-btn" onclick="openModal('couponModal')">Usar Cupom</button>
+        
+            <div class="sumario">
+                <h4>Total: <span id="total-compra">R$ 61,70</span></h4>
+            </div>
+        
             <button class="checkout-btn" onclick="window.location.href='conta.html'">Finalizar Compra</button>
         </div>
+        
+        <!-- Modal de Cupons -->
+        <div id="couponModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('couponModal')">&times;</span>
+                <h2>Selecione um Cupom</h2>
+                <select id="cupomSelect">
+                    <option value="20">Cupom de R$ 20</option>
+                    <option value="50">Cupom de R$ 50</option>
+                </select>
+                <button onclick="aplicarCupom()">Aplicar</button>
+            </div>
+        </div>
+        
+        <script src="js/comprar.js"></script>        
 </body>
 </html>
