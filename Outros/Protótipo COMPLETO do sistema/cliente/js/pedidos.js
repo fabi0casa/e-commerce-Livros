@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const contaPedidos = `
             <div id="pedidos" class="secao">
                 <h2>Meus Pedidos</h2>
-                <table>
+                <table id="myTable">
                     <thead>
                         <tr>
                             <th>Data</th>
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <th>Quantidade</th>
                             <th>Valor</th>
                             <th>Forma de Pagamento</th>
+                            <th>Endereço</th>
                             <th>Status da Compra</th>
                             <th>Ações</th>
                         </tr>
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <td>1</td>
                             <td>R$ 150,00</td>
                             <td>Cartão de Crédito</td>
+                            <td>Rua Exemplo, 123 - São Paulo, SP</td>
                             <td class="status-cell"><span class="status-btn aprovado">Aprovado</span></td>
                             <td>
                             </td>
@@ -31,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <td>2</td>
                             <td>R$ 250,00</td>
                             <td>Cupom</td>
+                            <td>Av. Teste, 456 - Rio de Janeiro RJ</td>
                             <td class="status-cell"><span class="status-btn transito">Em Transporte</span></td>
                             <td>
                             </td>
@@ -41,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <td>1</td>
                             <td>R$ 75,00</td>
                             <td>Cartão de Crédito</td>
+                            <td>Av. Teste, 458 - Rio de Janeiro RJ</td>
                             <td class="status-cell"><span class="status-btn entregue">Entregue</span></td>
                             <td>
                                 <button class="status-btn troca" onclick="confirmarAcao(this, 'Em Troca')">Solicitar Troca</button>
@@ -69,6 +73,18 @@ document.addEventListener("DOMContentLoaded", function() {
         alterarStatus(botaoClicado, novoStatus);
         fecharModal();
     });
+
+    function checkZoom() {
+        if (window.devicePixelRatio >= 1.75) {
+            document.getElementById("myTable").classList.add("zoomed");
+        } else {
+            document.getElementById("myTable").classList.remove("zoomed");
+        }
+    }
+
+    // Checa o zoom ao carregar e quando a tela redimensiona
+    window.addEventListener("load", checkZoom);
+    window.addEventListener("resize", checkZoom);
     
 });
 
