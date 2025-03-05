@@ -23,17 +23,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 <ul id="notificationList">
                     <li>
                         <div class="notification-title">⚠️ Carrinho</div>
-                        <span>Seus itens no carrinho foram removidos por ultrapassarem o limite de tempo</span>
+                        <span>O produto 'Senhor dos Anéis' no seu carrinho foi removido por ultrapassar o limite de tempo de 5 dias</span>
                         <button class="ok-btn">OK</button>
                     </li>
                     <li>
                         <div class="notification-title">✅ Troca</div>
-                        <span>A troca do seu pedido #1850 foi autorizada!</span>
+                        <span>A troca do seu pedido (1x Dom Quixote) foi autorizada!</span>
                         <button class="ok-btn">OK</button>
                     </li>
                     <li>
                         <div class="notification-title">⚠️ Carrinho</div>
-                        <span>Um item foi removido do seu carrinho devido à falta no estoque.</span>
+                        <span>O Produto 'Diário de um Banana 7' foi removido do seu carrinho devido à falta no estoque.</span>
                         <button class="ok-btn">OK</button>
                     </li>
                 </ul>
