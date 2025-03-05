@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../icon.png">
+    <title>Pagamento</title>
+    <link rel="stylesheet" href="css/livraria.css">
+    <link rel="stylesheet" href="css/comprar.css">
+</head>
+<body>
+    <script src="js/header.js"></script>
+    <main>
+        <h1>Concluir Compra</h1>
+        
+        <section class="cart-container">
+            <!-- Itens do carrinho -->
+            <div class="cart-item">
+                <div class="cart-info">
+                    <h3>Os Elementos - Euclides</h3>
+                    <p class="price">R$ 59,90</p>
+                </div>
+                <img src="img/Os Elementos.png" alt="Livro 2">
+            </div>
+        </section>
+
+        <div class="cart-summary">
+            <h4><span>R$ 59,90</span>
+            <div><h4>+</h4></div>
+            <div class="frete"><h4><span>R$ 10,80</span> - Frete</br></div>
+            <div class="sumario"><h4>Total: <span>R$ 61,70</span></h4></div>
+
+            <button class="checkout-btn" onclick="window.location.href='conta.html'">Finalizar Compra</button>
+        </div>
+</body>
+</html>
