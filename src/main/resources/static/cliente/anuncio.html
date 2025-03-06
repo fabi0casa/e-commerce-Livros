@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../icon.png">
+    <title>Os Elementos</title>
+    <link rel="stylesheet" href="css/livraria.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="css/anuncio.css">
+</head>
+<body>
+    <script src="js/header.js"></script>
+
+    <div class="anuncio-container">
+        <div class="produto-container">
+            <div class="imagem-produto">
+                <img src="img/Os Elementos.png" alt="Capa do livro Os Elementos">
+            </div>
+            <div class="detalhes-produto">
+                <h6>12 unidades em Estoque</h6>
+                <h1>Os Elementos</h1>
+                <div class="preco">R$ 89,90</div>
+    
+                <div class="acoes-produto">
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" id="quantidade" name="quantidade" value="1" min="1" max="12">
+                    <button class="btn-comprar" onclick="window.location.href='comprar.html'">Comprar</button>
+                    <button class="btn-carrinho" onclick="window.location.href='carrinho.html'">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+        </div>
+        <div class="detalhes-produto-adicionais">
+            <div class="sinopse">
+                <h2>Sinopse</h2>
+                <p>"Os Elementos" é uma das obras matemáticas mais influentes da história. Escrito por Euclides por volta de 300 a.C., o livro compila e sistematiza conhecimentos sobre geometria e teoria dos números, estabelecendo a base da matemática moderna.</p>
+            </div>
+            <div class="detalhes-adicionais">
+                <p><strong>Autor:</strong> Euclides</p>
+                <p><strong>Editora:</strong> Clássicos da Matemática</p>
+                <p><strong>Categoria:</strong> Matemática, Geometria</p>
+                <p><strong>Ano de Publicação:</strong> 300 a.C.</p>
+                <p><strong>Edição:</strong> 1ª</p>
+                <p><strong>ISBN:</strong> 978-85-9999-000-0</p>
+                <p><strong>Número de Páginas:</strong> 465</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/chatbot.js"></script>
+
+    <button class="chatbot-button" onclick="toggleChatbot()">Chatbot</button>
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">Assistente Virtual</div>
+        <div class="chatbot-messages" id="chatbot-messages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input" placeholder="Digite uma mensagem...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+</body>
+</html>

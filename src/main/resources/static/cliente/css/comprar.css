@@ -1,0 +1,130 @@
+h1 {
+    text-align: center;
+    padding: 20px;
+}
+
+h4 {
+    text-align: left;
+}
+
+.cart-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    gap: 15px;
+    padding: 15px 0;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-left: 15px;
+}
+
+.cart-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+.cart-summary {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cart-summary label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.cart-summary select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+}
+
+.checkout-btn {
+    background-color: #5900ff;
+    color: white;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.5s;
+}
+.checkout-btn:hover{
+    background-color: #5900ffa1;
+}
+
+.sumario h4 {
+    border-top: 1px solid #000022;
+}
+
+.frete {
+    font-style: italic;
+    color: rgb(7, 158, 7);
+}
+
+.cupom {
+    font-style: italic;
+    color: rgb(1, 0, 31);
+}
+
+.coupon-btn{
+    background-color: #5900ff0d;
+    color: black;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    width: 50%;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}

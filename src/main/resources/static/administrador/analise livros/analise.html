@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../icon.png">
+    <title>Análise</title>
+    <link rel="stylesheet" href="../css/menuAdmin.css">
+    <link rel="stylesheet" href="../css/tabelaTransacoes.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <div class="container">
+        <h2>Análise de Venda dos Livros</h2>
+
+        <div class="selecao-produtos-categorias">
+            <div class="selecao-produtos">
+                <label>Selecione os Livros:</label>
+                <div class="lista-checkbox">
+                    <label><input type="checkbox" value="livro1"> Os Elementos de Euclides</label>
+                    <label><input type="checkbox" value="livro2"> Herobrine a Lenda</label>
+                    <label><input type="checkbox" value="livro3"> A Droga da Obediência</label>
+                    <label><input type="checkbox" value="livro4"> Diário de um Banana 9</label>
+                </div>
+            </div>
+            <div class="selecao-categorias">
+                <label>Selecione as Categorias:</label>
+                <div class="lista-checkbox">
+                    <label><input type="checkbox" value="categoria1"> Fantasia</label>
+                    <label><input type="checkbox" value="categoria2"> Ficção Científica</label>
+                    <label><input type="checkbox" value="categoria3"> História</label>
+                    <label><input type="checkbox" value="categoria4"> Terror</label>
+                </div>
+            </div>
+        </div>        
+
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="startDate">Do dia:</label>
+                <input type="date" id="startDate">
+            </div>
+            <div class="filter-group">
+                <label for="endDate">Até o dia:</label>
+                <input type="date" id="endDate">
+            </div>
+            <button onclick="gerarGrafico()">Pesquisar</button>
+        </div>
+
+        <canvas id="graficoVendas"></canvas>
+    </div>
+
+    <script>
+        //gerando um gráfico de exemplo
+        function gerarGrafico() {
+            const ctx = document.getElementById('graficoVendas').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["01/03", "02/03", "03/03", "04/03", "05/03"],
+                    datasets: [
+                        {
+                            label: "Livro A",
+                            data: [10, 20, 15, 30, 25],
+                            borderColor: "orange",
+                            fill: false
+                        },
+                        {
+                            label: "Livro B",
+                            data: [5, 15, 10, 20, 30],
+                            borderColor: "purple",
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
