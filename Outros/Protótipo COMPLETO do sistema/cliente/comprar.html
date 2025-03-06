@@ -10,10 +10,12 @@
     <link rel="stylesheet" href="css/conta.css">
 </head>
 <body>
-    <script src="js/header.js"></script>
+    <header style="display: flex; justify-content: center;">
+      <img src="css/logo.png" style="height: 30px; margin-top: 0.5%; margin-bottom: 0.5%;">
+    </header>
     <main>
         <h1>Pagamento</h1>
-        
+
         <section class="cart-container">
             <!-- Itens do carrinho -->
             <div class="cart-item">
@@ -64,14 +66,14 @@
             <div><h4>+</h4></div>
             <div class="frete"><h4><span>R$ 10,80</span> - Frete</h4></div>
             <div class="cupom"></div>
-        
+
             <div class="sumario">
                 <h4>Total: <span id="total-compra">R$ 61,70</span></h4>
             </div>
-        
+
             <button class="checkout-btn" onclick="window.location.href='conta.html'">Finalizar Compra</button>
         </div>
-        
+
         <!-- Modal de Cupons -->
         <div id="couponModal" class="modal">
             <div class="modal-content">
@@ -86,6 +88,6 @@
             </div>
         </div>
 
-        <script src="js/comprar.js"></script>        
+        <script src="js/comprar.js"></script>
 </body>
 </html>
