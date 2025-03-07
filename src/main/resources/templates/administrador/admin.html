@@ -10,14 +10,15 @@
 <body>
     <header>Página do Administrador</header>
     <div class="buttons">
-        <a href="gerenciar clientes/gerenciarClientes.html"><button>Gerenciar Clientes</button></a>
-        <a href="gerenciamento vendas/gerenciarVendas.html"><button>Gerenciamento de Vendas Eletrônicas</button></a>
-        <a href="controle estoque/gerenciarEstoque.html"><button>Controle de Estoque</button></a>
-        <a href="analise livros/analise.html"><button>Análise dos Produtos</button></a>
-        <a href="logs/logs.html"><button>Logs do sistema</button></a>
+        <a th:href="@{/administrador/gerenciar clientes/gerenciarClientes}"><button>Gerenciar Clientes</button></a>
+        <a th:href="@{/administrador/gerenciamento vendas/gerenciarVendas}"><button>Gerenciamento de Vendas Eletrônicas</button></a>
+        <a th:href="@{/administrador/controle estoque/gerenciarEstoque}"><button>Controle de Estoque</button></a>
+        <a th:href="@{/administrador/analise livros/analise}"><button>Análise dos Produtos</button></a>
+        <a th:href="@{/administrador/logs/logs}"><button>Logs do sistema</button></a>
         <div class="voltar">
-            <a href="../index.html"><button>Voltar</button></a>
+            <a th:href="@{/}"><button>Voltar</button></a>
         </div>
+        
     </div>
 </body>
 </html>
