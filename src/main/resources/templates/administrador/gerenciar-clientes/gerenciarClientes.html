@@ -12,7 +12,7 @@
 			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
 			Página do Administrador
 	</header>
-    <a href ="@{/administrador/gerenciar-clientes/cadastrarCliente}"><button class="new-client">Cadastrar Novo Cliente</button></a>
+    <a th:href ="@{/administrador/gerenciar-clientes/cadastrarCliente}"><button class="new-client">Cadastrar Novo Cliente</button></a>
     <div class="container">
         <h2>Gerenciamento de Clientes</h2>
         <div class="filters">
@@ -158,10 +158,10 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('editionModal')">&times;</span>
             <h2>Qual operação de edição deseja realizar?</h2>
-            <a href="@{/administrador/gerenciar-clientes/editarCliente}"><button>Editar Dados do Cliente</button></a>
-            <a href="@{/administrador/gerenciar-clientes/alterarSenha}"><button>Alterar a Senha do Cliente</button></a>
-            <a href="@{/administrador/gerenciar-clientes/listarEndereco}"><button>Editar Endereços</button></a>
-            <a href="@{/administrador/gerenciar-clientes/cadastrarCartao}"><button>Cadastrar Novo Cartão</button></a>
+            <a th:href="@{/administrador/gerenciar-clientes/editarCliente}"><button>Editar Dados do Cliente</button></a>
+            <a th:href="@{/administrador/gerenciar-clientes/alterarSenha}"><button>Alterar a Senha do Cliente</button></a>
+            <a th:href="@{/administrador/gerenciar-clientes/listarEndereco}"><button>Editar Endereços</button></a>
+            <a th:href="@{/administrador/gerenciar-clientes/cadastrarCartao}"><button>Cadastrar Novo Cartão</button></a>
         </div>
     </div>
 
@@ -190,7 +190,7 @@
         });
 
         function redirecioarAoTransacoes(){
-            window.location.href = "@{/administrador/gerenciar-clientes/transacoes}";
+            window.location.href = "/administrador/gerenciar-clientes/transacoes";
         }
     </script>
 </body>

@@ -1,21 +1,21 @@
 document.addEventListener("DOMContentLoaded", function() {
     const header = `
         <header>
-            <a href="home.html" class="logo"></a>
+						<a th:href="@{/cliente/home}" class="logo"></a>
             <input type="text" class="search-bar" placeholder="Buscar livros..." id="searchInput">
             <div class="header-buttons">
                 <button class="btn" id="notificationBtn">
-                    <img src="css/notification.png" alt="Notificações">
+										<img src="/img//notification.png" alt="Notificações">
                     <span>Notificações</span>
                     <span class="notification-badge" id="notificationBadge">3</span>
                 </button>
                 <button class="btn" onclick="window.location.href='carrinho.html'">
-                    <img src="css/cart.png" alt="Carrinho">
+										<img src="/img//cart.png" alt="Carrinho">
                     <span>Carrinho</span>
                     <span class="cart-badge">2</span>
                 </button>
                 <button class="btn" onclick="window.location.href='conta.html'">
-                    <img src="css/account.png" alt="Conta">
+										<img src="/img//account.png" alt="Conta">
                     <span>Conta</span>
                 </button>
             </div>
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         </header>
     `;
-    
+
     document.body.insertAdjacentHTML("afterbegin", header);
 
     // Redirecionamento ao pressionar Enter na barra de busca

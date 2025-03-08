@@ -15,18 +15,23 @@
     <div class="anuncio-container">
         <div class="produto-container">
             <div class="imagem-produto">
-                <img src="img/Os Elementos.png" alt="Capa do livro Os Elementos">
+                <img src="/books//Os Elementos.png" alt="Capa do livro Os Elementos">
             </div>
             <div class="detalhes-produto">
                 <h6>12 unidades em Estoque</h6>
                 <h1>Os Elementos</h1>
                 <div class="preco">R$ 89,90</div>
-    
+
                 <div class="acoes-produto">
                     <label for="quantidade">Quantidade:</label>
                     <input type="number" id="quantidade" name="quantidade" value="1" min="1" max="12">
-                    <button class="btn-comprar" onclick="window.location.href='comprar.html'">Comprar</button>
-                    <button class="btn-carrinho" onclick="window.location.href='carrinho.html'">Adicionar ao Carrinho</button>
+										<form th:action="@{/cliente/comprar}" method="get">
+										    <button class="btn-comprar" type="submit">Comprar</button>
+										</form>
+
+										<form th:action="@{/cliente/carrinho}" method="get">
+										    <button class="btn-carrinho" type="submit">Adicionar ao Carrinho</button>
+										</form>
                 </div>
             </div>
         </div>
@@ -46,7 +51,7 @@
             </div>
         </div>
     </div>
-    
+
     <script src="js/chatbot.js"></script>
 
     <button class="chatbot-button" onclick="toggleChatbot()">Chatbot</button>

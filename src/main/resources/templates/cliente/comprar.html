@@ -11,7 +11,7 @@
 </head>
 <body>
     <header style="display: flex; justify-content: center;">
-      <img src="css/logo.png" style="height: 30px; margin-top: 0.5%; margin-bottom: 0.5%;">
+      <img src="/img//logo.png" style="height: 30px; margin-top: 0.5%; margin-bottom: 0.5%;">
     </header>
     <main>
         <h1>Pagamento</h1>
@@ -23,7 +23,7 @@
                     <h3>Os Elementos - Euclides</h3>
                     <p class="price">R$ 59,90</p>
                 </div>
-                <img src="img/Os Elementos.png" alt="Livro 2">
+                <img src="/books//Os Elementos.png" alt="Livro 2">
             </div>
         </section>
 
@@ -71,7 +71,10 @@
                 <h4>Total: <span id="total-compra">R$ 61,70</span></h4>
             </div>
 
-            <button class="checkout-btn" onclick="window.location.href='conta.html'">Finalizar Compra</button>
+						<form th:action="@{/cliente/conta}" method="get">
+						    <button class="checkout-btn" type="submit">Finalizar Compra</button>
+						</form>
+
         </div>
 
         <!-- Modal de Cupons -->

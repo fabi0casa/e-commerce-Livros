@@ -32,7 +32,7 @@ header {
 }
 
 .logo {
-    background-image: url('logo.png');
+		background-image: url('/img//logo.png');
     background-size: contain;
     background-repeat: no-repeat;
     width: 150px;
@@ -102,7 +102,7 @@ header {
     position: relative;
 }
 
-.carousel-container { 
+.carousel-container {
     display: flex;
     transition: transform 0.5s ease-in-out;
 }
@@ -114,9 +114,9 @@ header {
     background-position: center;
 }
 
-.carousel-item:nth-child(1) { background-image: url('banner1.png'); }
-.carousel-item:nth-child(2) { background-image: url('banner2.png'); }
-.carousel-item:nth-child(3) { background-image: url('banner3.png'); }
+.carousel-item:nth-child(1) { background-image: url('/banners//banner1.png'); }
+.carousel-item:nth-child(2) { background-image: url('/banners//banner2.png'); }
+.carousel-item:nth-child(3) { background-image: url('/banners//banner3.png'); }
 
 
 .product-list {
@@ -162,7 +162,7 @@ header {
     background-color: #f8f8f8;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
+    justify-content: center;
 }
 
 .product-info h3 {
@@ -277,5 +277,3 @@ a {
     font-size: 20px; /* Ajuste o tamanho do texto conforme necessário */
     margin-left: 10px; /* Se quiser um pequeno espaço entre o logo e o link */
 }
-
-
