@@ -27,10 +27,10 @@
     </style>
 </head>
 <body>
-    <header>
-        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
-        Página do Administrador
-    </header>
+	<header>
+			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
+			Página do Administrador
+	</header>
     <a href ="novaEntradaEstoque.html"><button class="new-client">Nova Entrada no Estoque</button></a>
 
     <div class="container">
@@ -97,14 +97,14 @@
                 </tr>
             </tbody>
         </table>
-        
+
     </div>
 
     <script>
         function openModal(modalId) {
             document.getElementById(modalId).style.display = "flex";
         }
-    
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
         }

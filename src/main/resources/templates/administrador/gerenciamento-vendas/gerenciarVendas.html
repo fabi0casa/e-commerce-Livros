@@ -18,10 +18,10 @@
     </style>
 </head>
 <body>
-    <header>
-        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
-        Página do Administrador
-    </header>
+	<header>
+			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
+			Página do Administrador
+	</header>
     <div class="container">
         <h2>Gerenciamento de Vendas</h2>
         <div class="filter-container">
@@ -35,7 +35,7 @@
             </div>
             <button>Pesquisar</button>
         </div>
-    
+
         <table id="myTable">
             <thead>
                 <tr>
@@ -93,7 +93,7 @@
                 </tr>
             </tbody>
         </table>
-        
+
     </div>
 
     <!-- Modal de Confirmação -->
@@ -114,7 +114,7 @@
     <script>
         function checkZoomAndSize() {
             let table = document.getElementById("myTable");
-            
+
             // Condições para reduzir a fonte
             let isZoomed = window.devicePixelRatio >= 1.75;
             let isSmallScreen = window.innerWidth <= 1100; // Ajuste conforme necessário

@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../icon.png">
-    <title>Editar Endereço</title>
+    <title>Cadastrar Endereço</title>
     <link rel="stylesheet" href="../css/menuAdmin.css">
     <link rel="stylesheet" href="../css/formulario.css">
 </head>
 <body>
-    <header>
-        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
-        Página do Administrador
-    </header>
+	<header>
+			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
+			Página do Administrador
+	</header>
     <div class="container">
-        <h2>Atualização de Endereço</h2>
+        <h2>Novo Endereço para 'João Silva'</h2>
         <form id="cadastroEnderecoForm">
-            <h3>Edição de Endereço</h3>
+            <h3>Cadastro de novo Endereço</h3>
             <label>Tipo de Residência:</label>
             <select required>
                 <option value="">Selecione</option>
@@ -75,8 +75,8 @@
             </select>
 
             <h6>*O endereço precisa ser pelo menos uma dessas opções acima</h6>
-            
-            <button type="submit">Salvar Alterações</button>
+
+            <button type="submit">Cadastrar Endereço</button>
             <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
         </form>
     </div>
@@ -120,6 +120,6 @@
             }
         }
     </script>
-    
+
 </body>
 </html>

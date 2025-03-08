@@ -26,12 +26,12 @@
     </style>
 </head>
 <body>
-    <header>
-        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
-        Página do Administrador
-    </header>
-    <a href ="cadastrarEndereco.html"><button class="new-client">Cadastrar Novo Endereço</button></a>
-    <a href ="gerenciarClientes.html"><button class="botao-return">Voltar</button></a>
+	<header>
+			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
+			Página do Administrador
+	</header>
+    <a href ="@{/administrador/gerenciar-clientes/cadastrarEndereco}"><button class="new-client">Cadastrar Novo Endereço</button></a>
+    <a href ="@{/administrador/gerenciar-clientes/gerenciarClientes}"><button class="botao-return">Voltar</button></a>
     <div class="container">
         <h2>Gerenciamento de Endereços de 'João Silva'</h2>
 
@@ -59,7 +59,7 @@
 
     <script>
         function redirecionarEditarEndereco(){
-            window.location.href = "editarEndereco.html";
+            window.location.href = "@{/administrador/gerenciar-clientes/editarEndereco}";
         }
     </script>
 </body>

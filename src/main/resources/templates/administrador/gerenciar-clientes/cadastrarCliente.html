@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="../css/formulario.css">
 </head>
 <body>
-    <header>
-        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
-        Página do Administrador
-    </header>
+	<header>
+			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
+			Página do Administrador
+	</header>
     <div class="container">
         <h2>Cadastro de Cliente</h2>
         <form id="cadastroClienteForm">
@@ -58,7 +58,7 @@
             <div class="password-container">
                 <input type="password" id="senha" required>
                 <span class="toggle-password" onclick="togglePassword('senha', this)">
-                    <img src="../css/olhoaberto.png" alt="Mostrar senha">
+                    <img src="/img//olhoaberto.png" alt="Mostrar senha">
                 </span>
             </div>
 
@@ -66,7 +66,7 @@
             <div class="password-container">
                 <input type="password" id="confirmarSenha" required>
                 <span class="toggle-password" onclick="togglePassword('confirmarSenha', this)">
-                    <img src="../css/olhoaberto.png" alt="Mostrar senha">
+                    <img src="/img//olhoaberto.png" alt="Mostrar senha">
                 </span>
             </div>
 
@@ -141,13 +141,13 @@
         document.getElementById("cadastroClienteForm").addEventListener("submit", function(event) {
             var senha = document.getElementById("senha").value;
             var confirmarSenha = document.getElementById("confirmarSenha").value;
-    
+
             if (senha !== confirmarSenha) {
                 event.preventDefault(); // Impede o envio do formulário
                 document.getElementById("senhaModal").style.display = "flex"; // Exibe o modal
             }
         });
-    
+
         function fecharModalSenha() {
             document.getElementById("senhaModal").style.display = "none"; // Fecha o modal
         }
@@ -164,14 +164,14 @@
 
             if (input.type === "password") {
                 input.type = "text";
-                img.src = "../css/olhofechado.png"; // Ícone de "olho fechado"
+                img.src = "/img//olhofechado.png"; // Ícone de "olho fechado"
             } else {
                 input.type = "password";
-                img.src = "../css/olhoaberto.png"; // Ícone de "olho aberto"
+                img.src = "/img//olhoaberto.png"; // Ícone de "olho aberto"
             }
         }
 
     </script>
-    
+
 </body>
 </html>

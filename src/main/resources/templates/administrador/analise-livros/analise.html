@@ -10,10 +10,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
-        Página do Administrador
-    </header>
+	<header>
+			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
+			Página do Administrador
+	</header>
     <div class="container">
         <h2>Análise de Venda dos Livros</h2>
 
@@ -36,7 +36,7 @@
                     <label><input type="checkbox" value="categoria4"> Terror</label>
                 </div>
             </div>
-        </div>        
+        </div>
 
         <div class="filter-container">
             <div class="filter-group">
@@ -57,7 +57,7 @@
         //gerando um gráfico de exemplo
         function gerarGrafico() {
             const ctx = document.getElementById('graficoVendas').getContext('2d');
-            
+
             new Chart(ctx, {
                 type: 'line',
                 data: {
