@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Endereço</title>
+    <link rel="stylesheet" href="menuAdmin.css">
+    <link rel="stylesheet" href="formulario.css">
+</head>
+<body>
+    <header>
+        <a href="admin.html"><img src="home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <div class="container">
+        <h2>Novo Endereço para 'João Silva'</h2>
+        <form id="cadastroEnderecoForm">
+            <h3>Cadastro de novo Endereço</h3>
+            <label>Tipo de Residência:</label>
+            <select required>
+                <option value="">Selecione</option>
+                <option value="casa">Casa</option>
+                <option value="apartamento">Apartamento</option>
+                <option value="outro">Outro</option>
+            </select>
+
+            <label>Tipo de Logradouro:</label>
+            <input type="text" required placeholder="Ex: Rua, Avenida...">
+
+            <label>Logradouro:</label>
+            <input type="text" required>
+
+            <label>Número:</label>
+            <input type="text" required>
+
+            <label>Bairro:</label>
+            <input type="text" required>
+
+            <label>CEP:</label>
+            <input type="text" required placeholder="00000-000">
+
+            <label>Cidade:</label>
+            <input type="text" required>
+
+            <label>Estado:</label>
+            <input type="text" required>
+
+            <label>País:</label>
+            <input type="text" required value="Brasil">
+            
+            <label>Observação (Opcional):</label>
+            <textarea></textarea>
+
+            <h3>Tipos de Endereço</h3>
+            <label>Usar como Endereço de Residência?</label>
+            <select id="residencia" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Usar como Endereço de Entrega?</label>
+            <select id="entrega" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Usar como Endereço de Cobrança?</label>
+            <select id="cobranca" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <h6>*O endereço precisa ser pelo menos uma dessas opções acima</h6>
+
+            <button type="submit">Cadastrar Endereço</button>
+            <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
+        </form>
+    </div>
+
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2>Erro!</h2>
+            <p>Você deve selecionar "Sim" em pelo menos um tipo de endereço.</p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("cadastroEnderecoForm").addEventListener("submit", function (event) {
+            let residencia = document.getElementById("residencia").value;
+            let entrega = document.getElementById("entrega").value;
+            let cobranca = document.getElementById("cobranca").value;
+
+            // Verifica se pelo menos um campo tem "Sim"
+            if (residencia === "sim" || entrega === "sim" || cobranca === "sim") {
+
+            } else {
+                event.preventDefault();
+                abrirModal(); // Exibe o modal de erro
+            }
+        });
+
+        function abrirModal() {
+            document.getElementById("errorModal").style.display = "flex";
+        }
+
+        function fecharModal() {
+            document.getElementById("errorModal").style.display = "none";
+        }
+
+        function cancelarCadastro() {
+            if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
+                window.history.back(); // Volta para a página anterior
+            }
+        }
+    </script>
+    
+</body>
+</html>

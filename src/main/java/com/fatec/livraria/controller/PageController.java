@@ -1,5 +1,9 @@
 package com.fatec.livraria.controller;
 
+import java.util.List;
+import com.fatec.livraria.service.ClienteService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,12 +13,28 @@ import com.fatec.livraria.entity.Cliente;
 @Controller
 public class PageController {
 
+    private ClienteService clienteService;
+    
+    @Autowired
+    public PageController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
+    
+    @GetMapping("/administrador/gerenciar-clientes/gerenciarClientes")
+    public String listarClientes(Model model) {
+        List<Cliente> clientes = clienteService.listarTodos(); // Certifique-se de que este método retorna algo
+        System.out.println("Clientes carregados: " + (clientes != null ? clientes.size() : "null"));
+    
+        model.addAttribute("clientes", clientes);
+        return "administrador/gerenciar-clientes/gerenciarClientes"; // Certifique-se de que o nome do HTML está correto
+    }
+    
     @GetMapping("/administrador/gerenciar-clientes/cadastrarCliente")
     public String exibirFormularioCadastro(Model model) {
         model.addAttribute("cliente", new Cliente()); // Garante que o formulário tenha um objeto Cliente
         return "administrador/gerenciar-clientes/cadastrarCliente"; // Renderiza o template do formulário na mesma URL
     }
-
+    
     //listagem automatica das páginas
     @GetMapping("/{pagina:(?!api).*}") // Evita conflitos com APIs, se houver
     public String renderizarPagina(@PathVariable String pagina) {

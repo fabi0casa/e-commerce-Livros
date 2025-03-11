@@ -1,0 +1,153 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.container {
+    width: 80%;
+    margin: 80px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(16, 0, 78, 0.315);
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+th {
+    background-color: #000222;
+    color: rgb(255, 255, 255);
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: column; /* Faz com que os elementos fiquem um abaixo do outro */
+    align-items: center; /* Centraliza os itens na horizontal */
+    gap: 10px; /* Adiciona um espaçamento entre os elementos */
+    margin-bottom: 20px;
+}
+
+.filter-container label {
+    font-weight: bold;
+}
+
+.filter-container input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px; /* Define um tamanho padrão para os inputs */
+    text-align: center; /* Centraliza o texto dentro do input */
+}
+
+.filter-container button {
+    width: 220px; /* Mantém um tamanho uniforme */
+    background-color: #000222;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block;
+    text-align: center;
+}
+
+.filter-container button:hover {
+    transition: 0.2s;
+    background-color: #000222d2;
+}
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-weight: bold;
+    width: 75px; /* Define uma largura fixa para alinhar os textos */
+    text-align: right; /* Alinha o texto do label à direita */
+}
+
+.filter-group input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 120px;
+    text-align: center;
+}
+
+.status-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+}
+.status-cell{
+    min-width: 160px;
+}
+.processando { background-color: rgb(196, 101, 0); color: white; }
+.transito { background-color: rgb(33, 24, 212); color: white; }
+.entregue { background-color: rgb(0, 159, 0); color: white; }
+.troca { background-color: #5900ff; color: white; }
+.aprovado { background-color: rgb(11, 184, 115); color: white; }
+.reprovado { background-color: rgb(211, 0, 0); color: white; }
+
+.selecao-produtos-categorias {
+    display: flex;
+    gap: 20px; /* Espaço entre os grupos */
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.selecao-produtos-categorias label{
+    font-weight: bold;
+}
+
+.selecao-produtos, .selecao-categorias {
+    flex: 1; /* Ocupa espaço de forma equilibrada */
+    min-width: 250px; /* Evita que fiquem muito estreitos */
+}
+
+.lista-checkbox {
+    display: flex;
+    flex-direction: column;
+    max-height: 150px; /* Limita a altura */
+    overflow-y: auto; /* Ativa rolagem vertical caso tenha muitos itens */
+    max-width: 290px;
+    overflow-x: auto; /* Ativa rolagem horizontal caso os títulos sejam longos */
+    border: 1px solid #abafb1;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f6fbffcf;
+    white-space: nowrap; /* Impede quebra de linha */
+}
+
+.lista-checkbox::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.lista-checkbox::-webkit-scrollbar-thumb {
+    background: #000222;
+    border-radius: 20px;
+}
+.lista-checkbox::-webkit-scrollbar-track {
+    background: #00022225;
+}
+
+.lista-checkbox label{
+    font-weight: normal;
+    display: block; /* Faz com que cada checkbox fique numa linha separada */
+    white-space: nowrap; /* Mantém o texto em uma única linha */
+    overflow: visible; /* Impede que o texto ultrapasse os limites do contêiner */
+}
+

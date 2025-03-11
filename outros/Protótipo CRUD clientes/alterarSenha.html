@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Senha</title>
+    <link rel="stylesheet" href="menuAdmin.css">
+    <link rel="stylesheet" href="formulario.css">
+</head>
+<body>
+    <header>
+        <a href="admin.html"><img src="home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <div class="container">
+        <form id="cadastroClienteForm">
+            <h2>Alterar Senha de 'João Silva'</h2>
+            <h3>Trocar Senha</h3>
+            <label>Senha Atual:</label>
+            <div class="password-container">
+                <input type="password" id="senhaAtual" required>
+                <span class="toggle-password" onclick="togglePassword('senhaAtual', this)">
+                    <img src="olhoaberto.png" alt="Mostrar senha">
+                </span>
+            </div>
+            
+            <label>Nova Senha:</label>
+            <div class="password-container">
+                <input type="password" id="novaSenha" required>
+                <span class="toggle-password" onclick="togglePassword('novaSenha', this)">
+                    <img src="olhoaberto.png" alt="Mostrar senha">
+                </span>
+            </div>
+            
+            <label>Confirmar Nova Senha:</label>
+            <div class="password-container">
+                <input type="password" id="confirmarSenha" required>
+                <span class="toggle-password" onclick="togglePassword('confirmarSenha', this)">
+                    <img src="olhoaberto.png" alt="Mostrar senha">
+                </span>
+            </div>                      
+            <button type="submit">Alterar Senha</button>
+            <div class="botaoCancelar"><button type="submit" onclick="cancelarAlteracaoSenha()">Cancelar</button></div>
+        </form>
+    </div>
+    <!-- Modal de erro -->
+    <div id="senhaModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModalSenha()">&times;</span>
+            <h2>Erro!</h2>
+            <p>As senhas não coincidem. Tente novamente.</p>
+            <button onclick="fecharModalSenha()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("cadastroClienteForm").addEventListener("submit", function(event) {
+            var senha = document.getElementById("novaSenha").value;
+            var confirmarSenha = document.getElementById("confirmarSenha").value;
+    
+            if (senha !== confirmarSenha) {
+                event.preventDefault(); // Impede o envio do formulário
+                document.getElementById("senhaModal").style.display = "flex"; // Exibe o modal
+            }
+        });
+    
+        function fecharModalSenha() {
+            document.getElementById("senhaModal").style.display = "none"; // Fecha o modal
+        }
+
+        function cancelarAlteracaoSenha() {
+            if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
+                window.history.back(); // Volta para a página anterior
+            }
+        }
+
+        function togglePassword(inputId, icon) {
+            var input = document.getElementById(inputId);
+            var img = icon.querySelector("img"); // Seleciona a imagem dentro do span
+
+            if (input.type === "password") {
+                input.type = "text";
+                img.src = "olhofechado.png"; // Ícone de "olho fechado"
+            } else {
+                input.type = "password";
+                img.src = "olhoaberto.png"; // Ícone de "olho aberto"
+            }
+        }
+    </script>
+    
+</body>
+</html>

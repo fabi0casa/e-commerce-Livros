@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="../css/menuAdmin.css">
 </head>
 <body>
-	<header>
-			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
-			Página do Administrador
-	</header>
-    <a th:href ="@{/administrador/gerenciar-clientes/cadastrarCliente}"><button class="new-client">Cadastrar Novo Cliente</button></a>
+    <header>
+        <a href="../admin.html"><img src="../css/home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
+    <a href ="cadastrarCliente.html"><button class="new-client">Cadastrar Novo Cliente</button></a>
     <div class="container">
         <h2>Gerenciamento de Clientes</h2>
         <div class="filters">
@@ -27,16 +27,35 @@
         <div class="filters">
             <button>Pesquisar</button>
         </div>
-
-        <p th:if="${clientes == null}" style="color: red;">Erro: Nenhum dado de cliente foi carregado.</p>
-        <p th:if="${clientes != null and #lists.isEmpty(clientes)}" style="color: orange;">Nenhum cliente cadastrado.</p>
-        <p th:if="${clientes != null and not #lists.isEmpty(clientes)}" th:text="|${#lists.size(clientes)} clientes carregados.|"></p>
-
         <div class="client-list">
-            <div class="client-item" th:each="cliente : ${clientes}">
+            <div class="client-item">
                 <div class="client-info">
-                    <div class="client-name" th:text="${cliente.nome}"></div>
-                    <div class="client-details" th:text="|${cliente.email} - ${cliente.telefone} - ${cliente.dataNascimento}|"></div>
+                    <div class="client-name">João Silva</div>
+                    <div class="client-details">joao@email.com - (11) 99999-9999 - 15/08/1990</div>
+                </div>
+                <div class="client-actions">
+                    <button onclick="openModal('clientModal')">Ver</button>
+                    <button onclick="openModal('editionModal')">Editar</button>
+                    <button onclick="openModal('confirmModal')">Inativar</button>
+                    <button onclick="redirecioarAoTransacoes()">Ver Transações</button>
+                </div>
+            </div>
+            <div class="client-item">
+                <div class="client-info">
+                    <div class="client-name">Maria Souza</div>
+                    <div class="client-details">maria@email.com - (11) 94999-9999 - 15/05/1910</div>
+                </div>
+                <div class="client-actions">
+                    <button onclick="openModal('clientModal')">Ver</button>
+                    <button onclick="openModal('editionModal')">Editar</button>
+                    <button onclick="openModal('confirmModal')">Inativar</button>
+                    <button onclick="redirecioarAoTransacoes()">Ver Transações</button>
+                </div>
+            </div>
+            <div class="client-item">
+                <div class="client-info">
+                    <div class="client-name">Pedro Sefas</div>
+                    <div class="client-details">pedro@email.com - (11) 99939-9999 - 09/01/2025</div>
                 </div>
                 <div class="client-actions">
                     <button onclick="openModal('clientModal')">Ver</button>
@@ -139,10 +158,10 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('editionModal')">&times;</span>
             <h2>Qual operação de edição deseja realizar?</h2>
-            <a th:href="@{/administrador/gerenciar-clientes/editarCliente}"><button>Editar Dados do Cliente</button></a>
-            <a th:href="@{/administrador/gerenciar-clientes/alterarSenha}"><button>Alterar a Senha do Cliente</button></a>
-            <a th:href="@{/administrador/gerenciar-clientes/listarEndereco}"><button>Editar Endereços</button></a>
-            <a th:href="@{/administrador/gerenciar-clientes/cadastrarCartao}"><button>Cadastrar Novo Cartão</button></a>
+            <a href="editarCliente.html"><button>Editar Dados do Cliente</button></a>
+            <a href="alterarSenha.html"><button>Alterar a Senha do Cliente</button></a>
+            <a href="listarEndereco.html"><button>Editar Endereços</button></a>
+            <a href="cadastrarCartao.html"><button>Cadastrar Novo Cartão</button></a>
         </div>
     </div>
 
@@ -150,7 +169,7 @@
         function openModal(modalId) {
             document.getElementById(modalId).style.display = "flex";
         }
-
+    
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
         }
@@ -171,10 +190,8 @@
         });
 
         function redirecioarAoTransacoes(){
-            window.location.href = "/administrador/gerenciar-clientes/transacoes";
+            window.location.href = "transacoes.html";
         }
-
-        
     </script>
 </body>
 </html>
