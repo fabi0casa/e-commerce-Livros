@@ -1,4 +1,3 @@
-// Pacote do validador
 package com.fatec.livraria.service;
 
 import com.fatec.livraria.entity.Endereco;

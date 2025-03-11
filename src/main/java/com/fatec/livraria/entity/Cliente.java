@@ -3,7 +3,11 @@ package com.fatec.livraria.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "CLIENTES")
@@ -23,6 +27,7 @@ public class Cliente {
 
     @Column(name = "cli_data_nascimento", nullable = false)
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dataNascimento;
 
     @Column(name = "cli_cpf", nullable = false, length = 20, unique = true)
@@ -42,4 +47,13 @@ public class Cliente {
 
     @Column(name = "cli_genero", nullable = false, length = 30)
     private String genero;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Endereco> enderecos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TransacaoCliente> transacoes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartaoCredito> cartoes = new ArrayList<>();
 }

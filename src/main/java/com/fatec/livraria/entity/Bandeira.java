@@ -1,5 +1,6 @@
 package com.fatec.livraria.entity;
 
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +18,8 @@ public class Bandeira {
 
     @Column(name = "ban_nome", nullable = false, length = 45)
     private String nome;
+
+    @OneToMany(mappedBy = "bandeira")
+    private List<CartaoCredito> cartoes;
+
 }

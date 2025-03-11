@@ -40,10 +40,6 @@ Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido pa
 - Senha forte e criptografada para os clientes
 - Gráfico de vendas em formato de linha
 
-## ✅ Deploy
-- Foi feito um Deploy no site Render, acessível pelo seguinte link
-- ### [les-livraria.onrender.com](https://les-livraria.onrender.com)
-
 ## 🔧 Instalação e Execução
 1. **Clone o repositório:**
    ```sh

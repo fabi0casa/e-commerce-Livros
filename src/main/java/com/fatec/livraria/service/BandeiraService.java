@@ -20,4 +20,8 @@ public class BandeiraService {
     public Optional<Bandeira> getBandeiraById(Integer id) {
         return bandeiraRepository.findById(id);
     }
+
+    public List<Bandeira> getBandeirasByCartaoId(Integer cartaoId) {
+        return bandeiraRepository.findByCartoes_Id(cartaoId);
+    }
 }

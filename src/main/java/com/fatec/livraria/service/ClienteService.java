@@ -2,10 +2,12 @@ package com.fatec.livraria.service;
 
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.repository.ClienteRepository;
+import com.fatec.livraria.specification.ClienteSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +30,15 @@ public class ClienteService {
     }
 
     public Cliente salvarCliente(Cliente cliente) throws Exception {
+        if (cliente.getCpf() == null || cliente.getEmail() == null) {
+            throw new Exception("CPF e E-mail são obrigatórios!");
+        }
+    
         try {
             return clienteRepository.save(cliente);
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("CPF ou E-mail já cadastrado!");
+            e.printStackTrace(); // Exibe o erro real no console
+            throw new Exception("Erro ao salvar cliente: " + e.getMessage());
         }
     }
 
@@ -44,5 +51,9 @@ public class ClienteService {
 
     public void excluirCliente(Integer id) {
         clienteRepository.deleteById(id);
+    }
+
+    public List<Cliente> buscarClientesComFiltro(String nome, String cpf, String telefone, String email, Date dataNascimento, String genero) {
+        return clienteRepository.findAll(ClienteSpecification.filtrarClientes(nome, cpf, telefone, email, dataNascimento, genero));
     }
 }

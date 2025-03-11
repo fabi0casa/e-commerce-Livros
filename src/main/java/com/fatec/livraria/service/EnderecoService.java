@@ -12,6 +12,10 @@ public class EnderecoService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
+    public List<Endereco> getEnderecoByClienteId(Integer clienteId) {
+        return enderecoRepository.findByCliente_Id(clienteId);
+    }
+
     public List<Endereco> listarTodos() {
         return enderecoRepository.findAll();
     }
@@ -26,5 +30,12 @@ public class EnderecoService {
 
     public void excluir(Integer id) {
         enderecoRepository.deleteById(id);
+    }
+
+    public Endereco atualizarEndereco(Endereco endereco) throws Exception {
+    if (enderecoRepository.existsById(endereco.getId())) {
+        return enderecoRepository.save(endereco);
+    }
+    throw new Exception("Endereço não encontrado!");
     }
 }

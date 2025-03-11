@@ -29,8 +29,14 @@ public class EnderecoController {
                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<List<Endereco>> getEnderecoByCliente(@PathVariable Integer clienteId) {
+        return ResponseEntity.ok(enderecoService.getEnderecoByClienteId(clienteId));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Endereco> salvar(@RequestBody Endereco endereco) {
+        endereco.gerarFraseIdentificadora(); // Gera a frase antes de salvar
         Endereco novoEndereco = enderecoService.salvar(endereco);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoEndereco);
     }
@@ -39,5 +45,15 @@ public class EnderecoController {
     public ResponseEntity<Void> excluir(@PathVariable Integer id) {
         enderecoService.excluir(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> atualizarEndereco(@RequestBody Endereco endereco) {
+        try {
+            Endereco enderecoAtualizado = enderecoService.atualizarEndereco(endereco);
+            return ResponseEntity.ok(enderecoAtualizado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

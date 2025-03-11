@@ -27,4 +27,10 @@ public class BandeiraController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
     
+    @GetMapping("/cartao/{cartaoId}")
+    public ResponseEntity<List<Bandeira>> getBandeirasByCartao(@PathVariable Integer cartaoId) {
+        return ResponseEntity.ok(bandeiraService.getBandeirasByCartaoId(cartaoId));
+    }
+
+    
 }

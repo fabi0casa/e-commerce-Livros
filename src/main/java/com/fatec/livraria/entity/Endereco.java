@@ -47,15 +47,20 @@ public class Endereco {
     private String fraseIdentificadora;
 
     @Column(name = "end_isResidencial", nullable = false)
-    private boolean isResidencial;
+    private Boolean residencial;
 
     @Column(name = "end_isEntrega", nullable = false)
-    private boolean isEntrega;
+    private Boolean entrega;
 
     @Column(name = "end_isCobranca", nullable = false)
-    private boolean isCobranca;
+    private Boolean cobranca;
 
     @ManyToOne
     @JoinColumn(name = "end_cli_id", nullable = false)
     private Cliente cliente;
+
+    public void gerarFraseIdentificadora() {
+        this.fraseIdentificadora = String.format("%s, %s - %s, %s", logradouro, numero, cidade, estado);
+    }
+    
 }

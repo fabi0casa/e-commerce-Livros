@@ -2,13 +2,14 @@ package com.fatec.livraria.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import com.fatec.livraria.entity.CartaoCredito;
 import com.fatec.livraria.service.CartaoCreditoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
+//import java.util.Optional;
 
 @RestController
 @RequestMapping("/cartoes")
@@ -22,6 +23,12 @@ public class CartaoCreditoController {
         List<CartaoCredito> cartoes = cartaoCreditoService.getAllCartoes();
         return ResponseEntity.ok(cartoes);
     }
+
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<List<CartaoCredito>> getCartaoByCliente(@PathVariable Integer clienteId) {
+        return ResponseEntity.ok(cartaoCreditoService.getCartaoByClienteId(clienteId));
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<CartaoCredito> getCartaoById(@PathVariable Integer id) {

@@ -15,6 +15,10 @@ public class CartaoCreditoService {
     @Autowired
     private CartaoCreditoRepository cartaoCreditoRepository;
 
+    public List<CartaoCredito> getCartaoByClienteId(Integer clienteId) {
+        return cartaoCreditoRepository.findByCliente_Id(clienteId);
+    }
+
     public List<CartaoCredito> getAllCartoes() {
         return cartaoCreditoRepository.findAll();
     }
