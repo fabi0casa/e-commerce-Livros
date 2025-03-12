@@ -80,6 +80,11 @@ Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido pa
 
 ---
 
+Caso queira verificar se as imagens Docker estão rodando:  
+```sh
+docker ps
+```
+
 Caso precise parar a aplicação no Docker, utilize:  
 ```sh
 docker-compose down
