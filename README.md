@@ -40,24 +40,55 @@ Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido pa
 - Senha forte e criptografada para os clientes
 - Gráfico de vendas em formato de linha
 
+## ✅ Deploy
+- Foi feito um Deploy no site Render, acessível pelo seguinte link
+- ### [les-livraria.onrender.com](https://les-livraria.onrender.com)
+
+
 ## 🔧 Instalação e Execução
-1. **Clone o repositório:**
+
+1. **Clone o repositório:**  
    ```sh
    git clone https://github.com/fabin0casa/e-commerce-Livros.git
    cd e-commerce-Livros
    ```
 
-2. **Configurar Banco de Dados:**
-   - Criar um banco MySQL no InfinityFree ou Local
-   - Atualizar as credenciais no `application.properties` do Spring Boot
-
-3. **Rodar a API Spring Boot:**
+2. **Executar com Docker (Recomendado):**  
+   Certifique-se de ter o [Docker](https://www.docker.com/) instalado e em execução.  
+   Depois, utilize o comando abaixo para iniciar a aplicação:
    ```sh
-   mvn spring-boot:run
+   docker-compose up --build -d
    ```
+   ```sh
+   docker-compose up -d
+   ```
+   Isso irá levantar tanto o backend quanto o banco de dados automaticamente.  
 
-4. **Executar o frontend:**
-   - Abra o arquivo `index.html` em um navegador
+4. **Executar manualmente (Caso não use Docker):**  
+
+   - **Configurar o Banco de Dados:**  
+     - Criar um banco MySQL localmente.  
+     - Atualizar as credenciais no arquivo `application.properties` do Spring Boot.  
+
+   - **Rodar a API Spring Boot:**  
+     ```sh
+     mvn spring-boot:run
+     ```
+
+   - **Executar o frontend:**  
+     - Abra o link `localhost:8080` em um navegador.  
+
+---
+
+Caso precise parar a aplicação no Docker, utilize:  
+```sh
+docker-compose down
+```
+
+Se precisar reconstruir a imagem:  
+```sh
+docker-compose up --build -d
+```
 
 ## 📌 Contribuição
 Sinta-se à vontade para abrir issues e pull requests para melhorias no projeto.
