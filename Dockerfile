@@ -1,11 +1,15 @@
 # Etapa 1: Build com Maven e OpenJDK 21
 FROM openjdk:21-slim AS build
 
+
 # Instalar Maven
 RUN apt-get update && apt-get install -y maven
 
 # Definir o diretório de trabalho
 WORKDIR /app
+
+#esperando o mysql rodar
+COPY wait-for-it.sh /app/wait-for-it.sh
 
 # Copiar o arquivo pom.xml e o código-fonte
 COPY pom.xml .
