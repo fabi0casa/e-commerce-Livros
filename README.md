@@ -57,7 +57,7 @@ Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido pa
    Certifique-se de ter o [Docker](https://www.docker.com/) instalado e em execução.  
    Depois, utilize o comando abaixo para iniciar a aplicação:
    ```sh
-   docker-compose up --build -d
+   docker-compose build --no-cache
    ```
    ```sh
    docker-compose up -d
