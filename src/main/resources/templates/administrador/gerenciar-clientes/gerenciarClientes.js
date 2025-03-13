@@ -60,23 +60,23 @@ function openAddressModal(enderecos) {
     let enderecosContainer = document.getElementById("enderecosContainer");
     enderecosContainer.innerHTML = ""; // Limpa antes de adicionar novos endereços
 
-    enderecos.forEach(endereco => {
+    enderecos.forEach(enderecos => {
         let button = document.createElement("button");
         button.className = "accordion";
-        button.textContent = `${endereco.fraseIdentificadora}`;
+        button.textContent = `${enderecos.fraseIdentificadora}`;
 
         let panel = document.createElement("div");
         panel.className = "panel";
         panel.innerHTML = `
-            <p><strong>Tipo:</strong> ${endereco.tipo}</p>
-            <p><strong>Logradouro:</strong> ${endereco.logradouro}</p>
-            <p><strong>Número:</strong> ${endereco.numero}</p>
-            <p><strong>Bairro:</strong> ${endereco.bairro}</p>
-            <p><strong>CEP:</strong> ${endereco.cep}</p>
-            <p><strong>Cidade:</strong> ${endereco.cidade}</p>
-            <p><strong>Estado:</strong> ${endereco.estado}</p>
-            <p><strong>País:</strong> ${endereco.pais}</p>
-            <p><strong>Observação:</strong> ${endereco.observacao || "Nenhuma"}</p>
+            <p><strong>Tipo:</strong> ${enderecos.tipo}</p>
+            <p><strong>Logradouro:</strong> ${enderecos.logradouro}</p>
+            <p><strong>Número:</strong> ${enderecos.numero}</p>
+            <p><strong>Bairro:</strong> ${enderecos.bairro}</p>
+            <p><strong>CEP:</strong> ${enderecos.cep}</p>
+            <p><strong>Cidade:</strong> ${enderecos.cidade}</p>
+            <p><strong>Estado:</strong> ${enderecos.estado}</p>
+            <p><strong>País:</strong> ${enderecos.pais}</p>
+            <p><strong>Observação:</strong> ${enderecos.observacao || "Nenhuma"}</p>
         `;
 
         button.addEventListener("click", function () {
