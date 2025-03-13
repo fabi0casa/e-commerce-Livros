@@ -34,3 +34,7 @@ build/
 
 # Arquivos de ambiente
 .env
+
+# Configurações do banco (vou usar um banco local para desenvolver, mas no github eu quero ele funcionando pro docker)
+/src/main/resources/application.properties
+
