@@ -39,7 +39,16 @@
                     <div class="client-details" th:text="|${cliente.email} - ${cliente.telefone} - ${cliente.dataNascimento}|"></div>
                 </div>
                 <div class="client-actions">
-                    <button onclick="openModal('clientModal')">Ver</button>
+                    <button onclick="openClientModal(this)" th:data-nome="${cliente.nome}" 
+                        th:data-email="${cliente.email}" 
+                        th:data-telefone="${cliente.telefone}" 
+                        th:data-nascimento="${cliente.dataNascimento}" 
+                        th:data-genero="${cliente.genero}" 
+                        th:data-cpf="${cliente.cpf}" 
+                        th:data-ranking="${cliente.ranking}">
+                        Ver
+                    </button>
+
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
                     <button onclick="redirecioarAoTransacoes()">Ver Transações</button>
@@ -54,18 +63,18 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('clientModal')">&times;</span>
             <h2>Detalhes do Cliente</h2>
-            <p><strong>Nome:</strong> João Silva</p>
-            <p><strong>Email:</strong> joao@email.com</p>
-            <p><strong>Telefone:</strong> (11) 99999-9999</p>
-            <p><strong>Data de Nascimento:</strong> 15/08/1990</p>
-            <p><strong>Gênero:</strong> Masculino</p>
-            <p><strong>CPF:</strong> 888.888.888-08</p>
-            <p><strong>Ranking:</strong> 1</p>
-
+            <p><strong>Nome:</strong> <span id="modalNome"></span></p>
+            <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+            <p><strong>Telefone:</strong> <span id="modalTelefone"></span></p>
+            <p><strong>Data de Nascimento:</strong> <span id="modalNascimento"></span></p>
+            <p><strong>Gênero:</strong> <span id="modalGenero"></span></p>
+            <p><strong>CPF:</strong> <span id="modalCpf"></span></p>
+            <p><strong>Ranking:</strong> <span id="modalRanking"></span></p>
             <button onclick="openModal('addressModal')">Ver Endereços</button>
             <button onclick="openModal('cardModal')">Ver Cartões</button>
         </div>
     </div>
+    
 
     <!-- Modal de Endereços -->
     <div id="addressModal" class="modal">
@@ -174,6 +183,17 @@
             window.location.href = "/administrador/gerenciar-clientes/transacoes";
         }
 
+        function openClientModal(button) {
+            document.getElementById("modalNome").textContent = button.getAttribute("data-nome");
+            document.getElementById("modalEmail").textContent = button.getAttribute("data-email");
+            document.getElementById("modalTelefone").textContent = button.getAttribute("data-telefone");
+            document.getElementById("modalNascimento").textContent = button.getAttribute("data-nascimento");
+            document.getElementById("modalGenero").textContent = button.getAttribute("data-genero");
+            document.getElementById("modalCpf").textContent = button.getAttribute("data-cpf");
+            document.getElementById("modalRanking").textContent = button.getAttribute("data-ranking");
+
+            openModal('clientModal');
+        }
         
     </script>
 </body>
