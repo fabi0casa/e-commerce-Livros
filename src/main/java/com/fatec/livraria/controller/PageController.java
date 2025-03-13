@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fatec.livraria.entity.Cliente;
 
 @Controller
@@ -19,6 +21,9 @@ public class PageController {
     public PageController(ClienteService clienteService) {
         this.clienteService = clienteService;
     }
+
+    @Autowired
+    private ObjectMapper objectMapper; 
     
     @GetMapping("/administrador/gerenciar-clientes/gerenciarClientes")
     public String listarClientes(Model model) {
@@ -26,6 +31,13 @@ public class PageController {
         System.out.println("Clientes carregados: " + (clientes != null ? clientes.size() : "null"));
     
         model.addAttribute("clientes", clientes);
+
+        try {
+            model.addAttribute("clientesJson", objectMapper.writeValueAsString(clientes));
+        } catch (Exception e) {
+            model.addAttribute("clientesJson", "[]");
+        }
+        
         return "administrador/gerenciar-clientes/gerenciarClientes"; // Certifique-se de que o nome do HTML está correto
     }
     

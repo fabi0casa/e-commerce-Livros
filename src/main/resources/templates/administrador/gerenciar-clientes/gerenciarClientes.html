@@ -28,18 +28,15 @@
             <button>Pesquisar</button>
         </div>
 
-        <p th:if="${clientes == null}" style="color: red;">Erro: Nenhum dado de cliente foi carregado.</p>
-        <p th:if="${clientes != null and #lists.isEmpty(clientes)}" style="color: orange;">Nenhum cliente cadastrado.</p>
-        <p th:if="${clientes != null and not #lists.isEmpty(clientes)}" th:text="|${#lists.size(clientes)} clientes carregados.|"></p>
-
         <div class="client-list">
             <div class="client-item" th:each="cliente : ${clientes}">
                 <div class="client-info">
                     <div class="client-name" th:text="${cliente.nome}"></div>
                     <div class="client-details" th:text="|${cliente.email} - ${cliente.telefone} - ${cliente.dataNascimento}|"></div>
                 </div>
-                <div class="client-actions">
-                    <button onclick="openClientModal(this)" th:data-nome="${cliente.nome}" 
+                    <div class="client-actions">
+                    <button onclick="openClientModal(this.dataset)" 
+                        th:data-nome="${cliente.nome}" 
                         th:data-email="${cliente.email}" 
                         th:data-telefone="${cliente.telefone}" 
                         th:data-nascimento="${cliente.dataNascimento}" 
@@ -48,7 +45,6 @@
                         th:data-ranking="${cliente.ranking}">
                         Ver
                     </button>
-
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
                     <button onclick="redirecioarAoTransacoes()">Ver Transações</button>
@@ -70,8 +66,8 @@
             <p><strong>Gênero:</strong> <span id="modalGenero"></span></p>
             <p><strong>CPF:</strong> <span id="modalCpf"></span></p>
             <p><strong>Ranking:</strong> <span id="modalRanking"></span></p>
-            <button onclick="openModal('addressModal')">Ver Endereços</button>
-            <button onclick="openModal('cardModal')">Ver Cartões</button>
+            <button id="btnVerEnderecos">Ver Endereços</button>
+            <button id="btnVerCartoes">Ver Cartões</button>                      
         </div>
     </div>
     
@@ -81,32 +77,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('addressModal')">&times;</span>
             <h2>Endereços Cadastrados</h2>
-
-            <button class="accordion">Rua Exemplo, 123 - São Paulo, SP</button>
-            <div class="panel">
-                <p><strong>Tipo:</strong> Apartamento</p>
-                <p><strong>Logradouro:</strong> Rua Exemplo</p>
-                <p><strong>Número:</strong> 123</p>
-                <p><strong>Bairro:</strong> Centro</p>
-                <p><strong>CEP:</strong> 01000-000</p>
-                <p><strong>Cidade:</strong> São Paulo</p>
-                <p><strong>Estado:</strong> SP</p>
-                <p><strong>País:</strong> Brasil</p>
-                <p><strong>Observação:</strong> Próximo ao metrô</p>
-            </div>
-
-            <button class="accordion">Av. Teste, 456 - Rio de Janeiro, RJ</button>
-            <div class="panel">
-                <p><strong>Tipo:</strong> Casa</p>
-                <p><strong>Logradouro:</strong> Av. Teste</p>
-                <p><strong>Número:</strong> 456</p>
-                <p><strong>Bairro:</strong> Copacabana</p>
-                <p><strong>CEP:</strong> 22000-000</p>
-                <p><strong>Cidade:</strong> Rio de Janeiro</p>
-                <p><strong>Estado:</strong> RJ</p>
-                <p><strong>País:</strong> Brasil</p>
-                <p><strong>Observação:</strong> Casa de Praia</p>
-            </div>
+            <div id="enderecosContainer"></div> <!-- Aqui os endereços serão adicionados dinamicamente -->
         </div>
     </div>
 
@@ -115,24 +86,10 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('cardModal')">&times;</span>
             <h2>Cartões Cadastrados</h2>
-
-            <button class="accordion">**** **** **** 1234</button>
-            <div class="panel">
-                <p><strong>Nome Impresso:</strong> João Silva</p>
-                <p><strong>Bandeira:</strong> Visa</p>
-                <p><strong>Código de Segurança:</strong> 123</p>
-                <p><strong>Preferencial:</strong> Sim</p>
-            </div>
-
-            <button class="accordion">**** **** **** 5678</button>
-            <div class="panel">
-                <p><strong>Nome Impresso:</strong> João Silva</p>
-                <p><strong>Bandeira:</strong> MasterCard</p>
-                <p><strong>Código de Segurança:</strong> 456</p>
-                <p><strong>Preferencial:</strong> Não</p>
-            </div>
+            <div id="cartoesContainer"></div> <!-- Aqui os cartões serão adicionados dinamicamente -->
         </div>
     </div>
+
     <!-- Modal de Confirmação para Inativação -->
     <div id="confirmModal" class="modal">
         <div class="modal-content">
@@ -155,46 +112,7 @@
         </div>
     </div>
 
-    <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = "flex";
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = "none";
-        }
-        // Script para o efeito de accordion (lingueta que desce)
-        document.addEventListener("DOMContentLoaded", function () {
-            let accordions = document.querySelectorAll(".accordion");
-
-            accordions.forEach(button => {
-                button.addEventListener("click", function () {
-                    let panel = this.nextElementSibling;
-                    if (panel.style.display === "block") {
-                        panel.style.display = "none";
-                    } else {
-                        panel.style.display = "block";
-                    }
-                });
-            });
-        });
-
-        function redirecioarAoTransacoes(){
-            window.location.href = "/administrador/gerenciar-clientes/transacoes";
-        }
-
-        function openClientModal(button) {
-            document.getElementById("modalNome").textContent = button.getAttribute("data-nome");
-            document.getElementById("modalEmail").textContent = button.getAttribute("data-email");
-            document.getElementById("modalTelefone").textContent = button.getAttribute("data-telefone");
-            document.getElementById("modalNascimento").textContent = button.getAttribute("data-nascimento");
-            document.getElementById("modalGenero").textContent = button.getAttribute("data-genero");
-            document.getElementById("modalCpf").textContent = button.getAttribute("data-cpf");
-            document.getElementById("modalRanking").textContent = button.getAttribute("data-ranking");
-
-            openModal('clientModal');
-        }
-        
+    <script src="gerenciarClientes.js">
     </script>
 </body>
 </html>
