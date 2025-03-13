@@ -118,3 +118,4 @@ function openCardModal(cartoes) {
 
     openModal("cardModal");
 }
+

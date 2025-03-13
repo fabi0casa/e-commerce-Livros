@@ -48,7 +48,7 @@
                     </button>
                     <button onclick="openModal('editionModal')">Editar</button>
                     <button onclick="openModal('confirmModal')">Inativar</button>
-                    <button onclick="redirecioarAoTransacoes()">Ver Transações</button>
+                    <button class="transacoes-btn" th:data-id="${cliente.id}">Ver Transações</button>
                 </div>
             </div>
         </div>
@@ -115,5 +115,17 @@
 
     <script src="gerenciarClientes.js">
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".transacoes-btn").forEach(botao => {
+                botao.addEventListener("click", function () {
+                    const clienteId = this.getAttribute("data-id");
+                    window.location.href = `/administrador/gerenciar-clientes/transacoes?clienteId=${clienteId}`;
+                });
+            });
+        });
+    </script>
+
+    
 </body>
 </html>
