@@ -119,3 +119,36 @@ function openCardModal(cartoes) {
     openModal("cardModal");
 }
 
+
+let clienteIdSelecionado = null; // Variável global para armazenar o ID do cliente
+
+// Abre o modal de confirmação e define o ID e nome do cliente
+function openConfirmModal(button) {
+    clienteIdSelecionado = button.getAttribute("data-id"); // Obtém o ID do cliente
+    const clienteNome = button.getAttribute("data-nome"); // Obtém o nome do cliente
+
+    document.getElementById("clienteNome").textContent = clienteNome; // Exibe o nome no modal
+    openModal('confirmModal'); // Abre o modal
+}
+
+// Função para deletar o cliente
+function inativarCliente() {
+    if (!clienteIdSelecionado) {
+        alert("Erro: Cliente não encontrado.");
+        return;
+    }
+
+    fetch(`/delete/${clienteIdSelecionado}`, {
+        method: "DELETE"
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Cliente excluído com sucesso!");
+            window.location.reload(); // Atualiza a página para refletir a mudança
+        } else {
+            alert("Erro ao excluir cliente.");
+        }
+    })
+    .catch(error => console.error("Erro:", error));
+}
+

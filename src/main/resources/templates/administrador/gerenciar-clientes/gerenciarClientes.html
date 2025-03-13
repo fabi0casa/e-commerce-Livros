@@ -47,7 +47,13 @@
                         Ver
                     </button>
                     <button onclick="openModal('editionModal')">Editar</button>
-                    <button onclick="openModal('confirmModal')">Inativar</button>
+
+                    <button onclick="openConfirmModal(this)" 
+                            th:data-id="${cliente.id}" 
+                            th:data-nome="${cliente.nome}">
+                        Inativar
+                    </button>
+
                     <button class="transacoes-btn" th:data-id="${cliente.id}">Ver Transações</button>
                 </div>
             </div>
@@ -96,11 +102,13 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('confirmModal')">&times;</span>
             <h2>Aviso!</h2>
-            <p>Deseja mesmo inativar o cliente "João Silva"?</p>
-            <button>Inativar Cliente</button>
+            <p>Deseja mesmo inativar o cliente <span id="clienteNome"></span>?</p>
+            <button onclick="inativarCliente()">Inativar Cliente</button>
             <button onclick="closeModal('confirmModal')">Cancelar</button>
         </div>
     </div>
+
+
     <!-- Modal da edição do cliente-->
     <div id="editionModal" class="modal">
         <div class="modal-content">
