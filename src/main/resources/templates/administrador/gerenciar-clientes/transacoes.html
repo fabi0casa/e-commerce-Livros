@@ -13,7 +13,7 @@
 			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
 			Página do Administrador
 	</header>
-    <a href="gerenciarClientes.html"><button class="botao-return">Voltar</button></a>
+    <a th:href="@{/administrador/gerenciar-clientes/gerenciarClientes}"><button class="botao-return">Voltar</button></a>
 
     <div class="container">
         <h2>Transações de <span th:text="${cliente.nome}"></span></h2>
