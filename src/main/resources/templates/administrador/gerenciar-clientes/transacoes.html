@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="../css/tabelaTransacoes.css">
 </head>
 <body>
-	<header>
-			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
-			Página do Administrador
-	</header>
+    <header>
+        <a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
     <a th:href="@{/administrador/gerenciar-clientes/gerenciarClientes}"><button class="botao-return">Voltar</button></a>
 
     <div class="container">
-        <h2>Transações de <span th:text="${cliente.nome}"></span></h2>
+        <h2>Transações de <span id="clienteNome"></span></h2>
 
         <table>
             <thead>
@@ -29,18 +29,57 @@
                     <th>Forma de Pagamento</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Iterando sobre a lista de transações -->
-                <tr th:each="transacao : ${transacoes}">
-                    <td th:text="${#temporals.format(transacao.dataHora, 'yyyy-MM-dd HH:mm (z)')}"></td>
-                    <td th:text="${transacao.tipoOperacao}"></td>
-                    <td th:text="${transacao.produto}"></td> <!-- Precisa adicionar o atributo na classe -->
-                    <td th:text="${transacao.quantidade}"></td>
-                    <td th:text="'R$ ' + ${#numbers.formatDecimal(transacao.valor, 1, 2)}"></td>
-                    <td th:text="${transacao.formaPagamento}"></td>
-                </tr>
+            <tbody id="transacoesBody">
+                <!-- Os dados serão carregados aqui via AJAX -->
             </tbody>
         </table>        
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const clienteId = params.get("clienteId");
+
+            if (!clienteId) {
+                alert("Erro: ID do cliente não encontrado.");
+                return;
+            }
+
+            // Buscar nome do cliente
+            fetch(`/clientes/${clienteId}`)
+                .then(response => response.json())
+                .then(cliente => {
+                    document.getElementById("clienteNome").textContent = cliente.nome;
+                })
+                .catch(error => console.error("Erro ao carregar nome do cliente:", error));
+
+            // Buscar transações do cliente
+            fetch(`/transacoes/cliente/${clienteId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data || data.length === 0) {
+                        document.getElementById("transacoesBody").innerHTML = "<tr><td colspan='6'>Nenhuma transação encontrada.</td></tr>";
+                        return;
+                    }
+
+                    let tabelaHTML = "";
+                    data.forEach(transacao => {
+                        tabelaHTML += `
+                            <tr>
+                                <td>${transacao.dataHora}</td>
+                                <td>${transacao.tipoOperacao}</td>
+                                <td>${transacao.produto}</td>
+                                <td>${transacao.quantidade}</td>
+                                <td>R$ ${transacao.valor.toFixed(2)}</td>
+                                <td>${transacao.formaPagamento}</td>
+                            </tr>
+                        `;
+                    });
+
+                    document.getElementById("transacoesBody").innerHTML = tabelaHTML;
+                })
+                .catch(error => console.error("Erro ao carregar transações:", error));
+        });
+    </script>
 </body>
 </html>
