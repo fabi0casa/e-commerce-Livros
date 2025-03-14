@@ -15,6 +15,8 @@ public class EnderecoDTO {
     private String cidade;
     private String estado;
     private String pais;
+    private String observacoes; 
+    private String fraseIdentificadora;
     private Boolean residencial;
     private Boolean entrega;
     private Boolean cobranca;

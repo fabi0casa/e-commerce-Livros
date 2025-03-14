@@ -26,6 +26,13 @@ function redirecioarAoTransacoes(){
     window.location.href = "/administrador/gerenciar-clientes/transacoes";
 }
 
+function loadClientDetails(clienteId) {
+    fetch(`/clientes/${clienteId}`)
+        .then(response => response.json())
+        .then(cliente => openClientModal(cliente))
+        .catch(error => console.error("Erro ao buscar detalhes do cliente:", error));
+}
+
 function openClientModal(cliente) {
     document.getElementById("modalNome").textContent = cliente.nome;
     document.getElementById("modalEmail").textContent = cliente.email;
@@ -35,51 +42,39 @@ function openClientModal(cliente) {
     document.getElementById("modalCpf").textContent = cliente.cpf;
     document.getElementById("modalRanking").textContent = cliente.ranking;
 
-    // Adiciona os dados ao botão de endereços
     let btnEnderecos = document.getElementById("btnVerEnderecos");
-    btnEnderecos.dataset.enderecos = cliente.enderecos;
-
-    // Adiciona os dados ao botão de cartões
     let btnCartoes = document.getElementById("btnVerCartoes");
-    btnCartoes.dataset.cartoes = cliente.cartoes;
 
-    btnEnderecos.onclick = function () {
-        console.log("Endereços recebidos:", cliente.enderecos);
-        openAddressModal(cliente.endereco || []);
-    };
-
-    btnCartoes.onclick = function () {
-        openCardModal(cliente.cartoes || []);
-    };
+    btnEnderecos.onclick = () => openAddressModal(cliente.enderecos || []);
+    btnCartoes.onclick = () => openCardModal(cliente.cartoes || []);
 
     openModal("clientModal");
 }
 
-
 function openAddressModal(enderecos) {
     let enderecosContainer = document.getElementById("enderecosContainer");
-    enderecosContainer.innerHTML = ""; // Limpa antes de adicionar novos endereços
+    enderecosContainer.innerHTML = ""; 
 
-    enderecos.forEach(enderecos => {
+    enderecos.forEach(endereco => {
         let button = document.createElement("button");
         button.className = "accordion";
-        button.textContent = `${enderecos.fraseIdentificadora}`;
+        button.textContent = endereco.fraseIdentificadora || "Endereço";
 
         let panel = document.createElement("div");
         panel.className = "panel";
         panel.innerHTML = `
-            <p><strong>Tipo:</strong> ${enderecos.tipo}</p>
-            <p><strong>Logradouro:</strong> ${enderecos.logradouro}</p>
-            <p><strong>Número:</strong> ${enderecos.numero}</p>
-            <p><strong>Bairro:</strong> ${enderecos.bairro}</p>
-            <p><strong>CEP:</strong> ${enderecos.cep}</p>
-            <p><strong>Cidade:</strong> ${enderecos.cidade}</p>
-            <p><strong>Estado:</strong> ${enderecos.estado}</p>
-            <p><strong>País:</strong> ${enderecos.pais}</p>
-            <p><strong>Observação:</strong> ${enderecos.observacao || "Nenhuma"}</p>
+            <p><strong>Tipo:</strong> ${endereco.tipo}</p>
+            <p><strong>Logradouro:</strong> ${endereco.logradouro}</p>
+            <p><strong>Número:</strong> ${endereco.numero}</p>
+            <p><strong>Bairro:</strong> ${endereco.bairro}</p>
+            <p><strong>CEP:</strong> ${endereco.cep}</p>
+            <p><strong>Cidade:</strong> ${endereco.cidade}</p>
+            <p><strong>Estado:</strong> ${endereco.estado}</p>
+            <p><strong>País:</strong> ${endereco.pais}</p>
+            <p><strong>Observação:</strong> ${endereco.observacao || "Nenhuma"}</p>
         `;
 
-        button.addEventListener("click", function () {
+        button.addEventListener("click", () => {
             panel.style.display = panel.style.display === "block" ? "none" : "block";
         });
 
@@ -92,7 +87,7 @@ function openAddressModal(enderecos) {
 
 function openCardModal(cartoes) {
     let cartoesContainer = document.getElementById("cartoesContainer");
-    cartoesContainer.innerHTML = ""; // Limpa antes de adicionar novos cartões
+    cartoesContainer.innerHTML = ""; 
 
     cartoes.forEach(cartao => {
         let button = document.createElement("button");
@@ -108,7 +103,7 @@ function openCardModal(cartoes) {
             <p><strong>Preferencial:</strong> ${cartao.preferencial ? "Sim" : "Não"}</p>
         `;
 
-        button.addEventListener("click", function () {
+        button.addEventListener("click", () => {
             panel.style.display = panel.style.display === "block" ? "none" : "block";
         });
 

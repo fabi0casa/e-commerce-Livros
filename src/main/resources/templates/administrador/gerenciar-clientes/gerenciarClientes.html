@@ -22,7 +22,6 @@
             <input type="text" placeholder="CPF">
             <input type="text" placeholder="Data de Nascimento">
             <input type="text" placeholder="Gênero">
-            <input type="text" placeholder="Endereço">
         </div>
         <div class="filters">
             <button>Pesquisar</button>
@@ -35,17 +34,10 @@
                     <div class="client-details" th:text="|${cliente.email} - ${cliente.telefone} - ${cliente.dataNascimento}|"></div>
                 </div>
                     <div class="client-actions">
-                    <button onclick="openClientModal(this.dataset)" 
-                        th:data-nome="${cliente.nome}" 
-                        th:data-email="${cliente.email}" 
-                        th:data-telefone="${cliente.telefone}" 
-                        th:data-nascimento="${cliente.dataNascimento}" 
-                        th:data-genero="${cliente.genero}" 
-                        th:data-cpf="${cliente.cpf}" 
-                        th:data-ranking="${cliente.ranking}"
-                        th:data-enderecos="${enderecos}">
+                    <button onclick="loadClientDetails(this.dataset.clienteId)" 
+                        th:data-cliente-id="${cliente.id}">
                         Ver
-                    </button>
+                    </button>      
                     <button onclick="openModal('editionModal')">Editar</button>
 
                     <button onclick="openConfirmModal(this)" 

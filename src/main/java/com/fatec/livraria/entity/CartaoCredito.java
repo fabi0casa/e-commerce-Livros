@@ -1,5 +1,7 @@
 package com.fatec.livraria.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -36,6 +38,7 @@ public class CartaoCredito {
     @NotNull(message = "O cliente é obrigatório.")
     @ManyToOne
     @JoinColumn(name = "crt_cli_id", nullable = false)
+    @JsonIgnore
     private Cliente cliente;
 
     @NotNull(message = "A bandeira do cartão é obrigatória.")

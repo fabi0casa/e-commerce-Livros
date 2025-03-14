@@ -1,5 +1,7 @@
 package com.fatec.livraria.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -57,6 +59,7 @@ public class Endereco {
 
     @ManyToOne
     @JoinColumn(name = "end_cli_id", nullable = false)
+    @JsonIgnore
     private Cliente cliente;
 
     public void gerarFraseIdentificadora() {
