@@ -138,12 +138,12 @@ function inativarCliente() {
         return;
     }
 
-    fetch(`/delete/${clienteIdSelecionado}`, {
+    fetch(`/clientes/delete/${clienteIdSelecionado}`, {
         method: "DELETE"
     })
     .then(response => {
         if (response.ok) {
-            alert("Cliente excluído com sucesso!");
+            alert("Cliente excluído com sucesso.");
             window.location.reload(); // Atualiza a página para refletir a mudança
         } else {
             alert("Erro ao excluir cliente.");
