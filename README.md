@@ -5,7 +5,7 @@ Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido pa
 
 ## Tecnologias Utilizadas
 - **Backend:** Spring Boot (Java)
-- **Banco de Dados:** MySQL (hospedado no InfinityFree)
+- **Banco de Dados:** MySQL
 - **Frontend:** HTML, CSS, JavaScript
 - **IA Generativa:** Gemini (para chatbot e recomendação personalizada)
 
