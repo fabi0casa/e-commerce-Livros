@@ -21,7 +21,7 @@ public class CartaoCredito {
 
     @NotBlank(message = "O número do cartão é obrigatório.")
     @Column(name = "crt_numero", nullable = false, length = 45)
-    private String numero;
+    private String numeroCartao;
 
     @NotBlank(message = "O nome impresso no cartão é obrigatório.")
     @Column(name = "crt_nome_impresso", nullable = false, length = 45)
@@ -33,7 +33,7 @@ public class CartaoCredito {
 
     @NotNull(message = "É necessário definir se o cartão é preferencial.")
     @Column(name = "car_isPreferencial", nullable = false)
-    private Boolean isPreferencial;
+    private Boolean preferencial;
 
     @NotNull(message = "O cliente é obrigatório.")
     @ManyToOne
@@ -44,6 +44,7 @@ public class CartaoCredito {
     @NotNull(message = "A bandeira do cartão é obrigatória.")
     @ManyToOne
     @JoinColumn(name = "crt_ban_id", nullable = false)
+    @JsonIgnore
     private Bandeira bandeira;
 }
 

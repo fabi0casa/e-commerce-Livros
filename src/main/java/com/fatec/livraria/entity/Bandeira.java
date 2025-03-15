@@ -3,12 +3,14 @@ package com.fatec.livraria.entity;
 import java.util.List;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "BANDEIRAS")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Bandeira {
 
     @Id
@@ -21,5 +23,10 @@ public class Bandeira {
 
     @OneToMany(mappedBy = "bandeira")
     private List<CartaoCredito> cartoes;
+
+    // Construtor que recebe um nome
+    public Bandeira(String nome) {
+        this.nome = nome;
+    }
 
 }

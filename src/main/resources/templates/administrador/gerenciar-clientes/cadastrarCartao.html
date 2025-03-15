@@ -9,51 +9,150 @@
     <link rel="stylesheet" href="../css/formulario.css">
 </head>
 <body>
-	<header>
-			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
-			Página do Administrador
-	</header>
+    <header>
+        <a th:href="@{/administrador/admin}"><img src="/img/home.png" alt="home" class="header-logo"></a>
+        Página do Administrador
+    </header>
     <div class="container">
-        <h2>Cadastrar Cartão para 'João Silva'</h2>
-        <form id="cadastroClienteForm">
+        <h2 id="tituloCadastro">Cadastrar Cartão para </h2>
+        <form id="cadastroCartaoForm">
             <h3>Cadastro de Cartão</h3>
 
             <label>Número do Cartão:</label>
-            <input type="text" required>
+            <input type="text" id="numeroCartao" required>
 
             <label>Nome Impresso:</label>
-            <input type="text" required>
+            <input type="text" id="nomeImpresso" required>
 
             <label>Bandeira:</label>
-            <select required>
-                <option value="">Selecione</option>
-                <option value="Visa">Visa</option>
-                <option value="Elo">Elo</option>
-                <option value="MasterCard">Mastercard</option>
+            <select id="bandeira" required>
+                <option value="">Carregando...</option>
             </select>
 
             <label>Código de segurança:</label>
-            <input type="text" required>
+            <input type="text" id="codigoSeguranca" required>
 
             <label>Tornar esse cartão preferencial?</label>
-            <select required>
+            <select id="preferencial" required>
                 <option value="">Selecione</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
 
             <button type="submit">Cadastrar Cartão</button>
-            <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
+            <div class="botaoCancelar"><button type="button" onclick="cancelarCadastro()">Cancelar</button></div>
         </form>
     </div>
 
     <script>
         function cancelarCadastro() {
             if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
-                window.history.back(); // Volta para a página anterior
+                window.history.back();
             }
         }
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clienteId = urlParams.get("clienteId");
+    
+            if (!clienteId) {
+                alert("Erro: Cliente não identificado!");
+                return;
+            }
+    
+            // Buscar nome do cliente
+            fetch(`/clientes/${clienteId}`)
+                .then(response => response.json())
+                .then(cliente => {
+                    document.getElementById("tituloCadastro").textContent = `Cadastrar Cartão para ${cliente.nome}`;
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar cliente:", error);
+                    document.getElementById("tituloCadastro").textContent = "Cadastrar Cartão";
+                });
+    
+            // Buscar bandeiras do backend
+            fetch("/bandeiras/all")
+                .then(response => response.json())
+                .then(bandeiras => {
+                    const selectBandeira = document.getElementById("bandeira");
+                    selectBandeira.innerHTML = `<option value="">Selecione</option>`;
+                    bandeiras.forEach(bandeira => {
+                        selectBandeira.innerHTML += `<option value="${bandeira.id}">${bandeira.nome}</option>`;
+                    });
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar bandeiras:", error);
+                    document.getElementById("bandeira").innerHTML = `<option value="">Erro ao carregar</option>`;
+                });
+    
+            document.getElementById("cadastroCartaoForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+    
+                const cartaoData = {
+                    clienteId: clienteId,
+                    numeroCartao: document.getElementById("numeroCartao").value,
+                    nomeImpresso: document.getElementById("nomeImpresso").value,
+                    bandeiraId: document.getElementById("bandeira").value,
+                    codigoSeguranca: document.getElementById("codigoSeguranca").value,
+                    preferencial: document.getElementById("preferencial").value === "sim"
+                };
+    
+                fetch("/cartoes/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(cartaoData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.erro) {
+                        alert("Erro ao cadastrar: " + data.erro);
+                    } else {
+                        alert("Cartão cadastrado com sucesso!");
+                        window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes";
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao enviar formulário:", error);
+                    alert("Erro ao enviar o formulário. Tente novamente mais tarde.");
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const numeroCartaoInput = document.getElementById("numeroCartao");
+            const nomeImpressoInput = document.getElementById("nomeImpresso");
+            const codigoSegurancaInput = document.getElementById("codigoSeguranca");
+            const form = document.getElementById("cadastroCartaoForm");
+
+            // Validação do número do cartão (apenas números, 13 a 19 dígitos)
+            numeroCartaoInput.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, ""); // Remove tudo que não for número
+                if (this.value.length > 19) {
+                    this.value = this.value.slice(0, 19);
+                }
+            });
+
+            // Validação do nome impresso (apenas letras e espaços)
+            nomeImpressoInput.addEventListener("keypress", function (event) {
+                if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(event.key)) {
+                    event.preventDefault();
+                }
+            });
+
+            // Validação do código de segurança (apenas números, 3 ou 4 dígitos)
+            codigoSegurancaInput.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, ""); // Remove tudo que não for número
+                if (this.value.length > 4) {
+                    this.value = this.value.slice(0, 4);
+                }
+            });
+        });
+
     </script>
+    
 
 </body>
 </html>
