@@ -48,6 +48,7 @@
         </form>
     </div>
     </div>
+    <script src="validarCadastro.js"></script>
     <script>
         function cancelarEdicao() {
             if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
@@ -94,8 +95,58 @@
                     });
             }
         });
+    
+        document.getElementById("edicaoClienteForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            // Capturar os valores dos inputs
+            const clienteId = new URLSearchParams(window.location.search).get("clienteId");
+            const nome = document.getElementById("nome").value;
+            const dataNascimento = document.getElementById("dataNascimento").value;
+            const cpf = document.getElementById("cpf").value;
+            const genero = document.getElementById("genero").value;
+            const telefone = document.getElementById("telefone").value;
+            const email = document.getElementById("email").value;
+
+            if (!clienteId) {
+                alert("Erro: ID do cliente não encontrado.");
+                return;
+            }
+
+            // Criar objeto DTO para enviar
+            const clienteDTO = {
+                id: clienteId,
+                nome: nome,
+                dataNascimento: dataNascimento,
+                cpf: cpf,
+                genero: genero,
+                telefone: telefone,
+                email: email
+            };
+
+            // Enviar requisição PUT para atualizar cliente
+            fetch("/clientes/update", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(clienteDTO)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.erro) {
+                    alert("Erro ao atualizar: " + data.erro);
+                } else {
+                    alert("Cliente atualizado com sucesso!");
+                    window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes"; // Redireciona após sucesso
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao atualizar cliente:", error);
+                alert("Erro ao atualizar cliente. Tente novamente.");
+            });
+        });
     </script>
-    <script src="validarCadastro.js"></script>
 
 </body>
 </html>

@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fatec.livraria.dto.AtualizarClienteDTO;
 import com.fatec.livraria.dto.ClienteDTO;
 
 @Component
@@ -29,4 +30,16 @@ public class ClienteValidator {
             throw new ConstraintViolationException(mensagemErro.toString(), violacoes);
         }
     }
+
+    public void validarAtualizacaoCliente(AtualizarClienteDTO clienteDTO) {
+        Set<ConstraintViolation<AtualizarClienteDTO>> violacoes = validator.validate(clienteDTO);
+        if (!violacoes.isEmpty()) {
+            StringBuilder mensagemErro = new StringBuilder();
+            for (ConstraintViolation<AtualizarClienteDTO> violacao : violacoes) {
+                mensagemErro.append(violacao.getMessage()).append("\n");
+            }
+            throw new ConstraintViolationException(mensagemErro.toString(), violacoes);
+        }
+    }   
+
 }

@@ -145,3 +145,5 @@ document.getElementById("cadastroClienteForm").addEventListener("submit", functi
         alert("Erro ao enviar o formulário. Tente novamente mais tarde.");
     });
 });
+
+

@@ -1,5 +1,6 @@
 package com.fatec.livraria.controller;
 
+import com.fatec.livraria.dto.AtualizarClienteDTO;
 import com.fatec.livraria.dto.ClienteDTO;
 import com.fatec.livraria.dto.EnderecoDTO;
 import com.fatec.livraria.entity.Cliente;
@@ -21,8 +22,8 @@ import org.springframework.ui.Model;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.Optional;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
@@ -114,14 +115,38 @@ public class ClienteController {
     
     // Atualizar cliente
     @PutMapping("/update")
-    public ResponseEntity<?> atualizarCliente(@RequestBody Cliente cliente) {
+    public ResponseEntity<?> atualizarCliente(@RequestBody AtualizarClienteDTO clienteDTO) {
         try {
-            Cliente clienteAtualizado = clienteService.atualizarCliente(cliente);
-            return ResponseEntity.ok(clienteAtualizado);
+            // Buscar o cliente pelo ID
+            Optional<Cliente> optionalCliente = clienteService.buscarPorId(clienteDTO.getId());
+            if (optionalCliente.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"erro\": \"Cliente não encontrado.\"}");
+            }
+
+            Cliente cliente = optionalCliente.get();
+
+            // ✅ Validar os novos dados do cliente
+            clienteValidator.validarAtualizacaoCliente(clienteDTO);
+
+            // ✅ Atualizar apenas os campos permitidos
+            cliente.setNome(clienteDTO.getNome());
+            cliente.setDataNascimento(clienteDTO.getDataNascimento());
+            cliente.setCpf(clienteDTO.getCpf());
+            cliente.setGenero(clienteDTO.getGenero());
+            cliente.setEmail(clienteDTO.getEmail());
+            cliente.setTelefone(clienteDTO.getTelefone());
+
+            // ✅ Salvar cliente atualizado
+            clienteService.atualizarCliente(cliente);
+
+            return ResponseEntity.ok("{\"mensagem\": \"Cliente atualizado com sucesso!\"}");
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"erro\": \"Erro inesperado ao atualizar cliente.\"}");
         }
     }
+ 
 
     // Deletar cliente por ID
     @DeleteMapping("/delete/{id}")
