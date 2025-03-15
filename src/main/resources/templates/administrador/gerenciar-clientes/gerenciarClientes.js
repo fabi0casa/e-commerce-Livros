@@ -92,13 +92,13 @@ function openCardModal(cartoes) {
     cartoes.forEach(cartao => {
         let button = document.createElement("button");
         button.className = "accordion";
-        button.textContent = `**** **** **** ${cartao.numero.slice(-4)}`;
+        button.textContent = `**** **** **** ${cartao.numeroCartao.slice(-4)}`;
 
         let panel = document.createElement("div");
         panel.className = "panel";
         panel.innerHTML = `
             <p><strong>Nome Impresso:</strong> ${cartao.nomeImpresso}</p>
-            <p><strong>Bandeira:</strong> ${cartao.bandeira}</p>
+            <p><strong>Bandeira:</strong> ${cartao.bandeira ? cartao.bandeira.nome : "Desconhecida"}</p>
             <p><strong>Código de Segurança:</strong> ${cartao.codigoSeguranca}</p>
             <p><strong>Preferencial:</strong> ${cartao.preferencial ? "Sim" : "Não"}</p>
         `;
@@ -113,6 +113,7 @@ function openCardModal(cartoes) {
 
     openModal("cardModal");
 }
+
 
 
 let clienteIdSelecionado = null; // Variável global para armazenar o ID do cliente
