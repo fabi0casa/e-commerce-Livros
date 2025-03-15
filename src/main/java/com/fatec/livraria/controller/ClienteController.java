@@ -43,6 +43,14 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 
+    // Buscar cliente por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> buscarPorId(@PathVariable Integer id) {
+        return clienteService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     // Cadastrar um novo cliente 
     @PostMapping("/add")
     public ResponseEntity<?> adicionarCliente(@ModelAttribute ClienteDTO clienteDTO, Model model, RedirectAttributes redirectAttributes) {

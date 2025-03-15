@@ -27,7 +27,7 @@
             <input type="text" id="cpf" required placeholder="000.000.000-00">
 
             <label>Gênero:</label>
-            <select required>
+            <select id="genero" required>
                 <option value="">Selecione</option>
                 <option value="masculino">Masculino</option>
                 <option value="feminino">Feminino</option>
@@ -54,6 +54,46 @@
                 window.history.back(); // Volta para a página anterior
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Função para extrair o clienteId da URL
+            function getClienteIdFromUrl() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get("clienteId");
+            }
+    
+            const clienteId = getClienteIdFromUrl();
+            if (clienteId) {
+                fetch(`/clientes/${clienteId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Erro ao buscar dados do cliente");
+                        }
+                        return response.json();
+                    })
+                    .then(cliente => {
+                        // Preencher os campos do formulário
+                        document.getElementById("nome").value = cliente.nome || "";
+                        document.getElementById("dataNascimento").value = cliente.dataNascimento || "";
+                        document.getElementById("cpf").value = cliente.cpf || "";
+                        document.getElementById("telefone").value = cliente.telefone || "";
+                        document.getElementById("email").value = cliente.email || "";
+    
+                        // Atualizar título com o nome do cliente
+                        document.querySelector("h2").textContent = `Edição do Cadastro de ${cliente.nome}`;
+                        
+                        // Preencher o select de gênero
+                        if (cliente.genero) {
+                            const selectGenero = document.getElementById("genero");
+                            selectGenero.value = cliente.genero.toLowerCase();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erro:", error);
+                        alert("Erro ao carregar os dados do cliente.");
+                    });
+            }
+        });
     </script>
     <script src="validarCadastro.js"></script>
 
