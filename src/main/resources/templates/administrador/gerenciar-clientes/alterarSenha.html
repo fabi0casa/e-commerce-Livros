@@ -15,7 +15,7 @@
 	</header>
     <div class="container">
         <form id="alterarSenhaForm">
-            <h2>Alterar Senha de 'João Silva'</h2>
+            <h2>Alterar Senha de <span id="clienteNome">Cliente</span></h2>
             <h3>Trocar Senha</h3>
             <label>Senha Atual:</label>
             <div class="password-container">
@@ -125,6 +125,26 @@
                 img.src = "/img//olhoaberto.png"; // Ícone de "olho aberto"
             }
         }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const clienteId = new URLSearchParams(window.location.search).get("clienteId");
+    
+            if (!clienteId) {
+                document.getElementById("clienteNome").innerText = "ID não encontrado";
+                return;
+            }
+    
+            fetch(`/clientes/${clienteId}`)
+                .then(response => response.json())
+                .then(cliente => {
+                    document.getElementById("clienteNome").innerText = cliente.nome;
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar cliente:", error);
+                    document.getElementById("clienteNome").innerText = "Erro ao carregar";
+                });
+        });
     </script>
     
 
