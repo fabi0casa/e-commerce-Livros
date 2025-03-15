@@ -1,31 +1,30 @@
 package com.fatec.livraria.service;
 
-import com.fatec.livraria.entity.Endereco;
+import com.fatec.livraria.dto.EnderecoDTO;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
+import java.util.Set;
 
 @Component
-public class EnderecoValidator implements Validator {
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return Endereco.class.equals(clazz);
+public class EnderecoValidator {
+    private final Validator validator;
+
+    @Autowired
+    public EnderecoValidator(Validator validator) {
+        this.validator = validator;
     }
 
-    @Override
-    public void validate(Object target, Errors errors) {
-        Endereco endereco = (Endereco) target;
-
-        if (endereco.getCep() == null || !endereco.getCep().matches("\\d{5}-\\d{3}")) {
-            errors.rejectValue("cep", "Formato inválido. Use XXXXX-XXX.");
-        }
-
-        if (endereco.getLogradouro() == null || endereco.getLogradouro().trim().isEmpty()) {
-            errors.rejectValue("logradouro", "O logradouro não pode estar vazio.");
-        }
-
-        if (endereco.getNumero() == null || endereco.getNumero().trim().isEmpty()) {
-            errors.rejectValue("numero", "O número não pode estar vazio.");
+    public void validarEndereco(EnderecoDTO enderecoDTO) {
+        Set<ConstraintViolation<EnderecoDTO>> violacoes = validator.validate(enderecoDTO);
+        if (!violacoes.isEmpty()) {
+            StringBuilder mensagemErro = new StringBuilder();
+            for (ConstraintViolation<EnderecoDTO> violacao : violacoes) {
+                mensagemErro.append(violacao.getMessage()).append("\n");
+            }
+            throw new ConstraintViolationException(mensagemErro.toString(), violacoes);
         }
     }
 }

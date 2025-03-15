@@ -5,12 +5,15 @@ import com.fatec.livraria.dto.EnderecoDTO;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Endereco;
 import com.fatec.livraria.service.ClienteService;
+import com.fatec.livraria.service.ClienteValidator;
+import com.fatec.livraria.service.EnderecoValidator;
+
+import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
@@ -19,6 +22,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/clientes")
@@ -26,6 +30,12 @@ public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private ClienteValidator clienteValidator;
+
+    @Autowired
+    private EnderecoValidator enderecoValidator;
 
     // Listar todos os clientes
     @GetMapping("/all")
@@ -53,6 +63,17 @@ public class ClienteController {
     @PostMapping("/add")
     public ResponseEntity<?> adicionarCliente(@ModelAttribute ClienteDTO clienteDTO, Model model, RedirectAttributes redirectAttributes) {
         try {
+            // ✅ Validando o Cliente
+            clienteValidator.validarCliente(clienteDTO);
+
+            // ✅ Validando os Endereços
+            for (EnderecoDTO enderecoDTO : clienteDTO.getEnderecos()) {
+                if (enderecoDTO.getResidencial() == null) {
+                    enderecoDTO.setResidencial(true); // Define como residencial por padrão
+                }
+                enderecoValidator.validarEndereco(enderecoDTO);
+            }
+
             // Criando o cliente
             Cliente cliente = new Cliente();
             cliente.setNome(clienteDTO.getNome());
@@ -88,16 +109,16 @@ public class ClienteController {
             cliente.setEnderecos(enderecos); // Associa a lista de endereços ao cliente
 
             // Salvando o cliente (JPA salva os endereços automaticamente devido ao CascadeType.ALL)
-            Cliente novoCliente = clienteService.salvarCliente(cliente);
+            clienteService.salvarCliente(cliente);
             
-            return ResponseEntity.status(HttpStatus.FOUND)
-            .header("Location", "/administrador/gerenciar-clientes/gerenciarClientes")
-            .build();
+            return ResponseEntity.status(HttpStatus.CREATED).body("{\"mensagem\": \"Cliente cadastrado com sucesso!\"}");
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"erro\": \"Erro inesperado ao cadastrar cliente.\"}");
         }
     }
-
+    
     // Atualizar cliente
     @PutMapping("/update")
     public ResponseEntity<?> atualizarCliente(@RequestBody Cliente cliente) {

@@ -112,3 +112,27 @@ document.addEventListener("DOMContentLoaded", function () {
         this.value = formattedValue;
     });
 });
+
+document.getElementById("cadastroClienteForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Evita o redirecionamento padrão do formulário
+
+    const formData = new FormData(this);
+
+    fetch("/clientes/add", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json()) // Converte a resposta para JSON
+    .then(data => {
+        if (data.erro) {
+            alert("Erro ao cadastrar: " + data.erro); // Exibe a mensagem de erro
+        } else {
+            alert("Sucesso! " + data.mensagem); // Exibe a mensagem de sucesso
+            window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes"; // Redireciona após sucesso
+        }
+    })
+    .catch(error => {
+        console.error("Erro ao enviar formulário:", error);
+        alert("Erro ao enviar o formulário. Tente novamente mais tarde.");
+    });
+});

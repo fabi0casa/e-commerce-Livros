@@ -22,7 +22,7 @@ public class Cliente {
     @Column(name = "cli_id")
     private Integer id;
 
-    @Column(name = "cli_nome", nullable = false, length = 45)
+    @Column(name = "cli_nome", nullable = false, length = 100)
     private String nome;
 
     @Column(name = "cli_data_nascimento", nullable = false)
