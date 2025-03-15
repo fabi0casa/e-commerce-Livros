@@ -19,13 +19,13 @@
         <form id="cadastroClienteForm" th:action="@{/clientes/add}" method="post" th:object="${cliente}">
             <h3>Dados Pessoais</h3>
             <label>Nome Completo:</label>
-            <input type="text" th:field="*{nome}" required>
+            <input type="text" th:field="*{nome}" id="nome" required>
 
             <label>Data de Nascimento:</label>
-            <input type="date" th:field="*{dataNascimento}" required>
+            <input type="date" th:field="*{dataNascimento}" id="dataNascimento" required>
 
             <label>CPF:</label>
-            <input type="text" th:field="*{cpf}" required placeholder="000.000.000-00">
+            <input type="text" th:field="*{cpf}" id="cpf" required placeholder="000.000.000-00">
 
             <label>Gênero:</label>
             <select th:field="*{genero}" required>
@@ -39,10 +39,10 @@
             <h3>Contato</h3>
 
             <label>Número de Telefone:</label>
-            <input type="text" th:field="*{telefone}" required placeholder="Ex: 99999-9999">
+            <input type="text" th:field="*{telefone}" id="telefone" required placeholder="Ex: 99999-9999">
 
             <label>Email:</label>
-            <input type="email" th:field="*{email}" required>
+            <input type="email" th:field="*{email}" id="email" required>
 
             <h3>Senha</h3>
             <label>Senha:</label>
@@ -52,6 +52,7 @@
                     <img src="/img//olhoaberto.png" alt="Mostrar senha">
                 </span>
             </div>
+            <p id="senha-feedback" style="color: red; font-size: 14px;"></p>
 
             <label>Confirmar Senha:</label>
             <div class="password-container">
@@ -71,28 +72,28 @@
             </select>
 
             <label>Tipo de Logradouro:</label>
-            <input type="text" th:field="*{enderecos[0].tipo}" required placeholder="Ex: Rua, Avenida...">
+            <input type="text" th:field="*{enderecos[0].tipo}" id="tipoLogradouro" required placeholder="Ex: Rua, Avenida...">
 
             <label>Logradouro:</label>
-            <input type="text" th:field="*{enderecos[0].logradouro}" required>
+            <input type="text" th:field="*{enderecos[0].logradouro}" id="logradouro" required>
 
             <label>Número:</label>
-            <input type="text" th:field="*{enderecos[0].numero}" required>
+            <input type="text" th:field="*{enderecos[0].numero}" id="numero" required>
 
             <label>Bairro:</label>
-            <input type="text" th:field="*{enderecos[0].bairro}" required>
+            <input type="text" th:field="*{enderecos[0].bairro}" id="bairro" required>
 
             <label>CEP:</label>
-            <input type="text" th:field="*{enderecos[0].cep}" required placeholder="00000-000">
+            <input type="text" th:field="*{enderecos[0].cep}" required id="cep" placeholder="00000-000">
 
             <label>Cidade:</label>
-            <input type="text" th:field="*{enderecos[0].cidade}" required>
+            <input type="text" th:field="*{enderecos[0].cidade}" id="cidade" required>
 
             <label>Estado:</label>
-            <input type="text" th:field="*{enderecos[0].estado}" required>
+            <input type="text" th:field="*{enderecos[0].estado}" id="estado" required>
 
             <label>País:</label>
-            <input type="text" th:field="*{enderecos[0].pais}" required value="Brasil">
+            <input type="text" th:field="*{enderecos[0].pais}" required id="pais" value="Brasil">
 
             <label>Observação (Opcional):</label>
             <textarea></textarea>
@@ -161,6 +162,8 @@
                 img.src = "/img//olhoaberto.png"; // Ícone de "olho aberto"
             }
         }
-    </script>
+        </script>
+        <script src="validarCadastro.js"></script>
+        
 </body>
 </html>
