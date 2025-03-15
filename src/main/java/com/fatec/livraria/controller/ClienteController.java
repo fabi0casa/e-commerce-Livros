@@ -8,6 +8,7 @@ import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Endereco;
 import com.fatec.livraria.service.ClienteService;
 import com.fatec.livraria.service.ClienteValidator;
+import com.fatec.livraria.service.EnderecoService;
 import com.fatec.livraria.service.EnderecoValidator;
 
 import jakarta.validation.ConstraintViolationException;
@@ -17,6 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
@@ -38,6 +40,9 @@ public class ClienteController {
 
     @Autowired
     private EnderecoValidator enderecoValidator;
+
+    @Autowired
+    private EnderecoService enderecoService;
 
     // Listar todos os clientes
     @GetMapping("/all")
@@ -182,6 +187,49 @@ public class ClienteController {
         }
     }    
 
+    //Cadastrar apenas o endereço
+    @PostMapping("/{clienteId}/enderecos/add")
+        public ResponseEntity<?> adicionarEndereco(@PathVariable int clienteId, @RequestBody EnderecoDTO enderecoDTO) {
+            try {
+                // Validar o endereço
+                enderecoValidator.validarEndereco(enderecoDTO);
+
+                // Buscar o cliente pelo ID (Lança exceção se não encontrar)
+                Cliente cliente = clienteService.buscarPorId(clienteId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+
+                // Criando o novo endereço
+                Endereco endereco = new Endereco();
+                endereco.setTipo(enderecoDTO.getTipo());
+                endereco.setLogradouro(enderecoDTO.getLogradouro());
+                endereco.setNumero(enderecoDTO.getNumero());
+                endereco.setBairro(enderecoDTO.getBairro());
+                endereco.setCep(enderecoDTO.getCep());
+                endereco.setCidade(enderecoDTO.getCidade());
+                endereco.setEstado(enderecoDTO.getEstado());
+                endereco.setPais(enderecoDTO.getPais());
+                endereco.setObservacoes(enderecoDTO.getObservacoes());
+                endereco.setResidencial(enderecoDTO.getResidencial());
+                endereco.setEntrega(enderecoDTO.getEntrega());
+                endereco.setCobranca(enderecoDTO.getCobranca());
+                endereco.gerarFraseIdentificadora();
+
+                // Vincula o endereço ao cliente
+                endereco.setCliente(cliente);
+                cliente.getEnderecos().add(endereco);
+
+                // Salvar o novo endereço
+                enderecoService.salvar(endereco);
+
+                return ResponseEntity.status(HttpStatus.CREATED).body("{\"mensagem\": \"Endereço cadastrado com sucesso!\"}");
+            } catch (ConstraintViolationException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+            } catch (ResponseStatusException e) {
+                return ResponseEntity.status(e.getStatusCode()).body("{\"erro\": \"" + e.getReason() + "\"}");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"erro\": \"Erro inesperado ao cadastrar endereço.\"}");
+            }
+    }
 
     // Deletar cliente por ID
     @DeleteMapping("/delete/{id}")

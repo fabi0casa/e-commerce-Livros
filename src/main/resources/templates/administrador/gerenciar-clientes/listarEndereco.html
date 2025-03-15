@@ -30,31 +30,52 @@
 			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
 			Página do Administrador
 	</header>
-    <a th:href ="@{/administrador/gerenciar-clientes/cadastrarEndereco}"><button class="new-client">Cadastrar Novo Endereço</button></a>
+    <a id="cadastrarEndereco"><button class="new-client">Cadastrar Novo Endereço</button></a>
     <a th:href ="@{/administrador/gerenciar-clientes/gerenciarClientes}"><button class="botao-return">Voltar</button></a>
     <div class="container">
         <h2>Gerenciamento de Endereços de 'João Silva'</h2>
 
-        <div class="client-list">
-            <div class="client-item">
-                <div class="client-info">
-                    <div class="client-name">Rua Exemplo, 123 - São Paulo, SP</div>
-                    <div class="client-details">CEP: 01000-000 - Centro</div>
-                </div>
-                <div class="client-actions">
-                    <button onclick="redirecionarEditarEndereco()">Editar</button>
-                </div>
-            </div>
-            <div class="client-item">
-                <div class="client-info">
-                    <div class="client-name">Av. Teste, 456 - Rio de Janeiro RJ</div>
-                    <div class="client-details">CEP: 22000-000 - Copacabana</div>
-                </div>
-                <div class="client-actions">
-                    <button onclick="redirecionarEditarEndereco()">Editar</button>
-                </div>
-            </div>
-        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const clienteId = urlParams.get("clienteId");
+                
+                if (!clienteId) {
+                    alert("ID do cliente não encontrado!");
+                    return;
+                }
+                
+                fetch(`/clientes/${clienteId}`)
+                    .then(response => response.json())
+                    .then(cliente => {
+                        document.querySelector("h2").textContent = `Gerenciamento de Endereços de ${cliente.nome}`;
+                        const listaEnderecos = document.querySelector(".client-list");
+                        listaEnderecos.innerHTML = ""; 
+                        
+                        cliente.enderecos.forEach(endereco => {
+                            const enderecoItem = document.createElement("div");
+                            enderecoItem.classList.add("client-item");
+                            enderecoItem.innerHTML = `
+                                <div class="client-info">
+                                    <div class="client-name">${endereco.fraseIdentificadora}</div>
+                                    <div class="client-details">CEP: ${endereco.cep} - ${endereco.bairro}</div>
+                                </div>
+                                <div class="client-actions">
+                                    <button onclick="redirecionarEditarEndereco(${endereco.id})">Editar</button>
+                                </div>
+                            `;
+                            listaEnderecos.appendChild(enderecoItem);
+                        });
+                        document.getElementById("cadastrarEndereco").href = `/administrador/gerenciar-clientes/cadastrarEndereco?clienteId=${clienteId}`;
+                    })
+                    .catch(error => console.error("Erro ao buscar cliente:", error));
+            });
+    
+            function redirecionarEditarEndereco(enderecoId) {
+                window.location.href = `/administrador/gerenciar-clientes/editarEndereco?enderecoId=${enderecoId}`;
+            }
+        </script>
+        <div class="client-list"></div>
     </div>
 
     <script>
