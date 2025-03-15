@@ -37,7 +37,7 @@ function openClientModal(cliente) {
     document.getElementById("modalNome").textContent = cliente.nome;
     document.getElementById("modalEmail").textContent = cliente.email;
     document.getElementById("modalTelefone").textContent = cliente.telefone;
-    document.getElementById("modalNascimento").textContent = cliente.nascimento;
+    document.getElementById("modalNascimento").textContent = cliente.dataNascimento;
     document.getElementById("modalGenero").textContent = cliente.genero;
     document.getElementById("modalCpf").textContent = cliente.cpf;
     document.getElementById("modalRanking").textContent = cliente.ranking;
