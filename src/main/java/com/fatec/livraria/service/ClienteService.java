@@ -3,6 +3,9 @@ package com.fatec.livraria.service;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.repository.ClienteRepository;
 import com.fatec.livraria.specification.ClienteSpecification;
+
+import jakarta.validation.ConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -25,13 +28,13 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
-    public Optional<Cliente> buscarPorCpf(String cpf) {
-        return clienteRepository.findByCpf(cpf);
-    }
-
     public Cliente salvarCliente(Cliente cliente) throws Exception {
-        if (cliente.getCpf() == null || cliente.getEmail() == null) {
-            throw new Exception("CPF e E-mail são obrigatórios!");
+        if (clienteRepository.existsByCpf(cliente.getCpf())) {
+            throw new ConstraintViolationException("CPF já cadastrado!", null);
+        }
+
+        if (clienteRepository.existsByEmail(cliente.getEmail())) {
+            throw new ConstraintViolationException("E-mail já cadastrado!", null);
         }
     
         try {

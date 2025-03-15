@@ -114,7 +114,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.getElementById("cadastroClienteForm").addEventListener("submit", function (event) {
-    event.preventDefault(); // Evita o redirecionamento padrão do formulário
+    event.preventDefault(); 
+    var senha = document.getElementById("senha").value;
+    var confirmarSenha = document.getElementById("confirmarSenha").value;
+
+    // Verifica se as senhas são iguais
+    if (senha !== confirmarSenha) {
+        event.preventDefault(); // Impede o envio do formulário
+        document.getElementById("senhaModal").style.display = "flex"; // Exibe o modal de erro
+        return; // Impede o envio do formulário para execução posterior
+    }
 
     const formData = new FormData(this);
 
