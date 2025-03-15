@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fatec.livraria.dto.AlterarSenhaDTO;
 import com.fatec.livraria.dto.AtualizarClienteDTO;
 import com.fatec.livraria.dto.ClienteDTO;
 
@@ -41,5 +42,16 @@ public class ClienteValidator {
             throw new ConstraintViolationException(mensagemErro.toString(), violacoes);
         }
     }   
+
+    public void validarAlteracaoSenha(AlterarSenhaDTO alterarSenhaDTO) {
+        Set<ConstraintViolation<AlterarSenhaDTO>> violacoes = validator.validate(alterarSenhaDTO);
+        if (!violacoes.isEmpty()) {
+            StringBuilder mensagemErro = new StringBuilder();
+            for (ConstraintViolation<AlterarSenhaDTO> violacao : violacoes) {
+                mensagemErro.append(violacao.getMessage()).append("\n");
+            }
+            throw new ConstraintViolationException(mensagemErro.toString(), violacoes);
+        }
+    }
 
 }

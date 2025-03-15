@@ -52,6 +52,19 @@ public class ClienteService {
         throw new Exception("Cliente não encontrado!");
     }
 
+    public Cliente atualizarSenha(int clienteId, String novaSenha) throws Exception {
+        Optional<Cliente> optionalCliente = clienteRepository.findById(clienteId);
+        
+        if (optionalCliente.isPresent()) {
+            Cliente cliente = optionalCliente.get();
+            cliente.setSenha(novaSenha);
+            return clienteRepository.save(cliente); // Salva apenas a senha alterada
+        }
+        
+        throw new Exception("Cliente não encontrado!");
+    }
+    
+
     public void excluirCliente(Integer id) {
         clienteRepository.deleteById(id);
     }

@@ -14,7 +14,7 @@
 			Página do Administrador
 	</header>
     <div class="container">
-        <form id="cadastroClienteForm">
+        <form id="alterarSenhaForm">
             <h2>Alterar Senha de 'João Silva'</h2>
             <h3>Trocar Senha</h3>
             <label>Senha Atual:</label>
@@ -27,11 +27,12 @@
 
             <label>Nova Senha:</label>
             <div class="password-container">
-                <input type="password" id="novaSenha" required>
-                <span class="toggle-password" onclick="togglePassword('novaSenha', this)">
+                <input type="password" id="senha" required>
+                <span class="toggle-password" onclick="togglePassword('senha', this)">
                     <img src="/img//olhoaberto.png" alt="Mostrar senha">
                 </span>
             </div>
+            <p id="senha-feedback" style="color: red; font-size: 14px;"></p>
 
             <label>Confirmar Nova Senha:</label>
             <div class="password-container">
@@ -53,32 +54,69 @@
             <button onclick="fecharModalSenha()">OK</button>
         </div>
     </div>
-
+    <script src="validarCadastro.js"></script>
     <script>
-        document.getElementById("cadastroClienteForm").addEventListener("submit", function(event) {
-            var senha = document.getElementById("novaSenha").value;
-            var confirmarSenha = document.getElementById("confirmarSenha").value;
-
-            if (senha !== confirmarSenha) {
-                event.preventDefault(); // Impede o envio do formulário
-                document.getElementById("senhaModal").style.display = "flex"; // Exibe o modal
+        document.getElementById("alterarSenhaForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Impede o envio do formulário
+    
+            const clienteId = new URLSearchParams(window.location.search).get("clienteId");
+            const senhaAtual = document.getElementById("senhaAtual").value;
+            const novaSenha = document.getElementById("senha").value;
+            const confirmarNovaSenha = document.getElementById("confirmarSenha").value;
+    
+            if (!clienteId) {
+                alert("Erro: ID do cliente não encontrado.");
+                return;
             }
+    
+            // Correção: usar novaSenha e confirmarNovaSenha na verificação
+            if (novaSenha !== confirmarNovaSenha) {
+                document.getElementById("senhaModal").style.display = "flex"; // Exibe o modal
+                return;
+            }
+    
+            const dadosSenha = {
+                id: clienteId,
+                senhaAtual: senhaAtual,
+                novaSenha: novaSenha
+            };
+    
+            fetch("/clientes/alterarSenha", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dadosSenha)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.erro) {
+                    alert("Erro ao alterar senha: " + data.erro);
+                } else {
+                    alert("Senha alterada com sucesso!");
+                    window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes";
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao alterar senha:", error);
+                alert("Erro ao alterar senha. Tente novamente.");
+            });
         });
-
+    
         function fecharModalSenha() {
             document.getElementById("senhaModal").style.display = "none"; // Fecha o modal
         }
-
+    
         function cancelarAlteracaoSenha() {
             if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
                 window.history.back(); // Volta para a página anterior
             }
         }
-
+    
         function togglePassword(inputId, icon) {
             var input = document.getElementById(inputId);
             var img = icon.querySelector("img"); // Seleciona a imagem dentro do span
-
+    
             if (input.type === "password") {
                 input.type = "text";
                 img.src = "/img//olhofechado.png"; // Ícone de "olho fechado"
@@ -88,6 +126,7 @@
             }
         }
     </script>
+    
 
 </body>
 </html>

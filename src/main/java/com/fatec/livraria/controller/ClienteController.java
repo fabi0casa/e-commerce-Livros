@@ -1,5 +1,6 @@
 package com.fatec.livraria.controller;
 
+import com.fatec.livraria.dto.AlterarSenhaDTO;
 import com.fatec.livraria.dto.AtualizarClienteDTO;
 import com.fatec.livraria.dto.ClienteDTO;
 import com.fatec.livraria.dto.EnderecoDTO;
@@ -147,6 +148,40 @@ public class ClienteController {
         }
     }
  
+    //Atualizar apenas a senha
+    @PutMapping("/alterarSenha")
+    public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaDTO alterarSenhaDTO) {
+        try {
+            // Validar apenas os campos da alteração de senha
+            clienteValidator.validarAlteracaoSenha(alterarSenhaDTO);
+    
+            // Buscar o cliente pelo ID
+            Optional<Cliente> optionalCliente = clienteService.buscarPorId(alterarSenhaDTO.getId());
+            if (optionalCliente.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"erro\": \"Cliente não encontrado.\"}");
+            }
+    
+            Cliente cliente = optionalCliente.get();
+    
+            // Verificar se a senha atual fornecida está correta
+            if (!cliente.getSenha().equals(alterarSenhaDTO.getSenhaAtual())) { 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"erro\": \"Senha atual incorreta.\"}");
+            }
+    
+            // Atualizar a senha do cliente
+            cliente.setSenha(alterarSenhaDTO.getNovaSenha());
+    
+            // Salvar a nova senha no banco
+            clienteService.atualizarSenha(cliente.getId(), alterarSenhaDTO.getNovaSenha());
+    
+            return ResponseEntity.ok("{\"mensagem\": \"Senha alterada com sucesso!\"}");
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"erro\": \"Erro ao alterar senha.\"}");
+        }
+    }    
+
 
     // Deletar cliente por ID
     @DeleteMapping("/delete/{id}")
