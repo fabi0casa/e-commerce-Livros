@@ -18,13 +18,13 @@
         <form id="cadastroClienteForm">
             <h3>Dados Pessoais</h3>
             <label>Nome Completo:</label>
-            <input type="text" required>
+            <input type="text" id="nome" required>
 
             <label>Data de Nascimento:</label>
-            <input type="date" required>
+            <input type="date" id="dataNascimento" required>
 
             <label>CPF:</label>
-            <input type="text" required placeholder="000.000.000-00">
+            <input type="text" id="cpf" required placeholder="000.000.000-00">
 
             <label>Gênero:</label>
             <select required>
@@ -36,22 +36,12 @@
             </select>
 
             <h3>Contato</h3>
-            <label>Tipo de Telefone:</label>
-            <select required>
-                <option value="">Selecione</option>
-                <option value="celular">Celular</option>
-                <option value="residencial">Residencial</option>
-                <option value="comercial">Comercial</option>
-            </select>
 
-            <label>DDD:</label>
-            <input type="text" required placeholder="Ex: 11">
-
-            <label>Número:</label>
-            <input type="text" required placeholder="Ex: 99999-9999">
+            <label>Número de Telefone:</label>
+            <input type="text" id="telefone" required placeholder="Ex: 99999-9999">
 
             <label>Email:</label>
-            <input type="email" required>
+            <input type="email" id="email" required>
 
             <button type="submit">Salvar Alterações</button>
             <div class="botaoCancelar"><button type="submit" onclick="cancelarEdicao()">Cancelar</button></div>
@@ -65,6 +55,7 @@
             }
         }
     </script>
+    <script src="validarCadastro.js"></script>
 
 </body>
 </html>
