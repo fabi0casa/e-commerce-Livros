@@ -61,7 +61,7 @@
                                     <div class="client-details">CEP: ${endereco.cep} - ${endereco.bairro}</div>
                                 </div>
                                 <div class="client-actions">
-                                    <button onclick="redirecionarEditarEndereco(${endereco.id})">Editar</button>
+                                    <button onclick="redirecionarEditarEndereco(${endereco.id}, ${clienteId})">Editar</button>
                                 </div>
                             `;
                             listaEnderecos.appendChild(enderecoItem);
@@ -71,17 +71,11 @@
                     .catch(error => console.error("Erro ao buscar cliente:", error));
             });
     
-            function redirecionarEditarEndereco(enderecoId) {
-                window.location.href = `/administrador/gerenciar-clientes/editarEndereco?enderecoId=${enderecoId}`;
+            function redirecionarEditarEndereco(enderecoId, clienteId) {
+                window.location.href = `/administrador/gerenciar-clientes/editarEndereco?enderecoId=${enderecoId}&clienteId=${clienteId}`;
             }
         </script>
         <div class="client-list"></div>
     </div>
-
-    <script>
-        function redirecionarEditarEndereco(){
-            window.location.href = "/administrador/gerenciar-clientes/editarEndereco";
-        }
-    </script>
 </body>
 </html>

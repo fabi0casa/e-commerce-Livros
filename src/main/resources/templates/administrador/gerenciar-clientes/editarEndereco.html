@@ -17,40 +17,33 @@
         <h2>Atualização de Endereço</h2>
         <form id="cadastroEnderecoForm">
             <h3>Edição de Endereço</h3>
-            <label>Tipo de Residência:</label>
-            <select required>
-                <option value="">Selecione</option>
-                <option value="casa">Casa</option>
-                <option value="apartamento">Apartamento</option>
-                <option value="outro">Outro</option>
-            </select>
 
             <label>Tipo de Logradouro:</label>
-            <input type="text" required placeholder="Ex: Rua, Avenida...">
+            <input type="text" id="tipoLogradouro" required placeholder="Ex: Rua, Avenida...">
 
             <label>Logradouro:</label>
-            <input type="text" required>
+            <input type="text" id="logradouro" required>
 
             <label>Número:</label>
-            <input type="text" required>
+            <input type="text" id="numero" required>
 
             <label>Bairro:</label>
-            <input type="text" required>
+            <input type="text" id="bairro" required>
 
             <label>CEP:</label>
-            <input type="text" required placeholder="00000-000">
+            <input type="text" id="cep" required placeholder="00000-000">
 
             <label>Cidade:</label>
-            <input type="text" required>
+            <input type="text" id="cidade" required>
 
             <label>Estado:</label>
-            <input type="text" required>
+            <input type="text" id="estado" required>
 
             <label>País:</label>
-            <input type="text" required value="Brasil">
+            <input type="text" id="pais" required value="Brasil">
 
             <label>Observação (Opcional):</label>
-            <textarea></textarea>
+            <textarea id="observacoes"></textarea>
 
             <h3>Tipos de Endereço</h3>
             <label>Usar como Endereço de Residência?</label>
@@ -90,36 +83,139 @@
             <button onclick="fecharModal()">OK</button>
         </div>
     </div>
-
+    <script src="validarCadastro.js"></script>
     <script>
-        document.getElementById("cadastroEnderecoForm").addEventListener("submit", function (event) {
-            let residencia = document.getElementById("residencia").value;
-            let entrega = document.getElementById("entrega").value;
-            let cobranca = document.getElementById("cobranca").value;
-
-            // Verifica se pelo menos um campo tem "Sim"
-            if (residencia === "sim" || entrega === "sim" || cobranca === "sim") {
-
-            } else {
-                event.preventDefault();
-                abrirModal(); // Exibe o modal de erro
+        document.addEventListener("DOMContentLoaded", async function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const enderecoId = urlParams.get("enderecoId");
+    
+            if (!enderecoId) {
+                alert("Erro: Endereço não encontrado!");
+                return;
+            }
+    
+            try {
+                const response = await fetch(`/enderecos/${enderecoId}`);
+                if (!response.ok) throw new Error("Erro ao buscar endereço.");
+    
+                const endereco = await response.json();
+    
+                // Preenchendo os campos do formulário com os dados recebidos
+                document.getElementById("tipoLogradouro").value = endereco.tipo;
+                document.getElementById("logradouro").value = endereco.logradouro;
+                document.getElementById("numero").value = endereco.numero;
+                document.getElementById("bairro").value = endereco.bairro;
+                document.getElementById("cep").value = endereco.cep;
+                document.getElementById("cidade").value = endereco.cidade;
+                document.getElementById("estado").value = endereco.estado;
+                document.getElementById("pais").value = endereco.pais;
+                document.getElementById("observacoes").value = endereco.observacoes || "";
+    
+                document.getElementById("residencia").value = endereco.residencial ? "sim" : "nao";
+                document.getElementById("entrega").value = endereco.entrega ? "sim" : "nao";
+                document.getElementById("cobranca").value = endereco.cobranca ? "sim" : "nao";
+    
+            } catch (error) {
+                console.error("Erro ao carregar endereço:", error);
+                alert("Erro ao carregar os dados do endereço.");
             }
         });
+    
+        document.getElementById("cadastroEnderecoForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Impede o envio tradicional do formulário
+    
+            const urlParams = new URLSearchParams(window.location.search);
+            const enderecoId = urlParams.get("enderecoId");
+            const clienteId = urlParams.get("clienteId");
+    
+            if (!enderecoId) {
+                alert("Erro: Endereço não encontrado!");
+                return;
+            }
 
+            if (!clienteId) {
+                alert("Erro: Cliente não encontrado!");
+                return;
+            }
+    
+            // Capturando valores do formulário
+            let tipoLogradouro = document.getElementById("tipoLogradouro").value;
+            let logradouro = document.getElementById("logradouro").value;
+            let numero = document.getElementById("numero").value;
+            let bairro = document.getElementById("bairro").value;
+            let cep = document.getElementById("cep").value;
+            let cidade = document.getElementById("cidade").value;
+            let estado = document.getElementById("estado").value;
+            let pais = document.getElementById("pais").value;
+            let observacoes = document.getElementById("observacoes").value;
+    
+            // Capturando opções de endereço
+            let residencia = document.getElementById("residencia").value === "sim";
+            let entrega = document.getElementById("entrega").value === "sim";
+            let cobranca = document.getElementById("cobranca").value === "sim";
+    
+            // Verifica se pelo menos um dos tipos foi marcado
+            if (!residencia && !entrega && !cobranca) {
+                abrirModal(); // Exibe o modal de erro
+                return;
+            }
+    
+            // Criando objeto EnderecoDTO
+            let enderecoDTO = {
+                tipo: tipoLogradouro,
+                logradouro: logradouro,
+                numero: numero,
+                bairro: bairro,
+                cep: cep,
+                cidade: cidade,
+                estado: estado,
+                pais: pais,
+                observacoes: observacoes,
+                residencial: residencia,
+                entrega: entrega,
+                cobranca: cobranca
+            };
+    
+            try {
+                // Enviando os dados via fetch para o backend
+                const response = await fetch(`/enderecos/${enderecoId}/update`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(enderecoDTO)
+                });
+    
+                // Tratando a resposta do backend
+                const result = await response.json();
+    
+                if (response.ok) {
+                    alert("Endereço atualizado com sucesso!");
+                    window.location.href = `/administrador/gerenciar-clientes/listarEndereco?clienteId=${clienteId}`;
+                } else {
+                    alert("Erro ao atualizar endereço: " + result.erro);
+                }
+            } catch (error) {
+                alert("Erro inesperado ao atualizar endereço.");
+                console.error("Erro:", error);
+            }
+        });
+    
         function abrirModal() {
             document.getElementById("errorModal").style.display = "flex";
         }
-
+    
         function fecharModal() {
             document.getElementById("errorModal").style.display = "none";
         }
-
+    
         function cancelarCadastro() {
             if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
                 window.history.back(); // Volta para a página anterior
             }
         }
     </script>
+    
 
 </body>
 </html>
