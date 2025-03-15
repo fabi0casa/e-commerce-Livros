@@ -96,7 +96,7 @@
             <input type="text" th:field="*{enderecos[0].pais}" required id="pais" value="Brasil">
 
             <label>Observação (Opcional):</label>
-            <textarea></textarea>
+            <textarea th:field="*{enderecos[0].observacoes}"></textarea>            
 
             <h3>Tipos de Endereço</h3>
             <label>Deseja usar esse Endereço para Entrega?</label>

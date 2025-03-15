@@ -100,6 +100,7 @@ public class ClienteController {
                 endereco.setCobranca(enderecoDTO.getCobranca());
                 endereco.setResidencial(true);
                 endereco.setTipo(enderecoDTO.getTipo());
+                endereco.setObservacoes(enderecoDTO.getObservacoes());
                 endereco.gerarFraseIdentificadora();
 
                 endereco.setCliente(cliente); // Vincula ao cliente
