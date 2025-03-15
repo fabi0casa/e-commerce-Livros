@@ -38,7 +38,7 @@
                         th:data-cliente-id="${cliente.id}">
                         Ver
                     </button>      
-                    <button onclick="openModal('editionModal')">Editar</button>
+                    <button onclick="openEditionModal(this)" th:data-cliente-id="${cliente.id}">Editar</button>
 
                     <button onclick="openConfirmModal(this)" 
                             th:data-id="${cliente.id}" 
@@ -106,12 +106,12 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('editionModal')">&times;</span>
             <h2>Qual operação de edição deseja realizar?</h2>
-            <a th:href="@{/administrador/gerenciar-clientes/editarCliente}"><button>Editar Dados do Cliente</button></a>
-            <a th:href="@{/administrador/gerenciar-clientes/alterarSenha}"><button>Alterar a Senha do Cliente</button></a>
-            <a th:href="@{/administrador/gerenciar-clientes/listarEndereco}"><button>Editar Endereços</button></a>
-            <a th:href="@{/administrador/gerenciar-clientes/cadastrarCartao}"><button>Cadastrar Novo Cartão</button></a>
+            <a id="editarDadosLink"><button>Editar Dados do Cliente</button></a>
+            <a id="alterarSenhaLink"><button>Alterar a Senha do Cliente</button></a>
+            <a id="editarEnderecoLink"><button>Editar Endereços</button></a>
+            <a id="cadastrarCartaoLink"><button>Cadastrar Novo Cartão</button></a>
         </div>
-    </div>
+    </div>    
 
     <script src="gerenciarClientes.js">
     </script>
@@ -124,6 +124,18 @@
                 });
             });
         });
+        function openEditionModal(button) {
+            const clienteId = button.getAttribute("data-cliente-id");
+
+            // Atualiza os links do modal com o ID do cliente
+            document.getElementById("editarDadosLink").href = `/administrador/gerenciar-clientes/editarCliente?clienteId=${clienteId}`;
+            document.getElementById("alterarSenhaLink").href = `/administrador/gerenciar-clientes/alterarSenha?clienteId=${clienteId}`;
+            document.getElementById("editarEnderecoLink").href = `/administrador/gerenciar-clientes/listarEndereco?clienteId=${clienteId}`;
+            document.getElementById("cadastrarCartaoLink").href = `/administrador/gerenciar-clientes/cadastrarCartao?clienteId=${clienteId}`;
+
+            // Abre o modal
+            openModal('editionModal');
+        }
     </script>
 
     
