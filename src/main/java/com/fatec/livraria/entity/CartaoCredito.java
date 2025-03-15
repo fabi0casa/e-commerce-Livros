@@ -44,7 +44,6 @@ public class CartaoCredito {
     @NotNull(message = "A bandeira do cartão é obrigatória.")
     @ManyToOne
     @JoinColumn(name = "crt_ban_id", nullable = false)
-    @JsonIgnore
     private Bandeira bandeira;
 }
 

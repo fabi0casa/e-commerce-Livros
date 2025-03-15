@@ -1,6 +1,9 @@
 package com.fatec.livraria.entity;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +25,7 @@ public class Bandeira {
     private String nome;
 
     @OneToMany(mappedBy = "bandeira")
+    @JsonIgnore
     private List<CartaoCredito> cartoes;
 
     // Construtor que recebe um nome
