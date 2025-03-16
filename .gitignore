@@ -32,6 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
+### python no linux ###
+.venv/
+
 # Arquivos de ambiente
 .env
 
