@@ -3,12 +3,13 @@ package com.fatec.livraria.specification;
 import com.fatec.livraria.entity.Cliente;
 import org.springframework.data.jpa.domain.Specification;
 import jakarta.persistence.criteria.Predicate;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ClienteSpecification {
-    public static Specification<Cliente> filtrarClientes(String nome, String cpf, String telefone, String email, Date dataNascimento, String genero) {
+    public static Specification<Cliente> filtrarClientes(String nome, String cpf, String telefone, String email, LocalDate dataNascimento, String genero) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 

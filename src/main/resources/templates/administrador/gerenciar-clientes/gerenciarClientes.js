@@ -37,7 +37,7 @@ function openClientModal(cliente) {
     document.getElementById("modalNome").textContent = cliente.nome;
     document.getElementById("modalEmail").textContent = cliente.email;
     document.getElementById("modalTelefone").textContent = cliente.telefone;
-    document.getElementById("modalNascimento").textContent = cliente.dataNascimento;
+    document.getElementById("modalNascimento").textContent = formatarData(cliente.dataNascimento);
     document.getElementById("modalGenero").textContent = cliente.genero;
     document.getElementById("modalCpf").textContent = cliente.cpf;
     document.getElementById("modalRanking").textContent = cliente.ranking;
@@ -119,9 +119,8 @@ function openCardModal(cartoes) {
 let clienteIdSelecionado = null; // Variável global para armazenar o ID do cliente
 
 // Abre o modal de confirmação e define o ID e nome do cliente
-function openConfirmModal(button) {
-    clienteIdSelecionado = button.getAttribute("data-id"); // Obtém o ID do cliente
-    const clienteNome = button.getAttribute("data-nome"); // Obtém o nome do cliente
+function openConfirmModal(clienteId, clienteNome) {
+    clienteIdSelecionado = clienteId; // Define o ID do cliente globalmente
 
     document.getElementById("clienteNome").textContent = clienteNome; // Exibe o nome no modal
     openModal('confirmModal'); // Abre o modal
@@ -148,3 +147,98 @@ function inativarCliente() {
     .catch(error => console.error("Erro:", error));
 }
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Simula o clique no botão de pesquisa ao carregar a página
+    document.getElementById("pesquisar").click();
+});
+
+document.getElementById("pesquisar").addEventListener("click", function () {
+    let nome = document.getElementById("nome").value;
+    let email = document.getElementById("email").value;
+    let telefone = document.getElementById("telefone").value;
+    let cpf = document.getElementById("cpf").value;
+    let dataNascimento = document.getElementById("dataNascimento").value;
+    let genero = document.getElementById("genero").value;
+
+    // Converte a string da data para um objeto Date e depois para o formato correto
+    if (dataNascimento) {
+        let dataObj = new Date(dataNascimento);
+        dataNascimento = dataObj.toISOString().split("T")[0]; // Garante formato YYYY-MM-DD
+    }
+
+    console.log("Data formatada para envio:", dataNascimento);
+
+    let url = new URL("/clientes/filtro", window.location.origin);
+    let params = { nome, email, telefone, cpf, dataNascimento, genero };
+
+    Object.keys(params).forEach(key => {
+        if (params[key]) url.searchParams.append(key, params[key]);
+    });
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    console.error("Erro da API:", err);
+                    throw new Error("Erro ao buscar clientes.");
+                });
+            }
+            return response.json();
+        })
+        .then(clientes => {
+            console.log("Resposta da API:", clientes);
+            if (!Array.isArray(clientes)) {
+                console.error("Resposta inesperada da API:", clientes);
+                throw new Error("Formato de resposta inválido.");
+            }
+            atualizarListaClientes(clientes);
+        })
+        .catch(error => console.error("Erro ao buscar clientes:", error));
+});
+
+
+function atualizarListaClientes(clientes) {
+    let clientList = document.getElementById("clientList");
+    clientList.innerHTML = ""; // Limpa a lista
+
+    if (clientes.length === 0) {
+        clientList.innerHTML = "<p>Nenhum cliente encontrado.</p>";
+        return;
+    }
+
+    clientes.forEach(cliente => {
+        let div = document.createElement("div");
+        div.classList.add("client-item");
+
+        div.innerHTML = `
+            <div class="client-info">
+                <div class="client-name">${cliente.nome}</div>
+                <div class="client-details">${cliente.email} - ${cliente.telefone} - ${formatarData(cliente.dataNascimento)}</div>
+            </div>
+            <div class="client-actions">
+                <button onclick="loadClientDetails(${cliente.id})">Ver</button>
+                <button onclick="openEditionModal(${cliente.id})">Editar</button>
+                <button onclick="openConfirmModal(${cliente.id}, '${cliente.nome}')">Inativar</button>
+                <button class="transacoes-btn" data-id="${cliente.id}">Ver Transações</button>
+            </div>
+        `;
+
+        clientList.appendChild(div);
+    });
+
+    // Adiciona evento para os botões de transação
+    document.querySelectorAll(".transacoes-btn").forEach(botao => {
+        botao.addEventListener("click", function () {
+            const clienteId = this.getAttribute("data-id");
+            window.location.href = `/administrador/gerenciar-clientes/transacoes?clienteId=${clienteId}`;
+        });
+    });
+}
+
+// Função para formatar a data corretamente (DD/MM/YYYY)
+function formatarData(data) {
+    if (!data) return "";
+    let partes = data.split("-");
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}

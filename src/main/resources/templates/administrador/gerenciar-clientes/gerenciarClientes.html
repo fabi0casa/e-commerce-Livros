@@ -16,41 +16,20 @@
     <div class="container">
         <h2>Gerenciamento de Clientes</h2>
         <div class="filters">
-            <input type="text" placeholder="Nome do Cliente">
-            <input type="email" placeholder="Email">
-            <input type="tel" placeholder="Telefone">
-            <input type="text" placeholder="CPF">
-            <input type="text" placeholder="Data de Nascimento">
-            <input type="text" placeholder="Gênero">
+            <input type="text" id="nome" placeholder="Nome do Cliente">
+            <input type="email" id="email" placeholder="Email">
+            <input type="tel" id="telefone" placeholder="Telefone">
+            <input type="text" id="cpf" placeholder="CPF">
+            <input type="date" id="dataNascimento">
+            <input type="text" id="genero" placeholder="Gênero">
         </div>
         <div class="filters">
-            <button>Pesquisar</button>
+            <button id="pesquisar">Pesquisar</button>
         </div>
-
-        <div class="client-list">
-            <div class="client-item" th:each="cliente : ${clientes}">
-                <div class="client-info">
-                    <div class="client-name" th:text="${cliente.nome}"></div>
-                    <div class="client-details" th:text="|${cliente.email} - ${cliente.telefone} - ${cliente.dataNascimento}|"></div>
-                </div>
-                    <div class="client-actions">
-                    <button onclick="loadClientDetails(this.dataset.clienteId)" 
-                        th:data-cliente-id="${cliente.id}">
-                        Ver
-                    </button>      
-                    <button onclick="openEditionModal(this)" th:data-cliente-id="${cliente.id}">Editar</button>
-
-                    <button onclick="openConfirmModal(this)" 
-                            th:data-id="${cliente.id}" 
-                            th:data-nome="${cliente.nome}">
-                        Inativar
-                    </button>
-
-                    <button class="transacoes-btn" th:data-id="${cliente.id}">Ver Transações</button>
-                </div>
-            </div>
+        
+        <div class="client-list" id="clientList">
+            <!-- Aqui é preenchido dinamicamente -->
         </div>
-    </div>
 
     <!-- Popups (Modais) -->
     <!-- Modal Principal -->
@@ -124,9 +103,7 @@
                 });
             });
         });
-        function openEditionModal(button) {
-            const clienteId = button.getAttribute("data-cliente-id");
-
+        function openEditionModal(clienteId) {
             // Atualiza os links do modal com o ID do cliente
             document.getElementById("editarDadosLink").href = `/administrador/gerenciar-clientes/editarCliente?clienteId=${clienteId}`;
             document.getElementById("alterarSenhaLink").href = `/administrador/gerenciar-clientes/alterarSenha?clienteId=${clienteId}`;
@@ -136,6 +113,25 @@
             // Abre o modal
             openModal('editionModal');
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let inputData = document.getElementById("dataNascimento");
+            inputData.setAttribute("value", ""); // Evita exibir uma data automática
+
+            inputData.addEventListener("focus", function () {
+                this.type = "date"; // Altera para `date` quando clicar
+            });
+
+            inputData.addEventListener("blur", function () {
+                if (!this.value) {
+                    this.type = "text"; // Volta para `text` se estiver vazio
+                    this.placeholder = "Data de Nascimento"; // Define o placeholder
+                }
+            });
+
+            inputData.dispatchEvent(new Event("blur")); // Aplica no carregamento
+        });
+
     </script>
 
     

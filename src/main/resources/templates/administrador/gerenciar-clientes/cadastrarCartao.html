@@ -127,13 +127,34 @@
             const codigoSegurancaInput = document.getElementById("codigoSeguranca");
             const form = document.getElementById("cadastroCartaoForm");
 
-            // Validação do número do cartão (apenas números, 13 a 19 dígitos)
+            // Validação do número do cartão
             numeroCartaoInput.addEventListener("input", function () {
-                this.value = this.value.replace(/\D/g, ""); // Remove tudo que não for número
-                if (this.value.length > 19) {
-                    this.value = this.value.slice(0, 19);
+                let value = this.value.replace(/\D/g, ""); // Remove tudo que não for número
+
+                // Detecta o tipo de cartão (baseado nos primeiros dígitos)
+                let amexRegex = /^3[47]/; // American Express começa com 34 ou 37
+                let isAmex = amexRegex.test(value);
+
+                // Define limite máximo de caracteres
+                let maxLength = isAmex ? 15 : 16;
+                if (value.length > maxLength) {
+                    value = value.slice(0, maxLength);
                 }
+
+                let formattedValue;
+                if (isAmex) {
+                    // Formato para American Express: XXXX XXXXXX XXXXX
+                    formattedValue = value.replace(/(\d{4})(\d{0,6})?(\d{0,5})?/, function (match, g1, g2, g3) {
+                        return [g1, g2, g3].filter(Boolean).join(" ");
+                    });
+                } else {
+                    // Formato padrão: XXXX XXXX XXXX XXXX
+                    formattedValue = value.replace(/(\d{4})/g, "$1 ").trim();
+                }
+
+                this.value = formattedValue;
             });
+
 
             // Validação do nome impresso (apenas letras e espaços)
             nomeImpressoInput.addEventListener("keypress", function (event) {

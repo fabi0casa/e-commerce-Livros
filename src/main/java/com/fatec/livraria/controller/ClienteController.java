@@ -22,11 +22,11 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/clientes")
@@ -244,11 +244,12 @@ public class ClienteController {
             @RequestParam(required = false) String cpf,
             @RequestParam(required = false) String telefone,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataNascimento,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataNascimento,
             @RequestParam(required = false) String genero) {
 
         List<Cliente> clientes = clienteService.buscarClientesComFiltro(nome, cpf, telefone, email, dataNascimento, genero);
         return ResponseEntity.ok(clientes);
     }
+
 
 }

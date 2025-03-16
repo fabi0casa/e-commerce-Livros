@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +69,7 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    public List<Cliente> buscarClientesComFiltro(String nome, String cpf, String telefone, String email, Date dataNascimento, String genero) {
+    public List<Cliente> buscarClientesComFiltro(String nome, String cpf, String telefone, String email, LocalDate dataNascimento, String genero) {
         return clienteRepository.findAll(ClienteSpecification.filtrarClientes(nome, cpf, telefone, email, dataNascimento, genero));
     }
 }

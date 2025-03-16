@@ -72,6 +72,13 @@ a {
     background-color: #000222d2;
 }
 
+.filters input {
+    width: 100%;
+    max-width: 220px; /* Ajuste conforme necessário */
+    padding: 8px;
+    box-sizing: border-box;
+}
+
 input, button {
     padding: 10px;
     font-size: 16px;

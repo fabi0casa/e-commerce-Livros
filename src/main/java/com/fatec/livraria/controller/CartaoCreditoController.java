@@ -54,7 +54,7 @@ public class CartaoCreditoController {
         try {
             // Validações básicas
             if (cartaoDTO.getNumeroCartao().length() < 13 || cartaoDTO.getNumeroCartao().length() > 19) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", "Número do cartão inválido."));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", "Número do cartão inválido. O número do cartão deve ter no mínimo 13 e no máximo 19 números"));
             }
 
             if (cartaoDTO.getCodigoSeguranca().length() < 3 || cartaoDTO.getCodigoSeguranca().length() > 4) {
