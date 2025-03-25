@@ -4,6 +4,8 @@ import java.util.List;
 import com.fatec.livraria.service.ClienteService;
 import com.fatec.livraria.service.TransacaoClienteService;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,19 +67,26 @@ public class PageController {
         return "/administrador/gerenciar-clientes/transacoes";
     }    
     
-    //listagem automatica das páginas
-    @GetMapping("/{pagina:(?!api).*}") // Evita conflitos com APIs, se houver
-    public String renderizarPagina(@PathVariable String pagina) {
+     @GetMapping("/{pagina:(?!api).*}")
+    public String renderizarPagina(@PathVariable String pagina, Model model, HttpSession session) {
+        adicionarClienteNoModelo(model, session);
         return pagina; // Busca "templates/{pagina}.html"
     }
 
-    @GetMapping("/{dir}/{pagina}") // Para páginas dentro de subpastas
-    public String renderizarPaginaComSubpasta(@PathVariable String dir, @PathVariable String pagina) {
+    @GetMapping("/{dir}/{pagina}")
+    public String renderizarPaginaComSubpasta(@PathVariable String dir, @PathVariable String pagina, Model model, HttpSession session) {
+        adicionarClienteNoModelo(model, session);
         return dir + "/" + pagina; // Busca "templates/{dir}/{pagina}.html"
     }
 
-    @GetMapping("/{dir1}/{dir2}/{pagina}") // Para páginas com duas subpastas
-    public String renderizarPaginaComDuasSubpastas(@PathVariable String dir1, @PathVariable String dir2, @PathVariable String pagina) {
+    @GetMapping("/{dir1}/{dir2}/{pagina}")
+    public String renderizarPaginaComDuasSubpastas(@PathVariable String dir1, @PathVariable String dir2, @PathVariable String pagina, Model model, HttpSession session) {
+        adicionarClienteNoModelo(model, session);
         return dir1 + "/" + dir2 + "/" + pagina; // Busca "templates/{dir1}/{dir2}/{pagina}.html"
+    }
+
+    private void adicionarClienteNoModelo(Model model, HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        model.addAttribute("clienteId", clienteId);
     }
 }

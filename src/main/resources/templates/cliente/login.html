@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../icon.png">
+    <title>Página do Administrador</title>
+    <link rel="stylesheet" href="../administrador/css/menuAdmin.css">
+</head>
+<body>
+    <header>Com qual cliente deseja logar?</header>
+
+    <div class="container">
+        <div class="client-list" id="clientList"></div>
+    </div>
+
+    <script>
+        async function carregarClientes() {
+            try {
+                let response = await fetch('/clientes/all');
+                let clientes = await response.json();
+
+                let clientList = document.getElementById("clientList");
+                clientList.innerHTML = ""; // Limpa a lista
+
+                if (clientes.length === 0) {
+                    clientList.innerHTML = "<p>Nenhum cliente encontrado.</p>";
+                    return;
+                }
+
+                clientes.forEach(cliente => {
+                    let div = document.createElement("div");
+                    div.classList.add("client-item");
+
+                    div.innerHTML = `
+                        <div class="client-info">
+                            <div class="client-name">${cliente.nome}</div>
+                            <div class="client-details">${cliente.email} - ${cliente.telefone} - ${formatarData(cliente.dataNascimento)}</div>
+                        </div>
+                        <div class="client-actions">
+                            <button onclick="logarComo(${cliente.id})">Logar Como</button>
+                        </div>
+                    `;
+
+                    clientList.appendChild(div);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar clientes:", error);
+            }
+        }
+
+        async function logarComo(clienteId) {
+            try {
+                let response = await fetch('/sessao/logar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ clienteId: clienteId })
+                });
+
+                if (response.ok) {
+                    window.location.href = "/cliente/home";
+                } else {
+                    console.error("Erro ao logar como cliente.");
+                }
+            } catch (error) {
+                console.error("Erro na requisição de login:", error);
+            }
+        }
+
+        function formatarData(data) {
+            if (!data) return "";
+            let partes = data.split("-");
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
+        // Carregar os clientes ao carregar a página
+        carregarClientes();
+    </script>
+</body>
+</html>

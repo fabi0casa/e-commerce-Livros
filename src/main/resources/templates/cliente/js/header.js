@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const header = `
         <header>
-						<a th:href="@{/cliente/home}" class="logo"></a>
+			<a th:href="@{/cliente/home}" class="logo"></a>
             <input type="text" class="search-bar" placeholder="Buscar livros..." id="searchInput">
             <div class="header-buttons">
                 <button class="btn" id="notificationBtn">
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </button>
                 <button class="btn" onclick="window.location.href='conta.html'">
 										<img src="/img//account.png" alt="Conta">
-                    <span>Conta</span>
+                    <span id="accountText" >Conta</span>
                 </button>
             </div>
             <div class="notification-popup" id="notificationPopup">
@@ -42,6 +42,25 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
 
     document.body.insertAdjacentHTML("afterbegin", header);
+
+      function atualizarBotaoConta(nomeCliente) {
+        if (nomeCliente) {
+            const primeiroNome = nomeCliente.split(" ")[0]; // Pega apenas o primeiro nome
+            document.getElementById("accountText").textContent = primeiroNome;
+        }
+    }
+
+    // Se o clienteId foi definido no HTML pelo Thymeleaf, já usamos ele para evitar a requisição
+    if (typeof clienteId !== "undefined" && clienteId !== null) {
+        fetch(`/clientes/${clienteId}`)  // Ajuste o endpoint conforme necessário
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.nome) {
+                    atualizarBotaoConta(data.nome);
+                }
+            })
+            .catch(error => console.log("Erro ao buscar cliente:", error));
+    }
 
     // Redirecionamento ao pressionar Enter na barra de busca
     document.getElementById("searchInput").addEventListener("keypress", function(event) {
