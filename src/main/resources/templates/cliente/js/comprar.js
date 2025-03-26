@@ -42,3 +42,8 @@ function aplicarCupom() {
     // Fechar modal
     closeModal("couponModal");
 }
+
+function toggleInput(id) {
+    let input = document.getElementById(id);
+    input.style.display = input.style.display === 'none' ? 'inline-block' : 'none';
+}

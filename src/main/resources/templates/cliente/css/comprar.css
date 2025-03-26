@@ -102,6 +102,14 @@ h4 {
     border: 1px solid #000000;
     cursor: pointer;
 }
+
+.adicionar-btn{
+    background-color: #0026ff0d;
+    color: black;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
+
 /* Modal */
 .modal {
     display: none;
@@ -127,4 +135,53 @@ h4 {
     float: right;
     font-size: 24px;
     cursor: pointer;
+}
+
+#cartoes-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    max-height: 80px; /* Define uma altura máxima */
+    overflow-y: auto; /* Adiciona scrollbar quando necessário */
+    background-color: #f6faff;
+}
+
+.cartao-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 3px;
+    border-bottom: 1px solid #00000088;
+}
+
+.cartao-item:first-child {
+    margin-top: 0px;
+}
+
+.cartao-item:last-child {
+    border-bottom: none;
+}
+
+.cartao-item input[type="number"] {
+    border: 1px solid #000000;
+    width: 80px;
+    height: 7px;
+    margin-left: 10px;
+    visibility: hidden; /* Fica invisível, mas mantém o espaço */
+}
+
+.cartao-item input[type="checkbox"]:checked ~ input[type="number"] {
+    visibility: visible; /* Mostra quando o checkbox for marcado */
+}
+
+#cartoes-container::-webkit-scrollbar {
+    width: 5px;
+}
+#cartoes-container::-webkit-scrollbar-thumb {
+    background: #000314;
+    border-radius: 20px;
+}
+#cartoes-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }

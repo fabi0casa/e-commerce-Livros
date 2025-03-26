@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../icon.png">
+    <title>Cadastrar Endereço</title>
+    <link rel="stylesheet" href="../../administrador/css/menuAdmin.css">
+    <link rel="stylesheet" href="../../administrador/css/formulario.css">
+</head>
+<body>
+    <header style="display: flex; justify-content: center;">
+        <img src="/img//logo.png" style="height: 30px; margin-top: 0.5%; margin-bottom: 0.5%;">
+    </header>
+    </br>
+    <div class="container">
+        <h2 id="tituloEndereco">Novo Endereço para ...</h2>
+        <form id="cadastroEnderecoForm">
+            <h3>Cadastro de novo Endereço</h3>
+
+            <label>Tipo de Logradouro:</label>
+            <input type="text" id="tipoLogradouro" required placeholder="Ex: Rua, Avenida...">
+
+            <label>Logradouro:</label>
+            <input type="text" id="logradouro" required>
+
+            <label>Número:</label>
+            <input type="text" id="numero" required>
+
+            <label>Bairro:</label>
+            <input type="text" id="bairro" required>
+
+            <label>CEP:</label>
+            <input type="text" id="cep" required placeholder="00000-000">
+
+            <label>Cidade:</label>
+            <input type="text" id="cidade" required>
+
+            <label>Estado:</label>
+            <input type="text" id="estado" required>
+
+            <label>País:</label>
+            <input type="text" id="pais" required value="Brasil">
+
+            <label>Observação (Opcional):</label>
+            <textarea></textarea>
+
+            <h3>Tipos de Endereço</h3>
+            <label>Usar como Endereço de Residência?</label>
+            <select id="residencia" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Usar como Endereço de Entrega?</label>
+            <select id="entrega" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Usar como Endereço de Cobrança?</label>
+            <select id="cobranca" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <h6>*O endereço precisa ser pelo menos uma dessas opções acima</h6>
+
+            <button type="submit">Cadastrar Endereço</button>
+            <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
+        </form>
+    </div>
+
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2>Erro!</h2>
+            <p>Você deve selecionar "Sim" em pelo menos um tipo de endereço.</p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+
+    <script src="../../administrador/gerenciar-clientes/validarCadastro.js"></script>
+    <script>
+        document.getElementById("cadastroEnderecoForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Impede o envio tradicional do formulário
+    
+            // Obtendo o ID do cliente da URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const clienteId = urlParams.get("clienteId");
+    
+            if (!clienteId) {
+                alert("Erro: ID do cliente não encontrado!");
+                return;
+            }
+    
+            // Capturando valores do formulário
+            let tipoResidencia = document.querySelector("select").value;
+            let tipoLogradouro = document.querySelectorAll("input")[0].value;
+            let logradouro = document.querySelectorAll("input")[1].value;
+            let numero = document.querySelectorAll("input")[2].value;
+            let bairro = document.querySelectorAll("input")[3].value;
+            let cep = document.querySelectorAll("input")[4].value;
+            let cidade = document.querySelectorAll("input")[5].value;
+            let estado = document.querySelectorAll("input")[6].value;
+            let pais = document.querySelectorAll("input")[7].value;
+            let observacoes = document.querySelector("textarea").value;
+    
+            // Capturando opções de endereço
+            let residencia = document.getElementById("residencia").value === "sim";
+            let entrega = document.getElementById("entrega").value === "sim";
+            let cobranca = document.getElementById("cobranca").value === "sim";
+    
+            // Verifica se pelo menos um dos tipos foi marcado
+            if (!residencia && !entrega && !cobranca) {
+                abrirModal(); // Exibe o modal de erro
+                return;
+            }
+    
+            // Criando objeto EnderecoDTO
+            let enderecoDTO = {
+                tipo: tipoResidencia,
+                logradouro: logradouro,
+                numero: numero,
+                bairro: bairro,
+                cep: cep,
+                cidade: cidade,
+                estado: estado,
+                pais: pais,
+                observacoes: observacoes,
+                residencial: residencia,
+                entrega: entrega,
+                cobranca: cobranca
+            };
+    
+            try {
+                // Enviando os dados via fetch para o backend
+                const response = await fetch(`/clientes/${clienteId}/enderecos/add`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(enderecoDTO)
+                });
+    
+                // Tratando a resposta do backend
+                if (response.ok) {
+                    alert("Endereço cadastrado com sucesso!");
+                    window.location.href = `/administrador/gerenciar-clientes/listarEndereco?clienteId=${clienteId}`;
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.erro || "Erro ao cadastrar endereço.");
+                }
+            } catch (error) {
+                alert("Erro inesperado ao cadastrar endereço.");
+                console.error("Erro:", error);
+            }
+        });
+    
+        function abrirModal() {
+            document.getElementById("errorModal").style.display = "flex";
+        }
+    
+        function fecharModal() {
+            document.getElementById("errorModal").style.display = "none";
+        }
+    
+        function cancelarCadastro() {
+            if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
+                window.history.back(); // Volta para a página anterior
+            }
+        }
+         // Função para buscar e exibir o nome do cliente
+        async function carregarNomeCliente() {
+            // Obtém o clienteId da URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const clienteId = urlParams.get("clienteId");
+
+            if (!clienteId) {
+                console.error("Erro: ID do cliente não encontrado na URL.");
+                return;
+            }
+
+            try {
+                // Requisição ao backend para buscar os dados do cliente
+                const response = await fetch(`/clientes/${clienteId}`);
+                
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar o cliente.");
+                }
+
+                // Converte resposta para JSON
+                const cliente = await response.json();
+
+                // Atualiza o título da página com o nome do cliente
+                document.getElementById("tituloEndereco").textContent = `Novo Endereço para ${cliente.nome}`;
+            } catch (error) {
+                console.error("Erro ao carregar o nome do cliente:", error);
+            }
+        }
+
+        // Chama a função ao carregar a página
+        carregarNomeCliente();
+    </script>
+    
+
+</body>
+</html>
