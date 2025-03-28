@@ -36,64 +36,98 @@
             <button>Pesquisar</button>
         </div>
 
-        <table id="myTable">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Cliente</th>
-                    <th>Livro</th>
-                    <th>Quantidade</th>
-                    <th>Valor</th>
-                    <th>Forma de Pagamento</th>
-		            <th>Endereço</th>
-                    <th>Status da Compra</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2025-02-21</td>
-                    <td>João Silva</td>
-                    <td>O Senhor dos Anéis</td>
-                    <td>1</td>
-                    <td>R$ 150,00</td>
-                    <td>Cartão de Crédito</td>
-                    <td>Rua Exemplo, 123 - São Paulo, SP</td>
-                    <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
-                    <td>
-                        <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
-                        <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2025-02-20</td>
-                    <td>Maria Oliveira</td>
-                    <td>1984</td>
-                    <td>2</td>
-                    <td>R$ 250,00</td>
-                    <td>Cupom</td>
-		            <td>Av. Teste, 456 - Rio de Janeiro RJ</td>
-                    <td class="status-cell"><span class="status-btn transito">Em Transporte</span></td>
-                    <td>
-                        <button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2025-02-19</td>
-                    <td>Lucas Souza</td>
-                    <td>Dom Quixote</td>
-                    <td>1</td>
-                    <td>R$ 75,00</td>
-                    <td>Cartão de Crédito</td>
-		            <td>Av. Teste, 458 - Rio de Janeiro RJ</td>
-                    <td class="status-cell"><span class="status-btn troca">Em Troca</span></td>
-                    <td>
-                        <button class="status-btn processando" onclick="confirmarAcao(this, 'Trocado', true)">Autorizar Troca</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="pedido-list">
+            <div class="pedido-item">
+                <div class="pedido-info">
+                    <div class="pedido-name"> Pedido Nº 202503011239812789</div>
+                    <div class="pedido-details">01/03/2025 - 3 produtos</div>
+                </div>
+                <div class="pedido-actions">
+                    <button onclick="openModal('modalTabela')">Ver</button>
+                </div>
+            </div>
 
+            <div class="pedido-item">
+                <div class="pedido-info">
+                    <div class="pedido-name"> Pedido Nº 202503017896542357</div>
+                    <div class="pedido-details">01/03/2025 - 5 produtos</div>
+                </div>
+                <div class="pedido-actions">
+                    <button onclick="openModal('modalTabela')">Ver</button>
+                </div>
+            </div>
+
+            <div class="pedido-item">
+                <div class="pedido-info">
+                    <div class="pedido-name"> Pedido Nº 202503014872450989</div>
+                    <div class="pedido-details">01/03/2025 - 1 produtos</div>
+                </div>
+                <div class="pedido-actions">
+                    <button onclick="openModal('modalTabela')">Ver</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Modal de amostragem da tabela-->
+    <div id="modalTabela" class="modal-tabela">
+        <div class="modal-tabela-content">
+            <span class="close" onclick="closeModal('modalTabela')">&times;</span>
+            <h2>Pedido Nº 202503011239812789</h2>
+            <p><strong>Cliente:</strong> <span id="modalNome">João Silva</span></p>
+            <p><strong>Data:</strong> <span id="modalEmail">01/03/2025</span></p>
+            <table id="myTable">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Livro</th>
+                        <th>Valor</th>
+                        <th>Forma de Pagamento</th>
+                        <th>Endereço</th>
+                        <th>Status da Compra</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-02-21</td>
+                        <td>O Senhor dos Anéis</td>
+                        <td>R$ 150,00</td>
+                        <td>Cartão de Crédito</td>
+                        <td>Rua Exemplo, 123 - São Paulo, SP</td>
+                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
+                        <td>
+                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
+                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2025-02-20</td>
+                        <td>1984</td>
+                        <td>R$ 250,00</td>
+                        <td>Cupom</td>
+                        <td>Av. Teste, 456 - Rio de Janeiro RJ</td>
+                        <td class="status-cell"><span class="status-btn transito">Em Transporte</span></td>
+                        <td>
+                            <button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2025-02-19</td>
+                        <td>Dom Quixote</td>
+                        <td>R$ 75,00</td>
+                        <td>Cartão de Crédito</td>
+                        <td>Av. Teste, 458 - Rio de Janeiro RJ</td>
+                        <td class="status-cell"><span class="status-btn troca">Em Troca</span></td>
+                        <td>
+                            <button class="status-btn processando" onclick="confirmarAcao(this, 'Trocado', true)">Autorizar Troca</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Modal de Confirmação -->
@@ -111,88 +145,7 @@
         </div>
     </div>
 
-    <script>
-        function checkZoomAndSize() {
-            let table = document.getElementById("myTable");
-
-            // Condições para reduzir a fonte
-            let isZoomed = window.devicePixelRatio >= 1.75;
-            let isSmallScreen = window.innerWidth <= 1100; // Ajuste conforme necessário
-
-            if (isZoomed || isSmallScreen) {
-                table.classList.add("zoomed");
-            } else {
-                table.classList.remove("zoomed");
-            }
-        }
-
-        // Checa ao carregar e quando a tela redimensiona
-        window.addEventListener("load", checkZoomAndSize);
-        window.addEventListener("resize", checkZoomAndSize);
-
-
-        let botaoClicado;
-        let novoStatus;
-        let precisaCheckbox = false;
-
-        function confirmarAcao(botao, status, checkbox = false) {
-            botaoClicado = botao;
-            novoStatus = status;
-            precisaCheckbox = checkbox;
-
-            document.getElementById("modalText").innerText = `Deseja realmente alterar o status para "${status}"?`;
-            document.getElementById("checkboxContainer").style.display = checkbox ? "block" : "none";
-            document.getElementById("modalConfirmacao").style.display = "flex";
-        }
-
-        function fecharModal() {
-            document.getElementById("modalConfirmacao").style.display = "none";
-        }
-
-        document.getElementById("confirmarBtn").addEventListener("click", function() {
-            alterarStatus(botaoClicado, novoStatus);
-            fecharModal();
-        });
-
-        function alterarStatus(botao, status) {
-            let row = botao.closest("tr");
-            let statusCell = row.querySelector(".status-cell");
-            let actionsCell = botao.closest("td");
-
-            if (!statusCell || !actionsCell) return;
-
-            statusCell.innerHTML = `<span class="status-btn ${getClass(status)}">${status}</span>`;
-            actionsCell.innerHTML = novoBotao(status);
-        }
-
-        function novoBotao(status) {
-            switch (status) {
-                case "Aprovada":
-                    return `<button class="status-btn transito" onclick="confirmarAcao(this, 'Em Transporte')">Despachar</button>`;
-                case "Reprovada":
-                    return "";
-                case "Em Transporte":
-                    return `<button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>`;
-                case "Entregue":
-                    return `<span class="status-btn finalizado">Finalizado</span>`;
-                case "Trocado":
-                    return `<span class="status-btn troca-autorizada">Troca Autorizada</span>`;
-                default:
-                    return "";
-            }
-        }
-
-        function getClass(status) {
-            switch (status) {
-                case "Em Processamento": return "processando";
-                case "Aprovada": return "aprovado";
-                case "Reprovada": return "reprovado";
-                case "Em Transporte": return "transito";
-                case "Entregue": return "entregue";
-                case "Trocado": return "troca";
-                default: return "";
-            }
-        }
+    <script src="gerenciarVendas.js">
     </script>
 </body>
 </html>

@@ -2,12 +2,49 @@ document.addEventListener("DOMContentLoaded", function() {
     const contaPedidos = `
             <div id="pedidos" class="secao">
                 <h2>Meus Pedidos</h2>
+                <div class="pedido-list">
+                    <div class="pedido-item">
+                        <div class="pedido-info">
+                            <div class="pedido-name"> Pedido Nº 202503011239812789</div>
+                            <div class="pedido-details">01/03/2025 - 3 produtos</div>
+                        </div>
+                        <div class="pedido-actions">
+                            <button onclick="openModal('modalTabela')">Ver</button>
+                        </div>
+                    </div>
+
+                    <div class="pedido-item">
+                        <div class="pedido-info">
+                            <div class="pedido-name"> Pedido Nº 202503017896542357</div>
+                            <div class="pedido-details">01/03/2025 - 5 produtos</div>
+                        </div>
+                        <div class="pedido-actions">
+                            <button onclick="openModal('modalTabela')">Ver</button>
+                        </div>
+                    </div>
+
+                    <div class="pedido-item">
+                        <div class="pedido-info">
+                            <div class="pedido-name"> Pedido Nº 202503014872450989</div>
+                            <div class="pedido-details">01/03/2025 - 1 produtos</div>
+                        </div>
+                        <div class="pedido-actions">
+                            <button onclick="openModal('modalTabela')">Ver</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+             <!-- Modal de amostragem da tabela-->
+            <div id="modalTabela" class="modal-tabela">
+                <div class="modal-tabela-content">
+                <span class="close" onclick="closeModal('modalTabela')">&times;</span>
+                <h2>Pedido Nº 202503011239812789</h2>
                 <table id="myTable">
                     <thead>
                         <tr>
                             <th>Data</th>
                             <th>Livro</th>
-                            <th>Quantidade</th>
                             <th>Valor</th>
                             <th>Forma de Pagamento</th>
                             <th>Endereço</th>
@@ -19,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         <tr>
                             <td>2025-02-21</td>
                             <td>O Senhor dos Anéis</td>
-                            <td>1</td>
                             <td>R$ 150,00</td>
                             <td>Cartão de Crédito</td>
                             <td>Rua Exemplo, 123 - São Paulo, SP</td>
@@ -30,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         <tr>
                             <td>2025-02-20</td>
                             <td>1984</td>
-                            <td>2</td>
                             <td>R$ 250,00</td>
                             <td>Cupom</td>
                             <td>Av. Teste, 456 - Rio de Janeiro RJ</td>
@@ -41,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         <tr>
                             <td>2025-02-19</td>
                             <td>Dom Quixote</td>
-                            <td>1</td>
                             <td>R$ 75,00</td>
                             <td>Cartão de Crédito</td>
                             <td>Av. Teste, 458 - Rio de Janeiro RJ</td>
@@ -52,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
             <!-- Modal de Confirmação -->
             <div id="modalConfirmacao" class="modal">

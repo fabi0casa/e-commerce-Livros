@@ -151,3 +151,77 @@ th {
     overflow: visible; /* Impede que o texto ultrapasse os limites do contêiner */
 }
 
+.pedido-list {
+    width: 100%;
+}
+
+.pedido-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #7cffa85a;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.pedido-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.pedido-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.pedido-details {
+    font-size: 14px;
+    color: #000000;
+    margin-top: 5px;
+}
+
+.pedido-actions button {
+    background-color: #d1ffdf;
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.modal-tabela {
+    display: none; /* Agora começa invisível */
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Conteúdo do Modal */
+.modal-tabela-content {
+    max-height: 70vh; /* Define a altura máxima como 70% da tela */
+    overflow-y: auto; /* Adiciona a barra de rolagem vertical quando necessário */
+    background-color: white;
+    padding: 20px;
+    max-width: 150vh;
+    border-radius: 8px;
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+.modal-tabela-content::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.modal-tabela-content::-webkit-scrollbar-thumb {
+    background: #000222;
+    border-radius: 20px;
+}
+.modal-tabela-content::-webkit-scrollbar-track {
+    background: #00022225;
+}
