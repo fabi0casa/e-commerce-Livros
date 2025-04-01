@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.key === "Enter") {
             event.preventDefault();
             let query = encodeURIComponent(this.value);
-            window.location.href = "buscar.html?q=" + query;
+            window.location.href = "/cliente/buscar?q=" + query;
         }
     });
 
