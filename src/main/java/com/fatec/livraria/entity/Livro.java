@@ -18,6 +18,9 @@ public class Livro {
     @Column(name = "lvr_id")
     private Integer id;
 
+    @Column(name = "lvr_nome", nullable = false, length = 255)
+    private String nome;
+
     @Column(name = "lvr_ano_publicacao", nullable = false)
     private Integer anoPublicacao;
 
