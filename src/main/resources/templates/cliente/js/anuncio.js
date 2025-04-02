@@ -71,6 +71,41 @@ async function carregarLivro() {
     }
 }
 
+async function adicionarAoCarrinho() {
+    const params = new URLSearchParams(window.location.search);
+    const livroId = params.get("livroId"); // Pegando o livroId da URL
+    const clienteId = window.clienteId; // Pegando o clienteId do Thymeleaf
+    const quantidade = document.getElementById("quantidade").value; // Pegando a quantidade informada pelo usuário
+
+    if (!clienteId) {
+        alert("É necessário estar logado para adicionar itens ao carrinho.");
+        return;
+    }
+
+    if (!livroId || !quantidade || quantidade < 1) {
+        alert("Quantidade inválida ou livro não encontrado.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/carrinho/adicionar", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ clienteId, livroId, quantidade })
+        });
+
+        if (response.ok) {
+            alert("Livro adicionado ao carrinho com sucesso!");
+        } else {
+            const errorText = await response.text();
+            console.error("Erro ao adicionar ao carrinho:", errorText);
+            alert("Não foi possível adicionar ao carrinho.");
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Ocorreu um erro ao tentar adicionar ao carrinho.");
+    }
+}
 
 
 // Chama a função quando a página carregar

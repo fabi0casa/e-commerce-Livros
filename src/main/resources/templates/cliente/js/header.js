@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Se o clienteId foi definido no HTML pelo Thymeleaf, já usamos ele para evitar a requisição
     if (typeof clienteId !== "undefined" && clienteId !== null) {
-        fetch(`/clientes/${clienteId}`)  // Ajuste o endpoint conforme necessário
+        fetch(`/clientes/${clienteId}`)
             .then(response => response.json())
             .then(data => {
                 if (data && data.nome) {
