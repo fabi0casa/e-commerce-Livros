@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../icon.png">
-    <title>Os Elementos</title>
+    <title>Anúncio</title>
     <link rel="stylesheet" href="css/livraria.css">
     <link rel="stylesheet" href="css/chatbot.css">
     <link rel="stylesheet" href="css/anuncio.css">
+    <script th:inline="javascript">
+        var clienteId = /*[[${clienteId}]]*/ null;
+    </script>   
 </head>
 <body>
     <script src="js/header.js"></script>
@@ -15,42 +18,44 @@
     <div class="anuncio-container">
         <div class="produto-container">
             <div class="imagem-produto">
-                <img src="/books//Os Elementos.png" alt="Capa do livro Os Elementos">
+                <img id="livro-imagem" src="" alt="Capa do livro">
             </div>
             <div class="detalhes-produto">
-                <h6>12 unidades em Estoque</h6>
-                <h1>Os Elementos</h1>
-                <div class="preco">R$ 89,90</div>
+                <h6 id="estoque">12 unidades em Estoque</h6>
+                <h1 id="livro-nome">Carregando...</h1>
+                <div class="preco" id="livro-preco">R$ --,--</div>
 
                 <div class="acoes-produto">
                     <label for="quantidade">Quantidade:</label>
                     <input type="number" id="quantidade" name="quantidade" value="1" min="1" max="12">
-										<form th:action="@{/cliente/pagamento/comprar}" method="get">
-										    <button class="btn-comprar" type="submit">Comprar</button>
-										</form>
+                    <form th:action="@{/cliente/pagamento/comprar}" method="get">
+                        <button class="btn-comprar" type="submit">Comprar</button>
+                    </form>
 
-										<form th:action="@{/cliente/carrinho}" method="get">
-										    <button class="btn-carrinho" type="submit">Adicionar ao Carrinho</button>
-										</form>
+                    <form th:action="@{/cliente/carrinho}" method="get">
+                        <button class="btn-carrinho" type="submit">Adicionar ao Carrinho</button>
+                    </form>
                 </div>
             </div>
         </div>
         <div class="detalhes-produto-adicionais">
             <div class="sinopse">
                 <h2>Sinopse</h2>
-                <p>"Os Elementos" é uma das obras matemáticas mais influentes da história. Escrito por Euclides por volta de 300 a.C., o livro compila e sistematiza conhecimentos sobre geometria e teoria dos números, estabelecendo a base da matemática moderna.</p>
+                <p id="livro-sinopse">Carregando sinopse...</p>
             </div>
-            <div class="detalhes-adicionais">
-                <p><strong>Autor:</strong> Euclides</p>
-                <p><strong>Editora:</strong> Clássicos da Matemática</p>
-                <p><strong>Categoria:</strong> Matemática, Geometria</p>
-                <p><strong>Ano de Publicação:</strong> 300 a.C.</p>
-                <p><strong>Edição:</strong> 1ª</p>
-                <p><strong>ISBN:</strong> 978-85-9999-000-0</p>
-                <p><strong>Número de Páginas:</strong> 465</p>
+            <div class="detalhes-adicionais" id="livro-detalhes">
+                <p><strong>Autor:</strong> --</p>
+                <p><strong>Editora:</strong> --</p>
+                <p><strong>Fornecedor:</strong> --</p>
+                <p><strong>Ano de Publicação:</strong> --</p>
+                <p><strong>Edição:</strong> --</p>
+                <p><strong>ISBN:</strong> --</p>
+                <p><strong>Número de Páginas:</strong> --</p>
             </div>
         </div>
     </div>
+
+    <script src="js/anuncio.js"></script>
 
     <script src="js/chatbot.js"></script>
 

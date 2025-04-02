@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const header = `
         <header>
-			<a th:href="@{/cliente/home}" class="logo"></a>
+			<a href="/cliente/home" class="logo"></a>
             <input type="text" class="search-bar" placeholder="Buscar livros..." id="searchInput">
             <div class="header-buttons">
                 <button class="btn" id="notificationBtn">

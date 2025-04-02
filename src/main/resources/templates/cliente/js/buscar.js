@@ -28,7 +28,7 @@ async function buscarLivros() {
 
         livros.forEach(livro => {
             const card = document.createElement("a");
-            card.href = "/cliente/anuncio"; // Pode ser ajustado para um link dinâmico, se necessário
+            card.href = `/cliente/anuncio?livroId=${livro.id}`;
             card.classList.add("product-card");
             
             card.innerHTML = `
