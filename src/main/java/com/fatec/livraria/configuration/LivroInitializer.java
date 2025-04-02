@@ -17,24 +17,28 @@ public class LivroInitializer {
     private final EditoraRepository editoraRepository;
     private final FornecedorRepository fornecedorRepository;
     private final GrupoPrecificacaoRepository grupoPrecificacaoRepository;
+    private final CarrinhoRepository carrinhoRepository;
 
     public LivroInitializer(
         LivroRepository livroRepository,
         AutorRepository autorRepository,
         EditoraRepository editoraRepository,
         FornecedorRepository fornecedorRepository,
-        GrupoPrecificacaoRepository grupoPrecificacaoRepository
+        GrupoPrecificacaoRepository grupoPrecificacaoRepository,
+        CarrinhoRepository carrinhoRepository
     ) {
         this.livroRepository = livroRepository;
         this.autorRepository = autorRepository;
         this.editoraRepository = editoraRepository;
         this.fornecedorRepository = fornecedorRepository;
         this.grupoPrecificacaoRepository = grupoPrecificacaoRepository;
+        this.carrinhoRepository = carrinhoRepository;
     }
 
     @PostConstruct
     public void inicializarLivros() {
         // Exclui todos os livros antes de cadastrar novamente
+        carrinhoRepository.deleteAll();
         livroRepository.deleteAll();
 
         // Pegando os registros das entidades relacionadas
