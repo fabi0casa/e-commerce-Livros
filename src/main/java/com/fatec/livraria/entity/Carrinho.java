@@ -3,7 +3,6 @@ package com.fatec.livraria.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -21,9 +20,6 @@ public class Carrinho {
 
     @Column(name = "car_quantidade", nullable = false)
     private Integer quantidade;
-
-    @Column(name = "car_valor", nullable = false, precision = 10, scale = 2)
-    private BigDecimal valor;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "car_data", nullable = false)
