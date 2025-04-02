@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="btn" onclick="window.location.href='carrinho.html'">
 										<img src="/img//cart.png" alt="Carrinho">
                     <span>Carrinho</span>
-                    <span class="cart-badge">2</span>
+                    <span class="cart-badge" id="cartBadge">0</span> <!-- Começa como 0 -->
                 </button>
                 <button class="btn" onclick="window.location.href='conta.html'">
 										<img src="/img//account.png" alt="Conta">
@@ -43,12 +43,40 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.body.insertAdjacentHTML("afterbegin", header);
 
-      function atualizarBotaoConta(nomeCliente) {
+    function atualizarBotaoConta(nomeCliente) {
         if (nomeCliente) {
             const primeiroNome = nomeCliente.split(" ")[0]; // Pega apenas o primeiro nome
             document.getElementById("accountText").textContent = primeiroNome;
         }
     }
+
+    function atualizarCarrinho() {
+        const cartBadge = document.getElementById("cartBadge");
+        if (!cartBadge) return;
+    
+        // Se clienteId estiver disponível, busca os dados
+        if (typeof clienteId !== "undefined" && clienteId !== null) {
+            fetch(`/carrinho/${clienteId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Erro ao buscar carrinho");
+                    return response.json();
+                })
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        // Calcula a soma das quantidades dos produtos no carrinho
+                        const totalQuantidade = data.reduce((soma, item) => soma + (item.quantidade || 0), 0);
+                        cartBadge.textContent = totalQuantidade.toString();
+                    } else {
+                        cartBadge.textContent = "0"; // Se a resposta não for uma lista, exibe 0
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar carrinho:", error);
+                    cartBadge.textContent = "0"; // Em caso de erro, exibe 0
+                });
+        }
+    }
+    
 
     // Se o clienteId foi definido no HTML pelo Thymeleaf, já usamos ele para evitar a requisição
     if (typeof clienteId !== "undefined" && clienteId !== null) {
@@ -60,6 +88,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
             .catch(error => console.log("Erro ao buscar cliente:", error));
+
+        atualizarCarrinho();
     }
 
     // Redirecionamento ao pressionar Enter na barra de busca
