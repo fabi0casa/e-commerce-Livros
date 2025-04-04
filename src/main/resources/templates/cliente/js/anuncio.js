@@ -96,6 +96,7 @@ async function adicionarAoCarrinho() {
 
         if (response.ok) {
             alert("Livro adicionado ao carrinho com sucesso!");
+            window.location.href = "/cliente/carrinho";
         } else {
             const errorText = await response.text();
             console.error("Erro ao adicionar ao carrinho:", errorText);
