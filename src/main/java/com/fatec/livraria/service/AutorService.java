@@ -22,7 +22,17 @@ public class AutorService {
                 new Autor(null, "J.R.R. Tolkien"),
                 new Autor(null, "Johan Konings"),
                 new Autor(null, "Euclides"),
-                new Autor(null, "Jeff Kinney")
+                new Autor(null, "Jeff Kinney"),
+                new Autor(null, "Antoine de Saint-Exupéry"),
+                new Autor(null, "George Orwell"),
+                new Autor(null, "Mojang Studios"),
+                new Autor(null, "Vários Autores"),
+                new Autor(null, "Machado de Assis"),
+                new Autor(null, "Editora Europa"),
+                new Autor(null, "J.K. Rowling"),
+                new Autor(null, "Dan Brown"),
+                new Autor(null, "Yuval Noah Harari"),
+                new Autor(null, "William P. Young")
             );
             autorRepository.saveAll(autores);
             System.out.println("✅ Autores cadastrados automaticamente.");
