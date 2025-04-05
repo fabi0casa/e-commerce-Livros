@@ -96,7 +96,26 @@ async function finalizarCompra() {
         return;
     }
 
-    const vendas = cartoesSelecionados.map((checkbox, index) => {
+    // 🔽 BUSCAR DADOS DO LIVRO
+    let precoVenda;
+    try {
+        const livroResp = await fetch(`/livros/${livroId}`);
+        if (!livroResp.ok) throw new Error("Livro não encontrado.");
+
+        const livro = await livroResp.json();
+        precoVenda = livro.precoVenda;
+
+        if (isNaN(precoVenda)) throw new Error("Preço de venda inválido.");
+    } catch (error) {
+        console.error("Erro ao buscar o livro:", error);
+        alert("Erro ao buscar informações do livro.");
+        return;
+    }
+
+    // 🔽 MONTAR AS VENDAS COM BASE NA QUANTIDADE
+    const vendas = [];
+
+    cartoesSelecionados.forEach((checkbox, index) => {
         const valorInput = document.getElementById(`valor${index + 1}`);
         const valor = parseFloat(valorInput.value);
         if (isNaN(valor) || valor <= 0) {
@@ -104,10 +123,13 @@ async function finalizarCompra() {
             throw new Error("Valor inválido");
         }
 
-        return {
-            formaPagamento: `Cartão ${checkbox.value} - R$ ${valor.toFixed(2)}`,
-            livroId: livroId
-        };
+        for (let i = 0; i < quantidade; i++) {
+            vendas.push({
+                formaPagamento: `Cartão ${checkbox.value} - R$ ${valor.toFixed(2)}`,
+                livroId: livroId,
+                valor: precoVenda
+            });
+        }
     });
 
     const pedidoPayload = {
@@ -116,7 +138,7 @@ async function finalizarCompra() {
         vendas: vendas
     };
 
-    console.log("Enviando pedido:", pedidoPayload); // log útil
+    console.log("Enviando pedido:", pedidoPayload);
 
     try {
         const response = await fetch("/pedidos/add", {
@@ -141,6 +163,8 @@ async function finalizarCompra() {
         alert("Erro ao finalizar a compra.");
     }
 }
+
+
 
 
 

@@ -30,6 +30,9 @@ public class Venda {
     @Column(name = "vnd_status", nullable = false, length = 35)
     private String status;
 
+    @Column(name = "vnd_valor", nullable = false)
+    private Double valor;
+
     @ManyToOne
     @JoinColumn(name = "vnd_lvr_id", nullable = false)
     private Livro livro;

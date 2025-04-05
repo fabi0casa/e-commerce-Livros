@@ -69,6 +69,7 @@ public class PedidoController {
             venda.setDataHora(new Date());
             venda.setFormaPagamento(vendaReq.getFormaPagamento());
             venda.setStatus("Em Processamento");
+            venda.setValor(vendaReq.getValor());
 
             venda.setLivro(livroRepository.findById(vendaReq.getLivroId())
                     .orElseThrow(() -> new RuntimeException("Livro não encontrado")));
