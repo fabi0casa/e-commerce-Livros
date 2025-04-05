@@ -108,6 +108,19 @@ async function adicionarAoCarrinho() {
     }
 }
 
+function comprarLivro() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const livroId = urlParams.get("livroId");
+    const quantidade = document.getElementById("quantidade").value;
+
+    if (!livroId || !quantidade || quantidade <= 0) {
+        alert("ID do livro ou quantidade inválida.");
+        return;
+    }
+
+    // Redireciona para a rota com os parâmetros
+    window.location.href = `/cliente/pagamento/comprar?livroId=${livroId}&quantidade=${quantidade}`;
+}
 
 // Chama a função quando a página carregar
 document.addEventListener("DOMContentLoaded", carregarLivro);

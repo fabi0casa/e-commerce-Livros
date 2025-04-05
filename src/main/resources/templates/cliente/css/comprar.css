@@ -45,6 +45,13 @@ h4 {
     color: #000;
 }
 
+.cart-info .quantidade {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0px;
+    margin-bottom: 1px;
+}
+
 .cart-summary {
     max-width: 800px;
     margin: 20px auto;
