@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VendaRequest {
-    private Integer livroId;
     private String formaPagamento;
+    private Integer livroId;
 }

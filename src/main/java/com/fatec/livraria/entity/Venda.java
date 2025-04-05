@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "VENDAS")
 @Getter
@@ -25,7 +27,7 @@ public class Venda {
     @Column(name = "vnd_forma_pagamento", nullable = false, length = 45)
     private String formaPagamento;
 
-    @Column(name = "vnd_status", nullable = false, length = 15)
+    @Column(name = "vnd_status", nullable = false, length = 35)
     private String status;
 
     @ManyToOne
@@ -38,5 +40,6 @@ public class Venda {
 
     @ManyToOne
     @JoinColumn(name = "vnd_ped_id", nullable = false)
+    @JsonIgnore
     private Pedido pedido;
 }

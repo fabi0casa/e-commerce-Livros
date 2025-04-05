@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="../css/livraria.css">
     <link rel="stylesheet" href="../css/comprar.css">
     <link rel="stylesheet" href="../css/conta.css">
+    <script th:inline="javascript">
+        var clienteId = /*[[${clienteId}]]*/ null;
+    </script>   
+    <script src="../js/comprar.js" defer></script>
 </head>
 <body>
     <header style="display: flex; justify-content: center;">
@@ -16,38 +20,21 @@
     <main>
         <h1>Pagamento</h1>
 
-        <section class="cart-container">
-            <!-- Itens do carrinho -->
-            <div class="cart-item">
-                <div class="cart-info">
-                    <h3>Os Elementos - Euclides</h3>
-                    <p class="quantidade">Quantidade: 4</p>
-                    <p class="price">R$ 59,90</p>
-                </div>
-                <img src="/books//Os Elementos.png" alt="Livro 2">
-            </div>
-        </section>
+        <div class="cart-container">
+            <!-- Livro será carregado aqui via JS -->
+        </div>
 
         <div class="cart-summary">
             <label>Selecione o Endereço de Entrega</label>
             <select id="endereco" required>
                 <option value="">Selecione</option>
-                <option>Av. Teste, 458 - Rio de Janeiro RJ</option>
+                <!-- os endereços serão carregados aqui via JS -->
             </select>
             <button type="button" class="adicionar-btn" onclick="window.location.href = '/cliente/pagamento/nocoEndereco'">Adicionar novo Endereço</button>
 
             <label>Selecione a Forma de Pagamento</label>
             <div id="cartoes-container">
-                <div class="cartao-item">
-                    <input type="checkbox" id="cartao1" name="cartoes" value="1234">
-                    <label for="cartao1">Cartão **** **** **** 1234</label>
-                    <input type="number" id="valor1" placeholder="Valor" min="1">
-                </div>
-                <div class="cartao-item">
-                    <input type="checkbox" id="cartao2" name="cartoes" value="5678">
-                    <label for="cartao2">Cartão **** **** **** 5678</label>
-                    <input type="number" id="valor2" placeholder="Valor" min="1">
-                </div>
+                <!-- os carttões serão carregados aqui via JS -->
             </div>
             </br>
             <button type="button" class="adicionar-btn" onclick="window.location.href = '/cliente/pagamento/nocoCartao'">Adicionar novo cartão</button>
@@ -65,9 +52,7 @@
                 <h4>Total: <span id="total-compra">R$ 61,70</span></h4>
             </div>
 
-            <form th:action="@{/cliente/conta}" method="get">
-                <button class="checkout-btn" type="submit">Finalizar Compra</button>
-            </form>
+            <button class="checkout-btn" type="submit" onclick="finalizarCompra()">Finalizar Compra</button>
 
         </div>
 
@@ -84,7 +69,5 @@
                 <button onclick="aplicarCupom()">Aplicar</button>
             </div>
         </div>
-
-        <script src="js/comprar.js"></script>
 </body>
 </html>

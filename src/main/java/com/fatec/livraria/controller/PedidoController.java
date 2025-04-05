@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -52,9 +53,12 @@ public class PedidoController {
     @Transactional
     public Pedido criarPedido(@RequestBody PedidoRequest request) {
         Pedido pedido = new Pedido();
-        pedido.setCodigo(UUID.randomUUID().toString());
+
+        pedido.setCodigo(gerarCodigoPedido());
+
         pedido.setCliente(clienteRepository.findById(request.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado")));
+
         pedido.setEndereco(enderecoRepository.findById(request.getEnderecoId())
                 .orElseThrow(() -> new RuntimeException("Endereço não encontrado")));
 
@@ -65,15 +69,19 @@ public class PedidoController {
             venda.setDataHora(new Date());
             venda.setFormaPagamento(vendaReq.getFormaPagamento());
             venda.setStatus("Em Processamento");
+
             venda.setLivro(livroRepository.findById(vendaReq.getLivroId())
                     .orElseThrow(() -> new RuntimeException("Livro não encontrado")));
+
             venda.setEndereco(pedido.getEndereco());
             venda.setPedido(pedido);
+
             vendaRepository.save(venda);
         }
 
         return pedido;
     }
+
 
     @PatchMapping("/venda/{vendaId}/status")
     public Venda atualizarStatusVenda(@PathVariable Integer vendaId, @RequestParam String status) {
@@ -81,5 +89,11 @@ public class PedidoController {
             venda.setStatus(status);
             return vendaRepository.save(venda);
         }).orElseThrow(() -> new RuntimeException("Venda não encontrada"));
-    }
+    }  
+
+    private String gerarCodigoPedido() {
+        String data = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        int aleatorio = (int) (Math.random() * 90000000) + 10000000; // 8 dígitos
+        return data + aleatorio;
+    }  
 }
