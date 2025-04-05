@@ -36,7 +36,7 @@ public class PedidoController {
     @Autowired
     private LivroRepository livroRepository;
 
-    @GetMapping
+    @GetMapping(value = "/all")
     public List<Pedido> listarTodos() {
         return pedidoService.listarTodos();
     }
@@ -48,7 +48,7 @@ public class PedidoController {
         return pedidoService.listarPorCliente(cliente);
     }
 
-    @PostMapping
+    @PostMapping(value = "/add")
     @Transactional
     public Pedido criarPedido(@RequestBody PedidoRequest request) {
         Pedido pedido = new Pedido();
