@@ -40,7 +40,7 @@ public class LivroInitializer {
 
     @PostConstruct
     public void inicializarLivros() {
-        if (livroRepository.count() != 4) {
+        if (livroRepository.count() != 16) {
             // Exclui todos os livros antes de cadastrar novamente
             carrinhoRepository.deleteAll();
             livroRepository.deleteAll();
