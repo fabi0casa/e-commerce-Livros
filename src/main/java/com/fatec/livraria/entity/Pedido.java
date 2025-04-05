@@ -1,5 +1,7 @@
 package com.fatec.livraria.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,4 +28,8 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "ped_cli_id", nullable = false)
     private Cliente cliente;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Venda> vendas;
+
 }
