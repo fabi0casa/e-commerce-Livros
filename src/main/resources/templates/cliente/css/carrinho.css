@@ -30,7 +30,8 @@ h1 {
 .cart-item img {
     width: 100px;
     height: 100px;
-    object-fit: cover;
+    min-width:100px;
+    object-fit: contain;
     border-radius: 5px;
     margin-right: 15px;
 }
