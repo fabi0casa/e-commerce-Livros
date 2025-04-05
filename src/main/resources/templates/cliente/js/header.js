@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     <span>Notificações</span>
                     <span class="notification-badge" id="notificationBadge">3</span>
                 </button>
-                <button class="btn" onclick="window.location.href='carrinho.html'">
+                <button class="btn" onclick="window.location.href='/cliente/carrinho'">
 										<img src="/img//cart.png" alt="Carrinho">
                     <span>Carrinho</span>
                     <span class="cart-badge" id="cartBadge">0</span> <!-- Começa como 0 -->
                 </button>
-                <button class="btn" onclick="window.location.href='conta.html'">
+                <button class="btn" onclick="window.location.href='/cliente/conta'">
 										<img src="/img//account.png" alt="Conta">
                     <span id="accountText" >Conta</span>
                 </button>

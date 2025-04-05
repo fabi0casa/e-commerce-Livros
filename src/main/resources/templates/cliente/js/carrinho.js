@@ -7,14 +7,23 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(`/carrinho/${clienteId}`)
             .then(response => response.json())
             .then(data => {
-                cartContainer.innerHTML = ""; // limpa
+                cartContainer.innerHTML = ""; // limpa o conteúdo
                 let total = 0;
-
+                const checkoutBtn = document.querySelector(".checkout-btn");
+    
+                if (data.length === 0) {
+                    cartContainer.innerHTML = `<p class="empty-message">Carrinho Vazio!</p>`;
+                    totalSpan.textContent = "R$ 0,00";
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.classList.add("disabled");
+                    return;
+                }
+    
                 data.forEach(item => {
                     const preco = item.livro.precoVenda;
                     const subtotal = preco * item.quantidade;
                     total += subtotal;
-
+    
                     const div = document.createElement("div");
                     div.className = "cart-item";
                     div.dataset.carrinhoId = item.id;
@@ -35,12 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     `;
                     cartContainer.appendChild(div);
                 });
-
+    
                 totalSpan.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+                checkoutBtn.disabled = false;
+                checkoutBtn.classList.remove("disabled");
                 adicionarListeners();
             });
     }
-
+    
     function adicionarListeners() {
         document.querySelectorAll(".cart-item").forEach(item => {
             const carrinhoId = item.dataset.carrinhoId;

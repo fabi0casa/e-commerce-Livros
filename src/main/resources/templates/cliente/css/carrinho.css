@@ -88,9 +88,9 @@ h1 {
 }
 
 .checkout-btn {
-    background-color: green;
+    background-color: #5900ff;
     color: white;
-    border: 2px solid #000000;
+    border: 1px solid #000000;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
@@ -98,5 +98,18 @@ h1 {
     transition: 0.5s;
 }
 .checkout-btn:hover{
-    background-color: #5900ff;
+    background-color: #5900ffa1;
+}
+
+.empty-message {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #777;
+    margin: 40px 0;
+}
+
+.checkout-btn.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
 }
