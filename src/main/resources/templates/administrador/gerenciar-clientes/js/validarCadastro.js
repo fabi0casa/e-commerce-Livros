@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
             senhaFeedback.textContent = "";
             senhaInput.style.borderColor = "green"; // Borda verde se válida
         } else {
-            senhaFeedback.innerHTML = "A senha deve ter:<br> - Pelo menos 8 caracteres<br> - Letras maiúsculas e minúsculas<br> - Pelo menos um caractere especial.";
+            senhaFeedback.innerHTML = "A senha deve ter:<br> - Pelo menos 8 caracteres<br> - Letras maiúsculas e minúsculas<br> - Pelo menos um caractere especial.<br> - Pelo menos um número.";
             senhaInput.style.borderColor = "red"; // Borda vermelha se inválida
         }
     });
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Função de validação da senha
 function validarSenha(senha) {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     return regex.test(senha);
 }
 
