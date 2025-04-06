@@ -1,0 +1,10 @@
+.new-client{
+    background-color: rgb(0, 85, 255);
+}
+.client-item {
+    background-color: rgba(175, 243, 255, 0.383);
+}
+
+.client-actions button {
+    background-color: rgba(175, 243, 255, 0.383);
+}
