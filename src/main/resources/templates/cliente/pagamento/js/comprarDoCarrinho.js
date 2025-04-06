@@ -109,35 +109,42 @@ async function finalizarCompra() {
 
     const vendas = [];
 
-    // Distribuição proporcional por cartão
-    let totalItens = carrinhoItens.reduce((sum, item) => sum + item.quantidade, 0);
-    let valorPorItem = totalCompra / totalItens;
-
-    cartoesSelecionados.forEach((checkbox, index) => {
-        const valorInput = document.getElementById(`valor${index + 1}`);
-        const valor = parseFloat(valorInput.value);
-        if (isNaN(valor) || valor <= 0) {
-            alert("Informe valores válidos para os cartões.");
-            throw new Error("Valor inválido");
-        }
-
-        let qtd = Math.round(valor / valorPorItem); // Quantidade proporcional
-        let vendasGeradas = 0;
-
-        for (const item of carrinhoItens) {
-            const { livro, quantidade } = item;
-
-            for (let i = 0; i < quantidade && vendasGeradas < qtd; i++, vendasGeradas++) {
-                vendas.push({
-                    formaPagamento: `Cartão ${checkbox.value} - R$ ${valor.toFixed(2)}`,
-                    livroId: livro.id,
-                    valor: livro.precoVenda
-                });
-            }
-
-            if (vendasGeradas >= qtd) break;
+    // Etapa 1: montar a lista completa de vendas com valor correto
+    carrinhoItens.forEach(item => {
+        const { livro, quantidade } = item;
+        for (let i = 0; i < quantidade; i++) {
+            vendas.push({
+                livroId: livro.id,
+                valor: livro.precoVenda,
+                formaPagamento: "" // será preenchido na etapa 2
+            });
         }
     });
+
+    // Etapa 2: distribuir automaticamente entre os cartões
+    const totalVendas = vendas.reduce((sum, v) => sum + v.valor, 0);
+    const valorPorCartao = totalVendas / cartoesSelecionados.length;
+
+    let vendaIndex = 0;
+
+    cartoesSelecionados.forEach((checkbox, index) => {
+        const formaPagamento = `Cartão`;
+
+        let valorDistribuido = 0;
+
+        while (vendaIndex < vendas.length && valorDistribuido + vendas[vendaIndex].valor <= valorPorCartao + 0.01) {
+            vendas[vendaIndex].formaPagamento = `${formaPagamento} - R$ ${vendas[vendaIndex].valor.toFixed(2)}`;
+            valorDistribuido += vendas[vendaIndex].valor;
+            vendaIndex++;
+        }
+    });
+
+    // Se sobrar alguma venda, atribui ao primeiro cartão
+    for (; vendaIndex < vendas.length; vendaIndex++) {
+        const cartaoId = cartoesSelecionados[0].value;
+        vendas[vendaIndex].formaPagamento = `Cartão ${cartaoId} - R$ ${vendas[vendaIndex].valor.toFixed(2)}`;
+    }
+
 
     const pedidoPayload = {
         clienteId: clienteId,

@@ -143,23 +143,39 @@ async function finalizarCompra() {
 
     // 🔽 MONTAR AS VENDAS COM BASE NA QUANTIDADE
     const vendas = [];
+    for (let i = 0; i < quantidade; i++) {
+        vendas.push({
+            livroId: livroId,
+            valor: precoVenda,
+            formaPagamento: "" // preenchida abaixo
+        });
+    }
+
+    // 🔽 DISTRIBUIR AUTOMATICAMENTE ENTRE OS CARTÕES
+    const totalVendas = vendas.reduce((sum, v) => sum + v.valor, 0);
+    const valorPorCartao = totalVendas / cartoesSelecionados.length;
+
+    let vendaIndex = 0;
 
     cartoesSelecionados.forEach((checkbox, index) => {
-        const valorInput = document.getElementById(`valor${index + 1}`);
-        const valor = parseFloat(valorInput.value);
-        if (isNaN(valor) || valor <= 0) {
-            alert("Informe um valor válido para cada cartão selecionado.");
-            throw new Error("Valor inválido");
-        }
+        const formaPagamento = `Cartão`;
+        let valorDistribuido = 0;
 
-        for (let i = 0; i < quantidade; i++) {
-            vendas.push({
-                formaPagamento: `Cartão ${checkbox.value} - R$ ${valor.toFixed(2)}`,
-                livroId: livroId,
-                valor: precoVenda
-            });
+        while (
+            vendaIndex < vendas.length &&
+            valorDistribuido + vendas[vendaIndex].valor <= valorPorCartao + 0.01
+        ) {
+            vendas[vendaIndex].formaPagamento = `${formaPagamento} - R$ ${vendas[vendaIndex].valor.toFixed(2)}`;
+            valorDistribuido += vendas[vendaIndex].valor;
+            vendaIndex++;
         }
     });
+
+    // Se sobrar alguma venda, atribui ao primeiro cartão
+    for (; vendaIndex < vendas.length; vendaIndex++) {
+        const cartaoId = cartoesSelecionados[0].value;
+        vendas[vendaIndex].formaPagamento = `Cartão ${cartaoId} - R$ ${vendas[vendaIndex].valor.toFixed(2)}`;
+    }
 
     const pedidoPayload = {
         clienteId: parseInt(clienteId),
