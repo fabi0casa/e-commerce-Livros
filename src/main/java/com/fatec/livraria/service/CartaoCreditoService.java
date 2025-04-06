@@ -44,4 +44,14 @@ public class CartaoCreditoService {
             cartaoCreditoRepository.deleteById(id);
         }
     }
+
+    public void removerPreferencialDosOutrosCartoes(Integer clienteId) {
+        List<CartaoCredito> cartoesDoCliente = cartaoCreditoRepository.findByCliente_Id(clienteId);
+        for (CartaoCredito c : cartoesDoCliente) {
+            if (Boolean.TRUE.equals(c.getPreferencial())) {
+                c.setPreferencial(false);
+            }
+        }
+        cartaoCreditoRepository.saveAll(cartoesDoCliente);
+    }
 }

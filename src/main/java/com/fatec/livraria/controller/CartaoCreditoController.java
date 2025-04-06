@@ -78,6 +78,10 @@ public class CartaoCreditoController {
             cartao.setCodigoSeguranca(cartaoDTO.getCodigoSeguranca());
             cartao.setPreferencial(cartaoDTO.isPreferencial());
             cartao.setCliente(clienteOpt.get()); // Obtendo o objeto dentro do Optional
+
+            if (cartaoDTO.isPreferencial()) {
+                cartaoCreditoService.removerPreferencialDosOutrosCartoes(cartaoDTO.getClienteId());
+            }
             
             cartaoCreditoService.salvarCartao(cartaoDTO.getClienteId(), cartao);
 
