@@ -6,7 +6,9 @@ function cancelarCadastro() {
 
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
-    const clienteId = urlParams.get("clienteId");
+    const livroId = urlParams.get("livroId");
+    const quantidade = urlParams.get("quantidade") || 1;
+    const clienteId = window.clienteId;
 
     if (!clienteId) {
         alert("Erro: Cliente não identificado!");
@@ -39,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("bandeira").innerHTML = `<option value="">Erro ao carregar</option>`;
         });
 
+    // Submeter cadastro do cartão
     document.getElementById("cadastroCartaoForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
@@ -58,19 +61,25 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify(cartaoData)
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.erro) {
-                alert("Erro ao cadastrar: " + data.erro);
-            } else {
-                alert("Cartão cadastrado com sucesso!");
-                window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes";
-            }
-        })
-        .catch(error => {
-            console.error("Erro ao enviar formulário:", error);
-            alert("Erro ao enviar o formulário. Tente novamente mais tarde.");
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.erro) {
+                    alert("Erro ao cadastrar: " + data.erro);
+                } else {
+                    alert("Cartão cadastrado com sucesso!");
+
+                    // Redirecionamento baseado nos parâmetros
+                    if (livroId) {
+                        window.location.href = `/cliente/pagamento/comprar?livroId=${livroId}&quantidade=${quantidade}`;
+                    } else {
+                        window.location.href = `/cliente/pagamento/comprarDoCarrinho`;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao enviar formulário:", error);
+                alert("Erro ao enviar o formulário. Tente novamente mais tarde.");
+            });
     });
 });
 
