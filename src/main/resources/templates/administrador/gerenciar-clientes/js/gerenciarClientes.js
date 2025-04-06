@@ -71,7 +71,7 @@ function openAddressModal(enderecos) {
             <p><strong>Cidade:</strong> ${endereco.cidade}</p>
             <p><strong>Estado:</strong> ${endereco.estado}</p>
             <p><strong>País:</strong> ${endereco.pais}</p>
-            <p><strong>Observação:</strong> ${endereco.observacao || "Nenhuma"}</p>
+            <p><strong>Observação:</strong> ${endereco.observacoes || "Nenhuma"}</p>
         `;
 
         button.addEventListener("click", () => {
