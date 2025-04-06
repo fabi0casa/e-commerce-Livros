@@ -242,3 +242,41 @@ function formatarData(data) {
     let partes = data.split("-");
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".transacoes-btn").forEach(botao => {
+        botao.addEventListener("click", function () {
+            const clienteId = this.getAttribute("data-id");
+            window.location.href = `/administrador/gerenciar-clientes/transacoes?clienteId=${clienteId}`;
+        });
+    });
+});
+function openEditionModal(clienteId) {
+    // Atualiza os links do modal com o ID do cliente
+    document.getElementById("editarDadosLink").href = `/administrador/gerenciar-clientes/editarCliente?clienteId=${clienteId}`;
+    document.getElementById("alterarSenhaLink").href = `/administrador/gerenciar-clientes/alterarSenha?clienteId=${clienteId}`;
+    document.getElementById("editarEnderecoLink").href = `/administrador/gerenciar-clientes/listarEndereco?clienteId=${clienteId}`;
+    document.getElementById("cadastrarCartaoLink").href = `/administrador/gerenciar-clientes/cadastrarCartao?clienteId=${clienteId}`;
+
+    // Abre o modal
+    openModal('editionModal');
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    let inputData = document.getElementById("dataNascimento");
+    inputData.setAttribute("value", ""); // Evita exibir uma data automática
+
+    inputData.addEventListener("focus", function () {
+        this.type = "date"; // Altera para `date` quando clicar
+    });
+
+    inputData.addEventListener("blur", function () {
+        if (!this.value) {
+            this.type = "text"; // Volta para `text` se estiver vazio
+            this.placeholder = "Data de Nascimento"; // Define o placeholder
+        }
+    });
+
+    inputData.dispatchEvent(new Event("blur")); // Aplica no carregamento
+});
+
