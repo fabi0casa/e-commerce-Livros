@@ -58,11 +58,10 @@
             </select>
 
             <label>Usar como Endereço de Entrega?</label>
-            <select id="entrega" required>
-                <option value="">Selecione</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
+            <select id="entrega" disabled>
+                <option value="sim" selected>Sim</option>
             </select>
+            <input type="hidden" name="entrega" value="sim">
 
             <label>Usar como Endereço de Cobrança?</label>
             <select id="cobranca" required>
