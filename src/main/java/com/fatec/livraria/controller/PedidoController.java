@@ -6,6 +6,7 @@ import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Venda;
 import com.fatec.livraria.service.PedidoService;
+import com.fatec.livraria.repository.PedidoRepository;
 import com.fatec.livraria.repository.ClienteRepository;
 import com.fatec.livraria.repository.EnderecoRepository;
 import com.fatec.livraria.repository.LivroRepository;
@@ -24,6 +25,9 @@ public class PedidoController {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
 
     @Autowired
     private VendaRepository vendaRepository;
@@ -93,8 +97,12 @@ public class PedidoController {
     }  
 
     private String gerarCodigoPedido() {
-        String data = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        int aleatorio = (int) (Math.random() * 90000000) + 10000000; // 8 dígitos
-        return data + aleatorio;
+        String codigo;
+        do {
+            String data = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            int aleatorio = (int) (Math.random() * 90000000) + 10000000; // 8 dígitos
+            codigo = data + aleatorio;
+        } while (pedidoRepository.existsByCodigo(codigo));
+        return codigo;
     }  
 }

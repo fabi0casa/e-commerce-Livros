@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
     List<Pedido> findByCliente(Cliente cliente);
+    boolean existsByCodigo(String codigo);
 }
