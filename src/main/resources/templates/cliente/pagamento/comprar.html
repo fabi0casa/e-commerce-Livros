@@ -11,7 +11,7 @@
     <script th:inline="javascript">
         var clienteId = /*[[${clienteId}]]*/ null;
     </script>   
-    <script src="../js/comprar.js" defer></script>
+    <script src="js/comprar.js" defer></script>
 </head>
 <body>
     <header style="display: flex; justify-content: center;">
@@ -30,14 +30,14 @@
                 <option value="">Selecione</option>
                 <!-- os endereços serão carregados aqui via JS -->
             </select>
-            <button type="button" class="adicionar-btn" onclick="window.location.href = '/cliente/pagamento/novoEndereco'">Adicionar novo Endereço</button>
+            <button type="button" class="adicionar-btn" onclick="redirecionarParaNovoEndereco()">Adicionar novo Endereço</button>
 
             <label>Selecione a Forma de Pagamento</label>
             <div id="cartoes-container">
                 <!-- os carttões serão carregados aqui via JS -->
             </div>
             </br>
-            <button type="button" class="adicionar-btn" onclick="window.location.href = '/cliente/pagamento/novoCartao'">Adicionar novo cartão</button>
+            <button type="button" class="adicionar-btn" onclick="redirecionarParaNovoCartao()">Adicionar novo cartão</button>
             
         </div>
 

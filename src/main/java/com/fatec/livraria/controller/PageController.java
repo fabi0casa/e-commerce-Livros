@@ -85,6 +85,19 @@ public class PageController {
         return dir1 + "/" + dir2 + "/" + pagina; // Busca "templates/{dir1}/{dir2}/{pagina}.html"
     }
 
+    @GetMapping("/{dir1}/{dir2}/{dir3}/{pagina}")
+    public String renderizarPaginaComTresSubpastas(
+            @PathVariable String dir1,
+            @PathVariable String dir2,
+            @PathVariable String dir3,
+            @PathVariable String pagina,
+            Model model,
+            HttpSession session) {
+        
+        adicionarClienteNoModelo(model, session);
+        return dir1 + "/" + dir2 + "/" + dir3 + "/" + pagina; // Busca "templates/{dir1}/{dir2}/{dir3}/{pagina}.html"
+    }
+
     private void adicionarClienteNoModelo(Model model, HttpSession session) {
         Integer clienteId = (Integer) session.getAttribute("clienteId");
         model.addAttribute("clienteId", clienteId);

@@ -234,3 +234,17 @@ function aplicarCupom() {
     // Fecha modal
     closeModal("couponModal");
 }
+
+function redirecionarParaNovoEndereco() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const livroId = urlParams.get("livroId");
+    const quantidade = urlParams.get("quantidade") || 1;
+    window.location.href = `/cliente/pagamento/novoEndereco?livroId=${livroId}&quantidade=${quantidade}`;
+}
+
+function redirecionarParaNovoCartao() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const livroId = urlParams.get("livroId");
+    const quantidade = urlParams.get("quantidade") || 1;
+    window.location.href = `/cliente/pagamento/novoCartao?livroId=${livroId}&quantidade=${quantidade}`;
+}
