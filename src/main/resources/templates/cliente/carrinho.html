@@ -25,9 +25,7 @@
 
         <div class="cart-summary">
             <h2>Total: <span>R$ --,--</span></h2>
-                <form th:action="@{/cliente/pagamento/comprar}" method="get">
-                    <button class="checkout-btn" type="submit">Finalizar Compra</button>
-                </form>
+            <button class="checkout-btn" type="submit" onclick="window.location.href='/cliente/pagamento/comprarDoCarrinho'">Finalizar Compra</button>
         </div>
     </main>
     <script>
