@@ -169,3 +169,59 @@ async function finalizarCompra() {
         alert("Erro ao processar sua compra.");
     }
 }
+
+// Modal functions (mantém igual)
+function openModal(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+// 🔄 VERSÃO ORIGINAL DO CUPOM
+function aplicarCupom() {
+    let selectElement = document.getElementById("cupomSelect");
+    let cupomValor = parseFloat(selectElement.value);
+    let cupomTexto = selectElement.options[selectElement.selectedIndex].text;
+
+    if (totalCompra - totalDesconto <= 0) {
+        alert("Não é possível aplicar mais cupons. O valor da compra já está zerado.");
+        return;
+    }
+
+    totalDesconto += cupomValor;
+    let novoTotal = (totalCompra - totalDesconto).toFixed(2);
+    if (novoTotal < 0) {
+        novoTotal = 0;
+    }
+
+    // Adiciona visualmente o desconto
+    let extratoDiv = document.querySelector(".cupom");
+    let descontoItem = document.createElement("div");
+    descontoItem.innerHTML = `<h4>- R$ ${cupomValor.toFixed(2)} - Cupom</h4>`;
+    extratoDiv.insertBefore(descontoItem, extratoDiv.firstChild);
+
+    document.getElementById("total-compra").innerText = `R$ ${parseFloat(novoTotal).toFixed(2).replace('.', ',')}`;
+
+    // Remove o cupom selecionado
+    cuponsAplicados.push(cupomValor);
+    selectElement.remove(selectElement.selectedIndex);
+
+    // Fecha modal
+    closeModal("couponModal");
+}
+
+function redirecionarParaNovoEndereco() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const livroId = urlParams.get("livroId");
+    const quantidade = urlParams.get("quantidade") || 1;
+    window.location.href = `/cliente/pagamento/novoEndereco?livroId=${livroId}&quantidade=${quantidade}`;
+}
+
+function redirecionarParaNovoCartao() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const livroId = urlParams.get("livroId");
+    const quantidade = urlParams.get("quantidade") || 1;
+    window.location.href = `/cliente/pagamento/novoCartao?livroId=${livroId}&quantidade=${quantidade}`;
+}
