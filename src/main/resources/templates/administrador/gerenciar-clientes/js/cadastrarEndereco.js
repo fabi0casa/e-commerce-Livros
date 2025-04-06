@@ -11,7 +11,6 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
     }
 
     // Capturando valores do formulário
-    let tipoResidencia = document.querySelector("select").value;
     let tipoLogradouro = document.querySelectorAll("input")[0].value;
     let logradouro = document.querySelectorAll("input")[1].value;
     let numero = document.querySelectorAll("input")[2].value;
@@ -35,7 +34,7 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
 
     // Criando objeto EnderecoDTO
     let enderecoDTO = {
-        tipo: tipoResidencia,
+        tipo: tipoLogradouro,
         logradouro: logradouro,
         numero: numero,
         bairro: bairro,
