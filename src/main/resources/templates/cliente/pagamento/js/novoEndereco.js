@@ -96,9 +96,7 @@ function cancelarCadastro() {
 }
  // Função para buscar e exibir o nome do cliente
 async function carregarNomeCliente() {
-    // Obtém o clienteId da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const clienteId = urlParams.get("clienteId");
+    const clienteId = window.clienteId;
 
     if (!clienteId) {
         console.error("Erro: ID do cliente não encontrado na URL.");
