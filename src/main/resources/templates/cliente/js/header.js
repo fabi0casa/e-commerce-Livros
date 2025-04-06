@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="btn" id="notificationBtn">
 										<img src="/img//notification.png" alt="Notificações">
                     <span>Notificações</span>
-                    <span class="notification-badge" id="notificationBadge">3</span>
+                    <!--<span class="notification-badge" id="notificationBadge">3</span>-->
                 </button>
                 <button class="btn" onclick="window.location.href='/cliente/carrinho'">
 										<img src="/img//cart.png" alt="Carrinho">
