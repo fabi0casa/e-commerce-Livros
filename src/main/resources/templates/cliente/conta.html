@@ -7,15 +7,9 @@
     <title>Minha Conta - Livraria</title>
     <link rel="stylesheet" href="css/livraria.css">
     <link rel="stylesheet" href="css/conta.css">
-    <style>
-        .zoomed {
-            font-size: 0.7rem;
-        }
-        .zoomed .status-btn {
-            font-size: 0.7rem; /* Diminui o tamanho dos botões também */
-            padding: 3px 7px; /* Ajusta o padding para manter proporção */
-        }
-    </style>
+    <script th:inline="javascript">
+        var clienteId = /*[[${clienteId}]]*/ null;
+    </script>
 </head>
 <body>
     <script src="js/header.js"></script>
@@ -30,23 +24,23 @@
         
         <section class="conteudo">
             <div id="contaInfo"></div>
-            <script src="js/info.js"></script>
+            <script src="js/conta/info.js"></script>
 
             <div id="contaAlterar"></div>
-            <script src="js/alterar.js"></script>
+            <script src="js/conta/alterar.js"></script>
 
             <div id="contaEndereco"></div>
-            <script src="js/endereco.js"></script>
+            <script src="js/conta/endereco.js"></script>
 
             <div id="contaCartao"></div>
-            <script src="js/cartao.js"></script>
+            <script src="js/conta/cartao.js"></script>
 
             <div id="contaPedidos"></div>
-            <script src="js/pedidos.js"></script>
+            <script src="js/conta/pedidos.js"></script>
 
         </section>
     </div>
-    <script src="js/conta.js"></script>
+    <script src="js/conta/conta.js"></script>
 
 </body>
 </html>

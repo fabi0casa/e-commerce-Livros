@@ -312,3 +312,11 @@ input:focus, select:focus, textarea:focus {
 .modal-tabela-content::-webkit-scrollbar-track {
     background: #00022225;
 }
+
+.zoomed {
+    font-size: 0.7rem;
+}
+.zoomed .status-btn {
+    font-size: 0.7rem; /* Diminui o tamanho dos botões também */
+    padding: 3px 7px; /* Ajusta o padding para manter proporção */
+}
