@@ -1,3 +1,8 @@
+// Variáveis para controle dos cupons
+let totalCompra = 0;
+let totalDesconto = 0;
+let cuponsAplicados = [];
+
 document.addEventListener("DOMContentLoaded", async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const livroId = urlParams.get("livroId");
@@ -25,12 +30,36 @@ document.addEventListener("DOMContentLoaded", async function () {
         </div>
     `;
 
-    // Atualizar resumo do pedido
-    const subtotal = livro.precoVenda * quantidade;
-    const frete = 10.80;
+    // Atualizar resumo do pedido (na segunda .cart-summary)
+    const resumoCompra = document.querySelectorAll(".cart-summary")[1];
+
+    const precoUnitario = livro.precoVenda;
+    const subtotal = precoUnitario * quantidade;
+    const frete = 10.70;
     const total = subtotal + frete;
 
-    document.querySelector(".cart-summary h4 span#total-compra").textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    totalCompra = total; // salva para controle dos cupons
+
+    // Atualiza os valores no extrato de compra
+    resumoCompra.innerHTML = `
+        <button class="coupon-btn" onclick="openModal('couponModal')">Usar Cupom</button>
+        <h4>
+            <span>
+                R$ ${precoUnitario.toFixed(2).replace('.', ',')}
+                ${quantidade > 1 ? ` × ${quantidade}` : ''}
+            </span>
+        </h4>
+        <div class="frete">
+            <h4><span>+ R$ ${frete.toFixed(2).replace('.', ',')}</span> - Frete</h4>
+        </div>
+        <div class="cupom"></div>
+
+        <div class="sumario">
+            <h4>Total: <span id="total-compra">R$ ${total.toFixed(2).replace('.', ',')}</span></h4>
+        </div>
+
+        <button class="checkout-btn" type="submit" onclick="finalizarCompra()">Finalizar Compra</button>
+    `;
 
     // Buscar cliente
     const cliente = await fetch(`/clientes/${clienteId}`).then(res => res.json());
@@ -38,14 +67,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Popular endereços
     const selectEndereco = document.getElementById("endereco");
     cliente.enderecos
-    .filter(end => end.entrega === true)
-    .forEach(end => {
-        const option = document.createElement("option");
-        option.value = end.id;
-        option.textContent = end.fraseIdentificadora;
-        selectEndereco.appendChild(option);
-    });
-
+        .filter(end => end.entrega === true)
+        .forEach(end => {
+            const option = document.createElement("option");
+            option.value = end.id;
+            option.textContent = end.fraseIdentificadora;
+            selectEndereco.appendChild(option);
+        });
 
     // Popular cartões
     const cartoesContainer = document.getElementById("cartoes-container");
@@ -67,6 +95,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         cartoesContainer.appendChild(div);
     });
 });
+
 
 async function finalizarCompra() {
     const enderecoId = parseInt(document.getElementById("endereco").value);
@@ -164,13 +193,7 @@ async function finalizarCompra() {
     }
 }
 
-
-
-
-
-
-
-
+// Modal functions (mantém igual)
 function openModal(id) {
     document.getElementById(id).style.display = "block";
 }
@@ -179,33 +202,7 @@ function closeModal(id) {
     document.getElementById(id).style.display = "none";
 }
 
-function aplicarCupom() {
-    const cupom = parseFloat(document.getElementById("cupomSelect").value);
-    const totalSpan = document.getElementById("total-compra");
-    let total = parseFloat(totalSpan.textContent.replace("R$ ", "").replace(",", "."));
-
-    total = Math.max(total - cupom, 0);
-    totalSpan.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-
-    document.querySelector(".cupom").innerHTML = `<h4>Cupom aplicado: - R$ ${cupom.toFixed(2).replace('.', ',')}</h4>`;
-    closeModal("couponModal");
-}
-
-
-
-/*
-let totalCompra = 61.70; // Valor total original
-let totalDesconto = 0; // Total de cupons usados
-let cuponsAplicados = []; // Lista de cupons usados
-
-function openModal(id) {
-    document.getElementById(id).style.display = "block";
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-}
-
+// 🔄 VERSÃO ORIGINAL DO CUPOM
 function aplicarCupom() {
     let selectElement = document.getElementById("cupomSelect");
     let cupomValor = parseFloat(selectElement.value);
@@ -218,29 +215,22 @@ function aplicarCupom() {
 
     totalDesconto += cupomValor;
     let novoTotal = (totalCompra - totalDesconto).toFixed(2);
-    // Se o total for menor que 0, zera ele
     if (novoTotal < 0) {
         novoTotal = 0;
     }
 
-    // Adicionar visualmente o desconto ao extrato
+    // Adiciona visualmente o desconto
     let extratoDiv = document.querySelector(".cupom");
     let descontoItem = document.createElement("div");
     descontoItem.innerHTML = `<h4>- R$ ${cupomValor.toFixed(2)} - Cupom</h4>`;
     extratoDiv.insertBefore(descontoItem, extratoDiv.firstChild);
 
-    document.getElementById("total-compra").innerText = `R$ ${novoTotal}`;
+    document.getElementById("total-compra").innerText = `R$ ${parseFloat(novoTotal).toFixed(2).replace('.', ',')}`;
 
-    // Remover o cupom já utilizado do select
+    // Remove o cupom selecionado
     cuponsAplicados.push(cupomValor);
     selectElement.remove(selectElement.selectedIndex);
 
-    // Fechar modal
+    // Fecha modal
     closeModal("couponModal");
 }
-
-function toggleInput(id) {
-    let input = document.getElementById(id);
-    input.style.display = input.style.display === 'none' ? 'inline-block' : 'none';
-}
-*/
