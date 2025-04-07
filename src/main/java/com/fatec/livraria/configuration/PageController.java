@@ -1,4 +1,4 @@
-package com.fatec.livraria.controller;
+package com.fatec.livraria.configuration;
 import com.fatec.livraria.service.ClienteService;
 import jakarta.servlet.http.HttpSession;
 

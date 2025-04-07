@@ -1,4 +1,4 @@
-package com.fatec.livraria.controller;
+package com.fatec.livraria.configuration;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
