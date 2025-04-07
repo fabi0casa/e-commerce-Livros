@@ -174,7 +174,27 @@ async function finalizarCompra() {
     // Se sobrar alguma venda, atribui ao primeiro cartão
     for (; vendaIndex < vendas.length; vendaIndex++) {
         const cartaoId = cartoesSelecionados[0].value;
-        vendas[vendaIndex].formaPagamento = `Cartão ${cartaoId} - R$ ${vendas[vendaIndex].valor.toFixed(2)}`;
+        vendas[vendaIndex].formaPagamento = `Cartão - R$ ${vendas[vendaIndex].valor.toFixed(2)}`;
+    }
+
+    // 🔽 VERIFICAR SOMA DOS VALORES DOS CARTÕES
+    let somaCartoes = 0;
+
+    cartoesSelecionados.forEach((checkbox, index) => {
+        const inputValor = document.getElementById(`valor${index + 1}`);
+        const valor = parseFloat(inputValor.value);
+        
+        if (isNaN(valor) || valor <= 0) {
+        } else {
+            somaCartoes += valor;
+        }
+    });
+
+    const totalComDesconto = totalCompra - totalDesconto;
+
+    if (somaCartoes < totalComDesconto) {
+        alert(`A soma dos valores inseridos nos cartões (R$ ${somaCartoes.toFixed(2).replace('.', ',')}) é inferior ao total da compra (R$ ${totalComDesconto.toFixed(2).replace('.', ',')}).`);
+        return;
     }
 
     const pedidoPayload = {
