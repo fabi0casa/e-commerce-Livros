@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Oops!</title>
+    <link rel="stylesheet" href="/css//erro.css">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="overlay"></div>
+    <div class="terminal">
+    <h1>Erro: <span class="errorcode"><code th:text="${statusCode}">500</code></span></h1>
+    <p class="output">Parece que essa página foi removida, mudou de nome ou aconteceu um erro interno por aqui :(</p>
+    <p class="output">Mensagem do erro: <code th:text="${mensagemErro}">Erro inesperado</code>.</p>
+    <p class="output">Por favor tente <a href="javascript:history.back()">voltar</a> ou <a href="/">retornar a homepage</a>.</p>
+    <p class="output">Boa sorte.</p>
+    </div>
+
+</body>
+</html>
