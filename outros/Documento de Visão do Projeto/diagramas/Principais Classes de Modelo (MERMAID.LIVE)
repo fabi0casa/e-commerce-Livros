@@ -77,11 +77,12 @@ classDiagram
     }
 
     %% Relações - ordem ajustada para legibilidade
-    Pedido "1" --> "1" Endereco
-    Pedido "1" --> "1" Cliente
+    Cliente "1" --> "*" Endereco
+    Pedido "*" --> "1" Endereco
+    Pedido "*" --> "1" Cliente
     Pedido "1" --> "*" Venda
-    Venda "1" --> "1" Livro
-    Livro "1" --> "1" Autor
-    Livro "1" --> "1" Editora
-    Livro "1" --> "1" Fornecedor
-    Livro "1" --> "1" GrupoPrecificacao
+    Venda "*" --> "1" Livro
+    Livro "*" --> "1" Autor
+    Livro "*" --> "1" Editora
+    Livro "*" --> "1" Fornecedor
+    Livro "*" --> "1" GrupoPrecificacao
