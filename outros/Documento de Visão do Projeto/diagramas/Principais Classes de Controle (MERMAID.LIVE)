@@ -1,0 +1,65 @@
+classDiagram
+    class ClienteController {
+        +listarTodos()
+        +buscarPorId(id)
+        +adicionarCliente(clienteDTO, model, redirectAttributes)
+        +atualizarCliente(clienteDTO)
+        +alterarSenha(alterarSenhaDTO)
+        +adicionarEndereco(clienteId, enderecoDTO)
+        +deletarCliente(id)
+        +filtrarClientes(...)
+    }
+
+    class LivroController {
+        +listarTodos()
+        +buscarPorId(id)
+        +buscarPorNome(nome)
+    }
+
+    class PedidoController {
+        +listarTodos()
+        +listarPorCliente(clienteId)
+        +criarPedido(request)
+        +atualizarStatusVenda(vendaId, status)
+    }
+
+    class ClienteService{
+        +listarTodos()
+        +buscarPorId()
+        +salvarCliente()
+        +atualizarCliente()
+        +atualizarSenha()
+        +excluirCliente()
+        +buscarClientesComFiltro()
+    }
+
+    class LivroService{
+        +listarTodos()
+        +buscarPorId()
+        +buscarPorNome()
+    }
+
+    class PedidoService{
+        +listarTodos()
+        +listarPorCliente()
+        +salvar()
+    }
+
+    class ClienteDTO
+    class AtualizarClienteDTO
+    class AlterarSenhaDTO
+    class EnderecoDTO
+    class PedidoRequest
+    class VendaRequest
+
+    ClienteController --> ClienteService
+    ClienteController --> ClienteDTO
+    ClienteController --> AtualizarClienteDTO
+    ClienteController --> AlterarSenhaDTO
+    ClienteController --> EnderecoDTO
+
+    LivroController --> LivroService
+
+    PedidoController --> PedidoService
+    PedidoController --> PedidoRequest
+    PedidoController --> VendaRequest

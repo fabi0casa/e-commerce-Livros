@@ -1,0 +1,87 @@
+classDiagram
+    direction LR
+    %%muitas entidades foram omitidas para melhor legibilidade do diagrama
+
+    class Pedido {
+        Integer id
+        String codigo
+    }
+
+    class Venda {
+        Integer id
+        Integer quantidade
+        BigDecimal precoUnitario
+        BigDecimal precoTotal
+    }
+
+    class Cliente {
+        +int id
+        +String nome
+        +Date dataNascimento
+        +String cpf
+        +String telefone
+        +String email
+        +String senha
+        +int ranking
+        +String genero
+    }
+
+    class Endereco {
+    +int id
+    +String tipo
+    +String logradouro
+    +String numero
+    +String bairro
+    +String cep
+    +String cidade
+    +String estado
+    +String pais
+    +String fraseIdentificadora
+    +boolean isResidencial
+    +boolean isEntrega
+    +boolean isCobranca
+    }
+
+    class Livro {
+        Integer id
+        String nome
+        Integer anoPublicacao
+        String edicao
+        String isbn
+        Integer numPaginas
+        String sinopse
+        String codigoBarras
+        String caminhoImagem
+        BigDecimal precoCusto
+        BigDecimal precoVenda
+    }
+
+    class Autor {
+        Integer id
+        String nome
+    }
+
+    class Editora {
+        Integer id
+        String nome
+    }
+
+    class Fornecedor {
+        Integer id
+        String nome
+    }
+
+    class GrupoPrecificacao {
+        Integer id
+        String nome
+    }
+
+    %% Relações - ordem ajustada para legibilidade
+    Pedido "1" --> "1" Endereco
+    Pedido "1" --> "1" Cliente
+    Pedido "1" --> "*" Venda
+    Venda "1" --> "1" Livro
+    Livro "1" --> "1" Autor
+    Livro "1" --> "1" Editora
+    Livro "1" --> "1" Fornecedor
+    Livro "1" --> "1" GrupoPrecificacao
