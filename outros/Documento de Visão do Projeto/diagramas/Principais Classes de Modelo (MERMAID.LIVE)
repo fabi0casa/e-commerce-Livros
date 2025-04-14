@@ -36,6 +36,7 @@ classDiagram
     +String cidade
     +String estado
     +String pais
+	+String observacoes
     +String fraseIdentificadora
     +boolean isResidencial
     +boolean isEntrega
