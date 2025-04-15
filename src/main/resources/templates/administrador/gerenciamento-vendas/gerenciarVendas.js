@@ -80,6 +80,13 @@ function getClass(status) {
     }
 }
 
+function toggleSubRows(row) {
+    const nextRow = row.nextElementSibling;
+    if (nextRow && nextRow.classList.contains("sub-rows")) {
+        nextRow.classList.toggle("hidden");
+    }
+}
+
 function openModal(modalId) {
     document.getElementById(modalId).style.display = "flex";
 }

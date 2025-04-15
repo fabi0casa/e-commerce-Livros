@@ -78,25 +78,23 @@
             <h2>Pedido Nº 202503011239812789</h2>
             <p><strong>Cliente:</strong> <span id="modalNome">João Silva</span></p>
             <p><strong>Data:</strong> <span id="modalEmail">01/03/2025</span></p>
+            <p><strong>Forma de Pagamento:</strong> <span id="modalEmail">Cartão de Crédito + Cupom</span></p>
+            <p><strong>Endereço de Entrega:</strong> <span id="modalEmail">Rua Exemplo, 123 - São Paulo, SP</span></p>
             <table id="myTable">
                 <thead>
                     <tr>
-                        <th>Data</th>
                         <th>Livro</th>
                         <th>Valor</th>
-                        <th>Forma de Pagamento</th>
-                        <th>Endereço</th>
+                        <th>Quantidade</th>
                         <th>Status da Compra</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>2025-02-21</td>
                         <td>O Senhor dos Anéis</td>
                         <td>R$ 150,00</td>
-                        <td>Cartão de Crédito</td>
-                        <td>Rua Exemplo, 123 - São Paulo, SP</td>
+                        <td>1</td>
                         <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
                         <td>
                             <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
@@ -104,27 +102,90 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>2025-02-20</td>
                         <td>1984</td>
                         <td>R$ 250,00</td>
-                        <td>Cupom</td>
-                        <td>Av. Teste, 456 - Rio de Janeiro RJ</td>
+                        <td>1</td>
                         <td class="status-cell"><span class="status-btn transito">Em Transporte</span></td>
                         <td>
                             <button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>
                         </td>
                     </tr>
+
+                    <tr class="expandable-row" onclick="toggleSubRows(this)">
+                        <td>Os Elementos</td>
+                        <td>R$ 150,00</td>
+                        <td>4</td>
+                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
+                        <td>
+                            <button class="status-btn aprovado" onclick="event.stopPropagation(); confirmarAcao(this, 'Aprovada')">Aprovar</button>
+                            <button class="status-btn reprovado" onclick="event.stopPropagation(); confirmarAcao(this, 'Reprovada')">Reprovar</button>
+                        </td>
+                    </tr>
+                    
+                    <tr class="sub-rows hidden">
+                        <td colspan="7">
+                            <table class="sub-table">
+                                <thead>
+                                    <tr>
+                                        <th>Livro</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Cada item individual -->
+                                    <tr>
+                                        <td>Os Elementos - 1º</td>
+                                        <td>R$ 37,50</td>
+                                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
+                                        <td>
+                                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
+                                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Os Elementos - 2º</td>
+                                        <td>R$ 37,50</td>
+                                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
+                                        <td>
+                                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
+                                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Os Elementos - 3º</td>
+                                        <td>R$ 37,50</td>
+                                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
+                                        <td>
+                                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
+                                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Os Elementos - 4º</td>
+                                        <td>R$ 37,50</td>
+                                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
+                                        <td>
+                                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
+                                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    
                     <tr>
-                        <td>2025-02-19</td>
                         <td>Dom Quixote</td>
                         <td>R$ 75,00</td>
-                        <td>Cartão de Crédito</td>
-                        <td>Av. Teste, 458 - Rio de Janeiro RJ</td>
+                        <td>1</td>
                         <td class="status-cell"><span class="status-btn troca">Em Troca</span></td>
                         <td>
                             <button class="status-btn processando" onclick="confirmarAcao(this, 'Trocado', true)">Autorizar Troca</button>
                         </td>
                     </tr>
+
                 </tbody>
             </table>
         </div>

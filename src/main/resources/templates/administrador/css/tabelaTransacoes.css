@@ -225,3 +225,38 @@ th {
 .modal-tabela-content::-webkit-scrollbar-track {
     background: #00022225;
 }
+
+.expandable-row {
+    cursor: pointer;
+    background-color: #eefcff;
+    transition: background 0.2s ease-in-out;
+}
+.expandable-row:hover {
+    background-color: #dbf6ff;
+}
+
+.sub-rows {
+    background-color: #f7f7f7;
+}
+.hidden {
+    display: none;
+}
+
+.sub-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.sub-table th,
+.sub-table td {
+    padding: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.sub-table th{
+    background-color: #5900ff;
+}
+
