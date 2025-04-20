@@ -64,4 +64,23 @@ public class EnderecoService {
 
         enderecoRepository.save(enderecoExistente);
     }
+    
+    public Endereco converterDTOParaEndereco(EnderecoDTO dto) {
+        Endereco endereco = new Endereco();
+        endereco.setTipo(dto.getTipo());
+        endereco.setLogradouro(dto.getLogradouro());
+        endereco.setNumero(dto.getNumero());
+        endereco.setBairro(dto.getBairro());
+        endereco.setCep(dto.getCep());
+        endereco.setCidade(dto.getCidade());
+        endereco.setEstado(dto.getEstado());
+        endereco.setPais(dto.getPais());
+        endereco.setObservacoes(dto.getObservacoes());
+        endereco.setResidencial(dto.getResidencial());
+        endereco.setEntrega(dto.getEntrega());
+        endereco.setCobranca(dto.getCobranca());
+        endereco.gerarFraseIdentificadora();
+        return endereco;
+    }
+    
 }
