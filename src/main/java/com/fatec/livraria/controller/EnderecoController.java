@@ -51,61 +51,25 @@ public class EnderecoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novoEndereco);
     }
 
-    //atualizar o endereço de um cliente
     @PutMapping("/{enderecoId}/update")
     public ResponseEntity<?> atualizarEndereco(
             @PathVariable int enderecoId,
             @RequestBody EnderecoDTO enderecoDTO) {
         try {
-
-            // Buscar o endereço pelo ID e garantir que pertence ao cliente
-            Endereco endereco = enderecoService.buscarPorId(enderecoId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
-
-            // Validar os dados do endereço
-            enderecoValidator.validarEndereco(enderecoDTO);
-
-            // Atualizar os dados do endereço
-            endereco.setTipo(enderecoDTO.getTipo());
-            endereco.setLogradouro(enderecoDTO.getLogradouro());
-            endereco.setNumero(enderecoDTO.getNumero());
-            endereco.setBairro(enderecoDTO.getBairro());
-            endereco.setCep(enderecoDTO.getCep());
-            endereco.setCidade(enderecoDTO.getCidade());
-            endereco.setEstado(enderecoDTO.getEstado());
-            endereco.setPais(enderecoDTO.getPais());
-            endereco.setObservacoes(enderecoDTO.getObservacoes());
-            endereco.setResidencial(enderecoDTO.getResidencial());
-            endereco.setEntrega(enderecoDTO.getEntrega());
-            endereco.setCobranca(enderecoDTO.getCobranca());
-            endereco.gerarFraseIdentificadora();
-
-            // Salvar endereço atualizado
-            enderecoService.atualizarEndereco(endereco);
-
-            return ResponseEntity.ok("{\"mensagem\": \"Endereço atualizado com sucesso!\"}");
+            enderecoService.atualizarEndereco(enderecoId, enderecoDTO);
+            return ResponseEntity.ok(Map.of("mensagem", "Endereço atualizado com sucesso!"));
         } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
         } catch (ResponseStatusException e) {
-            return ResponseEntity.status(e.getStatusCode()).body("{\"erro\": \"" + e.getReason() + "\"}");
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("erro", e.getReason()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"erro\": \"Erro inesperado ao atualizar endereço.\"}");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erro", "Erro inesperado ao atualizar endereço."));
         }
-    }
+    }    
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Integer id) {
         enderecoService.excluir(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<?> atualizarEndereco(@RequestBody Endereco endereco) {
-        try {
-            Endereco enderecoAtualizado = enderecoService.atualizarEndereco(endereco);
-            return ResponseEntity.ok(enderecoAtualizado);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 }

@@ -29,6 +29,8 @@ public class Pedido {
     @JoinColumn(name = "ped_cli_id", nullable = false)
     private Cliente cliente;
 
+    //colocar forma de pagamento
+
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Venda> vendas;
 

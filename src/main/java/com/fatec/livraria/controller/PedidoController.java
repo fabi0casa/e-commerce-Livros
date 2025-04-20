@@ -1,22 +1,15 @@
 package com.fatec.livraria.controller;
 
 import com.fatec.livraria.dto.PedidoRequest;
-import com.fatec.livraria.dto.VendaRequest;
 import com.fatec.livraria.entity.Pedido;
-import com.fatec.livraria.entity.Cliente;
-import com.fatec.livraria.entity.Venda;
 import com.fatec.livraria.service.PedidoService;
-import com.fatec.livraria.repository.PedidoRepository;
-import com.fatec.livraria.repository.ClienteRepository;
-import com.fatec.livraria.repository.EnderecoRepository;
-import com.fatec.livraria.repository.LivroRepository;
-import com.fatec.livraria.repository.VendaRepository;
-import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import java.util.*;
 
 @RestController
@@ -26,83 +19,32 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
-
-    @Autowired
-    private VendaRepository vendaRepository;
-
-    @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private EnderecoRepository enderecoRepository;
-
-    @Autowired
-    private LivroRepository livroRepository;
-
-    @GetMapping(value = "/all")
+    @GetMapping("/all")
     public List<Pedido> listarTodos() {
         return pedidoService.listarTodos();
     }
 
     @GetMapping("/cliente/{clienteId}")
     public List<Pedido> listarPorCliente(@PathVariable Integer clienteId) {
-        Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        return pedidoService.listarPorCliente(cliente);
+        return pedidoService.listarPorClienteId(clienteId);
     }
 
-    @PostMapping(value = "/add")
-    @Transactional
-    public Pedido criarPedido(@RequestBody PedidoRequest request) {
-        Pedido pedido = new Pedido();
-
-        pedido.setCodigo(gerarCodigoPedido());
-
-        pedido.setCliente(clienteRepository.findById(request.getClienteId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado")));
-
-        pedido.setEndereco(enderecoRepository.findById(request.getEnderecoId())
-                .orElseThrow(() -> new RuntimeException("Endereço não encontrado")));
-
-        pedido = pedidoService.salvar(pedido);
-
-        for (VendaRequest vendaReq : request.getVendas()) {
-            Venda venda = new Venda();
-            venda.setDataHora(new Date());
-            venda.setFormaPagamento(vendaReq.getFormaPagamento());
-            venda.setStatus("Em Processamento");
-            venda.setValor(vendaReq.getValor());
-
-            venda.setLivro(livroRepository.findById(vendaReq.getLivroId())
-                    .orElseThrow(() -> new RuntimeException("Livro não encontrado")));
-
-            venda.setEndereco(pedido.getEndereco());
-            venda.setPedido(pedido);
-
-            vendaRepository.save(venda);
+    @PostMapping("/add")
+    public ResponseEntity<?> criarPedido(@RequestBody PedidoRequest request) {
+        try {
+            Pedido novoPedido = pedidoService.criarPedidoComVendas(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(novoPedido);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
         }
-
-        return pedido;
     }
-
 
     @PatchMapping("/venda/{vendaId}/status")
-    public Venda atualizarStatusVenda(@PathVariable Integer vendaId, @RequestParam String status) {
-        return vendaRepository.findById(vendaId).map(venda -> {
-            venda.setStatus(status);
-            return vendaRepository.save(venda);
-        }).orElseThrow(() -> new RuntimeException("Venda não encontrada"));
-    }  
-
-    private String gerarCodigoPedido() {
-        String codigo;
-        do {
-            String data = new SimpleDateFormat("yyyyMMdd").format(new Date());
-            int aleatorio = (int) (Math.random() * 90000000) + 10000000; // 8 dígitos
-            codigo = data + aleatorio;
-        } while (pedidoRepository.existsByCodigo(codigo));
-        return codigo;
-    }  
+    public ResponseEntity<?> atualizarStatusVenda(@PathVariable Integer vendaId, @RequestParam String status) {
+        try {
+            return ResponseEntity.ok(pedidoService.atualizarStatusVenda(vendaId, status));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("erro", e.getMessage()));
+        }
+    }
 }

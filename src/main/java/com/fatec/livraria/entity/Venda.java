@@ -20,10 +20,12 @@ public class Venda {
     @Column(name = "vnd_id")
     private Integer id;
 
+    //tirar
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "vnd_data_hora", nullable = false)
     private Date dataHora;
 
+    //tirar
     @Column(name = "vnd_forma_pagamento", nullable = false, length = 45)
     private String formaPagamento;
 
@@ -37,6 +39,7 @@ public class Venda {
     @JoinColumn(name = "vnd_lvr_id", nullable = false)
     private Livro livro;
 
+    //tirar
     @ManyToOne
     @JoinColumn(name = "vnd_end_id", nullable = false)
     private Endereco endereco;
