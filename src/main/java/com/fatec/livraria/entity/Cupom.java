@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "CUPONS")
 @Getter
@@ -29,5 +31,6 @@ public class Cupom {
 
     @ManyToOne
     @JoinColumn(name = "cup_cli_id", nullable = false)
+    @JsonIgnore
     private Cliente cliente;
 }
