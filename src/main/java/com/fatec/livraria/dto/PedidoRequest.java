@@ -10,5 +10,6 @@ import java.util.List;
 public class PedidoRequest {
     private Integer clienteId;
     private Integer enderecoId;
+    private String formaPagamento;
     private List<VendaRequest> vendas;
 }

@@ -21,6 +21,9 @@ public class Pedido {
     @Column(name = "ped_codigo", nullable = false, unique = true, length = 50)
     private String codigo;
 
+    @Column(name = "ped_forma_pagamento", nullable = false, length = 45)
+    private String formaPagamento;
+
     @ManyToOne
     @JoinColumn(name = "ped_end_id", nullable = false)
     private Endereco endereco;
@@ -28,8 +31,6 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "ped_cli_id", nullable = false)
     private Cliente cliente;
-
-    //colocar forma de pagamento
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Venda> vendas;

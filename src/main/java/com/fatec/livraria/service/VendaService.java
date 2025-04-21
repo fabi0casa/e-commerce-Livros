@@ -7,8 +7,6 @@ import com.fatec.livraria.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 @Service
 public class VendaService {
 
@@ -23,12 +21,9 @@ public class VendaService {
                 .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
 
         Venda venda = new Venda();
-        venda.setDataHora(new Date());
-        venda.setFormaPagamento(vendaReq.getFormaPagamento());
         venda.setStatus("Em Processamento");
         venda.setValor(vendaReq.getValor());
         venda.setLivro(livro);
-        venda.setEndereco(pedido.getEndereco());
         venda.setPedido(pedido);
 
         vendaRepository.save(venda);

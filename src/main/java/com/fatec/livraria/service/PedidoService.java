@@ -15,20 +15,11 @@ import java.util.*;
 @Service
 public class PedidoService {
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
-
-    @Autowired
-    private ClienteService clienteService;
-
-    @Autowired
-    private EnderecoService enderecoService;
-
-    @Autowired
-    private LivroService livroService;
-
-    @Autowired
-    private VendaService vendaService;
+    @Autowired private PedidoRepository pedidoRepository;
+    @Autowired private ClienteService clienteService;
+    @Autowired private EnderecoService enderecoService;
+    @Autowired private LivroService livroService;
+    @Autowired private VendaService vendaService;
 
     public List<Pedido> listarTodos() {
         return pedidoRepository.findAll();
@@ -50,6 +41,7 @@ public class PedidoService {
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
         pedido.setEndereco(endereco);
+        pedido.setFormaPagamento(request.getFormaPagamento());
         pedido.setCodigo(gerarCodigoPedido());
 
         pedido = pedidoRepository.save(pedido);
