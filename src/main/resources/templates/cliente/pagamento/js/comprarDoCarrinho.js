@@ -95,12 +95,6 @@ async function finalizarCompra() {
         return;
     }
 
-    const cartoesSelecionados = Array.from(document.querySelectorAll("input[name='cartoes']:checked"));
-    if (cartoesSelecionados.length === 0) {
-        alert("Selecione pelo menos um cartão.");
-        return;
-    }
-
     const clienteId = window.clienteId;
     if (!clienteId) {
         alert("Cliente não identificado.");
@@ -109,66 +103,22 @@ async function finalizarCompra() {
 
     const vendas = [];
 
-    // Etapa 1: montar a lista completa de vendas com valor correto
+    // 🔽 Montar a lista de vendas com base no carrinho
     carrinhoItens.forEach(item => {
         const { livro, quantidade } = item;
         for (let i = 0; i < quantidade; i++) {
             vendas.push({
                 livroId: livro.id,
-                valor: livro.precoVenda,
-                formaPagamento: "" // será preenchido na etapa 2
+                valor: livro.precoVenda
             });
         }
     });
 
-    // Etapa 2: distribuir automaticamente entre os cartões
-    const totalVendas = vendas.reduce((sum, v) => sum + v.valor, 0);
-    const valorPorCartao = totalVendas / cartoesSelecionados.length;
-
-    let vendaIndex = 0;
-
-    cartoesSelecionados.forEach((checkbox, index) => {
-        const formaPagamento = `Cartão`;
-
-        let valorDistribuido = 0;
-
-        while (vendaIndex < vendas.length && valorDistribuido + vendas[vendaIndex].valor <= valorPorCartao + 0.01) {
-            vendas[vendaIndex].formaPagamento = `${formaPagamento} - R$ ${vendas[vendaIndex].valor.toFixed(2)}`;
-            valorDistribuido += vendas[vendaIndex].valor;
-            vendaIndex++;
-        }
-    });
-
-    // Se sobrar alguma venda, atribui ao primeiro cartão
-    for (; vendaIndex < vendas.length; vendaIndex++) {
-        const cartaoId = cartoesSelecionados[0].value;
-        vendas[vendaIndex].formaPagamento = `Cartão ${cartaoId} - R$ ${vendas[vendaIndex].valor.toFixed(2)}`;
-    }
-
-    // 🔽 VERIFICAR SOMA DOS VALORES DOS CARTÕES
-    let somaCartoes = 0;
-
-    cartoesSelecionados.forEach((checkbox, index) => {
-        const inputValor = document.getElementById(`valor${index + 1}`);
-        const valor = parseFloat(inputValor.value);
-        
-        if (isNaN(valor) || valor <= 0) {
-        } else {
-            somaCartoes += valor;
-        }
-    });
-
-    const totalComDesconto = totalCompra - totalDesconto;
-
-    if (somaCartoes < totalComDesconto) {
-        alert(`A soma dos valores inseridos nos cartões (R$ ${somaCartoes.toFixed(2).replace('.', ',')}) é inferior ao total da compra (R$ ${totalComDesconto.toFixed(2).replace('.', ',')}).`);
-        return;
-    }
-    
-
+    // 🔽 Montar o payload do pedido com forma de pagamento fixa
     const pedidoPayload = {
         clienteId: clienteId,
         enderecoId: enderecoId,
+        formaPagamento: "Cartão de Crédito", // ✅ fixo
         vendas: vendas
     };
 
@@ -184,7 +134,7 @@ async function finalizarCompra() {
             throw new Error("Erro ao criar pedido: " + erro);
         }
 
-        // Após criar pedido, remover itens do carrinho
+        // ✅ Limpar o carrinho após a compra
         for (const item of carrinhoItens) {
             await fetch(`/carrinho/remover/${item.id}`, { method: "DELETE" });
         }
@@ -196,6 +146,7 @@ async function finalizarCompra() {
         alert("Erro ao processar sua compra.");
     }
 }
+
 
 // Modal functions (mantém igual)
 function openModal(id) {
