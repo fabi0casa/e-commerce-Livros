@@ -128,23 +128,28 @@ async function finalizarCompra() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(pedidoPayload)
         });
-
+    
+        const data = await response.json();
+    
         if (!response.ok) {
-            const erro = await response.text();
-            throw new Error("Erro ao criar pedido: " + erro);
+            const mensagemErro = data.erro || data.message || "Erro desconhecido ao criar pedido.";
+            console.error("Erro da API:", mensagemErro);
+            alert("Erro ao criar pedido: " + mensagemErro);
+            return;
         }
-
+    
         // ✅ Limpar o carrinho após a compra
         for (const item of carrinhoItens) {
             await fetch(`/carrinho/remover/${item.id}`, { method: "DELETE" });
         }
-
+    
         alert("Compra realizada com sucesso!");
         window.location.href = "/cliente/conta";
     } catch (error) {
         console.error("Erro ao finalizar compra:", error);
-        alert("Erro ao processar sua compra.");
+        alert("Erro ao processar sua compra. Tente novamente.");
     }
+    
 }
 
 

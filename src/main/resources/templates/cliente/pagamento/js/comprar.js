@@ -162,20 +162,23 @@ async function finalizarCompra() {
             },
             body: JSON.stringify(pedidoPayload)
         });
-
+    
+        const data = await response.json();
+    
         if (!response.ok) {
-            const erro = await response.text();
-            console.error("Erro da API:", erro);
-            throw new Error("Erro ao criar pedido.");
+            const mensagemErro = data.erro || data.message || "Erro desconhecido ao criar pedido.";
+            console.error("Erro da API:", mensagemErro);
+            alert("Erro ao criar pedido: " + mensagemErro);
+            return;
         }
-
-        const pedidoCriado = await response.json();
+    
         alert("Pedido criado com sucesso!");
         window.location.href = "/cliente/conta";
     } catch (error) {
         console.error("Erro ao finalizar a compra:", error);
-        alert("Erro ao finalizar a compra.");
+        alert("Erro ao finalizar a compra. Tente novamente.");
     }
+    
 }
 
 
