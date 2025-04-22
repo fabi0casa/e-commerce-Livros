@@ -203,6 +203,13 @@ th {
     justify-content: center;
 }
 
+.modal-tabela img{
+    height: 75px;
+    width: 75px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
 /* Conteúdo do Modal */
 .modal-tabela-content {
     max-height: 70vh; /* Define a altura máxima como 70% da tela */
@@ -259,4 +266,3 @@ th {
 .sub-table th{
     background-color: #5900ff;
 }
-

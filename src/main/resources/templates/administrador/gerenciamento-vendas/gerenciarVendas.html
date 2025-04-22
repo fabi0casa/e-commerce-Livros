@@ -24,7 +24,7 @@
 	</header>
     <div class="container">
         <h2>Gerenciamento de Vendas</h2>
-        <div class="filter-container">
+        <!--<div class="filter-container">
             <div class="filter-group">
                 <label for="startDate">Do dia:</label>
                 <input type="date" id="startDate">
@@ -34,179 +34,56 @@
                 <input type="date" id="endDate">
             </div>
             <button>Pesquisar</button>
-        </div>
+        </div> -->
 
-        <div class="pedido-list">
-            <div class="pedido-item">
-                <div class="pedido-info">
-                    <div class="pedido-name"> Pedido Nº 202503011239812789</div>
-                    <div class="pedido-details">01/03/2025 - 3 produtos</div>
-                </div>
-                <div class="pedido-actions">
-                    <button onclick="openModal('modalTabela')">Ver</button>
-                </div>
-            </div>
+        <!-- Lista dinâmica de pedidos -->
+        <div id="listaPedidos" class="pedido-list"></div>
 
-            <div class="pedido-item">
-                <div class="pedido-info">
-                    <div class="pedido-name"> Pedido Nº 202503017896542357</div>
-                    <div class="pedido-details">01/03/2025 - 5 produtos</div>
-                </div>
-                <div class="pedido-actions">
-                    <button onclick="openModal('modalTabela')">Ver</button>
-                </div>
-            </div>
-
-            <div class="pedido-item">
-                <div class="pedido-info">
-                    <div class="pedido-name"> Pedido Nº 202503014872450989</div>
-                    <div class="pedido-details">01/03/2025 - 1 produtos</div>
-                </div>
-                <div class="pedido-actions">
-                    <button onclick="openModal('modalTabela')">Ver</button>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-
-    <!-- Modal de amostragem da tabela-->
-    <div id="modalTabela" class="modal-tabela">
+        <!-- Modal de Tabela de Pedido -->
+        <div id="modalTabela" class="modal-tabela">
         <div class="modal-tabela-content">
             <span class="close" onclick="closeModal('modalTabela')">&times;</span>
-            <h2>Pedido Nº 202503011239812789</h2>
-            <p><strong>Cliente:</strong> <span id="modalNome">João Silva</span></p>
-            <p><strong>Data:</strong> <span id="modalEmail">01/03/2025</span></p>
-            <p><strong>Forma de Pagamento:</strong> <span id="modalEmail">Cartão de Crédito + Cupom</span></p>
-            <p><strong>Endereço de Entrega:</strong> <span id="modalEmail">Rua Exemplo, 123 - São Paulo, SP</span></p>
-            <table id="myTable">
-                <thead>
-                    <tr>
-                        <th>Livro</th>
-                        <th>Valor</th>
-                        <th>Quantidade</th>
-                        <th>Status da Compra</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>O Senhor dos Anéis</td>
-                        <td>R$ 150,00</td>
-                        <td>1</td>
-                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
-                        <td>
-                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
-                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1984</td>
-                        <td>R$ 250,00</td>
-                        <td>1</td>
-                        <td class="status-cell"><span class="status-btn transito">Em Transporte</span></td>
-                        <td>
-                            <button class="status-btn entregue" onclick="confirmarAcao(this, 'Entregue')">Confirmar Entrega</button>
-                        </td>
-                    </tr>
+            <h2 id="tituloPedido">Pedido</h2>
+            <p><strong>Cliente:</strong> <span id="modalNome"></span></p>
+            <p><strong>Data:</strong> <span id="modalData"></span></p>
+            <p><strong>Forma de Pagamento:</strong> <span id="modalPagamento"></span></p>
+            <p><strong>Endereço de Entrega:</strong> <span id="modalEndereco"></span></p>
 
-                    <tr class="expandable-row" onclick="toggleSubRows(this)">
-                        <td>Os Elementos</td>
-                        <td>R$ 150,00</td>
-                        <td>4</td>
-                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
-                        <td>
-                            <button class="status-btn aprovado" onclick="event.stopPropagation(); confirmarAcao(this, 'Aprovada')">Aprovar</button>
-                            <button class="status-btn reprovado" onclick="event.stopPropagation(); confirmarAcao(this, 'Reprovada')">Reprovar</button>
-                        </td>
-                    </tr>
-                    
-                    <tr class="sub-rows hidden">
-                        <td colspan="7">
-                            <table class="sub-table">
-                                <thead>
-                                    <tr>
-                                        <th>Livro</th>
-                                        <th>Valor</th>
-                                        <th>Status</th>
-                                        <th>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Cada item individual -->
-                                    <tr>
-                                        <td>Os Elementos - 1º</td>
-                                        <td>R$ 37,50</td>
-                                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
-                                        <td>
-                                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
-                                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Os Elementos - 2º</td>
-                                        <td>R$ 37,50</td>
-                                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
-                                        <td>
-                                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
-                                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Os Elementos - 3º</td>
-                                        <td>R$ 37,50</td>
-                                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
-                                        <td>
-                                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
-                                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Os Elementos - 4º</td>
-                                        <td>R$ 37,50</td>
-                                        <td class="status-cell"><span class="status-btn processando">Em Processamento</span></td>
-                                        <td>
-                                            <button class="status-btn aprovado" onclick="confirmarAcao(this, 'Aprovada')">Aprovar</button>
-                                            <button class="status-btn reprovado" onclick="confirmarAcao(this, 'Reprovada')">Reprovar</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>Dom Quixote</td>
-                        <td>R$ 75,00</td>
-                        <td>1</td>
-                        <td class="status-cell"><span class="status-btn troca">Em Troca</span></td>
-                        <td>
-                            <button class="status-btn processando" onclick="confirmarAcao(this, 'Trocado', true)">Autorizar Troca</button>
-                        </td>
-                    </tr>
-
-                </tbody>
+            <table id="tabelaPedido">
+            <thead>
+                <tr>
+                <th>Foto</th>
+                <th>Livro</th>
+                <th>Valor</th>
+                <th>Quantidade</th>
+                <th>Status</th>
+                <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="corpoTabelaPedido">
+                <!-- Preenchido dinamicamente via JS -->
+            </tbody>
             </table>
         </div>
-    </div>
+        </div>
 
-    <!-- Modal de Confirmação -->
-    <div id="modalConfirmacao" class="modal">
+        <!-- Modal de Confirmação -->
+        <div id="modalConfirmacao" class="modal">
         <div class="modal-content">
             <h2>Confirmar Ação</h2>
             <p id="modalText"></p>
             <div id="checkboxContainer" style="display: none;">
-                <input type="checkbox" id="retornaEstoque">
-                <label for="retornaEstoque">Retornar itens ao estoque</label>
+            <input type="checkbox" id="retornaEstoque">
+            <label for="retornaEstoque">Retornar itens ao estoque</label>
             </div>
-            </br>
+            <br />
             <button id="confirmarBtn">Confirmar</button>
             <button onclick="fecharModal()">Cancelar</button>
         </div>
-    </div>
+        </div>
 
-    <script src="gerenciarVendas.js">
-    </script>
+        <!-- Script -->
+        <script src="gerenciarVendas.js"></script>
+        
 </body>
 </html>
