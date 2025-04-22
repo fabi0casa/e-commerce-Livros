@@ -7,6 +7,7 @@ import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Venda;
 import com.fatec.livraria.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -22,8 +23,8 @@ public class PedidoService {
     @Autowired private VendaService vendaService;
 
     public List<Pedido> listarTodos() {
-        return pedidoRepository.findAll();
-    }
+        return pedidoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }    
 
     public List<Pedido> listarPorClienteId(Integer clienteId) {
         Cliente cliente = clienteService.buscarPorId(clienteId)
