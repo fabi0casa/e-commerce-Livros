@@ -101,6 +101,7 @@ th {
 .troca { background-color: #5900ff; color: white; }
 .aprovado { background-color: rgb(11, 184, 115); color: white; }
 .reprovado { background-color: rgb(211, 0, 0); color: white; }
+.indefinido { background-color: rgb(112, 112, 112); color: white; }
 
 .selecao-produtos-categorias {
     display: flex;

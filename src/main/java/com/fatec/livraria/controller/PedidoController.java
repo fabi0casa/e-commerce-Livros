@@ -1,6 +1,7 @@
 package com.fatec.livraria.controller;
 
 import com.fatec.livraria.dto.PedidoRequest;
+import com.fatec.livraria.dto.StatusRequest;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.service.PedidoService;
 
@@ -40,9 +41,9 @@ public class PedidoController {
     }
 
     @PatchMapping("/venda/{vendaId}/status")
-    public ResponseEntity<?> atualizarStatusVenda(@PathVariable Integer vendaId, @RequestParam String status) {
+    public ResponseEntity<?> atualizarStatusVenda( @PathVariable Integer vendaId, @RequestBody StatusRequest request) {
         try {
-            return ResponseEntity.ok(pedidoService.atualizarStatusVenda(vendaId, status));
+            return ResponseEntity.ok(pedidoService.atualizarStatusVenda(vendaId, request.getStatus()));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("erro", e.getMessage()));
         }

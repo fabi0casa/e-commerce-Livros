@@ -17,8 +17,8 @@ window.addEventListener("load", checkZoomAndSize);
 window.addEventListener("resize", checkZoomAndSize);
 
 const statusTransicoes = {
-    "Em Processamento": ["Aprovada", "Reprovada"],
-    "Aprovada": ["Em Transporte"],
+    "Em Processamento": ["Aprovado", "Reprovado"],
+    "Aprovado": ["Em Transporte"],
     "Em Transporte": ["Entregue"],
     "Troca Solicitada": ["Troca Aceita", "Troca Recusada"],
     "Troca Aceita": ["Troca Concluida"],
@@ -26,15 +26,29 @@ const statusTransicoes = {
     "Devolução Aceita": ["Devolução Concluida"]
 };
 
+const statusLabels = {
+    "Aprovado": "Aprovar",
+    "Reprovado": "Reprovar",
+    "Em Transporte": "Despachar",
+    "Entregue": "Confirmar Entrega",
+    "Troca Aceita": "Aceitar Troca",
+    "Troca Recusada": "Recusar Troca",
+    "Troca Concluida": "Concluir Troca",
+    "Devolução Aceita": "Aceitar Devolução",
+    "Devolução Recusada": "Recusar Devolução",
+    "Devolução Concluida": "Concluir Devolução"
+};
+
+
 window.addEventListener("DOMContentLoaded", carregarPedidos);
+
+const pedidosMap = new Map();
 
 async function carregarPedidos() {
     const response = await fetch("/pedidos/all");
     const pedidos = await response.json();
     const container = document.querySelector(".pedido-list");
     container.innerHTML = "";
-
-    const pedidosMap = new Map();
 
     pedidos.forEach((pedido, index) => {
         const div = document.createElement("div");
@@ -112,7 +126,10 @@ function mostrarPedido(pedido) {
             <td>${primeiro.livro.nome}</td>
             <td>R$ ${(primeiro.valor * vendas.length).toFixed(2)}</td>
             <td>${vendas.length}</td>
-            <td class="status-cell"><span class="status-btn ${getClass(primeiro.status)}">${primeiro.status}</span></td>
+
+            <td class="status-cell">${todosIguais ? `<span class="status-btn ${getClass(primeiro.status)}">${primeiro.status}</span>` : 
+                `<span class="status-btn indefinido">Status distintos entre os itens</span>`}</td>
+
             <td>${todosIguais ? gerarBotoes(primeiro.status, vendas.map(v => v.id)) : ""}</td>
         `;
         if (vendas.length > 1) {
@@ -137,7 +154,13 @@ function mostrarPedido(pedido) {
                                 <tr>
                                     <td>${v.livro.nome} - ${i + 1}º</td>
                                     <td>R$ ${v.valor.toFixed(2)}</td>
-                                    <td class="status-cell"><span class="status-btn ${getClass(v.status)}">${v.status}</span></td>
+                                    <td class="status-cell">
+                                        <span class="status-btn ${getClass(v.status)}" 
+                                            data-venda-id="${v.id}" 
+                                            data-original-status="${v.status}">
+                                            ${v.status}
+                                        </span>
+                                    </td>
                                     <td>${gerarBotoes(v.status, [v.id])}</td>
                                 </tr>
                             `).join("")}
@@ -154,30 +177,90 @@ function mostrarPedido(pedido) {
 
 function gerarBotoes(statusAtual, vendaIds) {
     const transicoes = statusTransicoes[statusAtual] || [];
-    return transicoes.map(novo => `
-        <button class="status-btn ${getClass(novo)}" onclick="confirmarMudancaStatus(event, '${novo}', ${JSON.stringify(vendaIds)})">${novo}</button>
-    `).join(" ");
+    return transicoes.map(novo => {
+        const label = statusLabels[novo] || novo;
+        return `
+            <button class="status-btn ${getClass(novo)}" onclick="confirmarMudancaStatus(event, '${novo}', ${JSON.stringify(vendaIds)})">
+                ${label}
+            </button>
+        `;
+    }).join(" ");
 }
 
-function confirmarMudancaStatus(event, status, vendaIds) {
-    event.stopPropagation();
-    if (!confirm(`Deseja realmente alterar o status para '${status}'?`)) return;
 
-    vendaIds.forEach(async id => {
-        const res = await fetch(`/venda/${id}/status`, {
+async function confirmarMudancaStatus(event, novoStatus, vendaIds) {
+    event.stopPropagation();
+    if (!confirm(`Deseja realmente alterar o status para '${novoStatus}'?`)) return;
+
+    // Encontra o pedido atualmente aberto no modal
+    const codigo = document.querySelector("#modalTabela h2").innerText.replace("Pedido Nº ", "").trim();
+    let pedidoAtual = null;
+
+    // Tentamos buscar o pedido do cache (DOM ou variável)
+    document.querySelectorAll(".ver-pedido-btn").forEach(btn => {
+        const id = btn.dataset.id;
+        const pedidoTemp = pedidosMap.get(id);
+        if (pedidoTemp && pedidoTemp.codigo === codigo) {
+            pedidoAtual = pedidoTemp;
+        }
+    });
+
+    if (!pedidoAtual) {
+        alert("Erro interno: pedido não encontrado na memória.");
+        return;
+    }
+
+    for (let id of vendaIds) {
+        const res = await fetch(`/pedidos/venda/${id}/status`, {
             method: "PATCH",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status })
+            body: JSON.stringify({ status: novoStatus })
         });
-        if (res.ok) carregarPedidos();
-    });
+
+        if (res.ok) {
+            // Atualiza o status no objeto `pedidoAtual`
+            let venda = pedidoAtual.vendas.find(v => v.id === id);
+            if (venda) {
+                venda.status = novoStatus;
+            }
+        } else {
+            let errorMessage = `Erro ao atualizar a venda ID ${id}`;
+
+            try {
+                const contentType = res.headers.get("content-type");
+    
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await res.json();
+    
+                    if (data.erro) {
+                        errorMessage = data.erro;
+                    } else if (data.message) {
+                        errorMessage = data.message;
+                    } else {
+                        errorMessage = JSON.stringify(data);
+                    }
+                } else {
+                    const text = await res.text();
+                    if (text) errorMessage = text;
+                }
+            } catch (e) {
+                console.error("Erro ao interpretar resposta da API:", e);
+            }
+    
+            alert(errorMessage);
+        }
+    }
+
+    // Re-renderiza o modal com os dados atualizados
+    mostrarPedido(pedidoAtual);
 }
+
 
 function getClass(status) {
     switch (status) {
         case "Em Processamento": return "processando";
-        case "Aprovada": return "aprovado";
-        case "Reprovada": return "reprovado";
+        case "Aprovado": return "aprovado";
+        case "Reprovado": return "reprovado";
         case "Em Transporte": return "transito";
         case "Entregue": return "entregue";
         case "Troca Solicitada": return "troca";
