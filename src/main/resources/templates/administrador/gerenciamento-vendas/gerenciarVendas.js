@@ -43,23 +43,52 @@ const statusLabels = {
 window.addEventListener("DOMContentLoaded", carregarPedidos);
 
 const pedidosMap = new Map();
+const listaContainer = document.querySelector(".pedido-list");
+const mensagemContainer = document.getElementById("mensagem");
+
+document.getElementById("pesquisar").addEventListener("click", async () => {
+    const codigo = document.getElementById("codigo").value.trim();
+
+    if (codigo === "") {
+        carregarPedidos(); // mostra todos
+    } else {
+        try {
+            const response = await fetch(`/pedidos/codigo/${codigo}`);
+            if (!response.ok) {
+                throw new Error("Pedido não encontrado");
+            }
+
+            const pedido = await response.json();
+            renderizarPedidos([pedido]);
+            mensagemContainer.textContent = ""; // limpa mensagem
+        } catch (err) {
+            listaContainer.innerHTML = "";
+            mensagemContainer.textContent = `Nenhum pedido com o código "${codigo}" foi encontrado.`;
+        }
+    }
+});
 
 async function carregarPedidos() {
     const response = await fetch("/pedidos/all");
     const pedidos = await response.json();
-    const container = document.querySelector(".pedido-list");
-    container.innerHTML = "";
+    renderizarPedidos(pedidos);
+    mensagemContainer.textContent = ""; // limpa mensagem
+}
+
+function renderizarPedidos(pedidos) {
+    listaContainer.innerHTML = "";
+    pedidosMap.clear();
 
     pedidos.forEach((pedido, index) => {
         const div = document.createElement("div");
         div.className = "pedido-item";
-    
+
         const raw = pedido.codigo.substring(0, 8);
         const ano = parseInt(raw.substring(0, 4));
         const mes = parseInt(raw.substring(4, 6)) - 1;
         const dia = parseInt(raw.substring(6, 8));
         const dataPedido = new Date(ano, mes, dia).toLocaleDateString();
-    
+
         const info = `
             <div class="pedido-info">
                 <div class="pedido-name">Pedido Nº ${pedido.codigo}</div>
@@ -70,13 +99,12 @@ async function carregarPedidos() {
             </div>
         `;
         div.innerHTML = info;
-        container.appendChild(div);
-    
-        // Salva o pedido no Map
+        listaContainer.appendChild(div);
+
         pedidosMap.set(index.toString(), pedido);
     });
-    
-    // Depois de criar os botões:
+
+    // Eventos dos botões "Ver"
     document.querySelectorAll(".ver-pedido-btn").forEach(btn => {
         btn.addEventListener("click", e => {
             const id = e.currentTarget.dataset.id;
@@ -84,8 +112,8 @@ async function carregarPedidos() {
             mostrarPedido(pedido);
         });
     });
-    
 }
+
 
 function mostrarPedido(pedido) {
     document.querySelector("#modalTabela h2").innerText = `Pedido Nº ${pedido.codigo}`;

@@ -7,15 +7,7 @@
     <title>Gerenciamento de Vendas</title>
     <link rel="stylesheet" href="../css/menuAdmin.css">
     <link rel="stylesheet" href="../css/tabelaTransacoes.css">
-    <style>
-        .zoomed {
-            font-size: 0.7rem;
-        }
-        .zoomed .status-btn {
-            font-size: 0.7rem; /* Diminui o tamanho dos botões também */
-            padding: 3px 7px; /* Ajusta o padding para manter proporção */
-        }
-    </style>
+
 </head>
 <body>
 	<header>
@@ -24,20 +16,16 @@
 	</header>
     <div class="container">
         <h2>Gerenciamento de Vendas</h2>
-        <!--<div class="filter-container">
-            <div class="filter-group">
-                <label for="startDate">Do dia:</label>
-                <input type="date" id="startDate">
-            </div>
-            <div class="filter-group">
-                <label for="endDate">Até o dia:</label>
-                <input type="date" id="endDate">
-            </div>
-            <button>Pesquisar</button>
-        </div> -->
+        <div class="filters">
+            <input type="text" id="codigo" placeholder="Código do Pedido">
+        </div>
+        <div class="filters">
+            <button id="pesquisar">Pesquisar</button>
+        </div>
 
         <!-- Lista dinâmica de pedidos -->
         <div id="listaPedidos" class="pedido-list"></div>
+        <div id="mensagem" class="mensagem-erro" style="color: rgb(0, 31, 4); margin-top: 10px;"></div>
 
         <!-- Modal de Tabela de Pedido -->
         <div id="modalTabela" class="modal-tabela">
@@ -46,9 +34,23 @@
             <h2 id="tituloPedido">Pedido</h2>
             <p><strong>Cliente:</strong> <span id="modalNome"></span></p>
             <p><strong>Data:</strong> <span id="modalData"></span></p>
+            <!-- <p><strong>Valor Total:</strong> <span id=""></span></p> -->
             <p><strong>Forma de Pagamento:</strong> <span id="modalPagamento"></span></p>
             <p><strong>Endereço de Entrega:</strong> <span id="modalEndereco"></span></p>
 
+            <!-- <table class="optional-table">
+                <tr>
+                    <th>Status Geral</th>
+                    <th>Ações</th>
+                </tr>
+                <td>
+                    asd
+                </td>
+                <td>
+                    asd
+                </td>
+            </table> -->
+            
             <table id="tabelaPedido">
             <thead>
                 <tr>

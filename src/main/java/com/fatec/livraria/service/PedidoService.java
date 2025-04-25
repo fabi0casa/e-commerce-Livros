@@ -26,6 +26,11 @@ public class PedidoService {
         return pedidoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }    
 
+    public Pedido buscarPorCodigo(String codigo) {
+        return pedidoRepository.findByCodigo(codigo)
+            .orElseThrow(() -> new RuntimeException("Pedido com código " + codigo + " não encontrado"));
+    }
+    
     public List<Pedido> listarPorClienteId(Integer clienteId) {
         Cliente cliente = clienteService.buscarPorId(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
