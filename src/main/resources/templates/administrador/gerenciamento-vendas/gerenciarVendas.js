@@ -39,7 +39,6 @@ const statusLabels = {
     "Devolução Concluida": "Concluir Devolução"
 };
 
-
 window.addEventListener("DOMContentLoaded", carregarPedidos);
 
 const pedidosMap = new Map();
@@ -113,7 +112,6 @@ function renderizarPedidos(pedidos) {
         });
     });
 }
-
 
 function mostrarPedido(pedido) {
     document.querySelector("#modalTabela h2").innerText = `Pedido Nº ${pedido.codigo}`;
@@ -209,7 +207,7 @@ function mostrarPedido(pedido) {
 
     // Pega a optional-table e define visibilidade
     const optionalTable = document.querySelector(".optional-table");
-    
+
     if (todosStatusIguais && !todosLivrosIguais) {
         // Mostra a tabela
         optionalTable.style.display = "table";
@@ -239,58 +237,69 @@ function gerarBotoes(statusAtual, vendaIds) {
     }).join(" ");
 }
 
+let vendaIdsPendentes = [];
+let novoStatusPendentes = "";
+let pedidoAtualPendentes = null;
 
-async function confirmarMudancaStatus(event, novoStatus, vendaIds) {
+function confirmarMudancaStatus(event, novoStatus, vendaIds) {
     event.stopPropagation();
-    if (!confirm(`Deseja realmente alterar o status para '${novoStatus}'?`)) return;
 
-    // Encontra o pedido atualmente aberto no modal
+    // Armazena dados temporariamente
+    vendaIdsPendentes = vendaIds;
+    novoStatusPendentes = novoStatus;
+
+    // Exibe o texto no modal
+    document.getElementById("modalText").innerText = `Deseja realmente alterar o status para '${novoStatus}'?`;
+
+    // Mostra ou oculta o checkbox de "Retornar ao Estoque"
+    const checkboxContainer = document.getElementById("checkboxContainer");
+    if (novoStatus === "Troca Aceita" || novoStatus === "Devolução Aceita") {
+        checkboxContainer.style.display = "block";
+    } else {
+        checkboxContainer.style.display = "none";
+        document.getElementById("retornaEstoque").checked = false;
+    }
+
+    // Encontra e guarda o pedido atual
     const codigo = document.querySelector("#modalTabela h2").innerText.replace("Pedido Nº ", "").trim();
-    let pedidoAtual = null;
-
-    // Tentamos buscar o pedido do cache (DOM ou variável)
     document.querySelectorAll(".ver-pedido-btn").forEach(btn => {
         const id = btn.dataset.id;
         const pedidoTemp = pedidosMap.get(id);
         if (pedidoTemp && pedidoTemp.codigo === codigo) {
-            pedidoAtual = pedidoTemp;
+            pedidoAtualPendentes = pedidoTemp;
         }
     });
 
-    if (!pedidoAtual) {
+    if (!pedidoAtualPendentes) {
         alert("Erro interno: pedido não encontrado na memória.");
         return;
     }
 
-    for (let id of vendaIds) {
+    openModal("modalConfirmacao");
+}
+
+document.getElementById("confirmarBtn").addEventListener("click", async () => {
+    const retornaEstoque = document.getElementById("retornaEstoque").checked;
+
+    for (let id of vendaIdsPendentes) {
         const res = await fetch(`/pedidos/venda/${id}/status`, {
             method: "PATCH",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: novoStatus })
+            body: JSON.stringify({ status: novoStatusPendentes, retornarEstoque: retornaEstoque })
         });
 
         if (res.ok) {
-            // Atualiza o status no objeto `pedidoAtual`
-            let venda = pedidoAtual.vendas.find(v => v.id === id);
+            let venda = pedidoAtualPendentes.vendas.find(v => v.id === id);
             if (venda) {
-                venda.status = novoStatus;
+                venda.status = novoStatusPendentes;
             }
         } else {
             let errorMessage = `Erro ao atualizar a venda ID ${id}`;
-
             try {
                 const contentType = res.headers.get("content-type");
-    
                 if (contentType && contentType.includes("application/json")) {
                     const data = await res.json();
-    
-                    if (data.erro) {
-                        errorMessage = data.erro;
-                    } else if (data.message) {
-                        errorMessage = data.message;
-                    } else {
-                        errorMessage = JSON.stringify(data);
-                    }
+                    errorMessage = data.erro || data.message || JSON.stringify(data);
                 } else {
                     const text = await res.text();
                     if (text) errorMessage = text;
@@ -298,15 +307,13 @@ async function confirmarMudancaStatus(event, novoStatus, vendaIds) {
             } catch (e) {
                 console.error("Erro ao interpretar resposta da API:", e);
             }
-    
             alert(errorMessage);
         }
     }
 
-    // Re-renderiza o modal com os dados atualizados
-    mostrarPedido(pedidoAtual);
-}
-
+    closeModal("modalConfirmacao");
+    mostrarPedido(pedidoAtualPendentes);
+});
 
 function getClass(status) {
     switch (status) {
@@ -331,7 +338,6 @@ function toggleSubRows(row) {
         next.classList.toggle("hidden");
     }
 }
-
 
 function openModal(modalId) {
     document.getElementById(modalId).style.display = "flex";

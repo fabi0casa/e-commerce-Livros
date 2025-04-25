@@ -26,10 +26,15 @@ public class PedidoService {
         return pedidoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }    
 
-    public Pedido buscarPorCodigo(String codigo) {
-        return pedidoRepository.findByCodigo(codigo)
-            .orElseThrow(() -> new RuntimeException("Pedido com código " + codigo + " não encontrado"));
-    }
+    public Pedido buscarPorCodigo(String codigo, Integer clienteId) {
+        if (clienteId != null) {
+            return pedidoRepository.findByCodigoAndClienteId(codigo, clienteId)
+                .orElseThrow(() -> new RuntimeException("Pedido com código " + codigo + " e clienteId " + clienteId + " não encontrado"));
+        } else {
+            return pedidoRepository.findByCodigo(codigo)
+                .orElseThrow(() -> new RuntimeException("Pedido com código " + codigo + " não encontrado"));
+        }
+    }    
     
     public List<Pedido> listarPorClienteId(Integer clienteId) {
         Cliente cliente = clienteService.buscarPorId(clienteId)

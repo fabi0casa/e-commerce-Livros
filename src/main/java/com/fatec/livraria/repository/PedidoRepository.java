@@ -11,4 +11,5 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
     List<Pedido> findByCliente(Cliente cliente);
     boolean existsByCodigo(String codigo);
     Optional<Pedido> findByCodigo(String codigo);
+    Optional<Pedido> findByCodigoAndClienteId(String codigo, Integer clienteId);
 }

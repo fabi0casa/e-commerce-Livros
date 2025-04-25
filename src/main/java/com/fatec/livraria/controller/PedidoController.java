@@ -26,14 +26,14 @@ public class PedidoController {
     }
 
     @GetMapping("/codigo/{codigo}")
-    public ResponseEntity<Pedido> buscarPorCodigo(@PathVariable String codigo) {
+    public ResponseEntity<Pedido> buscarPorCodigo(@PathVariable String codigo, @RequestParam(required = false) Integer clienteId) {
         try {
-            Pedido pedido = pedidoService.buscarPorCodigo(codigo);
+            Pedido pedido = pedidoService.buscarPorCodigo(codigo, clienteId);
             return ResponseEntity.ok(pedido);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-    }
+    }    
 
     @GetMapping("/cliente/{clienteId}")
     public List<Pedido> listarPorCliente(@PathVariable Integer clienteId) {
