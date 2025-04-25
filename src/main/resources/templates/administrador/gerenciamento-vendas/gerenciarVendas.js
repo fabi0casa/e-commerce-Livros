@@ -199,6 +199,30 @@ function mostrarPedido(pedido) {
             tabelaBody.appendChild(subRow);
         }
     });
+    // Verifica se todas as vendas do pedido têm o mesmo status
+    const primeiroStatus = pedido.vendas[0]?.status;
+    const todosStatusIguais = pedido.vendas.every(v => v.status === primeiroStatus);
+
+    // Verifica se todas as vendas são do mesmo livro
+    const primeiroLivroId = pedido.vendas[0]?.livro.id;
+    const todosLivrosIguais = pedido.vendas.every(v => v.livro.id === primeiroLivroId);
+
+    // Pega a optional-table e define visibilidade
+    const optionalTable = document.querySelector(".optional-table");
+    
+    if (todosStatusIguais && !todosLivrosIguais) {
+        // Mostra a tabela
+        optionalTable.style.display = "table";
+
+        // Preenche a célula de status
+        optionalTable.rows[1].cells[0].innerHTML = `<span class="status-btn ${getClass(primeiroStatus)}">${primeiroStatus}</span>`;
+
+        // Preenche a célula de ações com os botões possíveis para esse status
+        optionalTable.rows[1].cells[1].innerHTML = gerarBotoes(primeiroStatus, pedido.vendas.map(v => v.id));
+    } else {
+        // Esconde a tabela se os status forem diferentes
+        optionalTable.style.display = "none";
+    }
 
     openModal("modalTabela");
 }

@@ -330,5 +330,9 @@ th {
 }
 
 .optional-table th{
-    background-color: rgb(0, 83, 11)
+    background-color: #030303
+}
+
+.optional-table tr{
+    background-color: #e4faff
 }
