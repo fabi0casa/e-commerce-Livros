@@ -236,6 +236,7 @@ input:focus, select:focus, textarea:focus {
 .transito { background-color: rgb(33, 24, 212); color: white; }
 .entregue { background-color: rgb(0, 159, 0); color: white; }
 .troca { background-color: #5900ff; color: white; }
+.devolucao { background-color: #2d1070; color: white; }
 .aprovado { background-color: rgb(11, 184, 115); color: white; }
 .reprovado { background-color: rgb(211, 0, 0); color: white; }
 .indefinido { background-color: rgb(112, 112, 112); color: white; }

@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let novoStatusPendentes = "";
     let pedidoAtualPendentes = null;
     
-    function confirmarMudancaStatus(event, novoStatus, vendaIds) {
+    window.confirmarMudancaStatus = function(event, novoStatus, vendaIds) {
         event.stopPropagation();
     
         // Armazena dados temporariamente
@@ -375,11 +375,13 @@ document.addEventListener("DOMContentLoaded", function() {
             case "Em Transporte": return "transito";
             case "Entregue": return "entregue";
             case "Troca Solicitada": return "troca";
-            case "Troca Aceita": return "troca-autorizada";
-            case "Troca Concluida": return "finalizado";
-            case "Devolução Solicitada": return "troca";
-            case "Devolução Aceita": return "troca-autorizada";
-            case "Devolução Concluida": return "finalizado";
+            case "Troca Aceita": return "troca";
+            case "Troca Recusada": return "reprovado";
+            case "Troca Concluida": return "troca";
+            case "Devolução Solicitada": return "devolucao";
+            case "Devolução Aceita": return "devolucao";
+            case "Devolução Recusada": return "reprovado";
+            case "Devolução Concluida": return "devolucao";
             default: return "indefinido";
         }
     }
