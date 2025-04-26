@@ -231,12 +231,14 @@ input:focus, select:focus, textarea:focus {
 .status-cell{
     min-width: 160px;
 }
+
 .processando { background-color: rgb(196, 101, 0); color: white; }
 .transito { background-color: rgb(33, 24, 212); color: white; }
 .entregue { background-color: rgb(0, 159, 0); color: white; }
 .troca { background-color: #5900ff; color: white; }
 .aprovado { background-color: rgb(11, 184, 115); color: white; }
 .reprovado { background-color: rgb(211, 0, 0); color: white; }
+.indefinido { background-color: rgb(112, 112, 112); color: white; }
 
 .pedido-list {
     width: 100%;
@@ -319,4 +321,232 @@ input:focus, select:focus, textarea:focus {
 .zoomed .status-btn {
     font-size: 0.7rem; /* Diminui o tamanho dos botões também */
     padding: 3px 7px; /* Ajusta o padding para manter proporção */
+}
+
+.selecao-produtos-categorias {
+    display: flex;
+    gap: 20px; /* Espaço entre os grupos */
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.selecao-produtos-categorias label{
+    font-weight: bold;
+}
+
+.selecao-produtos, .selecao-categorias {
+    flex: 1; /* Ocupa espaço de forma equilibrada */
+    min-width: 250px; /* Evita que fiquem muito estreitos */
+}
+
+.lista-checkbox {
+    display: flex;
+    flex-direction: column;
+    max-height: 150px; /* Limita a altura */
+    overflow-y: auto; /* Ativa rolagem vertical caso tenha muitos itens */
+    max-width: 290px;
+    overflow-x: auto; /* Ativa rolagem horizontal caso os títulos sejam longos */
+    border: 1px solid #abafb1;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f6fbffcf;
+    white-space: nowrap; /* Impede quebra de linha */
+}
+
+.lista-checkbox::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.lista-checkbox::-webkit-scrollbar-thumb {
+    background: #000222;
+    border-radius: 20px;
+}
+.lista-checkbox::-webkit-scrollbar-track {
+    background: #00022225;
+}
+
+.lista-checkbox label{
+    font-weight: normal;
+    display: block; /* Faz com que cada checkbox fique numa linha separada */
+    white-space: nowrap; /* Mantém o texto em uma única linha */
+    overflow: visible; /* Impede que o texto ultrapasse os limites do contêiner */
+}
+
+.pedido-list {
+    width: 100%;
+}
+
+.pedido-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #7cffa85a;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.pedido-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.pedido-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.pedido-details {
+    font-size: 14px;
+    color: #000000;
+    margin-top: 5px;
+}
+
+.pedido-actions button {
+    background-color: #d1ffdf;
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.modal-tabela {
+    display: none; /* Agora começa invisível */
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-tabela img{
+    height: 75px;
+    width: 75px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+/* Conteúdo do Modal */
+.modal-tabela-content {
+    max-height: 70vh; /* Define a altura máxima como 70% da tela */
+    overflow-y: auto; /* Adiciona a barra de rolagem vertical quando necessário */
+    background-color: white;
+    padding: 20px;
+    max-width: 150vh;
+    border-radius: 8px;
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+.modal-tabela-content::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.modal-tabela-content::-webkit-scrollbar-thumb {
+    background: #000222;
+    border-radius: 20px;
+}
+.modal-tabela-content::-webkit-scrollbar-track {
+    background: #00022225;
+}
+
+.expandable-row {
+    cursor: pointer;
+    background-color: #eefcff;
+    transition: background 0.2s ease-in-out;
+}
+.expandable-row:hover {
+    background-color: #dbf6ff;
+}
+
+.sub-rows {
+    background-color: #f7f7f7;
+}
+.hidden {
+    display: none;
+}
+
+.sub-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.sub-table th,
+.sub-table td {
+    padding: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.sub-table th{
+    background-color: #5900ff;
+}
+
+.zoomed {
+    font-size: 0.7rem;
+}
+.zoomed .status-btn {
+    font-size: 0.7rem; /* Diminui o tamanho dos botões também */
+    padding: 3px 7px; /* Ajusta o padding para manter proporção */
+}
+
+.filtros-container {
+    display: flex;
+    flex-direction: column; /* ou 'row' se quiser lado a lado */
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px; /* espaçamento opcional */
+}
+
+.filters {
+    margin: 3px;
+}
+
+.filters input {
+    width: 100%;
+    max-width: 280px;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    border: 2px solid rgba(79, 70, 229, 0.2);
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.filters input:focus {
+    border-color: #4f46e5; /* Um roxo bonito */
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); /* Glow leve ao focar */
+    background-color: #fff;
+}
+
+
+
+.optional-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.optional-table th,
+.optional-table td {
+    padding: 5px;
+    border: 0px solid #ccc;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.optional-table th{
+    background-color: #030303
+}
+
+.optional-table tr{
+    background-color: #e4faff
 }

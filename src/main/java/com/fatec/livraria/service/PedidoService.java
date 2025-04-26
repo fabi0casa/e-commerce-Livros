@@ -39,7 +39,7 @@ public class PedidoService {
     public List<Pedido> listarPorClienteId(Integer clienteId) {
         Cliente cliente = clienteService.buscarPorId(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        return pedidoRepository.findByCliente(cliente);
+                return pedidoRepository.findByCliente(cliente, Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public Pedido criarPedidoComVendas(PedidoRequest request) {
