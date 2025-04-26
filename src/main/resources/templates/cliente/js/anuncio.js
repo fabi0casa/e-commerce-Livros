@@ -79,6 +79,7 @@ async function adicionarAoCarrinho() {
 
     if (!clienteId) {
         alert("É necessário estar logado para adicionar itens ao carrinho.");
+        window.location.href = "/cliente/login";
         return;
     }
 
