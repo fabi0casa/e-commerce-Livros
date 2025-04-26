@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="modal-tabela-content">
                 <span class="close" onclick="closeModal('modalTabela')">&times;</span>
                 <h2 id="tituloPedido">Pedido</h2>
-                <p><strong>Cliente:</strong> <span id="modalNome"></span></p>
                 <p><strong>Data:</strong> <span id="modalData"></span></p>
                 <!-- <p><strong>Valor Total:</strong> <span id="modalValor"></span></p> -->
                 <p><strong>Forma de Pagamento:</strong> <span id="modalPagamento"></span></p>
@@ -166,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function mostrarPedido(pedido) {
         document.querySelector("#modalTabela h2").innerText = `Pedido Nº ${pedido.codigo}`;
-        document.getElementById("modalNome").innerText = pedido.cliente.nome;
+        //document.getElementById("modalNome").innerText = pedido.cliente.nome;
     
         const raw = pedido.codigo.substring(0, 8); // ex: "20250421"
         const ano = parseInt(raw.substring(0, 4));
