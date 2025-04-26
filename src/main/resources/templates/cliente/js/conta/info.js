@@ -1,74 +1,167 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const contaInfo = `
-            <div id="info" class="secao ativa">
-                <h2>Minha Conta</h2>
-                <p><strong>Nome:</strong> João Silva</p>
-                <p><strong>Email:</strong> joao@email.com</p>
-                <p><strong>Telefone:</strong> (11) 99999-9999</p>
-                <p><strong>Data de Nascimento:</strong> 15/08/1990</p>
-                <p><strong>Gênero:</strong> Masculino</p>
-                <p><strong>CPF:</strong> 888.888.888-08</p>
-                <button onclick="openModal('addressModal')">Ver Endereços</button>
-                <button onclick="openModal('cardModal')">Ver Cartões</button>
-            </div>
-
-            <!-- Modal de Endereços -->
-            <div id="addressModal" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeModal('addressModal')">&times;</span>
-                    <h2>Endereços Cadastrados</h2>
-
-                    <button class="accordion">Rua Exemplo, 123 - São Paulo, SP</button>
-                    <div class="panel">
-                        <p><strong>Tipo:</strong> Apartamento</p>
-                        <p><strong>Logradouro:</strong> Rua Exemplo</p>
-                        <p><strong>Número:</strong> 123</p>
-                        <p><strong>Bairro:</strong> Centro</p>
-                        <p><strong>CEP:</strong> 01000-000</p>
-                        <p><strong>Cidade:</strong> São Paulo</p>
-                        <p><strong>Estado:</strong> SP</p>
-                        <p><strong>País:</strong> Brasil</p>
-                        <p><strong>Observação:</strong> Próximo ao metrô</p>
-                    </div>
-
-                    <button class="accordion">Av. Teste, 456 - Rio de Janeiro, RJ</button>
-                    <div class="panel">
-                        <p><strong>Tipo:</strong> Casa</p>
-                        <p><strong>Logradouro:</strong> Av. Teste</p>
-                        <p><strong>Número:</strong> 456</p>
-                        <p><strong>Bairro:</strong> Copacabana</p>
-                        <p><strong>CEP:</strong> 22000-000</p>
-                        <p><strong>Cidade:</strong> Rio de Janeiro</p>
-                        <p><strong>Estado:</strong> RJ</p>
-                        <p><strong>País:</strong> Brasil</p>
-                        <p><strong>Observação:</strong> Casa de Praia</p>
+    fetch(`/clientes/${clienteId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados do cliente.');
+            }
+            return response.json();
+        })
+        .then(cliente => {
+            const contaInfo = `
+                <div id="info" class="secao ativa">
+                    <h2>Minha Conta</h2>
+                    <div class="info-container">
+                        <div class="info-text">
+                            <p><strong>Nome:</strong> ${cliente.nome}</p>
+                            <p><strong>Email:</strong> ${cliente.email}</p>
+                            <p><strong>Telefone:</strong> ${cliente.telefone}</p>
+                            <p><strong>Data de Nascimento:</strong> ${formatarData(cliente.dataNascimento)}</p>
+                            <p><strong>Gênero:</strong> ${cliente.genero}</p>
+                            <p><strong>CPF:</strong> ${cliente.cpf}</p>
+                        </div>
+                        <div class="info-buttons">
+                            <button onclick="openModal('addressModal')">Ver Endereços</button>
+                            <button onclick="openModal('cardModal')">Ver Cartões</button>
+                            <button onclick="openModal('cupomModal')">Ver Cupons</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Modal de Cartões -->
-            <div id="cardModal" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeModal('cardModal')">&times;</span>
-                    <h2>Cartões Cadastrados</h2>
 
-                    <button class="accordion">**** **** **** 1234</button>
-                    <div class="panel">
-                        <p><strong>Nome Impresso:</strong> João Silva</p>
-                        <p><strong>Bandeira:</strong> Visa</p>
-                        <p><strong>Código de Segurança:</strong> 123</p>
-                        <p><strong>Preferencial:</strong> Sim</p>
-                    </div>
+                ${gerarModalEnderecos(cliente.enderecos)}
+                ${gerarModalCartoes(cliente.cartoes)}
+                ${gerarModalCupons(cliente.cupons)}
+            `;
 
-                    <button class="accordion">**** **** **** 5678</button>
-                    <div class="panel">
-                        <p><strong>Nome Impresso:</strong> João Silva</p>
-                        <p><strong>Bandeira:</strong> MasterCard</p>
-                        <p><strong>Código de Segurança:</strong> 456</p>
-                        <p><strong>Preferencial:</strong> Não</p>
-                    </div>
-                </div>
-            </div>
+            document.getElementById("contaInfo").innerHTML = contaInfo;
+
+            // Ativa os accordions depois que o HTML foi carregado
+            setupAccordions();
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+});
+
+function formatarData(data) {
+    // Assume formato "YYYY-MM-DD"
+    if (!data) return '';
+    const partes = data.split("-");
+    return `${partes[2]}/${partes[1]}/${partes[0]}`; // dia/mês/ano
+}
+
+function gerarModalEnderecos(enderecos) {
+    let html = `
+        <div id="addressModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('addressModal')">&times;</span>
+                <h2>Endereços Cadastrados</h2>
     `;
 
-    document.getElementById("contaInfo").innerHTML = contaInfo;
-});
+    if (enderecos && enderecos.length > 0) {
+        enderecos.forEach(endereco => {
+            html += `
+                <button class="accordion">${endereco.fraseIdentificadora}</button>
+                <div class="panel">
+                    <p><strong>Tipo:</strong> ${endereco.tipo}</p>
+                    <p><strong>Logradouro:</strong> ${endereco.logradouro}</p>
+                    <p><strong>Número:</strong> ${endereco.numero}</p>
+                    <p><strong>Bairro:</strong> ${endereco.bairro}</p>
+                    <p><strong>CEP:</strong> ${endereco.cep}</p>
+                    <p><strong>Cidade:</strong> ${endereco.cidade}</p>
+                    <p><strong>Estado:</strong> ${endereco.estado}</p>
+                    <p><strong>País:</strong> ${endereco.pais}</p>
+                    <p><strong>Observação:</strong> ${endereco.observacoes}</p>
+                </div>
+            `;
+        });
+    } else {
+        html += `<p>Nenhum endereço cadastrado.</p>`;
+    }
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    return html;
+}
+
+function gerarModalCartoes(cartoes) {
+    let html = `
+        <div id="cardModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('cardModal')">&times;</span>
+                <h2>Cartões Cadastrados</h2>
+    `;
+
+    if (cartoes && cartoes.length > 0) {
+        cartoes.forEach(cartao => {
+            const numeroFormatado = '**** **** **** ' + cartao.numeroCartao.slice(-4);
+            html += `
+                <button class="accordion">${numeroFormatado}</button>
+                <div class="panel">
+                    <p><strong>Nome Impresso:</strong> ${cartao.nomeImpresso}</p>
+                    <p><strong>Bandeira:</strong> ${cartao.bandeira.nome}</p>
+                    <p><strong>Código de Segurança:</strong> ${cartao.codigoSeguranca}</p>
+                    <p><strong>Preferencial:</strong> ${cartao.preferencial ? 'Sim' : 'Não'}</p>
+                </div>
+            `;
+        });
+    } else {
+        html += `<p>Nenhum cartão cadastrado.</p>`;
+    }
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    return html;
+}
+
+function gerarModalCupons(cupons) {
+    let html = `
+        <div id="cupomModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('cupomModal')">&times;</span>
+                <h2>Meus Cupons</h2>
+    `;
+
+    if (cupons && cupons.length > 0) {
+        cupons.forEach(cupom => {
+            html += `
+                <button class="accordion">Cupom ${cupom.codigo}</button>
+                <div class="panel">
+                    <p><strong>Codigo do cupom:</strong> ${cupom.codigo}</p>
+                    <p><strong>Tipo:</strong> ${cupom.tipo}</p>
+                    <p><strong>Valor:</strong> R$ ${cupom.valor.toFixed(2)}</p>
+                </div>
+            `;
+        });
+    } else {
+        html += `<p>Nenhum cupom disponível.</p>`;
+    }
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    return html;
+}
+
+// Essa função ativa a abertura/fechamento dos accordions:
+function setupAccordions() {
+    const acc = document.getElementsByClassName("accordion");
+    for (let i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            const panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+}
