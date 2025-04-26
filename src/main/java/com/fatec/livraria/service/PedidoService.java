@@ -4,7 +4,6 @@ import com.fatec.livraria.dto.PedidoRequest;
 import com.fatec.livraria.dto.VendaRequest;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.entity.Cliente;
-import com.fatec.livraria.entity.Venda;
 import com.fatec.livraria.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -64,8 +63,8 @@ public class PedidoService {
         return pedido;
     }
 
-    public Venda atualizarStatusVenda(Integer vendaId, String novoStatus) {
-        return vendaService.atualizarStatus(vendaId, novoStatus);
+    public void atualizarStatusVendas(List<Integer> vendaId, String novoStatus) {
+        vendaService.atualizarStatus(vendaId, novoStatus);
     }
 
     private String gerarCodigoPedido() {

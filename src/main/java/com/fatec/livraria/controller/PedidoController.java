@@ -50,12 +50,13 @@ public class PedidoController {
         }
     }
 
-    @PatchMapping("/venda/{vendaId}/status")
-    public ResponseEntity<?> atualizarStatusVenda( @PathVariable Integer vendaId, @RequestBody StatusRequest request) {
+    @PatchMapping("/vendas/status")
+    public ResponseEntity<?> atualizarStatusVendas(@RequestBody StatusRequest request) {
         try {
-            return ResponseEntity.ok(pedidoService.atualizarStatusVenda(vendaId, request.getStatus()));
+            pedidoService.atualizarStatusVendas(request.getVendaIds(), request.getStatus());
+            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("erro", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
         }
-    }
+    }    
 }

@@ -332,39 +332,42 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("confirmarBtn").addEventListener("click", async () => {
         const retornaEstoque = document.getElementById("retornaEstoque").checked;
     
-        for (let id of vendaIdsPendentes) {
-            const res = await fetch(`/pedidos/venda/${id}/status`, {
-                method: "PATCH",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: novoStatusPendentes, retornarEstoque: retornaEstoque })
-            });
+        // Faz uma única chamada para atualizar todos os IDs de uma vez
+        const res = await fetch(`/pedidos/vendas/status`, {
+            method: "PATCH",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ vendaIds: vendaIdsPendentes, status: novoStatusPendentes, retornarEstoque: retornaEstoque })
+        });
     
-            if (res.ok) {
+        if (res.ok) {
+            // Atualiza o status de cada venda no pedidoAtualPendentes localmente
+            for (let id of vendaIdsPendentes) {
                 let venda = pedidoAtualPendentes.vendas.find(v => v.id === id);
                 if (venda) {
                     venda.status = novoStatusPendentes;
                 }
-            } else {
-                let errorMessage = `Erro ao atualizar a venda ID ${id}`;
-                try {
-                    const contentType = res.headers.get("content-type");
-                    if (contentType && contentType.includes("application/json")) {
-                        const data = await res.json();
-                        errorMessage = data.erro || data.message || JSON.stringify(data);
-                    } else {
-                        const text = await res.text();
-                        if (text) errorMessage = text;
-                    }
-                } catch (e) {
-                    console.error("Erro ao interpretar resposta da API:", e);
-                }
-                alert(errorMessage);
             }
+        } else {
+            let errorMessage = `Erro ao atualizar vendas: `;
+            try {
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await res.json();
+                    errorMessage += data.erro || data.message || JSON.stringify(data);
+                } else {
+                    const text = await res.text();
+                    if (text) errorMessage += text;
+                }
+            } catch (e) {
+                console.error("Erro ao interpretar resposta da API:", e);
+            }
+            alert(errorMessage);
         }
     
         closeModal("modalConfirmacao");
         mostrarPedido(pedidoAtualPendentes);
     });
+    
     
     function getClass(status) {
         switch (status) {
