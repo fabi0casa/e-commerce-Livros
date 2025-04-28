@@ -1,5 +1,6 @@
 package com.fatec.livraria.controller;
 
+import com.fatec.livraria.dto.PedidoCarrinhoRequest;
 import com.fatec.livraria.dto.PedidoRequest;
 import com.fatec.livraria.dto.PedidoResponse;
 import com.fatec.livraria.dto.StatusRequest;
@@ -57,6 +58,24 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
         }
     }
+
+    @PostMapping("/add-carrinho")
+    public ResponseEntity<?> criarPedidoDoCarrinho(@RequestBody PedidoCarrinhoRequest request) {
+        try {
+            Pedido novoPedido = pedidoService.criarPedidoDoCarrinho(request);
+
+            PedidoResponse response = new PedidoResponse(
+                novoPedido.getId(),
+                novoPedido.getCodigo()
+            );
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        }
+    }
+
 
     @PatchMapping("/vendas/status")
     public ResponseEntity<?> atualizarStatusVendas(@RequestBody StatusRequest request) {

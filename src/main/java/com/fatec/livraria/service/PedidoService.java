@@ -1,9 +1,11 @@
 package com.fatec.livraria.service;
 
+import com.fatec.livraria.dto.PedidoCarrinhoRequest;
 import com.fatec.livraria.dto.PedidoRequest;
 import com.fatec.livraria.dto.VendaRequest;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.entity.Venda;
+import com.fatec.livraria.entity.Carrinho;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Cupom;
 import com.fatec.livraria.entity.Livro;
@@ -28,6 +30,7 @@ public class PedidoService {
     @Autowired private LivroService livroService;
     @Autowired private VendaService vendaService;
     @Autowired private CupomService cupomService;
+    @Autowired private CarrinhoService carrinhoService;
 
     public List<Pedido> listarTodos() {
         return pedidoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
@@ -150,6 +153,103 @@ public class PedidoService {
 
         return pedido;
     }
+
+    @Transactional
+    public Pedido criarPedidoDoCarrinho(PedidoCarrinhoRequest request) {
+        Cliente cliente = clienteService.buscarPorId(request.getClienteId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        var endereco = enderecoService.buscarPorId(request.getEnderecoId())
+                .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
+
+        List<Carrinho> itensCarrinho = carrinhoService.listarCarrinho(cliente.getId());
+
+        if (itensCarrinho.isEmpty()) {
+            throw new RuntimeException("Carrinho vazio");
+        }
+
+        Pedido pedido = new Pedido();
+        pedido.setCliente(cliente);
+        pedido.setEndereco(endereco);
+        pedido.setFormaPagamento(request.getFormaPagamento());
+        pedido.setCodigo(gerarCodigoPedido());
+        pedido.setValor(BigDecimal.ZERO);
+
+        BigDecimal valorTotal = BigDecimal.ZERO;
+
+        pedido = pedidoRepository.save(pedido);
+
+        List<Venda> vendasParaSalvar = new ArrayList<>();
+
+        for (Carrinho item : itensCarrinho) {
+            Livro livro = item.getLivro();
+            int quantidade = item.getQuantidade();
+
+            for (int i = 0; i < quantidade; i++) {
+                Venda venda = new Venda();
+                venda.setStatus("Em Processamento");
+                venda.setValor(livro.getPrecoVenda());
+                venda.setLivro(livro);
+                venda.setPedido(pedido);
+
+                vendasParaSalvar.add(venda);
+
+                valorTotal = valorTotal.add(livro.getPrecoVenda());
+            }
+        }
+
+        vendaService.criarVendasEmLote(vendasParaSalvar);
+
+        // Cupons
+        BigDecimal valorDescontos = BigDecimal.ZERO;
+
+        if (request.getCuponsIds() != null && !request.getCuponsIds().isEmpty()) {
+            List<Cupom> cupons = cupomService.buscarPorIds(request.getCuponsIds());
+
+            BigDecimal valorRestantePedido = valorTotal;
+
+            for (Cupom cupom : cupons) {
+                if (valorRestantePedido.compareTo(BigDecimal.ZERO) <= 0) {
+                    break;
+                }
+
+                BigDecimal valorCupom = cupom.getValor();
+
+                if (valorCupom.compareTo(valorRestantePedido) <= 0) {
+                    valorDescontos = valorDescontos.add(valorCupom);
+                    valorRestantePedido = valorRestantePedido.subtract(valorCupom);
+
+                    cupomService.excluirCupom(cupom.getId());
+
+                } else {
+                    valorDescontos = valorDescontos.add(valorRestantePedido);
+
+                    BigDecimal troco = valorCupom.subtract(valorRestantePedido);
+
+                    cupomService.gerarCupom(troco, "Troco", cliente);
+
+                    cupomService.excluirCupom(cupom.getId());
+
+                    valorRestantePedido = BigDecimal.ZERO;
+                }
+            }
+        }
+
+        BigDecimal valorFinal = valorTotal.subtract(valorDescontos);
+
+        if (valorFinal.compareTo(BigDecimal.ZERO) < 0) {
+            valorFinal = BigDecimal.ZERO;
+        }
+
+        pedido.setValor(valorFinal);
+        pedido = pedidoRepository.save(pedido);
+
+        // Após criar o pedido, limpar o carrinho do cliente
+        carrinhoService.limparCarrinhoDoCliente(cliente.getId().longValue());
+
+        return pedido;
+    }
+
 
     public void atualizarStatusVendas(List<Integer> vendaId, String novoStatus) {
         vendaService.atualizarStatus(vendaId, novoStatus);
