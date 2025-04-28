@@ -3,6 +3,8 @@ package com.fatec.livraria.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -22,7 +24,7 @@ public class Venda {
     private String status;
 
     @Column(name = "vnd_valor", nullable = false)
-    private Double valor;
+    private BigDecimal valor;
 
     @ManyToOne
     @JoinColumn(name = "vnd_lvr_id", nullable = false)

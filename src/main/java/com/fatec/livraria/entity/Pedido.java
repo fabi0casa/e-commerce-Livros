@@ -1,5 +1,6 @@
 package com.fatec.livraria.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -20,6 +21,9 @@ public class Pedido {
 
     @Column(name = "ped_codigo", nullable = false, unique = true, length = 50)
     private String codigo;
+
+    @Column(name = "ped_valor", nullable = false)
+    private BigDecimal valor;
 
     @Column(name = "ped_forma_pagamento", nullable = false, length = 45)
     private String formaPagamento;

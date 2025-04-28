@@ -72,4 +72,9 @@ public class CarrinhoService {
         }
         carrinhoRepository.deleteById(carrinhoId);
     }
+    
+    public void limparCarrinhoDoCliente(Long clienteId) {
+        carrinhoRepository.deleteAllByClienteId(clienteId);
+    }
+    
 }

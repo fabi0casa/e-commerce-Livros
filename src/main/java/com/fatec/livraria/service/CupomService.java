@@ -3,10 +3,14 @@ package com.fatec.livraria.service;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Cupom;
 import com.fatec.livraria.repository.CupomRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,6 +19,12 @@ public class CupomService {
     @Autowired
     private CupomRepository cupomRepository;
 
+    @Transactional
+    public void excluirCupom(Integer id) {
+        cupomRepository.deleteById(id);
+    }
+
+    @Transactional
     public Cupom gerarCupom(BigDecimal valor, String tipo, Cliente cliente) {
         String codigo;
         do {
@@ -29,5 +39,9 @@ public class CupomService {
     
         return cupomRepository.save(cupom);
     }
+
+    public List<Cupom> buscarPorIds(List<Integer> ids) {
+        return cupomRepository.findAllById(ids);
+    }    
     
 }

@@ -27,4 +27,8 @@ public class LivroService {
     public List<Livro> buscarPorNome(String nome) {
         return livroRepository.findByNomeContainingIgnoreCase(nome);
     }
+
+    public List<Livro> buscarPorIds(List<Integer> ids) {
+        return livroRepository.findAllById(ids);
+    }
 }

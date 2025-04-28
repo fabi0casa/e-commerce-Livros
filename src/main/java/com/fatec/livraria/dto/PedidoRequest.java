@@ -27,4 +27,6 @@ public class PedidoRequest {
     @NotNull(message = "A lista de vendas não pode ser nula.")
     @Size(min = 1, message = "O pedido deve conter pelo menos uma venda.")
     private List<@Valid VendaRequest> vendas;
+
+    private List<Integer> cuponsIds; 
 }

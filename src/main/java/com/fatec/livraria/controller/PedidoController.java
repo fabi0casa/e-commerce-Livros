@@ -1,6 +1,7 @@
 package com.fatec.livraria.controller;
 
 import com.fatec.livraria.dto.PedidoRequest;
+import com.fatec.livraria.dto.PedidoResponse;
 import com.fatec.livraria.dto.StatusRequest;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.service.PedidoService;
@@ -44,7 +45,14 @@ public class PedidoController {
     public ResponseEntity<?> criarPedido(@RequestBody PedidoRequest request) {
         try {
             Pedido novoPedido = pedidoService.criarPedidoComVendas(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novoPedido);
+
+            PedidoResponse response = new PedidoResponse(
+                novoPedido.getId(),
+                novoPedido.getCodigo()
+            );
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
         }

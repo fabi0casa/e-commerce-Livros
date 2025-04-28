@@ -11,7 +11,7 @@ public class VendaRequest {
     @NotNull(message = "O ID do livro é obrigatório.")
     private Integer livroId;
 
-    @NotNull(message = "O valor da venda é obrigatório.")
-    @Positive(message = "O valor da venda deve ser maior que zero.")
-    private Double valor;
+    @NotNull(message = "A quantidade é obrigatória.")
+    @Min(value = 1, message = "A quantidade mínima é 1.")
+    private Integer quantidade;
 }

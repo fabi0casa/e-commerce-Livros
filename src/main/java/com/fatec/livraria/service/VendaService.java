@@ -1,7 +1,7 @@
 package com.fatec.livraria.service;
 
-import com.fatec.livraria.dto.VendaRequest;
 import com.fatec.livraria.entity.Cliente;
+import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.entity.Venda;
 import com.fatec.livraria.repository.VendaRepository;
@@ -20,18 +20,20 @@ public class VendaService {
 
     @Autowired private CupomService cupomService;
 
-    public void criarVenda(VendaRequest vendaReq, Pedido pedido) {
-        var livro = livroService.buscarPorId(vendaReq.getLivroId())
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
-
+    public void criarVenda(Livro livro, Pedido pedido) {
         Venda venda = new Venda();
         venda.setStatus("Em Processamento");
-        venda.setValor(vendaReq.getValor());
+        venda.setValor(livro.getPrecoVenda()); // já é BigDecimal
         venda.setLivro(livro);
         venda.setPedido(pedido);
 
         vendaRepository.save(venda);
     }
+    
+    public void criarVendasEmLote(List<Venda> vendas) {
+        vendaRepository.saveAll(vendas);
+    }
+    
 
     public void atualizarStatus(List<Integer> vendaIds, String novoStatus) {
         List<Venda> vendas = vendaRepository.findAllById(vendaIds);
@@ -49,7 +51,7 @@ public class VendaService {
             venda.setStatus(novoStatus);
 
             if (novoStatus.equals("Troca Aceita") || novoStatus.equals("Devolução Aceita")) {
-                valorTotal = valorTotal.add(BigDecimal.valueOf(venda.getValor()));
+                valorTotal = valorTotal.add(venda.getValor());
                 cliente = venda.getPedido().getCliente();
                 gerarCupom = true;
                 tipoCupom = novoStatus.equals("Troca Aceita") ? "Troca" : "Devolução";
