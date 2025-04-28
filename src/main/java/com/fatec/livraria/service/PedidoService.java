@@ -148,9 +148,11 @@ public class PedidoService {
             valorFinal = BigDecimal.ZERO;
         }
 
-        pedido.setValor(valorTotal);
+        pedido.setValor(valorFinal);
         pedido = pedidoRepository.save(pedido);
 
+        clienteService.buscarPorId(cliente.getId());
+        
         return pedido;
     }
 

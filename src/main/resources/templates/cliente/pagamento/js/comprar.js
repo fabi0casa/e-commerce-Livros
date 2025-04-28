@@ -101,6 +101,28 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         cartoesContainer.appendChild(div);
     });
+
+    // Popular cupons no <select id="cupomSelect">
+    const selectCupom = document.getElementById("cupomSelect");
+    selectCupom.innerHTML = ""; // limpa opções anteriores
+
+    if (cliente.cupons && cliente.cupons.length > 0) {
+        cliente.cupons.forEach(cupom => {
+            const option = document.createElement("option");
+            option.value = cupom.id; // aqui manda o id do cupom
+            option.textContent = `Cupom de ${cupom.tipo}: - R$ ${cupom.valor.toFixed(2).replace('.', ',')}`;
+            option.dataset.valor = cupom.valor; // salva o valor como data-atributo para usar depois
+            selectCupom.appendChild(option);
+        });
+    } else {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "Você não possui cupons disponíveis.";
+        selectCupom.appendChild(option);
+        selectCupom.disabled = true; // desativa o select se não tiver cupons
+    }
+
+
 });
 
 async function finalizarCompra() {
@@ -177,8 +199,14 @@ function closeModal(id) {
 
 function aplicarCupom() {
     let selectElement = document.getElementById("cupomSelect");
-    let cupomValor = parseFloat(selectElement.value);
-    let cupomTexto = selectElement.options[selectElement.selectedIndex].text;
+    let selectedOption = selectElement.options[selectElement.selectedIndex];
+    let cupomId = parseInt(selectedOption.value);
+    let cupomValor = parseFloat(selectedOption.dataset.valor);
+
+    if (!cupomId || isNaN(cupomValor)) {
+        alert("Selecione um cupom válido.");
+        return;
+    }
 
     if (totalCompra - totalDesconto <= 0) {
         alert("Não é possível aplicar mais cupons. O valor da compra já está zerado.");
@@ -191,7 +219,7 @@ function aplicarCupom() {
         novoTotal = 0;
     }
 
-    // Adiciona visualmente o desconto
+    // Atualiza visualmente o desconto
     let extratoDiv = document.querySelector(".cupom");
     let descontoItem = document.createElement("div");
     descontoItem.innerHTML = `<h4>- R$ ${cupomValor.toFixed(2)} - Cupom</h4>`;
@@ -199,8 +227,10 @@ function aplicarCupom() {
 
     document.getElementById("total-compra").innerText = `R$ ${parseFloat(novoTotal).toFixed(2).replace('.', ',')}`;
 
-    // Remove o cupom selecionado
-    cuponsAplicados.push(cupomValor);
+    // Guarda o id do cupom usado
+    cuponsAplicados.push(cupomId);
+
+    // Remove o cupom do select
     selectElement.remove(selectElement.selectedIndex);
 
     // Fecha modal

@@ -21,8 +21,17 @@ public class CupomService {
 
     @Transactional
     public void excluirCupom(Integer id) {
-        cupomRepository.deleteById(id);
+        Cupom cupom = cupomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cupom não encontrado"));
+    
+        Cliente cliente = cupom.getCliente();
+        if (cliente != null && cliente.getCupons() != null) {
+            cliente.getCupons().remove(cupom);
+        }
+    
+        cupomRepository.delete(cupom);
     }
+    
 
     @Transactional
     public Cupom gerarCupom(BigDecimal valor, String tipo, Cliente cliente) {
