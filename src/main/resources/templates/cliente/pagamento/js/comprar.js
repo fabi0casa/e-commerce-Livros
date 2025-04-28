@@ -179,12 +179,17 @@ async function finalizarCompra() {
             return;
         }
     
-        alert("Pedido criado com sucesso!");
-        window.location.href = "/cliente/conta";
+        // Mostrar o modal com o código do pedido
+        document.getElementById("pedidoCodigoTexto").textContent = `Seu pedido foi realizado com sucesso!`;
+        document.getElementById("pedidoCodigoBold").textContent = `Código: ${data.codigo}`;
+    
+        openModal('pedidoModal');
+    
     } catch (error) {
         console.error("Erro ao finalizar a compra:", error);
         alert("Erro ao finalizar a compra. Tente novamente.");
     }
+    
 }
 
 // Modal functions (mantém igual)
