@@ -124,6 +124,7 @@ function mostrarPedido(pedido) {
     const dataPedido = new Date(ano, mes, dia).toLocaleDateString();
 
     document.getElementById("modalData").innerText = dataPedido;
+    document.getElementById("modalValor").innerText = pedido.valor;
     document.getElementById("modalPagamento").innerText = pedido.formaPagamento;
     document.getElementById("modalEndereco").innerText = pedido.endereco?.fraseIdentificadora || "Endereço não disponível";
 

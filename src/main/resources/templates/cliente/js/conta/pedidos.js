@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <span class="close" onclick="closeModal('modalTabela')">&times;</span>
                 <h2 id="tituloPedido">Pedido</h2>
                 <p><strong>Data:</strong> <span id="modalData"></span></p>
-                <!-- <p><strong>Valor Total:</strong> <span id="modalValor"></span></p> -->
+                <p><strong>Valor Total:</strong> <span id="modalValor"></span></p>
                 <p><strong>Forma de Pagamento:</strong> <span id="modalPagamento"></span></p>
                 <p><strong>Endereço de Entrega:</strong> <span id="modalEndereco"></span></p>
 
@@ -174,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const dataPedido = new Date(ano, mes, dia).toLocaleDateString();
     
         document.getElementById("modalData").innerText = dataPedido;
+        document.getElementById("modalValor").innerText = pedido.valor;
         document.getElementById("modalPagamento").innerText = pedido.formaPagamento;
         document.getElementById("modalEndereco").innerText = pedido.endereco?.fraseIdentificadora || "Endereço não disponível";
     

@@ -2,11 +2,13 @@
 let totalCompra = 0;
 let totalDesconto = 0;
 let cuponsAplicados = [];
+let livroSelecionado = null; // 🔴 agora salva o livro para não buscar de novo
+let quantidadeSelecionada = 1;
 
 document.addEventListener("DOMContentLoaded", async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const livroId = urlParams.get("livroId");
-    const quantidade = parseInt(urlParams.get("quantidade")) || 1;
+    quantidadeSelecionada = parseInt(urlParams.get("quantidade")) || 1;
     const clienteId = window.clienteId;
 
     if (!livroId || !clienteId) {
@@ -15,38 +17,43 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // Buscar livro
-    const livro = await fetch(`/livros/${livroId}`).then(res => res.json());
+    try {
+        livroSelecionado = await fetch(`/livros/${livroId}`).then(res => res.json());
+    } catch (error) {
+        console.error("Erro ao buscar livro:", error);
+        alert("Erro ao buscar informações do livro.");
+        return;
+    }
 
     // Atualizar visual do livro
     const cartContainer = document.querySelector(".cart-container");
     cartContainer.innerHTML = `
         <div class="cart-item">
             <div class="cart-info">
-                <h3>${livro.nome} - ${livro.autor.nome}</h3>
-                <p class="quantidade">Quantidade: ${quantidade}</p>
-                <p class="price">R$ ${livro.precoVenda.toFixed(2).replace('.', ',')}</p>
+                <h3>${livroSelecionado.nome} - ${livroSelecionado.autor.nome}</h3>
+                <p class="quantidade">Quantidade: ${quantidadeSelecionada}</p>
+                <p class="price">R$ ${livroSelecionado.precoVenda.toFixed(2).replace('.', ',')}</p>
             </div>
-            <img src="${livro.caminhoImagem}" alt="${livro.nome}">
+            <img src="${livroSelecionado.caminhoImagem}" alt="${livroSelecionado.nome}">
         </div>
     `;
 
-    // Atualizar resumo do pedido (na segunda .cart-summary)
+    // Atualizar resumo do pedido
     const resumoCompra = document.querySelectorAll(".cart-summary")[1];
 
-    const precoUnitario = livro.precoVenda;
-    const subtotal = precoUnitario * quantidade;
+    const precoUnitario = livroSelecionado.precoVenda;
+    const subtotal = precoUnitario * quantidadeSelecionada;
     const frete = 10.70;
     const total = subtotal + frete;
 
-    totalCompra = total; // salva para controle dos cupons
+    totalCompra = total; // para controle de cupons
 
-    // Atualiza os valores no extrato de compra
     resumoCompra.innerHTML = `
         <button class="coupon-btn" onclick="openModal('couponModal')">Usar Cupom</button>
         <h4>
             <span>
                 R$ ${precoUnitario.toFixed(2).replace('.', ',')}
-                ${quantidade > 1 ? ` × ${quantidade}` : ''}
+                ${quantidadeSelecionada > 1 ? ` × ${quantidadeSelecionada}` : ''}
             </span>
         </h4>
         <div class="frete">
@@ -77,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Popular cartões
     const cartoesContainer = document.getElementById("cartoes-container");
-    cartoesContainer.innerHTML = ""; // limpar cartões fictícios
+    cartoesContainer.innerHTML = "";
 
     cliente.cartoes.forEach((cartao, index) => {
         const final = cartao.numeroCartao.slice(-4);
@@ -96,7 +103,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 });
 
-
 async function finalizarCompra() {
     const enderecoId = parseInt(document.getElementById("endereco").value);
     if (!enderecoId) {
@@ -104,9 +110,6 @@ async function finalizarCompra() {
         return;
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const livroId = parseInt(urlParams.get("livroId"));
-    const quantidade = parseInt(urlParams.get("quantidade")) || 1;
     const clienteId = window.clienteId;
 
     if (!clienteId || isNaN(clienteId)) {
@@ -114,42 +117,24 @@ async function finalizarCompra() {
         return;
     }
 
-    if (!livroId || isNaN(livroId)) {
-        alert("ID do livro inválido.");
+    if (!livroSelecionado) {
+        alert("Livro não carregado corretamente.");
         return;
     }
 
-    // 🔽 BUSCAR DADOS DO LIVRO
-    let precoVenda;
-    try {
-        const livroResp = await fetch(`/livros/${livroId}`);
-        if (!livroResp.ok) throw new Error("Livro não encontrado.");
+    // 🔽 Montar as vendas (apenas 1 venda com quantidade)
+    const vendas = [{
+        livroId: livroSelecionado.id,
+        quantidade: quantidadeSelecionada
+    }];
 
-        const livro = await livroResp.json();
-        precoVenda = livro.precoVenda;
-
-        if (isNaN(precoVenda)) throw new Error("Preço de venda inválido.");
-    } catch (error) {
-        console.error("Erro ao buscar o livro:", error);
-        alert("Erro ao buscar informações do livro.");
-        return;
-    }
-
-    // 🔽 MONTAR AS VENDAS COM BASE NA QUANTIDADE
-    const vendas = [];
-    for (let i = 0; i < quantidade; i++) {
-        vendas.push({
-            livroId: livroId,
-            valor: precoVenda
-        });
-    }
-
-    // 🔽 MONTAR O PAYLOAD DO PEDIDO COM FORMA DE PAGAMENTO FIXA
+    // 🔽 Montar o payload
     const pedidoPayload = {
         clienteId: parseInt(clienteId),
         enderecoId: enderecoId,
-        formaPagamento: "Cartão de Crédito", // ✅ fixo
-        vendas: vendas
+        formaPagamento: "Cartão de Crédito",
+        vendas: vendas,
+        cuponsIds: cuponsAplicados.length > 0 ? cuponsAplicados : undefined
     };
 
     console.log("Enviando pedido:", pedidoPayload);
@@ -178,9 +163,7 @@ async function finalizarCompra() {
         console.error("Erro ao finalizar a compra:", error);
         alert("Erro ao finalizar a compra. Tente novamente.");
     }
-    
 }
-
 
 // Modal functions (mantém igual)
 function openModal(id) {
@@ -191,7 +174,7 @@ function closeModal(id) {
     document.getElementById(id).style.display = "none";
 }
 
-// 🔄 VERSÃO ORIGINAL DO CUPOM
+
 function aplicarCupom() {
     let selectElement = document.getElementById("cupomSelect");
     let cupomValor = parseFloat(selectElement.value);
