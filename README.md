@@ -40,10 +40,11 @@ Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido pa
 - Senha forte e criptografada para os clientes
 - Gráfico de vendas em formato de linha
 
+<!-- 
 ## ✅ Deploy
 - Foi feito um Deploy no site Render, acessível pelo seguinte link
 - ### [les-livraria.onrender.com](https://les-livraria.onrender.com)
-
+-->
 
 ## 🔧 Instalação e Execução
 
@@ -93,6 +94,14 @@ docker compose down
 Se precisar reconstruir a imagem:  
 ```sh
 docker compose up --build -d
+```
+
+Se precisar resetar tudo sem deixar vestigios:  
+```sh
+docker compose down -v
+```
+```sh
+docker system prune -a
 ```
 
 ## 📌 Contribuição
