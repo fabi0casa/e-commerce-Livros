@@ -68,19 +68,45 @@ document.addEventListener("DOMContentLoaded", async function () {
             selectEndereco.appendChild(option);
         });
 
+        // Popular cartões
         const cartoesContainer = document.getElementById("cartoes-container");
         cartoesContainer.innerHTML = "";
+
         cliente.cartoes.forEach((cartao, index) => {
             const final = cartao.numeroCartao.slice(-4);
             const id = `cartao${index + 1}`;
-            cartoesContainer.innerHTML += `
-                <div class="cartao-item">
-                    <input type="checkbox" id="${id}" name="cartoes" value="${cartao.id}">
-                    <label for="${id}">Cartão **** **** **** ${final} (${cartao.bandeira.nome})</label>
-                    <input type="number" id="valor${index + 1}" placeholder="Valor" min="1" step="0.01">
-                </div>
+
+            const div = document.createElement("div");
+            div.classList.add("cartao-item");
+
+            div.innerHTML = `
+                <input type="checkbox" id="${id}" name="cartoes" value="${cartao.id}">
+                <label for="${id}">Cartão **** **** **** ${final} (${cartao.bandeira.nome})</label>
+                <input type="number" id="valor${index + 1}" placeholder="Valor" min="1" step="0.01">
             `;
+
+            cartoesContainer.appendChild(div);
         });
+
+        // Popular cupons
+        const selectCupom = document.getElementById("cupomSelect");
+        selectCupom.innerHTML = ""; // limpa opções anteriores
+
+        if (cliente.cupons && cliente.cupons.length > 0) {
+            cliente.cupons.forEach(cupom => {
+                const option = document.createElement("option");
+                option.value = cupom.id; // aqui manda o id do cupom
+                option.textContent = `Cupom de ${cupom.tipo}: - R$ ${cupom.valor.toFixed(2).replace('.', ',')}`;
+                option.dataset.valor = cupom.valor; // salva o valor como data-atributo para usar depois
+                selectCupom.appendChild(option);
+            });
+        } else {
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Você não possui cupons disponíveis.";
+            selectCupom.appendChild(option);
+            selectCupom.disabled = true; // desativa o select se não tiver cupons
+        }
 
     } catch (error) {
         console.error("Erro ao carregar carrinho:", error);
@@ -96,62 +122,47 @@ async function finalizarCompra() {
     }
 
     const clienteId = window.clienteId;
-    if (!clienteId) {
+    if (!clienteId || isNaN(clienteId)) {
         alert("Cliente não identificado.");
         return;
     }
 
-    const vendas = [];
-
-    // 🔽 Montar a lista de vendas com base no carrinho
-    carrinhoItens.forEach(item => {
-        const { livro, quantidade } = item;
-        for (let i = 0; i < quantidade; i++) {
-            vendas.push({
-                livroId: livro.id,
-                valor: livro.precoVenda
-            });
-        }
-    });
-
-    // 🔽 Montar o payload do pedido com forma de pagamento fixa
+    // 🔽 Montar o payload baseado no PedidoCarrinhoRequest
     const pedidoPayload = {
-        clienteId: clienteId,
+        clienteId: parseInt(clienteId),
         enderecoId: enderecoId,
-        formaPagamento: "Cartão de Crédito", // ✅ fixo
-        vendas: vendas
+        cuponsIds: cuponsAplicados.length > 0 ? cuponsAplicados : undefined
     };
 
+    console.log("Enviando pedido do carrinho:", pedidoPayload);
+
     try {
-        const response = await fetch("/pedidos/add", {
+        const response = await fetch("/pedidos/add-carrinho", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(pedidoPayload)
         });
-    
+
         const data = await response.json();
-    
+
         if (!response.ok) {
             const mensagemErro = data.erro || data.message || "Erro desconhecido ao criar pedido.";
             console.error("Erro da API:", mensagemErro);
             alert("Erro ao criar pedido: " + mensagemErro);
             return;
         }
-    
-        // ✅ Limpar o carrinho após a compra
-        for (const item of carrinhoItens) {
-            await fetch(`/carrinho/remover/${item.id}`, { method: "DELETE" });
-        }
-    
-        alert("Compra realizada com sucesso!");
-        window.location.href = "/cliente/conta";
+
+        document.getElementById("pedidoCodigoTexto").textContent = `Seu pedido foi realizado com sucesso!`;
+        document.getElementById("pedidoCodigoBold").textContent = `Código: ${data.codigo}`;
+        openModal('pedidoModal');
+
     } catch (error) {
-        console.error("Erro ao finalizar compra:", error);
+        console.error("Erro ao finalizar compra do carrinho:", error);
         alert("Erro ao processar sua compra. Tente novamente.");
     }
-    
 }
-
 
 // Modal functions (mantém igual)
 function openModal(id) {
@@ -162,11 +173,16 @@ function closeModal(id) {
     document.getElementById(id).style.display = "none";
 }
 
-// 🔄 VERSÃO ORIGINAL DO CUPOM
 function aplicarCupom() {
     let selectElement = document.getElementById("cupomSelect");
-    let cupomValor = parseFloat(selectElement.value);
-    let cupomTexto = selectElement.options[selectElement.selectedIndex].text;
+    let selectedOption = selectElement.options[selectElement.selectedIndex];
+    let cupomId = parseInt(selectedOption.value);
+    let cupomValor = parseFloat(selectedOption.dataset.valor);
+
+    if (!cupomId || isNaN(cupomValor)) {
+        alert("Selecione um cupom válido.");
+        return;
+    }
 
     if (totalCompra - totalDesconto <= 0) {
         alert("Não é possível aplicar mais cupons. O valor da compra já está zerado.");
@@ -179,7 +195,7 @@ function aplicarCupom() {
         novoTotal = 0;
     }
 
-    // Adiciona visualmente o desconto
+    // Atualiza visualmente o desconto
     let extratoDiv = document.querySelector(".cupom");
     let descontoItem = document.createElement("div");
     descontoItem.innerHTML = `<h4>- R$ ${cupomValor.toFixed(2)} - Cupom</h4>`;
@@ -187,8 +203,10 @@ function aplicarCupom() {
 
     document.getElementById("total-compra").innerText = `R$ ${parseFloat(novoTotal).toFixed(2).replace('.', ',')}`;
 
-    // Remove o cupom selecionado
-    cuponsAplicados.push(cupomValor);
+    // Guarda o id do cupom usado
+    cuponsAplicados.push(cupomId);
+
+    // Remove o cupom do select
     selectElement.remove(selectElement.selectedIndex);
 
     // Fecha modal

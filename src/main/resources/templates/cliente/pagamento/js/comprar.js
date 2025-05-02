@@ -154,7 +154,6 @@ async function finalizarCompra() {
     const pedidoPayload = {
         clienteId: parseInt(clienteId),
         enderecoId: enderecoId,
-        formaPagamento: "Cartão de Crédito",
         vendas: vendas,
         cuponsIds: cuponsAplicados.length > 0 ? cuponsAplicados : undefined
     };

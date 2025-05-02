@@ -8,7 +8,6 @@ import java.util.List;
 public class PedidoCarrinhoRequest {
     private Integer clienteId;
     private Integer enderecoId;
-    private String formaPagamento;
     private List<Integer> cuponsIds;
 }
 

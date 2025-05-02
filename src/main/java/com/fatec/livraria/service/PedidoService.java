@@ -70,7 +70,7 @@ public class PedidoService {
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
         pedido.setEndereco(endereco);
-        pedido.setFormaPagamento(request.getFormaPagamento());
+        pedido.setFormaPagamento("");
         pedido.setCodigo(gerarCodigoPedido());
         pedido.setValor(BigDecimal.valueOf(0));
 
@@ -110,6 +110,11 @@ public class PedidoService {
             BigDecimal valorRestantePedido = valorTotal;
 
             for (Cupom cupom : cupons) {
+
+                if (!cupom.getCliente().getId().equals(cliente.getId())) {
+                    throw new RuntimeException("Cupom não pertence ao cliente.");
+                }
+
                 if (valorRestantePedido.compareTo(BigDecimal.ZERO) <= 0) {
                     // Pedido já pago, nem processa mais cupons
                     break;
@@ -149,6 +154,15 @@ public class PedidoService {
         }
 
         pedido.setValor(valorFinal);
+
+        if (valorDescontos.compareTo(BigDecimal.ZERO) == 0) {
+            pedido.setFormaPagamento("Cartão de Crédito");
+        } else if (valorFinal.compareTo(BigDecimal.ZERO) == 0) {
+            pedido.setFormaPagamento("Cupom");
+        } else {
+            pedido.setFormaPagamento("Cartão + Cupom");
+        }
+
         pedido = pedidoRepository.save(pedido);
 
         clienteService.buscarPorId(cliente.getId());
@@ -173,7 +187,7 @@ public class PedidoService {
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
         pedido.setEndereco(endereco);
-        pedido.setFormaPagamento(request.getFormaPagamento());
+        pedido.setFormaPagamento("");
         pedido.setCodigo(gerarCodigoPedido());
         pedido.setValor(BigDecimal.ZERO);
 
@@ -211,6 +225,11 @@ public class PedidoService {
             BigDecimal valorRestantePedido = valorTotal;
 
             for (Cupom cupom : cupons) {
+
+                if (!cupom.getCliente().getId().equals(cliente.getId())) {
+                    throw new RuntimeException("Cupom não pertence ao cliente.");
+                }
+
                 if (valorRestantePedido.compareTo(BigDecimal.ZERO) <= 0) {
                     break;
                 }
@@ -244,6 +263,15 @@ public class PedidoService {
         }
 
         pedido.setValor(valorFinal);
+
+        if (valorDescontos.compareTo(BigDecimal.ZERO) == 0) {
+            pedido.setFormaPagamento("Cartão de Crédito");
+        } else if (valorFinal.compareTo(BigDecimal.ZERO) == 0) {
+            pedido.setFormaPagamento("Cupom");
+        } else {
+            pedido.setFormaPagamento("Cartão + Cupom");
+        }
+
         pedido = pedidoRepository.save(pedido);
 
         // Após criar o pedido, limpar o carrinho do cliente

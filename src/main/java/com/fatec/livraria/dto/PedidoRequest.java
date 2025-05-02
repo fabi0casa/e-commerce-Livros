@@ -17,13 +17,6 @@ public class PedidoRequest {
     @NotNull(message = "O ID do endereço é obrigatório.")
     private Integer enderecoId;
 
-    @NotBlank(message = "A forma de pagamento é obrigatória.")
-    @Pattern(
-        regexp = "Cartão de Crédito|Cupom|Cartão \\+ Cupom",
-        message = "Forma de pagamento inválida. Deve ser 'Cartão de Crédito', 'Cupom' ou 'Cartão + Cupom'."
-    )
-    private String formaPagamento;
-
     @NotNull(message = "A lista de vendas não pode ser nula.")
     @Size(min = 1, message = "O pedido deve conter pelo menos uma venda.")
     private List<@Valid VendaRequest> vendas;
