@@ -48,6 +48,9 @@ public class Cliente {
     @Column(name = "cli_genero", nullable = false, length = 30)
     private String genero;
 
+    @Column(name = "cli_admin", nullable = false)
+    private boolean isAdmin = false;
+
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Endereco> enderecos = new ArrayList<>();
     

@@ -18,7 +18,10 @@ async function carregarClientes() {
             div.innerHTML = `
                 <div class="client-info">
                     <div class="client-name">${cliente.nome}</div>
-                    <div class="client-details">${cliente.email} - ${cliente.telefone} - ${formatarData(cliente.dataNascimento)}</div>
+                    <div class="client-details">
+                        ${cliente.email} - ${cliente.telefone} - ${formatarData(cliente.dataNascimento)}
+                        ${cliente.isAdmin ? '<span class="isAdmin">✪ Administrador</span>' : ''}
+                    </div>
                 </div>
                 <div class="client-actions">
                     <button onclick="logarComo(${cliente.id})">Logar Como</button>
@@ -41,7 +44,12 @@ async function logarComo(clienteId) {
         });
 
         if (response.ok) {
-            window.location.href = "/cliente/home";
+            const clienteLogado = await response.json();
+            if (clienteLogado.isAdmin) {
+                window.location.href = "/administrador/admin";
+            } else {
+                window.location.href = "/cliente/home";
+            }
         } else {
             console.error("Erro ao logar como cliente.");
         }
