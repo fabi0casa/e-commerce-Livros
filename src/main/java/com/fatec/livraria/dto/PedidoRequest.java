@@ -21,5 +21,8 @@ public class PedidoRequest {
     @Size(min = 1, message = "O pedido deve conter pelo menos uma venda.")
     private List<@Valid VendaRequest> vendas;
 
-    private List<Integer> cuponsIds; 
+    private List<Integer> cuponsIds;
+
+    @Size(min = 1, message = "É necessário fornecer pelo menos um cartão de pagamento.")
+    private List<@Valid CartaoPagamentoRequest> cartoes;
 }

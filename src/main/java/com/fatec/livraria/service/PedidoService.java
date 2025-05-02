@@ -1,5 +1,6 @@
 package com.fatec.livraria.service;
 
+import com.fatec.livraria.dto.CartaoPagamentoRequest;
 import com.fatec.livraria.dto.PedidoCarrinhoRequest;
 import com.fatec.livraria.dto.PedidoRequest;
 import com.fatec.livraria.dto.VendaRequest;
@@ -153,6 +154,21 @@ public class PedidoService {
             valorFinal = BigDecimal.ZERO;
         }
 
+        if (valorFinal.compareTo(BigDecimal.ZERO) > 0) {
+            if (request.getCartoes() == null || request.getCartoes().isEmpty()) {
+                throw new RuntimeException("Pagamento com cartão é obrigatório para o valor restante.");
+            }
+
+            BigDecimal somaCartoes = request.getCartoes().stream()
+                    .map(CartaoPagamentoRequest::getValor)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            if (somaCartoes.compareTo(valorFinal) != 0) {
+                throw new RuntimeException("A soma dos valores dos cartões não corresponde ao valor total do pedido.");
+            }
+
+        }
+
         pedido.setValor(valorFinal);
 
         if (valorDescontos.compareTo(BigDecimal.ZERO) == 0) {
@@ -260,6 +276,21 @@ public class PedidoService {
 
         if (valorFinal.compareTo(BigDecimal.ZERO) < 0) {
             valorFinal = BigDecimal.ZERO;
+        }
+
+        if (valorFinal.compareTo(BigDecimal.ZERO) > 0) {
+            if (request.getCartoes() == null || request.getCartoes().isEmpty()) {
+                throw new RuntimeException("Pagamento com cartão é obrigatório para o valor restante.");
+            }
+
+            BigDecimal somaCartoes = request.getCartoes().stream()
+                    .map(CartaoPagamentoRequest::getValor)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            if (somaCartoes.compareTo(valorFinal) != 0) {
+                throw new RuntimeException("A soma dos valores dos cartões não corresponde ao valor total do pedido.");
+            }
+
         }
 
         pedido.setValor(valorFinal);

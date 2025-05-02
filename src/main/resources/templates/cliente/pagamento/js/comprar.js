@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const precoUnitario = livroSelecionado.precoVenda;
     const subtotal = precoUnitario * quantidadeSelecionada;
-    const frete = 10.70;
+    const frete = 0;
     const total = subtotal + frete;
 
     totalCompra = total; // para controle de cupons
@@ -96,8 +96,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         div.innerHTML = `
             <input type="checkbox" id="${id}" name="cartoes" value="${cartao.id}">
             <label for="${id}">Cartão **** **** **** ${final} (${cartao.bandeira.nome})</label>
-            <input type="number" id="valor${index + 1}" placeholder="Valor" min="1" step="0.01">
-        `;
+
+            <input type="number" id="valor${index + 1}" placeholder="Valor" min="0.01" step="0.01" 
+            inputmode="decimal" 
+            pattern="^\d+(\.\d{0,2})?$" 
+            oninput="oninput="
+                this.value = this.value
+                .replace(',', '.')
+                .replace(/[^0-9.]/g, '')
+                .replace(/(\..*)\./g, '$1')">
+
+                `;
+
 
         cartoesContainer.appendChild(div);
     });
@@ -144,6 +154,35 @@ async function finalizarCompra() {
         return;
     }
 
+    // Coletar os cartões selecionados e valores
+    const cartoesSelecionados = [];
+    let somaValoresCartao = 0;
+    const inputsCartao = document.querySelectorAll("input[name='cartoes']:checked");
+
+    inputsCartao.forEach((checkbox, index) => {
+        const valorInput = document.getElementById(`valor${index + 1}`);
+        const valor = parseFloat(valorInput.value);
+
+        if (isNaN(valor) || valor <= 0) {
+            alert(`Informe um valor válido para o cartão selecionado.`);
+            return;
+        }
+
+        cartoesSelecionados.push({
+            cartaoId: parseInt(checkbox.value),
+            valor: valor
+        });
+
+        somaValoresCartao += valor;
+    });
+
+    // Verifica se o valor informado cobre o necessário
+    const totalEsperado = (totalCompra - totalDesconto).toFixed(2);
+    if (somaValoresCartao.toFixed(2) !== totalEsperado) {
+        alert(`A soma dos valores dos cartões deve ser exatamente R$ ${totalEsperado.replace('.', ',')}`);
+        return;
+    }
+
     // 🔽 Montar as vendas (apenas 1 venda com quantidade)
     const vendas = [{
         livroId: livroSelecionado.id,
@@ -155,6 +194,7 @@ async function finalizarCompra() {
         clienteId: parseInt(clienteId),
         enderecoId: enderecoId,
         vendas: vendas,
+        cartoes: cartoesSelecionados,
         cuponsIds: cuponsAplicados.length > 0 ? cuponsAplicados : undefined
     };
 
@@ -190,16 +230,6 @@ async function finalizarCompra() {
     }
     
 }
-
-// Modal functions (mantém igual)
-function openModal(id) {
-    document.getElementById(id).style.display = "block";
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-}
-
 
 function aplicarCupom() {
     let selectElement = document.getElementById("cupomSelect");
@@ -253,4 +283,12 @@ function redirecionarParaNovoCartao() {
     const livroId = urlParams.get("livroId");
     const quantidade = urlParams.get("quantidade") || 1;
     window.location.href = `/cliente/pagamento/novoCartao?livroId=${livroId}&quantidade=${quantidade}`;
+}
+
+function openModal(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+function closeModal(id) {
+    document.getElementById(id).style.display = "none";
 }

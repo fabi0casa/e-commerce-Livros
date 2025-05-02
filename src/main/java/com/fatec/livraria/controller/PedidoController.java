@@ -7,6 +7,7 @@ import com.fatec.livraria.dto.StatusRequest;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.service.PedidoService;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class PedidoController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> criarPedido(@RequestBody PedidoRequest request) {
+    public ResponseEntity<?> criarPedido(@Valid @RequestBody PedidoRequest request) {
         try {
             Pedido novoPedido = pedidoService.criarPedidoComVendas(request);
 
@@ -60,7 +61,7 @@ public class PedidoController {
     }
 
     @PostMapping("/add-carrinho")
-    public ResponseEntity<?> criarPedidoDoCarrinho(@RequestBody PedidoCarrinhoRequest request) {
+    public ResponseEntity<?> criarPedidoDoCarrinho(@Valid @RequestBody PedidoCarrinhoRequest request) {
         try {
             Pedido novoPedido = pedidoService.criarPedidoDoCarrinho(request);
 
