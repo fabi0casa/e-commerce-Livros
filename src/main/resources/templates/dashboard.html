@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Livraria</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/css//dashboard.css">
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 sidebar">
+        <div class="sidebar-header text-center text-white">
+            <img src="/img//logo.png" alt="Logo" class="logo-icon mb-2">
+            <h4 class="m-0">Admin</h4>
+          </div>
+                 
+      <a href="#">Gerenciar Clientes</a>
+      <a href="#">Gerenciar Livros</a>
+      <a href="#">Vendas Eletrônicas</a>
+      <a href="#">Controle de Estoque</a>
+      <a href="#">Análise de Categorias</a>
+      <a href="#">Acessar Livraria</a>
+      <a href="#">Logs do Sistema</a>
+    </div>
+    <div class="col-md-10 p-4">
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div class="card kpi-card p-3">
+            <h6 class="card-title">Livros no sistema</h6>
+            <h3 class="highlight" id="livros-total">0</h3>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card kpi-card p-3">
+            <h6 class="card-title">Clientes registrados</h6>
+            <h3 class="highlight" id="clientes-total">0</h3>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card kpi-card p-3">
+            <h6 class="card-title">Vendas no mês</h6>
+            <h3 class="highlight" id="vendas-mes">R$ 0,00</h3>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card kpi-card p-3">
+            <h6 class="card-title">Ticket médio</h6>
+            <h3 class="highlight" id="ticket-medio">R$ 0,00</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <h5 class="mb-2">Receita dos Últimos 30 Dias</h5>
+          <canvas id="graficoReceita"></canvas>
+        </div>
+        <div class="col-md-6">
+          <h5 class="mb-2">Pedidos por Status</h5>
+          <canvas id="graficoStatus"></canvas>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h5 class="mb-2">Top 10 Livros Mais Vendidos</h5>
+          <canvas id="graficoTopLivros"></canvas>
+        </div>
+        <div class="col-md-6">
+          <h5 class="mb-2">Categorias Mais Vendidas</h5>
+          <canvas id="graficoCategorias"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js//dashboard.js" defer></script>
+</body>
+</html>

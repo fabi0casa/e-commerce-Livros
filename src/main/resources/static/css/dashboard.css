@@ -1,0 +1,60 @@
+body {
+    background-color: #f4f4f4;
+    color: #000000;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  .col-md-10 {
+    margin-left: 18rem; /* Ajuste de layout para não sobrepor com a sidebar */
+  }
+  .sidebar {
+    background-color: #000000;
+    padding-top: 1rem;
+    padding: 20px 10px;
+    height: 100vh; /* Altura total da viewport */
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    width: 18rem;
+  }
+  .sidebar a {
+    color: #ffffff;
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+  }
+  .sidebar a:hover {
+    background-color: #181818;
+    color: #24c024;
+  }
+  .card {
+    background-color: #ececec;
+    border: none;
+    color: #161718;
+  }
+  .card .card-title {
+    font-size: 1rem;
+  }
+  .highlight {
+    color: #5900ff;
+  }
+  .kpi-card {
+    border-left: 5px solid #5900ff;
+  }
+  canvas {
+    background-color: #f5f4ff;
+    border-radius: 0.5rem;
+    border: 1px solid #000000;
+  }
+  
+  .logo-icon {
+    width: 80px;
+    height: auto;
+    opacity: 0.5;
+    display: block;
+    margin: 0 auto;
+  }
+  
