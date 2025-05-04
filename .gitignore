@@ -34,6 +34,7 @@ build/
 
 ### python no linux ###
 .venv/
+venv/
 
 # Arquivos de ambiente
 .env

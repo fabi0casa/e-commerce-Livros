@@ -3,6 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
+#esse teste espera que vc tenha exatos 12 clientes cadastrados antes de executar
+
 class TestTesteCrud():
     def setup_method(self, method):
         self.driver = webdriver.Firefox()
@@ -139,7 +141,6 @@ class TestTesteCrud():
         assert self.driver.switch_to.alert.text == "Cliente atualizado com sucesso!"
         self.driver.switch_to.alert.accept()
 
-
     def verificar_alteracoes(self):
         time.sleep(2)
         #pesquisando denovo o cliente
@@ -154,7 +155,6 @@ class TestTesteCrud():
         time.sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, "#clientModal .close").click()
         time.sleep(2)
-
 
     def atualizar_senha_cliente(self):
         """Testa a atualização da senha do cliente."""
@@ -271,7 +271,6 @@ class TestTesteCrud():
         time.sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, ".botao-return").click()
 
-
     def cadastrar_cartao(self):
         """Testa o cadastro de um cartão para um cliente específico."""
         time.sleep(2)
@@ -315,7 +314,6 @@ class TestTesteCrud():
         self.driver.find_element(By.CSS_SELECTOR, "#cardModal .close").click()
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "#clientModal .close").click()
-
 
     def excluir_cliente(self):
         """Testa a exclusão de um cliente."""
