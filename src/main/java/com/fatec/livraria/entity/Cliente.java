@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "CLIENTES")
 @Getter
@@ -40,6 +42,7 @@ public class Cliente {
     private String email;
 
     @Column(name = "cli_senha", nullable = false, length = 45)
+    @JsonIgnore
     private String senha;
 
     @Column(name = "cli_ranking", nullable = false)
@@ -51,6 +54,10 @@ public class Cliente {
     @Column(name = "cli_admin", nullable = false)
     private boolean isAdmin = false;
 
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Pedido> pedidos;
+    
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Endereco> enderecos = new ArrayList<>();
     
