@@ -299,9 +299,9 @@ th {
 .filters button {
     width: 140px;
     height: 48px;
-    background: linear-gradient(135deg, #5900ff, #4f46e5);
+    background: linear-gradient(135deg, #5900ff, #5900ff);
     color: #ffffff;
-    border: none;
+    border: 1px solid #000000;
     border-radius: 10px;
     padding: 12px 18px;
     font-size: 16px;
