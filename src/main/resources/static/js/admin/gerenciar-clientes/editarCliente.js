@@ -86,7 +86,7 @@ document.getElementById("edicaoClienteForm").addEventListener("submit", function
             alert("Erro ao atualizar: " + data.erro);
         } else {
             alert("Cliente atualizado com sucesso!");
-            window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes"; // Redireciona após sucesso
+            window.location.href = "/gerenciar-clientes"; // Redireciona após sucesso
         }
     })
     .catch(error => {

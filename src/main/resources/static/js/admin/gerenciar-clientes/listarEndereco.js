@@ -28,11 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
                 listaEnderecos.appendChild(enderecoItem);
             });
-            document.getElementById("cadastrarEndereco").href = `/administrador/gerenciar-clientes/cadastrarEndereco?clienteId=${clienteId}`;
+            document.getElementById("cadastrarEndereco").href = `/criar-endereco-cliente?clienteId=${clienteId}`;
         })
         .catch(error => console.error("Erro ao buscar cliente:", error));
 });
 
 function redirecionarEditarEndereco(enderecoId, clienteId) {
-    window.location.href = `/administrador/gerenciar-clientes/editarEndereco?enderecoId=${enderecoId}&clienteId=${clienteId}`;
+    window.location.href = `/administrador/gerenciar-clientes/editar-endereco-cliente?enderecoId=${enderecoId}&clienteId=${clienteId}`;
 }

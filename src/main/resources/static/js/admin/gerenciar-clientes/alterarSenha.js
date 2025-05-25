@@ -36,7 +36,7 @@ document.getElementById("alterarSenhaForm").addEventListener("submit", function 
             alert("Erro ao alterar senha: " + data.erro);
         } else {
             alert("Senha alterada com sucesso!");
-            window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes";
+            window.location.href = "/gerenciar-clientes";
         }
     })
     .catch(error => {

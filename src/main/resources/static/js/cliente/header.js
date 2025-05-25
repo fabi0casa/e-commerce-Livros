@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const header = `
         <header>
-			<a href="/cliente/home" class="logo"></a>
+			<a href="/home" class="logo"></a>
             <input type="text" class="search-bar" placeholder="Buscar livros..." id="searchInput">
             <div class="header-buttons">
                 <button class="btn" id="notificationBtn">
@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     <span>Notificações</span>
                     <!--<span class="notification-badge" id="notificationBadge">3</span>-->
                 </button>
-                <button class="btn" onclick="window.location.href='/cliente/carrinho'">
+                <button class="btn" onclick="window.location.href='/carrinho'">
 										<img src="/img//cart.png" alt="Carrinho">
                     <span>Carrinho</span>
                     <span class="cart-badge" id="cartBadge">0</span> <!-- Começa como 0 -->
                 </button>
-                <button class="btn" onclick="window.location.href='/cliente/conta'">
+                <button class="btn" onclick="window.location.href='/conta'">
 										<img src="/img//account.png" alt="Conta">
                     <span id="accountText" >Conta</span>
                 </button>
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.key === "Enter") {
             event.preventDefault();
             let query = encodeURIComponent(this.value);
-            window.location.href = "/cliente/buscar?q=" + query;
+            window.location.href = "/buscar?q=" + query;
         }
     });
 

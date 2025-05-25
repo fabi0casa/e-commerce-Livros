@@ -9,20 +9,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
-header {
-    background-color: black;
-    color: white;
-    width: 100%;
-    padding: 15px 0;
-    text-align: center;
-    font-size: 20px;
-    position: fixed;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Mantém o texto centralizado */
-    z-index: 1000;
-}
+
 a {
     display: flex;
     align-items: center; /* Garante o alinhamento do link */
@@ -30,11 +17,6 @@ a {
     color: white; /* Garantir que o texto do link seja visível */
     font-size: 20px; /* Ajuste o tamanho do texto conforme necessário */
     margin-left: 10px; /* Se quiser um pequeno espaço entre o logo e o link */
-}
-.header-logo {
-    position: absolute;
-    left: 20px; /* Define a posição da imagem à esquerda */
-    height: 40px; /* Ajuste conforme necessário */
 }
 .container {
     margin-top: 60px;

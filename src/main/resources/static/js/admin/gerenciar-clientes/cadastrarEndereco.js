@@ -61,7 +61,7 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
         // Tratando a resposta do backend
         if (response.ok) {
             alert("Endereço cadastrado com sucesso!");
-            window.location.href = `/administrador/gerenciar-clientes/listarEndereco?clienteId=${clienteId}`;
+            window.location.href = `/enderecos-cliente?clienteId=${clienteId}`;
         } else {
             const errorData = await response.json();
             alert(errorData.erro || "Erro ao cadastrar endereço.");

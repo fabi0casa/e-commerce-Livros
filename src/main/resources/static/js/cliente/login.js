@@ -46,9 +46,9 @@ async function logarComo(clienteId) {
         if (response.ok) {
             const clienteLogado = await response.json();
             if (clienteLogado.isAdmin) {
-                window.location.href = "/administrador/admin";
+                window.location.href = "/dashboard";
             } else {
-                window.location.href = "/cliente/home";
+                window.location.href = "/home";
             }
         } else {
             console.error("Erro ao logar como cliente.");

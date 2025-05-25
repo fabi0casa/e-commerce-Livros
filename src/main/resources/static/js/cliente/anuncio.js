@@ -90,7 +90,7 @@ async function adicionarAoCarrinho() {
 
     if (!clienteId) {
         alert("É necessário estar logado para adicionar itens ao carrinho.");
-        window.location.href = "/cliente/login";
+        window.location.href = "/login";
         return;
     }
 
@@ -108,7 +108,7 @@ async function adicionarAoCarrinho() {
 
         if (response.ok) {
             alert("Livro adicionado ao carrinho com sucesso!");
-            window.location.href = "/cliente/carrinho";
+            window.location.href = "/carrinho";
         } else {
             const errorText = await response.text();
             console.error("Erro ao adicionar ao carrinho:", errorText);
@@ -131,7 +131,7 @@ function comprarLivro() {
     }
 
     // Redireciona para a rota com os parâmetros
-    window.location.href = `/cliente/pagamento/comprar?livroId=${livroId}&quantidade=${quantidade}`;
+    window.location.href = `/pagamento?livroId=${livroId}&quantidade=${quantidade}`;
 }
 
 // Chama a função quando a página carregar

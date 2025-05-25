@@ -104,7 +104,7 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
 
         if (response.ok) {
             alert("Endereço atualizado com sucesso!");
-            window.location.href = `/administrador/gerenciar-clientes/listarEndereco?clienteId=${clienteId}`;
+            window.location.href = `/enderecos-cliente?clienteId=${clienteId}`;
         } else {
             alert("Erro ao atualizar endereço: " + result.erro);
         }

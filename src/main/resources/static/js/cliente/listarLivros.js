@@ -9,7 +9,7 @@ async function carregarLivros() {
 
         livros.forEach(livro => {
             const card = document.createElement("a");
-            card.href = `/cliente/anuncio?livroId=${livro.id}`;
+            card.href = `/anuncio?livroId=${livro.id}`;
             card.classList.add("product-card");
             
             card.innerHTML = `

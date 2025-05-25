@@ -137,7 +137,7 @@ document.getElementById("cadastroClienteForm").addEventListener("submit", functi
             alert("Erro ao cadastrar: " + data.erro); // Exibe a mensagem de erro
         } else {
             alert("Sucesso! " + data.mensagem); // Exibe a mensagem de sucesso
-            window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes"; // Redireciona após sucesso
+            window.location.href = "/gerenciar-clientes"; // Redireciona após sucesso
         }
     })
     .catch(error => {

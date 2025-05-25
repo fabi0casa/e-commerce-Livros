@@ -6,13 +6,10 @@
     <link rel="icon" href="/img/icon.png/">
     <title>Listagem de Clientes</title>
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
+    <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
 </head>
 <body>
-	<header>
-			<a th:href="@{/administrador/admin}"><img src="/img/home.png/" alt="home" class="header-logo"></a>
-			Página do Administrador
-	</header>
-    <a th:href ="@{/administrador/gerenciar-clientes/cadastrarCliente}"><button class="new-client">Cadastrar Novo Cliente</button></a>
+    <a th:href ="@{/cadastrar-cliente}"><button class="new-client">Cadastrar Novo Cliente</button></a>
     <div class="container">
         <h2>Gerenciamento de Clientes</h2>
         <div class="filters">
@@ -93,6 +90,13 @@
     </div>    
 
     <script src="/js/admin/gerenciar-clientes/gerenciarClientes.js"></script>
+
+    <script type="module">
+        import { loadSidebar } from '/js/admin/sidebar-header.js';
+        loadSidebar();
+      </script>
+      
+      
     
 </body>
 </html>

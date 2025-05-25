@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("Erro ao cadastrar: " + data.erro);
             } else {
                 alert("Cartão cadastrado com sucesso!");
-                window.location.href = "/administrador/gerenciar-clientes/gerenciarClientes";
+                window.location.href = "/gerenciar-clientes";
             }
         })
         .catch(error => {

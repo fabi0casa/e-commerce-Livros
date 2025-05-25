@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function redirecioarAoTransacoes(){
-    window.location.href = "/administrador/gerenciar-clientes/transacoes";
+    window.location.href = "/ver-transacoes-cliente";
 }
 
 function loadClientDetails(clienteId) {
@@ -231,7 +231,7 @@ function atualizarListaClientes(clientes) {
     document.querySelectorAll(".transacoes-btn").forEach(botao => {
         botao.addEventListener("click", function () {
             const clienteId = this.getAttribute("data-id");
-            window.location.href = `/administrador/gerenciar-clientes/transacoes?clienteId=${clienteId}`;
+            window.location.href = `/ver-transacoes-cliente?clienteId=${clienteId}`;
         });
     });
 }
@@ -247,16 +247,16 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".transacoes-btn").forEach(botao => {
         botao.addEventListener("click", function () {
             const clienteId = this.getAttribute("data-id");
-            window.location.href = `/administrador/gerenciar-clientes/transacoes?clienteId=${clienteId}`;
+            window.location.href = `/ver-transacoes-cliente?clienteId=${clienteId}`;
         });
     });
 });
 function openEditionModal(clienteId) {
     // Atualiza os links do modal com o ID do cliente
-    document.getElementById("editarDadosLink").href = `/administrador/gerenciar-clientes/editarCliente?clienteId=${clienteId}`;
-    document.getElementById("alterarSenhaLink").href = `/administrador/gerenciar-clientes/alterarSenha?clienteId=${clienteId}`;
-    document.getElementById("editarEnderecoLink").href = `/administrador/gerenciar-clientes/listarEndereco?clienteId=${clienteId}`;
-    document.getElementById("cadastrarCartaoLink").href = `/administrador/gerenciar-clientes/cadastrarCartao?clienteId=${clienteId}`;
+    document.getElementById("editarDadosLink").href = `/editar-cliente?clienteId=${clienteId}`;
+    document.getElementById("alterarSenhaLink").href = `/alterar-senha?-clienteclienteId=${clienteId}`;
+    document.getElementById("editarEnderecoLink").href = `/enderecos-cliente?clienteId=${clienteId}`;
+    document.getElementById("cadastrarCartaoLink").href = `/criar-cartao-cliente?clienteId=${clienteId}`;
 
     // Abre o modal
     openModal('editionModal');

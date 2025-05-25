@@ -70,9 +70,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Redirecionamento baseado nos parâmetros
                     if (livroId) {
-                        window.location.href = `/cliente/pagamento/comprar?livroId=${livroId}&quantidade=${quantidade}`;
+                        window.location.href = `/pagamento?livroId=${livroId}&quantidade=${quantidade}`;
                     } else {
-                        window.location.href = `/cliente/pagamento/comprarDoCarrinho`;
+                        window.location.href = `/pagar-carrinho`;
                     }
                 }
             })

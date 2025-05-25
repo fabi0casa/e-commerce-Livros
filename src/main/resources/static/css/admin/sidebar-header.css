@@ -1,0 +1,87 @@
+
+.sidebar {
+    background-color: #000000;
+    padding: 20px 10px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -20rem;
+    overflow-y: auto;
+    width: 15rem;
+    transition: left 0.3s ease-in-out;
+    z-index: 999;
+  }
+
+  .sidebar.visible {
+    left: 0;
+  }
+
+  .sidebar-header {
+    margin-top: 50px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-title {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+
+  .logo-icon {
+    width: 80px;
+    height: auto;
+    opacity: 0.5;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .sidebar-nav a {
+    color: #ffffff;
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+    font-size: 0.9rem; /* fonte menor */
+  }
+
+  .sidebar-nav a:hover {
+    background-color: #181818;
+    color: #ffffff;
+  }
+
+  header {
+    background-color: black;
+    color: white;
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 20px;
+    position: fixed;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Mantém o texto centralizado */
+    z-index: 1000;
+}
+
+.header-logo {
+  position: absolute;
+  margin-left: 10px;
+  left: 15px; /* Define a posição da imagem à esquerda */
+  height: 25px; /* Ajuste conforme necessário */
+}
+
+#sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.4); /* fundo escuro translúcido */
+  z-index: 998; /* abaixo da sidebar (999) e acima do conteúdo */
+  display: none;
+}
+
+#sidebar-overlay.visible {
+  display: block;
+}
