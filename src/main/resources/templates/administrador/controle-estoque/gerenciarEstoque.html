@@ -8,12 +8,9 @@
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
     <link rel="stylesheet" href="/css/admin/tabelaTransacoes.css/">
     <link rel="stylesheet" href="/css/admin/estoque.css/">
+    <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
 </head>
 <body>
-	<header>
-			<a th:href="@{/dashboard}"><img src="/img/home.png/" alt="home" class="header-logo"></a>
-			Página do Administrador
-	</header>
     <a th:href ="@{/entrada-estoque}"><button class="new-client">Nova Entrada no Estoque</button></a>
 
     <div class="container">
@@ -92,5 +89,10 @@
             document.getElementById(modalId).style.display = "none";
         }
     </script>
+
+    <script type="module">
+        import { loadSidebar } from '/js/admin/sidebar-header.js';
+        loadSidebar();
+        </script>
 </body>
 </html>

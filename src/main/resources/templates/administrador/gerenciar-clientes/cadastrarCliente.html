@@ -7,13 +7,9 @@
     <title>Cadastrar Cliente</title>
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
     <link rel="stylesheet" href="/css/admin/formulario.css/">
+    <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
 </head>
 <body>
-    <header>
-        <a th:href="@{/dashboard}"><img src="/img/home.png/" alt="home" class="header-logo"></a>
-        Página do Administrador
-    </header>
-
     <div class="container">
         <h2>Cadastro de Cliente</h2>
         <form id="cadastroClienteForm" th:action="@{/clientes/add}" method="post" th:object="${cliente}">
@@ -124,5 +120,9 @@
 
     <script src="/js/admin/gerenciar-clientes/cadastrarCliente.js"></script>
     <script src="/js/admin/gerenciar-clientes/validarCadastro.js"></script>
+    <script type="module">
+        import { loadSidebar } from '/js/admin/sidebar-header.js';
+        loadSidebar();
+      </script>
 </body>
 </html>

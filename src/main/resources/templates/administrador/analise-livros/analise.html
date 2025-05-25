@@ -7,13 +7,10 @@
     <title>Análise</title>
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
     <link rel="stylesheet" href="/css/admin/tabelaTransacoes.css/">
+    <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
     <script src="/js/chart.min.js/"></script>
 </head>
 <body>
-	<header>
-			<a th:href="@{/dashboard}"><img src="/img/home.png/" alt="home" class="header-logo"></a>
-			Página do Administrador
-	</header>
     <div class="container">
         <h2>Análise de Venda dos Livros</h2>
 
@@ -88,5 +85,10 @@
             });
         }
     </script>
+    
+    <script type="module">
+        import { loadSidebar } from '/js/admin/sidebar-header.js';
+        loadSidebar();
+      </script>
 </body>
 </html>

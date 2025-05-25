@@ -7,6 +7,7 @@
     <title>Transações dos Clientes</title>
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
     <link rel="stylesheet" href="/css/admin/tabelaTransacoes.css/">
+    <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
 </head>
 <body>
     <header>
@@ -36,5 +37,10 @@
     </div>
 
     <script src="/js/admin/gerenciar-clientes/transacoes.js/"></script>
+    
+    <script type="module">
+        import { loadSidebar } from '/js/admin/sidebar-header.js';
+        loadSidebar();
+        </script>
 </body>
 </html>
