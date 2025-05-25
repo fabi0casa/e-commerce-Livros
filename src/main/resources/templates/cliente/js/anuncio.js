@@ -40,6 +40,11 @@ async function carregarLivro() {
             <p><strong>Número de Páginas:</strong> ${livro.numPaginas}</p>
         `;
 
+        //calcula o valor do estoque do livro
+        const quantidadeTotal = livro.estoques.reduce((total, entrada) => total + entrada.quantidade, 0);
+        document.getElementById("estoque").textContent = `${quantidadeTotal} unidades em Estoque`;
+        document.getElementById("quantidade").max = quantidadeTotal;
+
         // Seleciona o elemento da classe "acoes-produto"
         const acoesProduto = document.querySelector(".acoes-produto");
 
