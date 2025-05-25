@@ -1,0 +1,16 @@
+/*dando um pequeno diferencial pra variar um pouco*/
+.new-client{
+    top: 35px;
+    right: 10%;
+    background-color: #5900ff;
+}
+table{
+    border: 2px solid #5900ff;
+}
+h3 {
+    margin-top: 20px;
+    color: #000000;
+    font-size: 18px;
+    border-bottom: 2px solid #1e1e2f;
+    padding-bottom: 5px;
+}

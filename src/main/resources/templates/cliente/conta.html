@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/img//icon.png">
+    <link rel="icon" href="/img/icon.png/">
     <title>Minha Conta - Livraria</title>
-    <link rel="stylesheet" href="css/livraria.css">
-    <link rel="stylesheet" href="css/conta.css">
-    <link rel="stylesheet" href="css/info.css">
+    <link rel="stylesheet" href="/css/cliente/livraria.css/">
+    <link rel="stylesheet" href="/css/cliente/conta.css"/>
+    <link rel="stylesheet" href="/css/cliente/info.css/">
     <script th:inline="javascript">
         var clienteId = /*[[${clienteId}]]*/ null;
     </script>
-    <script src="js/verificarCliente.js"></script>
+    <script src="/js/cliente/verificarCliente.js/"></script>
 </head>
 <body>
-    <script src="js/header.js"></script>
+    <script src="/js/cliente/header.js/"></script>
     <div class="container">
         <nav class="menu">
             <button onclick="mostrarSecao('info')">Minha Conta</button>
@@ -26,23 +26,23 @@
         
         <section class="conteudo">
             <div id="contaInfo"></div>
-            <script src="js/conta/info.js"></script>
+            <script src="/js/cliente/conta/info.js/"></script>
 
             <div id="contaAlterar"></div>
-            <script src="js/conta/alterar.js"></script>
+            <script src="/js/cliente/conta/alterar.js/"></script>
 
             <div id="contaEndereco"></div>
-            <script src="js/conta/endereco.js"></script>
+            <script src="/js/cliente/conta/endereco.js/"></script>
 
             <div id="contaCartao"></div>
-            <script src="js/conta/cartao.js"></script>
+            <script src="/js/cliente/conta/cartao.js/"></script>
 
             <div id="contaPedidos"></div>
-            <script src="js/conta/pedidos.js"></script>
+            <script src="/js/cliente/conta/pedidos.js/"></script>
 
         </section>
     </div>
-    <script src="js/conta/conta.js"></script>
+    <script src="/js/cliente/conta/conta.js/"></script>
 
 </body>
 </html>

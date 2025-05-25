@@ -3,32 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/img//icon.png">
+    <link rel="icon" href="/img/icon.png/">
     <title>Controle do Estoque</title>
-    <link rel="stylesheet" href="../css/menuAdmin.css">
-    <link rel="stylesheet" href="../css/tabelaTransacoes.css">
-    <style>
-        /*dando um pequeno diferencial pra variar um pouco*/
-        .new-client{
-            top: 35px;
-            right: 10%;
-            background-color: #5900ff;
-        }
-        table{
-            border: 2px solid #5900ff;
-        }
-        h3 {
-            margin-top: 20px;
-            color: #000000;
-            font-size: 18px;
-            border-bottom: 2px solid #1e1e2f;
-            padding-bottom: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
+    <link rel="stylesheet" href="/css/admin/tabelaTransacoes.css/">
+    <link rel="stylesheet" href="/css/admin/estoque.css/">
 </head>
 <body>
 	<header>
-			<a th:href="@{/administrador/admin}"><img src="/img//home.png" alt="home" class="header-logo"></a>
+			<a th:href="@{/administrador/admin}"><img src="/img/home.png/" alt="home" class="header-logo"></a>
 			Página do Administrador
 	</header>
     <a th:href ="@{/administrador/controle-estoque/novaEntradaEstoque}"><button class="new-client">Nova Entrada no Estoque</button></a>
