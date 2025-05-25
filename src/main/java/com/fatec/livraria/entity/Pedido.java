@@ -29,14 +29,14 @@ public class Pedido {
     private String formaPagamento;
 
     @ManyToOne
-    @JoinColumn(name = "ped_end_id", nullable = false)
+    @JoinColumn(name = "ped_end_id", nullable = true)
     private Endereco endereco;
 
     @ManyToOne
     @JoinColumn(name = "ped_cli_id", nullable = false)
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Venda> vendas;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Venda> vendas;    
 
 }

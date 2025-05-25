@@ -14,6 +14,8 @@ import com.fatec.livraria.dto.AtualizarClienteDTO;
 import com.fatec.livraria.dto.ClienteDTO;
 import com.fatec.livraria.dto.EnderecoDTO;
 import com.fatec.livraria.entity.Endereco;
+import com.fatec.livraria.entity.Pedido;
+import com.fatec.livraria.repository.PedidoRepository;
 import com.fatec.livraria.service.ClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,6 +32,7 @@ public class ClienteService {
     @Autowired private EnderecoService enderecoService;
     @Autowired private ClienteValidator clienteValidator;
     @Autowired private EnderecoValidator enderecoValidator;
+    @Autowired private PedidoRepository pedidoRepository;
 
     public List<Cliente> listarTodos() {
         return clienteRepository.findAll();
@@ -123,8 +126,17 @@ public class ClienteService {
     }
 
     public void excluirCliente(Integer id) {
-        clienteRepository.deleteById(id);
+        Cliente cliente = clienteRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+    
+        for (Pedido pedido : cliente.getPedidos()) {
+            // força o carregamento e a exclusão em cascata das vendas
+            pedido.getVendas().clear();
+        }
+    
+        clienteRepository.delete(cliente);
     }
+    
 
     public List<Cliente> buscarClientesComFiltro(String nome, String cpf, String telefone, String email, LocalDate dataNascimento, String genero) {
         return clienteRepository.findAll(ClienteSpecification.filtrarClientes(nome, cpf, telefone, email, dataNascimento, genero));

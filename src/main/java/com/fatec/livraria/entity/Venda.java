@@ -30,8 +30,8 @@ public class Venda {
     @JoinColumn(name = "vnd_lvr_id", nullable = false)
     private Livro livro;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "vnd_ped_id", nullable = false)
     @JsonIgnore
-    private Pedido pedido;
+    private Pedido pedido;    
 }
