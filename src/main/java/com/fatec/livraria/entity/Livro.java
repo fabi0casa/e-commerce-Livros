@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "LIVROS")
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class Livro {
 
@@ -63,4 +65,41 @@ public class Livro {
     @ManyToOne
     @JoinColumn(name = "lvr_gpr_id", nullable = false)
     private GrupoPrecificacao grupoPrecificacao;
+
+    @ManyToMany
+    @JoinTable(
+        name = "LIVRO_CATEGORIA",
+        joinColumns = @JoinColumn(name = "livro_id"),
+        inverseJoinColumns = @JoinColumn(name = "categoria_id")
+    )
+    private List<Categoria> categorias;
+
+    @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Estoque> estoques = new ArrayList<>();
+ 
+    //Construtor para a classe LivroInitializer
+    public Livro(Integer id, String nome, Integer anoPublicacao, String edicao, String isbn,
+    Integer numPaginas, String sinopse, String codigoBarras, String caminhoImagem,
+    BigDecimal precoCusto, BigDecimal precoVenda, Autor autor,
+    Editora editora, Fornecedor fornecedor, GrupoPrecificacao grupoPrecificacao,
+    List<Categoria> categorias) 
+    {
+        this.id = id;
+        this.nome = nome;
+        this.anoPublicacao = anoPublicacao;
+        this.edicao = edicao;
+        this.isbn = isbn;
+        this.numPaginas = numPaginas;
+        this.sinopse = sinopse;
+        this.codigoBarras = codigoBarras;
+        this.caminhoImagem = caminhoImagem;
+        this.precoCusto = precoCusto;
+        this.precoVenda = precoVenda;
+        this.autor = autor;
+        this.editora = editora;
+        this.fornecedor = fornecedor;
+        this.grupoPrecificacao = grupoPrecificacao;
+        this.categorias = categorias;
+    }
+
 }

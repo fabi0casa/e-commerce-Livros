@@ -8,11 +8,12 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component
-@DependsOn({"autorService", "editoraService", "fornecedorService", "grupoPrecificacaoService"})
+@DependsOn({"autorService", "editoraService", "fornecedorService", "grupoPrecificacaoService", "categoriaService"})
 public class LivroInitializer {
 
     private final LivroRepository livroRepository;
@@ -21,6 +22,8 @@ public class LivroInitializer {
     private final FornecedorRepository fornecedorRepository;
     private final GrupoPrecificacaoRepository grupoPrecificacaoRepository;
     private final CarrinhoRepository carrinhoRepository;
+    private final CategoriaRepository categoriaRepository;
+    
 
     public LivroInitializer(
         LivroRepository livroRepository,
@@ -28,7 +31,8 @@ public class LivroInitializer {
         EditoraRepository editoraRepository,
         FornecedorRepository fornecedorRepository,
         GrupoPrecificacaoRepository grupoPrecificacaoRepository,
-        CarrinhoRepository carrinhoRepository
+        CarrinhoRepository carrinhoRepository,
+        CategoriaRepository categoriaRepository
     ) {
         this.livroRepository = livroRepository;
         this.autorRepository = autorRepository;
@@ -36,6 +40,7 @@ public class LivroInitializer {
         this.fornecedorRepository = fornecedorRepository;
         this.grupoPrecificacaoRepository = grupoPrecificacaoRepository;
         this.carrinhoRepository = carrinhoRepository;
+        ;this.categoriaRepository = categoriaRepository;
     }
 
     @PostConstruct
@@ -76,95 +81,121 @@ public class LivroInitializer {
             Optional<GrupoPrecificacao> premium = grupoPrecificacaoRepository.findById(3);
             Optional<GrupoPrecificacao> colecionador = grupoPrecificacaoRepository.findById(4);
 
+            Optional<Categoria> comedia = categoriaRepository.findById(1);
+            Optional<Categoria> ficcao = categoriaRepository.findById(2);
+            Optional<Categoria> fantasia = categoriaRepository.findById(3);
+            Optional<Categoria> historia = categoriaRepository.findById(4);
+            Optional<Categoria> literaturaBrasileira = categoriaRepository.findById(5);
+            Optional<Categoria> infantoJuvenil = categoriaRepository.findById(6);
+            Optional<Categoria> religiao = categoriaRepository.findById(7);
+            Optional<Categoria> didatico = categoriaRepository.findById(8);
+
+
             // Criando livros e associando com as entidades relacionadas
             List<Livro> livros = List.of(
                 new Livro(null, "Diário de Um Banana 9", 2016, "1ª Edição", "978-3-16-148410-0", 223, 
                         "Greg Heffley encara novos desafios quando sua escola inicia um projeto de cultura sustentável. Entre trapalhadas hilárias e confusões inesperadas, ele precisa lidar com responsabilidades que nunca quis. Será que vai sobreviver ao caos?", 
                         "1234567890123", "/books//Diario de um banana 9.png",
                         new BigDecimal("50.00"), new BigDecimal("72.90"), 
-                        jeffKinney.orElse(null), happerCollins.orElse(null), suzano.orElse(null), popular.orElse(null)),
+                        jeffKinney.orElse(null), happerCollins.orElse(null), suzano.orElse(null), popular.orElse(null), List.of(comedia.orElse(null))),
 
                 new Livro(null, "Os Elementos", 2016, "13ª Edição", "978-3-16-148410-0", 459, 
                         "Obra fundamental da matemática, 'Os Elementos' de Euclides apresenta os princípios da geometria euclidiana. Com demonstrações lógicas rigorosas, este livro influenciou a ciência e a filosofia por mais de dois mil anos.", 
                         "1234567890123", "/books//Os Elementos.png",
                         new BigDecimal("50.00"), new BigDecimal("65.00"), 
-                        euclides.orElse(null), saraiva.orElse(null), pernanbucanas.orElse(null), padrao.orElse(null)),
+                        euclides.orElse(null), saraiva.orElse(null), pernanbucanas.orElse(null), padrao.orElse(null), List.of(historia.orElse(null), didatico.orElse(null))),
 
                 new Livro(null, "Senhor dos Anéis", 2016, "1ª Edição", "978-3-16-148410-0", 322, 
                         "A jornada épica de Frodo Bolseiro para destruir o Um Anel e impedir que Sauron domine a Terra Média. Entre batalhas, criaturas místicas e alianças improváveis, esta aventura redefiniu o gênero da fantasia para sempre.", 
                         "1234567890123", "/books//Senhor dos aneis.png",
                         new BigDecimal("50.00"), new BigDecimal("185.90"), 
-                        tolkien.orElse(null), saraiva.orElse(null), suzano.orElse(null), padrao.orElse(null)),
+                        tolkien.orElse(null), saraiva.orElse(null), suzano.orElse(null), padrao.orElse(null), List.of(fantasia.orElse(null))),
 
                 new Livro(null, "Tradução Ecumênica da Bíblia", 2016, "1ª Edição", "978-3-16-148410-0", 2041, 
                         "Uma tradução da Bíblia que une diferentes tradições cristãs, oferecendo um texto acessível e fiel aos originais. Com notas explicativas e contexto histórico, é uma referência essencial para estudiosos e fiéis.", 
                         "1234567890123", "/books//TEB.png",
                         new BigDecimal("50.00"), new BigDecimal("290.00"), 
-                        konings.orElse(null), happerCollins.orElse(null), pernanbucanas.orElse(null), popular.orElse(null)),
+                        konings.orElse(null), happerCollins.orElse(null), pernanbucanas.orElse(null), popular.orElse(null), List.of(religiao.orElse(null))),
 
                 new Livro(null, "O Pequeno Príncipe", 1943, "1ª Edição", "978-3-16-148410-0", 96,
                         "A clássica história de um menino que viaja de planeta em planeta descobrindo o verdadeiro significado do amor e da amizade.",
                         "1234567890123", "/books//O Pequeno Principe.webp", new BigDecimal("50.00"), new BigDecimal("39.90"),
-                        saintExupery.orElse(null), pandaBooks.orElse(null), suzano.orElse(null), popular.orElse(null)),
+                        saintExupery.orElse(null), pandaBooks.orElse(null), suzano.orElse(null), popular.orElse(null), List.of(fantasia.orElse(null), ficcao.orElse(null))),
         
                 new Livro(null, "1984", 1949, "1ª Edição", "978-3-16-148410-0", 328,
                         "Uma distopia clássica que retrata um mundo de vigilância extrema e controle totalitário.",
                         "1234567890123", "/books//1984.webp", new BigDecimal("50.00"), new BigDecimal("42.00"),
-                        orwell.orElse(null), saraiva.orElse(null), nacional.orElse(null), padrao.orElse(null)),
+                        orwell.orElse(null), saraiva.orElse(null), nacional.orElse(null), padrao.orElse(null), List.of(ficcao.orElse(null))),
         
                 new Livro(null, "Guia de Redstone Minecraft", 2020, "2ª Edição", "978-3-16-148410-0", 112,
                         "Manual completo para dominar circuitos de Redstone no mundo de Minecraft.",
                         "1234567890123", "/books//Guia Redstone.jpg", new BigDecimal("50.00"), new BigDecimal("29.90"),
-                        mojang.orElse(null), pandaBooks.orElse(null), pernanbucanas.orElse(null), popular.orElse(null)),
+                        mojang.orElse(null), pandaBooks.orElse(null), pernanbucanas.orElse(null), popular.orElse(null), List.of(infantoJuvenil.orElse(null))),
         
                 new Livro(null, "365 Histórias para Sonhar", 2018, "1ª Edição", "978-3-16-148410-0", 365,
                         "Uma história para cada dia do ano, ideal para a hora de dormir com os pequenos.",
                         "1234567890123", "/books//365 historias.jpg", new BigDecimal("50.00"), new BigDecimal("69.90"),
-                        varios.orElse(null), autentica.orElse(null), suzano.orElse(null), padrao.orElse(null)),
+                        varios.orElse(null), autentica.orElse(null), suzano.orElse(null), padrao.orElse(null), List.of(infantoJuvenil.orElse(null))),
         
                 new Livro(null, "Memórias Póstumas de Brás Cubas", 1881, "1ª Edição", "978-3-16-148410-0", 200,
                         "O clássico de Machado de Assis narrado por um defunto-autor, repleto de crítica social e ironia.",
                         "1234567890123", "/books//bras cubas.jpg", new BigDecimal("50.00"), new BigDecimal("25.00"),
-                        machado.orElse(null), saraiva.orElse(null), nacional.orElse(null), popular.orElse(null)),
+                        machado.orElse(null), saraiva.orElse(null), nacional.orElse(null), popular.orElse(null), List.of(literaturaBrasileira.orElse(null))),
         
                 new Livro(null, "Dossiê OLD!Gamer Volume 09: Nintendo 64", 2021, "1ª Edição", "978-3-16-148410-0", 148,
                         "Revista especializada que aprofunda no histórico e curiosidades do lendário Nintendo 64.",
                         "1234567890123", "/books//nintendo 64.jpg", new BigDecimal("50.00"), new BigDecimal("59.90"),
-                        editoraEuropa.orElse(null), pandaBooks.orElse(null), independente.orElse(null), colecionador.orElse(null)),
+                        editoraEuropa.orElse(null), pandaBooks.orElse(null), independente.orElse(null), colecionador.orElse(null), List.of(infantoJuvenil.orElse(null))),
 
                 new Livro(null, "Dom Casmurro", 1899, "1ª Edição", "978-3-16-148410-0", 256,
                         "A história de Bentinho e Capitu, marcada por ciúmes, dúvidas e a famosa 'olhos de ressaca'.",
                         "1234567890123", "/books//Dom Casmurro.png", new BigDecimal("50.00"), new BigDecimal("27.90"),
-                        machado.orElse(null), saraiva.orElse(null), nacional.orElse(null), popular.orElse(null)),
+                        machado.orElse(null), saraiva.orElse(null), nacional.orElse(null), popular.orElse(null), List.of(literaturaBrasileira.orElse(null))),
 
                 new Livro(null, "Harry Potter e a Pedra Filosofal", 1997, "1ª Edição", "978-3-16-148410-0", 223,
                         "O começo da saga do bruxo mais famoso do mundo, que descobre seu destino em Hogwarts.",
                         "1234567890123", "/books//harry potter.webp", new BigDecimal("50.00"), new BigDecimal("49.90"),
-                        jkRowling.orElse(null), happerCollins.orElse(null), suzano.orElse(null), padrao.orElse(null)),
+                        jkRowling.orElse(null), happerCollins.orElse(null), suzano.orElse(null), padrao.orElse(null), List.of(fantasia.orElse(null), ficcao.orElse(null))),
 
                 new Livro(null, "O Código Da Vinci", 2003, "1ª Edição", "978-3-16-148410-0", 480,
                         "Thriller que mistura arte, simbologia e conspiração com o professor Robert Langdon.",
                         "1234567890123", "/books//Codigo Da Vinci.jpg", new BigDecimal("50.00"), new BigDecimal("45.00"),
-                        danBrown.orElse(null), saraiva.orElse(null), nacional.orElse(null), padrao.orElse(null)),
+                        danBrown.orElse(null), saraiva.orElse(null), nacional.orElse(null), padrao.orElse(null), List.of(historia.orElse(null))),
 
                 new Livro(null, "A Revolução dos Bichos", 1945, "1ª Edição", "978-3-16-148410-0", 152,
                         "Uma fábula satírica sobre o totalitarismo, escrita por George Orwell.",
                         "1234567890123", "/books//Revolucao dos Bichos.jpg", new BigDecimal("50.00"), new BigDecimal("29.90"),
-                        orwell.orElse(null), pandaBooks.orElse(null), independente.orElse(null), popular.orElse(null)),
+                        orwell.orElse(null), pandaBooks.orElse(null), independente.orElse(null), popular.orElse(null), List.of(ficcao.orElse(null))),
 
                 new Livro(null, "Sapiens: Uma Breve História da Humanidade", 2011, "1ª Edição", "978-3-16-148410-0", 464,
                         "Uma visão impactante sobre a evolução da humanidade desde o Homo sapiens até os dias atuais.",
                         "1234567890123", "/books//sapiens.png", new BigDecimal("50.00"), new BigDecimal("69.90"),
-                        yuval.orElse(null), autentica.orElse(null), suzano.orElse(null), premium.orElse(null)),
+                        yuval.orElse(null), autentica.orElse(null), suzano.orElse(null), premium.orElse(null), List.of(didatico.orElse(null))),
 
                 new Livro(null, "A Cabana", 2007, "1ª Edição", "978-3-16-148410-0", 240,
                         "Um homem reencontra sua fé ao ter um encontro inesperado com Deus após uma tragédia pessoal.",
                         "1234567890123", "/books//A cabana.webp", new BigDecimal("50.00"), new BigDecimal("39.90"),
-                        willianYoung.orElse(null), pandaBooks.orElse(null), nacional.orElse(null), popular.orElse(null))
+                        willianYoung.orElse(null), pandaBooks.orElse(null), nacional.orElse(null), popular.orElse(null), List.of(religiao.orElse(null)))
             );
 
+            List<Livro> livrosComEstoque = new ArrayList<>();
+
+            for (Livro livro : livros) {
+                // Criar o estoque
+                Estoque estoque = new Estoque();
+                estoque.setQuantidade(121);
+                estoque.setDataEntrada(new java.sql.Date(System.currentTimeMillis()));
+                estoque.setLivro(livro);
+            
+                // Associa o estoque ao livro
+                livro.getEstoques().add(estoque);
+            
+                // Adiciona o livro com estoque à nova lista
+                livrosComEstoque.add(livro);
+            }
+
             // Salvando os livros no banco
-            livroRepository.saveAll(livros);
+            livroRepository.saveAll(livrosComEstoque);
 
             System.out.println("✅ Livros cadastrados automaticamente.");
         }

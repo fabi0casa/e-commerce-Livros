@@ -2,6 +2,8 @@ package com.fatec.livraria.entity;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +29,7 @@ public class Estoque {
 
     @ManyToOne
     @JoinColumn(name = "est_lvr_id", nullable = false)
+    @JsonIgnore
     private Livro livro;
 }
 
