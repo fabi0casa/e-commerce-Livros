@@ -30,6 +30,9 @@ async function carregarLivro() {
         document.getElementById("livro-sinopse").textContent = livro.sinopse;
 
         // Atualiza os detalhes adicionais
+        const nomesCategorias = livro.categorias.map(cat => cat.nome).join(", ");
+        const labelCategoria = livro.categorias.length === 1 ? "Categoria" : "Categorias";
+
         document.getElementById("livro-detalhes").innerHTML = `
             <p><strong>Autor:</strong> ${livro.autor.nome}</p>
             <p><strong>Editora:</strong> ${livro.editora.nome}</p>
@@ -38,7 +41,10 @@ async function carregarLivro() {
             <p><strong>Edição:</strong> ${livro.edicao}</p>
             <p><strong>ISBN:</strong> ${livro.isbn}</p>
             <p><strong>Número de Páginas:</strong> ${livro.numPaginas}</p>
+            <p><strong>${labelCategoria}:</strong> ${nomesCategorias}</p>
         `;
+
+
 
         //calcula o valor do estoque do livro
         const quantidadeTotal = livro.estoques.reduce((total, entrada) => total + entrada.quantidade, 0);
