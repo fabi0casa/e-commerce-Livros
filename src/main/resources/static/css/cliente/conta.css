@@ -33,6 +33,40 @@
     background: #22213e;
 }
 
+.menu .dashboard {
+    color: white;
+    transition: all 0.4s ease;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.menu .dashboard::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, #ffffff33 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.menu .dashboard:hover {
+    background: linear-gradient(135deg, #a100ff, #dd00ff);
+    color: #fff;
+    box-shadow: 0 0 20px #dd00ff, 0 0 40px #ff00ff, 0 0 60px #ff66ff;
+    transform: scale(1.05);
+}
+
+.menu .dashboard:hover::before {
+    opacity: 1;
+}
+
+
 .conteudo {
     flex: 1;
     padding: 20px;

@@ -79,39 +79,7 @@ public class PageController {
     public String redirecionarParaHome() {
         return "redirect:/home";
     }
-
-
-    /*@GetMapping("/{pagina:(?!api).*}")
-    public String renderizarPagina(@PathVariable String pagina, Model model, HttpSession session) {
-        adicionarClienteNoModelo(model, session);
-        return pagina; // Busca "templates/{pagina}.html"
-    }
-
-    @GetMapping("/{dir}/{pagina}")
-    public String renderizarPaginaComSubpasta(@PathVariable String dir, @PathVariable String pagina, Model model, HttpSession session) {
-        adicionarClienteNoModelo(model, session);
-        return dir + "/" + pagina; // Busca "templates/{dir}/{pagina}.html"
-    }
-
-    @GetMapping("/{dir1}/{dir2}/{pagina}")
-    public String renderizarPaginaComDuasSubpastas(@PathVariable String dir1, @PathVariable String dir2, @PathVariable String pagina, Model model, HttpSession session) {
-        adicionarClienteNoModelo(model, session);
-        return dir1 + "/" + dir2 + "/" + pagina; // Busca "templates/{dir1}/{dir2}/{pagina}.html"
-    }
-
-    @GetMapping("/{dir1}/{dir2}/{dir3}/{pagina}")
-    public String renderizarPaginaComTresSubpastas(
-            @PathVariable String dir1,
-            @PathVariable String dir2,
-            @PathVariable String dir3,
-            @PathVariable String pagina,
-            Model model,
-            HttpSession session) {
-        
-        adicionarClienteNoModelo(model, session);
-        return dir1 + "/" + dir2 + "/" + dir3 + "/" + pagina; // Busca "templates/{dir1}/{dir2}/{dir3}/{pagina}.html"
-    }*/
-
+    
     private void adicionarClienteNoModelo(Model model, HttpSession session) {
         Integer clienteId = (Integer) session.getAttribute("clienteId");
         model.addAttribute("clienteId", clienteId);
