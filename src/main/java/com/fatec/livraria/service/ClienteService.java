@@ -4,6 +4,7 @@ import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.repository.ClienteRepository;
 import com.fatec.livraria.specification.ClienteSpecification;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +36,31 @@ public class ClienteService {
     @Autowired private ClienteValidator clienteValidator;
     @Autowired private EnderecoValidator enderecoValidator;
     @Autowired private PedidoRepository pedidoRepository;
+
+    @PostConstruct
+    public void criarUsuarioRootSeNaoExistir() {
+        if (clienteRepository.count() == 0) {
+            Cliente root = new Cliente();
+            root.setNome("Root");
+            root.setCpf("000.000.000-00"); // CPF fictício
+            root.setTelefone("(00) 00000-0000");
+            root.setEmail("root@admin.com");
+            root.setSenha("root");
+            root.setRanking(0);
+            root.setGenero("outro");
+            root.setAdmin(true);
+            
+            try {
+                Date data = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
+                root.setDataNascimento(data);
+            } catch (Exception e) {
+                root.setDataNascimento(new Date());
+            }
+
+            clienteRepository.save(root);
+            System.out.println("[INFO] Usuário root criado automaticamente.");
+        }
+    }
 
     public List<Cliente> listarTodos() {
         return clienteRepository.findAll();
