@@ -34,5 +34,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function redirecionarEditarEndereco(enderecoId, clienteId) {
-    window.location.href = `/administrador/gerenciar-clientes/editar-endereco-cliente?enderecoId=${enderecoId}&clienteId=${clienteId}`;
+    window.location.href = `/editar-endereco-cliente?enderecoId=${enderecoId}&clienteId=${clienteId}`;
 }
