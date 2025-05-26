@@ -20,7 +20,7 @@ async function carregarClientes() {
                     <div class="client-name">${cliente.nome}</div>
                     <div class="client-details">
                         ${cliente.email} - ${cliente.telefone} - ${formatarData(cliente.dataNascimento)}
-                        ${cliente.isAdmin ? '<span class="isAdmin">✪ Administrador</span>' : ''}
+                        ${cliente.admin ? '<span class="isAdmin">✪ Administrador</span>' : ''}
                     </div>
                 </div>
                 <div class="client-actions">
