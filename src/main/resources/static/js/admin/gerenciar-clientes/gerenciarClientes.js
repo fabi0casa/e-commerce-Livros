@@ -214,7 +214,10 @@ function atualizarListaClientes(clientes) {
         div.innerHTML = `
             <div class="client-info">
                 <div class="client-name">${cliente.nome}</div>
-                <div class="client-details">${cliente.email} - ${cliente.telefone} - ${formatarData(cliente.dataNascimento)}</div>
+                <div class="client-details">
+                    ${cliente.email} - ${cliente.telefone} - ${formatarData(cliente.dataNascimento)}
+                    ${cliente.admin ? '<span class="isAdmin">✪ Administrador</span>' : ''}
+                </div>
             </div>
             <div class="client-actions">
                 <button onclick="loadClientDetails(${cliente.id})">Ver</button>
