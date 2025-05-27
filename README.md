@@ -1,4 +1,4 @@
-# 📚 E-Commerce de Livros
+# E-Commerce de Livros <img src="https://github.com/fabi0casa/e-commerce-Livros/blob/main/src/main/resources/static/img/icon.png" alt="sarajevo-logo" height="40">
 
 ## Descrição
 Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido para a disciplina de Laboratório de Engenharia de Software (LES). O projeto implementa funcionalidades como cadastro de livros e clientes, gerenciamento de vendas, controle de estoque e recomendação personalizada com IA generativa.
@@ -45,6 +45,30 @@ Este é um sistema de e-commerce voltado para a venda de livros, desenvolvido pa
 - Foi feito um Deploy no site Render, acessível pelo seguinte link
 - ### [les-livraria.onrender.com](https://les-livraria.onrender.com)
 -->
+
+## Configurando a IA <img src="https://github.com/user-attachments/assets/3eed2fac-edbf-41bf-9798-324dbf74b264" alt="gemini" height="35">
+
+### 1. Gerar uma chave de API
+
+Para usar os serviços da IA, você precisa de uma chave de API do Gemini (Google AI Studio). Siga os passos abaixo:
+
+1. Acesse o link: **[https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)**
+2. Faça login com sua conta Google.
+3. Clique em **"Create API Key"**.
+4. Copie a chave gerada.
+
+⚠️ **Importante:** Guarde essa chave com segurança. Não compartilhe publicamente.
+
+### 2. Criar o arquivo `.env`
+
+Na raiz do projeto, crie um arquivo chamado `.env`, se ainda não existir.
+
+Adicione a seguinte linha ao arquivo `.env`:
+
+```env
+GEMINI_API_KEY=sua-chave-aqui
+```
+Substitua `sua-chave-aqui` pela chave copiada do site da Google.
 
 ## 🔧 Instalação e Execução
 
