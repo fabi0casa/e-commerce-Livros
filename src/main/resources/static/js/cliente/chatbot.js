@@ -40,32 +40,57 @@ function toggleChatbot() {
     }
 }
 
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('chatbot-input');
     const message = input.value.trim();
     if (message === '') return;
 
     const messagesContainer = document.getElementById('chatbot-messages');
+
+    // Mensagem do usuário
     const userMessage = document.createElement('div');
     userMessage.textContent = message;
     userMessage.classList.add('chatbot-message', 'user-message');
     messagesContainer.appendChild(userMessage);
 
-    setTimeout(() => {
-        const botMessage = document.createElement('div');
-        botMessage.textContent = getBotResponse(message);
-        botMessage.classList.add('chatbot-message', 'bot-message');
-        messagesContainer.appendChild(botMessage);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }, 1000);
-
+    // Limpa input e mostra carregando
     input.value = '';
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    const botMessage = document.createElement('div');
+    botMessage.textContent = 'Digitando...';
+    botMessage.classList.add('chatbot-message', 'bot-message');
+    messagesContainer.appendChild(botMessage);
+
+    // Chamada real ao backend
+    const resposta = await getBotResponse(message);
+    botMessage.textContent = resposta;
+
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-function getBotResponse(userMessage) {
-    return "Esta é uma mensagem de teste!";
+async function getBotResponse(userMessage) {
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mensagem: userMessage })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.resposta || "Desculpe, não consegui entender sua pergunta.";
+    } catch (error) {
+        console.error("Erro ao conversar com o chatbot:", error);
+        return "Ocorreu um erro ao tentar responder. Tente novamente mais tarde.";
+    }
 }
+
 
 // Executa quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', createChatbot);
