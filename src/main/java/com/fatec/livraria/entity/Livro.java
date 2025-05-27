@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,6 +49,9 @@ public class Livro {
     @Column(name = "lvr_preco_venda", nullable = false, precision = 10, scale = 2)
     private BigDecimal precoVenda;
 
+    @Column(name = "lvr_estoque", nullable = false)
+    private Integer estoque;
+
     @ManyToOne
     @JoinColumn(name = "lvr_aut_id", nullable = false)
     private Autor autor;
@@ -73,16 +75,13 @@ public class Livro {
         inverseJoinColumns = @JoinColumn(name = "categoria_id")
     )
     private List<Categoria> categorias;
-
-    @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Estoque> estoques = new ArrayList<>();
  
     //Construtor para a classe LivroInitializer
     public Livro(Integer id, String nome, Integer anoPublicacao, String edicao, String isbn,
     Integer numPaginas, String sinopse, String codigoBarras, String caminhoImagem,
     BigDecimal precoCusto, BigDecimal precoVenda, Autor autor,
     Editora editora, Fornecedor fornecedor, GrupoPrecificacao grupoPrecificacao,
-    List<Categoria> categorias) 
+    List<Categoria> categorias, Integer estoque) 
     {
         this.id = id;
         this.nome = nome;
@@ -100,6 +99,7 @@ public class Livro {
         this.fornecedor = fornecedor;
         this.grupoPrecificacao = grupoPrecificacao;
         this.categorias = categorias;
+        this.estoque = estoque;
     }
 
 }
