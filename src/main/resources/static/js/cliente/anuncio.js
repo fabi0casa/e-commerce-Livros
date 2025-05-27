@@ -47,7 +47,7 @@ async function carregarLivro() {
 
 
         //calcula o valor do estoque do livro
-        const quantidadeTotal = livro.estoques.reduce((total, entrada) => total + entrada.quantidade, 0);
+        const quantidadeTotal = livro.estoque;
         document.getElementById("estoque").textContent = `${quantidadeTotal} unidades em Estoque`;
         document.getElementById("quantidade").max = quantidadeTotal;
 
