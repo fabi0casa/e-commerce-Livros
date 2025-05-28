@@ -2,8 +2,11 @@ package com.fatec.livraria.controller;
 
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Livro;
+import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.service.ClienteService;
 import com.fatec.livraria.service.LivroService;
+import com.fatec.livraria.service.PedidoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +34,9 @@ public class ChatbotController {
         Quando não souber a resposta, diga "Não sei" em vez de inventar.
         """;
 
-    @Autowired
-    private LivroService livroService;
-
-    @Autowired
-    private ClienteService clienteService;
+    @Autowired private LivroService livroService;
+    @Autowired private ClienteService clienteService;
+    @Autowired private PedidoService pedidoService;
 
     @PostMapping
     public ResponseEntity<?> conversar(@RequestBody Map<String, String> payload, HttpSession session) {
@@ -65,15 +66,17 @@ public class ChatbotController {
         if (apiKey == null || apiKey.isBlank()) {
             throw new RuntimeException("API KEY não está definida. Use -DGEMINI_API_KEY=...");
         }
-
-        // Recupera livros e formata contexto
+    
         List<Livro> livros = livroService.listarTodos();
         String livrosContexto = livros.stream()
                 .map(livro -> "- " + livro.getNome() + " de " + livro.getAutor() + " (Editora: " + livro.getEditora() + ")")
                 .collect(Collectors.joining("\n"));
-
-        String contexto = CONTEXTO_BASE + "\n\nLivros disponíveis no sistema:\n" + livrosContexto;
-
+    
+        StringBuilder contexto = new StringBuilder();
+        contexto.append(CONTEXTO_BASE)
+                .append("\n\nLivros disponíveis no sistema:\n")
+                .append(livrosContexto);
+    
         // Dados do cliente, se logado
         Integer clienteId = (Integer) session.getAttribute("clienteId");
         if (clienteId != null) {
@@ -81,43 +84,60 @@ public class ChatbotController {
             if (clienteOpt.isPresent()) {
                 Cliente cliente = clienteOpt.get();
                 String dataNascimento = new SimpleDateFormat("yyyy-MM-dd").format(cliente.getDataNascimento());
-
-                contexto += "\n\nDados do usuário logado:\n" +
-                        "Nome: " + cliente.getNome() + "\n" +
-                        "Data de Nascimento: " + dataNascimento + "\n" +
-                        "Gênero: " + cliente.getGenero();
+    
+                contexto.append("\n\nDados do usuário logado:\n")
+                        .append("Nome: ").append(cliente.getNome()).append("\n")
+                        .append("Data de Nascimento: ").append(dataNascimento).append("\n")
+                        .append("Gênero: ").append(cliente.getGenero());
+    
+                // Histórico de compras
+                List<Pedido> pedidos = pedidoService.listarPorClienteId(clienteId);
+                if (!pedidos.isEmpty()) {
+                    contexto.append("\n\nHistórico de compras:\n");
+                    for (Pedido pedido : pedidos) {
+                        contexto.append("Pedido #").append(pedido.getCodigo()).append(" - Livros:\n");
+                        pedido.getVendas().forEach(venda -> {
+                            Livro livro = venda.getLivro();
+                            contexto.append("- ").append(livro.getNome())
+                                    .append(" (").append(livro.getAnoPublicacao()).append("), Autor: ")
+                                    .append(livro.getAutor().getNome()).append("\n");
+                        });
+                    }
+                } else {
+                    contexto.append("\n\nO usuário ainda não realizou compras.");
+                }
             }
         }
-
+    
         // Corpo da requisição
         Map<String, Object> userContent = new HashMap<>();
         userContent.put("role", "user");
-        userContent.put("parts", List.of(Map.of("text", contexto + "\n\nUsuário: " + mensagemUsuario)));
-
+        userContent.put("parts", List.of(Map.of("text", contexto.toString() + "\n\nUsuário: " + mensagemUsuario)));
+    
         Map<String, Object> body = new HashMap<>();
         body.put("contents", List.of(userContent));
-
-        // Cabeçalhos
+    
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
+    
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-
+    
         String url = GEMINI_URL + apiKey;
-
+    
         System.out.println("Enviando requisição para Gemini...");
-
+    
         ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
-
+    
         System.out.println("Resposta completa do Gemini: " + response.getBody());
-
+    
         List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.getBody().get("candidates");
         if (candidates != null && !candidates.isEmpty()) {
             Map<String, Object> content = (Map<String, Object>) candidates.get(0).get("content");
             List<Map<String, String>> respostaParts = (List<Map<String, String>>) content.get("parts");
             return respostaParts.get(0).get("text");
         }
-
+    
         return "Desculpe, não consegui gerar uma resposta.";
     }
+    
 }
