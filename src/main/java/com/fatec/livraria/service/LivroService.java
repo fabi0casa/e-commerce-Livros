@@ -1,5 +1,6 @@
 package com.fatec.livraria.service;
 
+import com.fatec.livraria.entity.Categoria;
 import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.repository.LivroRepository;
 import org.springframework.stereotype.Service;
@@ -35,12 +36,20 @@ public class LivroService {
 
     public String gerarContextoLivros() {
         List<Livro> livros = listarTodos();
-        if (livros.isEmpty()) {
-            return "Nenhum livro disponível no sistema.";
-        }
-        return livros.stream()
-                .map(livro -> "- " + livro.getNome() + " de " + livro.getAutor() + " (Editora: " + livro.getEditora() + ")")
+        
+        String contexto = livros.stream()
+                .filter(livro -> livro.getEstoque() > 0)
+                .map(livro -> {
+                    String categorias = livro.getCategorias().stream()
+                            .map(Categoria::getNome)
+                            .collect(Collectors.joining(", "));
+                    return "- " + livro.getNome() + " de " + livro.getAutor().getNome() + 
+                        " (Editora: " + livro.getEditora().getNome() + 
+                        ", Categorias: " + categorias + ")";
+                })
                 .collect(Collectors.joining("\n"));
+        
+        return contexto.isEmpty() ? "Nenhum livro disponível no sistema." : contexto;
     }
 
 }
