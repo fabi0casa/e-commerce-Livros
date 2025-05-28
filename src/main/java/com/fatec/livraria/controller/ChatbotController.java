@@ -1,15 +1,11 @@
 package com.fatec.livraria.controller;
 
 import com.fatec.livraria.service.ChatbotService;
-import com.fatec.livraria.service.ClienteService;
-import com.fatec.livraria.service.LivroService;
-import com.fatec.livraria.service.PedidoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.*;
