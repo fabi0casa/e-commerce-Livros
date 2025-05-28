@@ -38,6 +38,13 @@ public class ChatbotController {
     @Autowired private ClienteService clienteService;
     @Autowired private PedidoService pedidoService;
 
+    @PostMapping("/reset")
+    public ResponseEntity<?> resetarChat(HttpSession session) {
+        session.removeAttribute("chatHistorico");
+        return ResponseEntity.ok(Map.of("mensagem", "Histórico do chat limpo."));
+    }
+
+
     @PostMapping
     public ResponseEntity<?> conversar(@RequestBody Map<String, String> payload, HttpSession session) {
         System.out.println("Requisição recebida no backend: " + payload);
@@ -67,6 +74,20 @@ public class ChatbotController {
             throw new RuntimeException("API KEY não está definida. Use -DGEMINI_API_KEY=...");
         }
     
+        // Recupera ou cria histórico da sessão
+        List<String> historico = (List<String>) session.getAttribute("chatHistorico");
+        if (historico == null) {
+            historico = new ArrayList<>();
+            session.setAttribute("chatHistorico", historico);
+        }
+    
+        // Adiciona nova mensagem ao histórico
+        historico.add("Usuário: " + mensagemUsuario);
+    
+        // Monta o histórico em texto
+        String historicoTexto = String.join("\n", historico);
+    
+        // Monta contexto base com livros, cliente, etc.
         List<Livro> livros = livroService.listarTodos();
         String livrosContexto = livros.stream()
                 .map(livro -> "- " + livro.getNome() + " de " + livro.getAutor() + " (Editora: " + livro.getEditora() + ")")
@@ -90,7 +111,6 @@ public class ChatbotController {
                         .append("Data de Nascimento: ").append(dataNascimento).append("\n")
                         .append("Gênero: ").append(cliente.getGenero());
     
-                // Histórico de compras
                 List<Pedido> pedidos = pedidoService.listarPorClienteId(clienteId);
                 if (!pedidos.isEmpty()) {
                     contexto.append("\n\nHistórico de compras:\n");
@@ -109,10 +129,12 @@ public class ChatbotController {
             }
         }
     
-        // Corpo da requisição
+        // Prepara conteúdo completo com contexto e histórico
+        String conteudoFinal = contexto + "\n\nHistórico da conversa:\n" + historicoTexto;
+    
         Map<String, Object> userContent = new HashMap<>();
         userContent.put("role", "user");
-        userContent.put("parts", List.of(Map.of("text", contexto.toString() + "\n\nUsuário: " + mensagemUsuario)));
+        userContent.put("parts", List.of(Map.of("text", conteudoFinal)));
     
         Map<String, Object> body = new HashMap<>();
         body.put("contents", List.of(userContent));
@@ -134,10 +156,14 @@ public class ChatbotController {
         if (candidates != null && !candidates.isEmpty()) {
             Map<String, Object> content = (Map<String, Object>) candidates.get(0).get("content");
             List<Map<String, String>> respostaParts = (List<Map<String, String>>) content.get("parts");
-            return respostaParts.get(0).get("text");
+            String resposta = respostaParts.get(0).get("text");
+    
+            // Salva a resposta no histórico também
+            historico.add("Assistente: " + resposta);
+    
+            return resposta;
         }
     
         return "Desculpe, não consegui gerar uma resposta.";
-    }
-    
+    }    
 }

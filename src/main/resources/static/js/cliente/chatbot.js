@@ -91,6 +91,16 @@ async function getBotResponse(userMessage) {
     }
 }
 
+function resetChatHistorico() {
+    const url = '/api/chat/reset';
+    const data = {};  // qualquer payload se quiser
+
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    navigator.sendBeacon(url, blob);
+}
+
+window.addEventListener('beforeunload', resetChatHistorico);
+
 
 // Executa quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', createChatbot);
