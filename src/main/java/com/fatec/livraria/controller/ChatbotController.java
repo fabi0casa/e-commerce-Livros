@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/chatbot")
 public class ChatbotController {
 
     @Autowired private ChatbotService chatbotService;

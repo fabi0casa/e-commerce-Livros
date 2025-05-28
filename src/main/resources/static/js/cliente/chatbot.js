@@ -71,7 +71,7 @@ async function sendMessage() {
 
 async function getBotResponse(userMessage) {
     try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch('/chatbot', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -92,7 +92,7 @@ async function getBotResponse(userMessage) {
 }
 
 function resetChatHistorico() {
-    const url = '/api/chat/reset';
+    const url = '/chatbot/reset';
     const data = {};  // qualquer payload se quiser
 
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
