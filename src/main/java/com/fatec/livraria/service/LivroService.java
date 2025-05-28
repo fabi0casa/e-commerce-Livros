@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LivroService {
@@ -31,4 +32,15 @@ public class LivroService {
     public List<Livro> buscarPorIds(List<Integer> ids) {
         return livroRepository.findAllById(ids);
     }
+
+    public String gerarContextoLivros() {
+        List<Livro> livros = listarTodos();
+        if (livros.isEmpty()) {
+            return "Nenhum livro disponível no sistema.";
+        }
+        return livros.stream()
+                .map(livro -> "- " + livro.getNome() + " de " + livro.getAutor() + " (Editora: " + livro.getEditora() + ")")
+                .collect(Collectors.joining("\n"));
+    }
+
 }

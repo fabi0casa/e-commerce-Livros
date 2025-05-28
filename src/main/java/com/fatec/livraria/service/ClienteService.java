@@ -169,5 +169,19 @@ public class ClienteService {
     public List<Cliente> buscarClientesComFiltro(String nome, String cpf, String telefone, String email, LocalDate dataNascimento, String genero) {
         return clienteRepository.findAll(ClienteSpecification.filtrarClientes(nome, cpf, telefone, email, dataNascimento, genero));
     }
+
+    public String gerarContextoCliente(Integer clienteId) {
+        Optional<Cliente> clienteOpt = buscarPorId(clienteId);
+        if (clienteOpt.isEmpty()) {
+            return "Usuário não encontrado.";
+        }
+        Cliente cliente = clienteOpt.get();
+        String dataNascimento = new SimpleDateFormat("yyyy-MM-dd").format(cliente.getDataNascimento());
+    
+        return "Nome: " + cliente.getNome() + "\n" +
+               "Data de Nascimento: " + dataNascimento + "\n" +
+               "Gênero: " + cliente.getGenero();
+    }
+    
 }
 

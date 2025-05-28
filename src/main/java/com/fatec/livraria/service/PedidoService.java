@@ -325,4 +325,24 @@ public class PedidoService {
         } while (pedidoRepository.existsByCodigo(codigo));
         return codigo;
     }
+
+    public String gerarContextoPedidos(Integer clienteId) {
+        List<Pedido> pedidos = listarPorClienteId(clienteId);
+        if (pedidos.isEmpty()) {
+            return "O usuário ainda não realizou compras.";
+        }
+    
+        StringBuilder contexto = new StringBuilder("Histórico de compras:\n");
+        for (Pedido pedido : pedidos) {
+            contexto.append("Pedido #").append(pedido.getCodigo()).append(" - Livros:\n");
+            pedido.getVendas().forEach(venda -> {
+                Livro livro = venda.getLivro();
+                contexto.append("- ").append(livro.getNome())
+                        .append(" (").append(livro.getAnoPublicacao()).append("), Autor: ")
+                        .append(livro.getAutor().getNome()).append("\n");
+            });
+        }
+        return contexto.toString();
+    }
+    
 }

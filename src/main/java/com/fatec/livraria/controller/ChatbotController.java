@@ -87,46 +87,17 @@ public class ChatbotController {
         // Monta o histórico em texto
         String historicoTexto = String.join("\n", historico);
     
-        // Monta contexto base com livros, cliente, etc.
-        List<Livro> livros = livroService.listarTodos();
-        String livrosContexto = livros.stream()
-                .map(livro -> "- " + livro.getNome() + " de " + livro.getAutor() + " (Editora: " + livro.getEditora() + ")")
-                .collect(Collectors.joining("\n"));
-    
         StringBuilder contexto = new StringBuilder();
         contexto.append(CONTEXTO_BASE)
                 .append("\n\nLivros disponíveis no sistema:\n")
-                .append(livrosContexto);
+                .append(livroService.gerarContextoLivros());
     
-        // Dados do cliente, se logado
         Integer clienteId = (Integer) session.getAttribute("clienteId");
         if (clienteId != null) {
-            Optional<Cliente> clienteOpt = clienteService.buscarPorId(clienteId);
-            if (clienteOpt.isPresent()) {
-                Cliente cliente = clienteOpt.get();
-                String dataNascimento = new SimpleDateFormat("yyyy-MM-dd").format(cliente.getDataNascimento());
-    
-                contexto.append("\n\nDados do usuário logado:\n")
-                        .append("Nome: ").append(cliente.getNome()).append("\n")
-                        .append("Data de Nascimento: ").append(dataNascimento).append("\n")
-                        .append("Gênero: ").append(cliente.getGenero());
-    
-                List<Pedido> pedidos = pedidoService.listarPorClienteId(clienteId);
-                if (!pedidos.isEmpty()) {
-                    contexto.append("\n\nHistórico de compras:\n");
-                    for (Pedido pedido : pedidos) {
-                        contexto.append("Pedido #").append(pedido.getCodigo()).append(" - Livros:\n");
-                        pedido.getVendas().forEach(venda -> {
-                            Livro livro = venda.getLivro();
-                            contexto.append("- ").append(livro.getNome())
-                                    .append(" (").append(livro.getAnoPublicacao()).append("), Autor: ")
-                                    .append(livro.getAutor().getNome()).append("\n");
-                        });
-                    }
-                } else {
-                    contexto.append("\n\nO usuário ainda não realizou compras.");
-                }
-            }
+            contexto.append("\n\nDados do usuário logado:\n")
+                    .append(clienteService.gerarContextoCliente(clienteId))
+                    .append("\n\n")
+                    .append(pedidoService.gerarContextoPedidos(clienteId));
         }
     
         // Prepara conteúdo completo com contexto e histórico
