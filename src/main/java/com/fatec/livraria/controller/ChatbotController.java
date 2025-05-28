@@ -1,28 +1,44 @@
 package com.fatec.livraria.controller;
 
+import com.fatec.livraria.entity.Cliente;
+import com.fatec.livraria.entity.Livro;
+import com.fatec.livraria.service.ClienteService;
+import com.fatec.livraria.service.LivroService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import jakarta.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/chat")
 public class ChatbotController {
 
     private final String apiKey = System.getProperty("GEMINI_API_KEY");
+
+    // verificar os limites de cotas/quotas aqui: https://ai.google.dev/gemini-api/docs/rate-limits%3Fhl=pt-br%23free-tier_1
     private final String GEMINI_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-lite:generateContent?key=";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final String CONTEXTO = """
-        Você é uma assistente virtual de um e-commerce de livros. 
-        Seja educada, clara e útil. Ajude com pedidos, recomendações, autores e editoras. 
+    private final String CONTEXTO_BASE = """
+        Você é uma assistente virtual de um e-commerce de livros.
+        Seja educada, clara e útil. Ajude com pedidos, recomendações, autores e editoras.
         Quando não souber a resposta, diga "Não sei" em vez de inventar.
         """;
 
+    @Autowired
+    private LivroService livroService;
+
+    @Autowired
+    private ClienteService clienteService;
+
     @PostMapping
-    public ResponseEntity<?> conversar(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<?> conversar(@RequestBody Map<String, String> payload, HttpSession session) {
         System.out.println("Requisição recebida no backend: " + payload);
 
         String mensagem = payload.get("mensagem");
@@ -31,7 +47,7 @@ public class ChatbotController {
         }
 
         try {
-            String resposta = chamarGemini(mensagem);
+            String resposta = chamarGemini(mensagem, session);
             return ResponseEntity.ok(Map.of("resposta", resposta));
         } catch (HttpClientErrorException.TooManyRequests e) {
             System.err.println("Limite de requisições excedido: " + e.getResponseBodyAsString());
@@ -45,15 +61,38 @@ public class ChatbotController {
         }
     }
 
-    private String chamarGemini(String mensagemUsuario) {
+    private String chamarGemini(String mensagemUsuario, HttpSession session) {
         if (apiKey == null || apiKey.isBlank()) {
             throw new RuntimeException("API KEY não está definida. Use -DGEMINI_API_KEY=...");
+        }
+
+        // Recupera livros e formata contexto
+        List<Livro> livros = livroService.listarTodos();
+        String livrosContexto = livros.stream()
+                .map(livro -> "- " + livro.getNome() + " de " + livro.getAutor() + " (Editora: " + livro.getEditora() + ")")
+                .collect(Collectors.joining("\n"));
+
+        String contexto = CONTEXTO_BASE + "\n\nLivros disponíveis no sistema:\n" + livrosContexto;
+
+        // Dados do cliente, se logado
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        if (clienteId != null) {
+            Optional<Cliente> clienteOpt = clienteService.buscarPorId(clienteId);
+            if (clienteOpt.isPresent()) {
+                Cliente cliente = clienteOpt.get();
+                String dataNascimento = new SimpleDateFormat("yyyy-MM-dd").format(cliente.getDataNascimento());
+
+                contexto += "\n\nDados do usuário logado:\n" +
+                        "Nome: " + cliente.getNome() + "\n" +
+                        "Data de Nascimento: " + dataNascimento + "\n" +
+                        "Gênero: " + cliente.getGenero();
+            }
         }
 
         // Corpo da requisição
         Map<String, Object> userContent = new HashMap<>();
         userContent.put("role", "user");
-        userContent.put("parts", List.of(Map.of("text", CONTEXTO + "\n\nUsuário: " + mensagemUsuario)));
+        userContent.put("parts", List.of(Map.of("text", contexto + "\n\nUsuário: " + mensagemUsuario)));
 
         Map<String, Object> body = new HashMap<>();
         body.put("contents", List.of(userContent));
