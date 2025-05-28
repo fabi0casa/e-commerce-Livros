@@ -58,9 +58,15 @@ async function sendMessage() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
     const botMessage = document.createElement('div');
-    botMessage.textContent = 'Digitando...';
     botMessage.classList.add('chatbot-message', 'bot-message');
+    
+    const typingIndicator = document.createElement('div');
+    typingIndicator.classList.add('typing-indicator');
+    typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+    
+    botMessage.appendChild(typingIndicator);
     messagesContainer.appendChild(botMessage);
+    
 
     // Chamada real ao backend
     const resposta = await getBotResponse(message);
