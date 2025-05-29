@@ -101,7 +101,7 @@ body {
     margin: 0;
 }
 .bot-message ul {
-    padding-left: 2px; /* reduzido */
+    padding-left: 4px; /* reduzido */
     margin: 0;
     list-style-type: disc;
 }
