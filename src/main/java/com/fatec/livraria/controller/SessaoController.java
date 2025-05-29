@@ -35,4 +35,12 @@ public class SessaoController {
     public Integer getClienteLogado(HttpSession session) {
         return (Integer) session.getAttribute("clienteId"); // Retorna o ID do cliente logado
     }
+    
+    @DeleteMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(HttpSession session) {
+        session.invalidate(); // Invalida a sessão atual
+        Map<String, String> resposta = new HashMap<>();
+        resposta.put("mensagem", "Cliente deslogado com sucesso.");
+        return ResponseEntity.ok(resposta);
+    }
 }

@@ -94,3 +94,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+function logout() {
+    fetch('/sessao/logout', {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/home'; // Redireciona para /home após logout
+        } else {
+            alert("Erro ao deslogar.");
+        }
+    })
+    .catch(error => {
+        console.error("Erro de rede:", error);
+    });
+}
+

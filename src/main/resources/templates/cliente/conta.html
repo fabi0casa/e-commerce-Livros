@@ -23,7 +23,7 @@
             <button onclick="mostrarSecao('cartao')">Novo Cartão</button>
             <button onclick="mostrarSecao('pedidos')">Meus Pedidos</button>
             <button class="dashboard">Dashboard</button>
-            <button onclick="">Sair</button>
+            <button onclick="openModal('modalConfirmarLogout')">Sair</button>
         </nav>
         
         <section class="conteudo">
@@ -44,6 +44,19 @@
 
         </section>
     </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="modalConfirmarLogout" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Confirmar Ação</h2>
+            <p id="modalText">Deseja realmente sair da sua conta?</p>
+            <div id="checkboxContainer" style="display: none;"></div>
+            <br />
+            <button onclick="logout();">Confirmar</button>
+            <button onclick="closeModal('modalConfirmarLogout')">Cancelar</button>
+        </div>
+    </div>
+
     <script src="/js/cliente/conta/conta.js/"></script>
 
 </body>
