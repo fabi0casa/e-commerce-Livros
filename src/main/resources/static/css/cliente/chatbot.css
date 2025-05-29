@@ -96,7 +96,31 @@ body {
     border: none;
     cursor: pointer;
 }
+/*estilos para markdown*/
+.bot-message p {
+    margin: 0;
+}
+.bot-message ul {
+    padding-left: 2px; /* reduzido */
+    margin: 0;
+    list-style-type: disc;
+}
 
+.bot-message li {
+    margin-bottom: 4px;
+    font-size: 0.95em;
+    line-height: 1.3;
+}
+.bot-message strong {
+    color: #0013bd;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    font-size: 1.02em;
+    text-shadow: 0 0 1px #5900ff75;
+}
+
+
+/*animação que simula um 'digitando...'*/
 .typing-indicator {
     display: flex;
     align-items: center;

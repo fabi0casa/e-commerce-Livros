@@ -75,7 +75,7 @@ async function sendMessage() {
     const resposta = await getBotResponse(message);
 
     // Substitui typing indicator pelo texto real
-    botMessage.innerHTML = resposta;
+    botMessage.innerHTML = marked.parse(resposta);
 
     // Rola para o final após renderização
     requestAnimationFrame(() => {
