@@ -53,27 +53,36 @@ async function sendMessage() {
     userMessage.classList.add('chatbot-message', 'user-message');
     messagesContainer.appendChild(userMessage);
 
-    // Limpa input e mostra carregando
+    // Limpa input
     input.value = '';
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
+    // Cria container para a resposta
     const botMessage = document.createElement('div');
     botMessage.classList.add('chatbot-message', 'bot-message');
     
+    // Indicador de digitação
     const typingIndicator = document.createElement('div');
     typingIndicator.classList.add('typing-indicator');
     typingIndicator.innerHTML = '<span></span><span></span><span></span>';
     
     botMessage.appendChild(typingIndicator);
     messagesContainer.appendChild(botMessage);
-    
 
-    // Chamada real ao backend
-    const resposta = await getBotResponse(message);
-    botMessage.textContent = resposta;
-
+    // Força rolagem para o fim (depois de adicionar o typing indicator)
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Aguarda resposta
+    const resposta = await getBotResponse(message);
+
+    // Substitui typing indicator pelo texto real
+    botMessage.innerHTML = resposta;
+
+    // Rola para o final após renderização
+    requestAnimationFrame(() => {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
 }
+
 
 async function getBotResponse(userMessage) {
     try {
