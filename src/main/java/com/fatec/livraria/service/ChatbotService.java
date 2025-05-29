@@ -14,7 +14,7 @@ public class ChatbotService {
     private final String apiKey = System.getProperty("GEMINI_API_KEY");
 
     // verificar os limites de cotas/quotas aqui: https://ai.google.dev/gemini-api/docs/rate-limits%3Fhl=pt-br%23free-tier_1
-    private final String GEMINI_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-lite:generateContent?key=";
+    private final String GEMINI_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=";
 
     private final String CONTEXTO_BASE = """
         Você é uma assistente virtual de um e-commerce de livros.
