@@ -3,6 +3,7 @@ import com.fatec.livraria.service.ClienteService;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,12 +44,22 @@ public class PageController {
         Map.entry("editar-endereco-cliente", "administrador/gerenciar-clientes/editarEndereco"),
         Map.entry("editar-cliente", "administrador/gerenciar-clientes/editarCliente"),
         Map.entry("criar-endereco-cliente", "administrador/gerenciar-clientes/cadastrarEndereco"),
-        //Map.entry("cadastrar-cliente", "administrador/gerenciar-clientes/cadastrarCliente"),
         Map.entry("criar-cartao-cliente", "administrador/gerenciar-clientes/cadastrarCartao"),
         Map.entry("alterar-senha-cliente", "administrador/gerenciar-clientes/alterarSenha"),
 
         Map.entry("erro", "erro/erro")
     );
+
+    private static final Set<String> rotasPrivadas = Set.of(
+        "carrinho", "conta", "pagamento", "pagar-carrinho", "novo-cartao", "novo-endereco"
+    );
+
+    private static final Set<String> rotasAdmin = Set.of(
+        "dashboard", "analise", "estoque", "entrada-estoque", "gerenciar-pedidos", "logs",
+        "gerenciar-clientes", "ver-transacoes-cliente", "enderecos-cliente", "editar-endereco-cliente",
+        "editar-cliente", "criar-endereco-cliente", "criar-cartao-cliente", "alterar-senha-cliente"
+    );
+
 
     @Autowired
     public PageController(ClienteService clienteService) {
@@ -57,23 +68,38 @@ public class PageController {
     
     //feito separadamente pois usa Thymeleaf
     @GetMapping("/cadastrar-cliente")
-    public String exibirFormularioCadastro(Model model) {
-        model.addAttribute("cliente", new Cliente()); // Garante que o formulário tenha um objeto Cliente
-        return "administrador/gerenciar-clientes/cadastrarCliente"; // Renderiza o template do formulário na mesma URL
+    public String exibirFormularioCadastro(Model model, HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        if (clienteId == null) return "redirect:/login";
+
+        Cliente cliente = clienteService.buscarPorId(clienteId).orElse(null);
+        if (cliente == null || !cliente.isAdmin()) return "redirect:/home";
+        
+        model.addAttribute("cliente", new Cliente());
+        return "administrador/gerenciar-clientes/cadastrarCliente";
     }
     
     @GetMapping("/{rota}")
     public String renderizarRotaPersonalizada(@PathVariable String rota, Model model, HttpSession session) {
         adicionarClienteNoModelo(model, session);
-        
+    
         String template = rotasPersonalizadas.get(rota);
-        if (template != null) {
-            return template;
-        }
+        if (template == null) return "erro/erro";
+    
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
 
-        // fallback opcional (ex: tenta renderizar uma página com nome idêntico à URL)
-        return rota;
+        if (rotasPrivadas.contains(rota) && clienteId == null) return "redirect:/login";
+
+        if (rotasAdmin.contains(rota)) {
+            if (clienteId == null) return "redirect:/login";
+
+            Cliente cliente = clienteService.buscarPorId(clienteId).orElse(null);
+            if (cliente == null || !cliente.isAdmin()) return "redirect:/home";
+        }
+    
+        return template;
     }
+    
 
     @GetMapping("/")
     public String redirecionarParaHome() {
