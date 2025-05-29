@@ -100,19 +100,27 @@ body {
 .bot-message p {
     margin: 0;
 }
+.bot-message ul,
+.bot-message ol {
+    padding-left: 25px;
+}
+
 .bot-message ul {
-    padding-left: 4px; /* reduzido */
-    margin: 0;
-    list-style-type: disc;
+    list-style-type: disc; /* bolinhas */
+}
+
+.bot-message ol {
+    list-style-type: decimal; /* números */
 }
 
 .bot-message li {
-    margin-bottom: 4px;
+    margin-bottom: 10px;
     font-size: 0.95em;
     line-height: 1.3;
 }
+
 .bot-message strong {
-    color: #0013bd;
+    color: #4000b6;
     font-weight: 700;
     letter-spacing: 0.3px;
     font-size: 1.02em;
