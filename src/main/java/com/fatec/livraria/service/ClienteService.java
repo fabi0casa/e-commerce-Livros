@@ -5,6 +5,7 @@ import com.fatec.livraria.repository.ClienteRepository;
 import com.fatec.livraria.specification.ClienteSpecification;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,16 @@ public class ClienteService {
 
     public Optional<Cliente> buscarPorId(Integer id) {
         return clienteRepository.findById(id);
+    }
+
+    public Optional<Cliente> buscarClienteLogado(HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        
+        if (clienteId == null) {
+            return Optional.empty();
+        }
+
+        return clienteRepository.findById(clienteId);
     }
 
     public void cadastrarNovoCliente(ClienteDTO clienteDTO) throws Exception {

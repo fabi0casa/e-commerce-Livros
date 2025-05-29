@@ -7,6 +7,7 @@ import com.fatec.livraria.dto.EnderecoDTO;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.service.ClienteService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,15 @@ public class ClienteController {
         return clienteService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    } 
+
+    @GetMapping("/me")
+    public ResponseEntity<Cliente> buscarClienteLogado(HttpSession session) {
+        return clienteService.buscarClienteLogado(session)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
+    
 
     // Cadastro (com Thymeleaf)
     @PostMapping("/add")

@@ -76,21 +76,23 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
         }
     }
-    
 
-    // Se o clienteId foi definido no HTML pelo Thymeleaf, já usamos ele para evitar a requisição
-    if (typeof clienteId !== "undefined" && clienteId !== null) {
-        fetch(`/clientes/${clienteId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.nome) {
-                    atualizarBotaoConta(data.nome);
-                }
-            })
-            .catch(error => console.log("Erro ao buscar cliente:", error));
+    fetch("/clientes/me")
+    .then(response => {
+        if (response.status === 401) {
+            // Não está logado, não tenta atualizar nada
+            return null;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data && data.nome) {
+            atualizarBotaoConta(data.nome);
+            atualizarCarrinho(); // Só atualiza se estiver logado
+        }
+    })
+    .catch(error => console.log("Erro ao buscar cliente logado:", error));
 
-        atualizarCarrinho();
-    }
 
     // Redirecionamento ao pressionar Enter na barra de busca
     document.getElementById("searchInput").addEventListener("keypress", function(event) {
