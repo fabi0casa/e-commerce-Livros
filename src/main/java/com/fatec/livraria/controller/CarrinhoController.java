@@ -2,10 +2,14 @@ package com.fatec.livraria.controller;
 
 import com.fatec.livraria.entity.Carrinho;
 import com.fatec.livraria.service.CarrinhoService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.HttpStatus;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/carrinho")
@@ -17,23 +21,39 @@ public class CarrinhoController {
         this.carrinhoService = carrinhoService;
     }
 
-    // Listar carrinho de um cliente
-    @GetMapping("/{clienteId}")
-    public ResponseEntity<List<Carrinho>> listarCarrinho(@PathVariable Integer clienteId) {
-        return ResponseEntity.ok(carrinhoService.listarCarrinho(clienteId));
+    // Listar carrinho do cliente logado
+    @GetMapping("/me")
+    public ResponseEntity<List<Carrinho>> listarCarrinho(HttpSession session) {
+        return carrinhoService.listarCarrinho(session)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
+
+    // retorna quantidade de itens no carrinho
+    @GetMapping("/quantidade")
+    public ResponseEntity<Integer> getQuantidadeTotal(HttpSession session) {
+        return carrinhoService.calcularQuantidadeTotal(session)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }    
 
     // Adicionar item ao carrinho
     @PostMapping("/adicionar")
-    public ResponseEntity<Carrinho> adicionarAoCarrinho(@RequestParam Integer clienteId, 
-                                                         @RequestParam Integer livroId, 
-                                                         @RequestParam Integer quantidade) {
-        return ResponseEntity.ok(carrinhoService.adicionarAoCarrinho(clienteId, livroId, quantidade));
+    public ResponseEntity<?> adicionarAoCarrinho(HttpSession session,
+                                                 @RequestParam Integer livroId,
+                                                 @RequestParam Integer quantidade) {
+        Optional<Carrinho> carrinhoOptional = carrinhoService.adicionarAoCarrinho(session, livroId, quantidade);
+        
+        if (carrinhoOptional.isPresent()) {
+            return ResponseEntity.ok(carrinhoOptional.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Cliente não autenticado");
+        }
     }
 
     // Atualizar quantidade de um item
     @PutMapping("/atualizar/{carrinhoId}")
-    public ResponseEntity<Carrinho> atualizarQuantidade(@PathVariable Integer carrinhoId, 
+    public ResponseEntity<Carrinho> atualizarQuantidade(@PathVariable Integer carrinhoId,
                                                         @RequestParam Integer novaQuantidade) {
         return ResponseEntity.ok(carrinhoService.atualizarQuantidade(carrinhoId, novaQuantidade));
     }
@@ -45,10 +65,13 @@ public class CarrinhoController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/carrinho/{clienteId}/clear")
-    public ResponseEntity<Void> limparCarrinho(@PathVariable Long clienteId) {
-        carrinhoService.limparCarrinhoDoCliente(clienteId);
+    // Limpar carrinho do cliente logado
+    @DeleteMapping("/limpar")
+    public ResponseEntity<Void> limparCarrinho(HttpSession session) {
+        if (!carrinhoService.limparCarrinhoDoCliente(session)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return ResponseEntity.noContent().build();
     }
-
 }
+

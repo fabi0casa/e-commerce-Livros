@@ -84,15 +84,8 @@ async function carregarLivro() {
 
 async function adicionarAoCarrinho() {
     const params = new URLSearchParams(window.location.search);
-    const livroId = params.get("livroId"); // Pegando o livroId da URL
-    const clienteId = window.clienteId; // Pegando o clienteId do Thymeleaf
-    const quantidade = document.getElementById("quantidade").value; // Pegando a quantidade informada pelo usuário
-
-    if (!clienteId) {
-        alert("É necessário estar logado para adicionar itens ao carrinho.");
-        window.location.href = "/login";
-        return;
-    }
+    const livroId = params.get("livroId");
+    const quantidade = document.getElementById("quantidade").value;
 
     if (!livroId || !quantidade || quantidade < 1) {
         alert("Quantidade inválida ou livro não encontrado.");
@@ -103,12 +96,15 @@ async function adicionarAoCarrinho() {
         const response = await fetch("/carrinho/adicionar", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({ clienteId, livroId, quantidade })
+            body: new URLSearchParams({ livroId, quantidade }) // sem clienteId
         });
 
         if (response.ok) {
             alert("Livro adicionado ao carrinho com sucesso!");
             window.location.href = "/carrinho";
+        } else if (response.status === 401) {
+            alert("É necessário estar logado para adicionar itens ao carrinho.");
+            window.location.href = "/login";
         } else {
             const errorText = await response.text();
             console.error("Erro ao adicionar ao carrinho:", errorText);
@@ -119,6 +115,7 @@ async function adicionarAoCarrinho() {
         alert("Ocorreu um erro ao tentar adicionar ao carrinho.");
     }
 }
+
 
 function comprarLivro() {
     const urlParams = new URLSearchParams(window.location.search);

@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CarrinhoRepository extends JpaRepository<Carrinho, Integer> {
     List<Carrinho> findByCliente(Cliente cliente);
-    void deleteAllByClienteId(Long clienteId);
+    void deleteAllByClienteId(Integer clienteId);
 }
 

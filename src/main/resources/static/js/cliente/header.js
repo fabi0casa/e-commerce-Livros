@@ -54,29 +54,24 @@ document.addEventListener("DOMContentLoaded", function() {
         const cartBadge = document.getElementById("cartBadge");
         if (!cartBadge) return;
     
-        // Se clienteId estiver disponível, busca os dados
-        if (typeof clienteId !== "undefined" && clienteId !== null) {
-            fetch(`/carrinho/${clienteId}`)
-                .then(response => {
-                    if (!response.ok) throw new Error("Erro ao buscar carrinho");
-                    return response.json();
-                })
-                .then(data => {
-                    if (Array.isArray(data)) {
-                        // Calcula a soma das quantidades dos produtos no carrinho
-                        const totalQuantidade = data.reduce((soma, item) => soma + (item.quantidade || 0), 0);
-                        cartBadge.textContent = totalQuantidade.toString();
-                    } else {
-                        cartBadge.textContent = "0"; // Se a resposta não for uma lista, exibe 0
-                    }
-                })
-                .catch(error => {
-                    console.error("Erro ao buscar carrinho:", error);
-                    cartBadge.textContent = "0"; // Em caso de erro, exibe 0
-                });
-        }
+        fetch(`/carrinho/quantidade`)
+            .then(response => {
+                if (response.status === 401) {
+                    cartBadge.textContent = "0";
+                    return;
+                }
+                if (!response.ok) throw new Error("Erro ao buscar quantidade do carrinho");
+                return response.text(); // Aqui recebemos apenas um número, não JSON
+            })
+            .then(text => {
+                cartBadge.textContent = text || "0";
+            })
+            .catch(error => {
+                console.error("Erro ao buscar quantidade do carrinho:", error);
+                cartBadge.textContent = "0";
+            });
     }
-
+    
     fetch("/clientes/me")
     .then(response => {
         if (response.status === 401) {

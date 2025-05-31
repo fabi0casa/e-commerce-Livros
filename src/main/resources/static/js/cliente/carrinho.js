@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const clienteId = window.clienteId;
     const cartContainer = document.querySelector(".cart-container");
     const totalSpan = document.querySelector(".cart-summary span");
 
     function carregarCarrinho() {
-        fetch(`/carrinho/${clienteId}`)
+        fetch(`/carrinho/me`)
             .then(response => response.json())
             .then(data => {
                 cartContainer.innerHTML = ""; // limpa o conteúdo

@@ -8,6 +8,8 @@ import com.fatec.livraria.repository.ClienteRepository;
 import com.fatec.livraria.repository.LivroRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,24 +21,41 @@ public class CarrinhoService {
     private final ClienteRepository clienteRepository;
     private final LivroRepository livroRepository;
 
-    public CarrinhoService(CarrinhoRepository carrinhoRepository, ClienteRepository clienteRepository, LivroRepository livroRepository) {
+    public CarrinhoService(CarrinhoRepository carrinhoRepository,
+                           ClienteRepository clienteRepository,
+                           LivroRepository livroRepository) {
         this.carrinhoRepository = carrinhoRepository;
         this.clienteRepository = clienteRepository;
         this.livroRepository = livroRepository;
     }
 
-    // Buscar carrinho de um cliente
-    public List<Carrinho> listarCarrinho(Integer clienteId) {
-        Cliente cliente = clienteRepository.findById(clienteId).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        return carrinhoRepository.findByCliente(cliente);
+    private Optional<Cliente> getClienteDaSessao(HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        if (clienteId == null) return Optional.empty();
+        return clienteRepository.findById(clienteId);
     }
 
-    // Adicionar item ao carrinho
-    public Carrinho adicionarAoCarrinho(Integer clienteId, Integer livroId, Integer quantidade) {
-        Cliente cliente = clienteRepository.findById(clienteId).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        Livro livro = livroRepository.findById(livroId).orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+    public Optional<Integer> calcularQuantidadeTotal(HttpSession session) {
+        return getClienteDaSessao(session)
+                .map(cliente -> {
+                    List<Carrinho> itens = carrinhoRepository.findByCliente(cliente);
+                    return itens.stream().mapToInt(Carrinho::getQuantidade).sum();
+                });
+    }    
 
-        // Verifica se o item já está no carrinho
+    public Optional<List<Carrinho>> listarCarrinho(HttpSession session) {
+        return getClienteDaSessao(session)
+                .map(cliente -> carrinhoRepository.findByCliente(cliente));
+    }
+
+    public Optional<Carrinho> adicionarAoCarrinho(HttpSession session, Integer livroId, Integer quantidade) {
+        Optional<Cliente> clienteOpt = getClienteDaSessao(session);
+        if (clienteOpt.isEmpty()) return Optional.empty();
+
+        Cliente cliente = clienteOpt.get();
+        Livro livro = livroRepository.findById(livroId)
+                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+
         List<Carrinho> itensCarrinho = carrinhoRepository.findByCliente(cliente);
         Optional<Carrinho> itemExistente = itensCarrinho.stream()
                 .filter(c -> c.getLivro().getId().equals(livroId))
@@ -45,36 +64,37 @@ public class CarrinhoService {
         if (itemExistente.isPresent()) {
             Carrinho carrinho = itemExistente.get();
             carrinho.setQuantidade(carrinho.getQuantidade() + quantidade);
-            return carrinhoRepository.save(carrinho);
+            return Optional.of(carrinhoRepository.save(carrinho));
         }
 
-        // Se não existir, cria um novo item no carrinho
         Carrinho novoItem = new Carrinho();
         novoItem.setCliente(cliente);
         novoItem.setLivro(livro);
         novoItem.setQuantidade(quantidade);
         novoItem.setData(new Date());
 
-        return carrinhoRepository.save(novoItem);
+        return Optional.of(carrinhoRepository.save(novoItem));
     }
 
-    // Atualizar quantidade do item no carrinho
     public Carrinho atualizarQuantidade(Integer carrinhoId, Integer novaQuantidade) {
-        Carrinho carrinho = carrinhoRepository.findById(carrinhoId).orElseThrow(() -> new RuntimeException("Item do carrinho não encontrado"));
+        Carrinho carrinho = carrinhoRepository.findById(carrinhoId)
+                .orElseThrow(() -> new RuntimeException("Item do carrinho não encontrado"));
         carrinho.setQuantidade(novaQuantidade);
         return carrinhoRepository.save(carrinho);
     }
 
-    // Remover item do carrinho
     public void removerDoCarrinho(Integer carrinhoId) {
         if (!carrinhoRepository.existsById(carrinhoId)) {
             throw new RuntimeException("Item do carrinho não encontrado");
         }
         carrinhoRepository.deleteById(carrinhoId);
     }
-    
-    public void limparCarrinhoDoCliente(Long clienteId) {
-        carrinhoRepository.deleteAllByClienteId(clienteId);
+
+    public boolean limparCarrinhoDoCliente(HttpSession session) {
+        Optional<Cliente> clienteOpt = getClienteDaSessao(session);
+        if (clienteOpt.isEmpty()) return false;
+        carrinhoRepository.deleteAllByClienteId(clienteOpt.get().getId());
+        return true;
     }
-    
 }
+
