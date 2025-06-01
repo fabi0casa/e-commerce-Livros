@@ -52,7 +52,7 @@ document.getElementById("pesquisar").addEventListener("click", async () => {
         carregarPedidos(); // mostra todos
     } else {
         try {
-            const response = await fetch(`/pedidos/codigo/${codigo}`);
+            const response = await fetch(`/pedidos/all/codigo/${codigo}`);
             if (!response.ok) {
                 throw new Error("Pedido não encontrado");
             }
