@@ -9,9 +9,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const livroId = urlParams.get("livroId");
     quantidadeSelecionada = parseInt(urlParams.get("quantidade")) || 1;
-    const clienteId = window.clienteId;
 
-    if (!livroId || !clienteId) {
+    if (!livroId) {
         alert("Erro ao carregar informações do pagamento.");
         return;
     }
@@ -69,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     `;
 
     // Buscar cliente
-    const cliente = await fetch(`/clientes/${clienteId}`).then(res => res.json());
+    const cliente = await fetch(`/clientes/me`).then(res => res.json());
 
     // Popular endereços
     const selectEndereco = document.getElementById("endereco");
@@ -142,13 +141,6 @@ async function finalizarCompra() {
         return;
     }
 
-    const clienteId = window.clienteId;
-
-    if (!clienteId || isNaN(clienteId)) {
-        alert("ID do cliente não encontrado.");
-        return;
-    }
-
     if (!livroSelecionado) {
         alert("Livro não carregado corretamente.");
         return;
@@ -193,7 +185,6 @@ async function finalizarCompra() {
 
     // 🔽 Montar o payload
     const pedidoPayload = {
-        clienteId: parseInt(clienteId),
         enderecoId: enderecoId,
         vendas: vendas,
         cartoes: cartoesSelecionados,

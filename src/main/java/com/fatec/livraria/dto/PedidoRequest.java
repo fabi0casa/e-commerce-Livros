@@ -11,9 +11,6 @@ import java.util.List;
 @Setter
 public class PedidoRequest {
 
-    @NotNull(message = "O ID do cliente é obrigatório.")
-    private Integer clienteId;
-
     @NotNull(message = "O ID do endereço é obrigatório.")
     private Integer enderecoId;
 

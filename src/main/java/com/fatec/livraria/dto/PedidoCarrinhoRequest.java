@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Size;
 @Getter
 @Setter
 public class PedidoCarrinhoRequest {
-    private Integer clienteId;
     private Integer enderecoId;
     private List<Integer> cuponsIds;
 

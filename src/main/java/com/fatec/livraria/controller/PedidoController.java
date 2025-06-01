@@ -7,6 +7,7 @@ import com.fatec.livraria.dto.StatusRequest;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.service.PedidoService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,24 +30,48 @@ public class PedidoController {
     }
 
     @GetMapping("/codigo/{codigo}")
-    public ResponseEntity<Pedido> buscarPorCodigo(@PathVariable String codigo, @RequestParam(required = false) Integer clienteId) {
+    public ResponseEntity<Pedido> buscarPorCodigoCliente(@PathVariable String codigo, HttpSession session) {
         try {
-            Pedido pedido = pedidoService.buscarPorCodigo(codigo, clienteId);
+            Pedido pedido = pedidoService.buscarPorCodigoDoCliente(codigo, session);
             return ResponseEntity.ok(pedido);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-    }    
+    }
+    
+    @GetMapping("/all/codigo/{codigo}")
+    public ResponseEntity<Pedido> buscarPorCodigoAdmin(@PathVariable String codigo, HttpSession session) {
+        try {
+            Pedido pedido = pedidoService.buscarPorCodigoComoAdmin(codigo, session);
+            return ResponseEntity.ok(pedido);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+    }
+    
 
     @GetMapping("/cliente/{clienteId}")
     public List<Pedido> listarPorCliente(@PathVariable Integer clienteId) {
         return pedidoService.listarPorClienteId(clienteId);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> listarPedidosDoClienteLogado(HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+
+        if (clienteId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Cliente não está logado.");
+        }
+
+        List<Pedido> pedidos = pedidoService.listarPorClienteId(clienteId);
+        return ResponseEntity.ok(pedidos);
+    }
+
+
     @PostMapping("/add")
-    public ResponseEntity<?> criarPedido(@Valid @RequestBody PedidoRequest request) {
+    public ResponseEntity<?> criarPedido(@Valid @RequestBody PedidoRequest request, HttpSession session) {
         try {
-            Pedido novoPedido = pedidoService.criarPedidoComVendas(request);
+            Pedido novoPedido = pedidoService.criarPedidoComVendas(request, session);
 
             PedidoResponse response = new PedidoResponse(
                 novoPedido.getId(),
@@ -61,9 +86,9 @@ public class PedidoController {
     }
 
     @PostMapping("/add-carrinho")
-    public ResponseEntity<?> criarPedidoDoCarrinho(@Valid @RequestBody PedidoCarrinhoRequest request) {
+    public ResponseEntity<?> criarPedidoDoCarrinho(@Valid @RequestBody PedidoCarrinhoRequest request, HttpSession session) {
         try {
-            Pedido novoPedido = pedidoService.criarPedidoDoCarrinho(request);
+            Pedido novoPedido = pedidoService.criarPedidoDoCarrinho(request, session);
 
             PedidoResponse response = new PedidoResponse(
                 novoPedido.getId(),
@@ -76,7 +101,6 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
         }
     }
-
 
     @PatchMapping("/vendas/status")
     public ResponseEntity<?> atualizarStatusVendas(@RequestBody StatusRequest request) {

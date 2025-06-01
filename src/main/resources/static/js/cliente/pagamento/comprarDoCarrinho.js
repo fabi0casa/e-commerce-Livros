@@ -4,15 +4,10 @@ let cuponsAplicados = [];
 let carrinhoItens = [];
 
 document.addEventListener("DOMContentLoaded", async function () {
-    const clienteId = window.clienteId;
-    if (!clienteId) {
-        alert("Cliente não identificado.");
-        return;
-    }
 
     // 🔽 Buscar itens do carrinho
     try {
-        const response = await fetch(`/carrinho/${clienteId}`);
+        const response = await fetch(`/carrinho/me`);
         carrinhoItens = await response.json();
 
         const cartContainer = document.querySelector(".cart-container");
@@ -58,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         `;
 
         // Buscar dados do cliente para cartões e endereços
-        const cliente = await fetch(`/clientes/${clienteId}`).then(res => res.json());
+        const cliente = await fetch(`/clientes/me`).then(res => res.json());
 
         const selectEndereco = document.getElementById("endereco");
         cliente.enderecos.filter(e => e.entrega).forEach(end => {
@@ -129,12 +124,6 @@ async function finalizarCompra() {
         return;
     }
 
-    const clienteId = window.clienteId;
-    if (!clienteId || isNaN(clienteId)) {
-        alert("Cliente não identificado.");
-        return;
-    }
-
     // Coletar os cartões selecionados e valores
     const cartoesSelecionados = [];
     let somaValoresCartao = 0;
@@ -168,7 +157,6 @@ async function finalizarCompra() {
 
     // 🔽 Montar o payload baseado no PedidoCarrinhoRequest
     const pedidoPayload = {
-        clienteId: parseInt(clienteId),
         enderecoId: enderecoId,
         cartoes: cartoesSelecionados,
         cuponsIds: cuponsAplicados.length > 0 ? cuponsAplicados : undefined

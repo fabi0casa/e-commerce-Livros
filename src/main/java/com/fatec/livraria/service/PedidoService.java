@@ -14,6 +14,8 @@ import com.fatec.livraria.repository.PedidoRepository;
 
 import jakarta.transaction.Transactional;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -37,15 +39,29 @@ public class PedidoService {
         return pedidoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }    
 
-    public Pedido buscarPorCodigo(String codigo, Integer clienteId) {
-        if (clienteId != null) {
-            return pedidoRepository.findByCodigoAndClienteId(codigo, clienteId)
-                .orElseThrow(() -> new RuntimeException("Pedido com código " + codigo + " e clienteId " + clienteId + " não encontrado"));
-        } else {
-            return pedidoRepository.findByCodigo(codigo)
-                .orElseThrow(() -> new RuntimeException("Pedido com código " + codigo + " não encontrado"));
+    public Pedido buscarPorCodigoDoCliente(String codigo, HttpSession session) {
+        Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        if (cliente == null) {
+            throw new RuntimeException("Cliente não está logado");
         }
-    }    
+    
+        return pedidoRepository.findByCodigoAndClienteId(codigo, cliente.getId())
+            .orElseThrow(() -> new RuntimeException("Pedido com código " + codigo + " não encontrado para " + cliente.getNome()));
+    }
+    
+    public Pedido buscarPorCodigoComoAdmin(String codigo, HttpSession session) {
+        Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        if (cliente == null || !Boolean.TRUE.equals(cliente.isAdmin())) {
+            throw new RuntimeException("Acesso negado: apenas administradores podem acessar");
+        }
+    
+        return pedidoRepository.findByCodigo(codigo)
+            .orElseThrow(() -> new NoSuchElementException("Pedido com código " + codigo + " não encontrado"));
+    }
+    
     
     public List<Pedido> listarPorClienteId(Integer clienteId) {
         Cliente cliente = clienteService.buscarPorId(clienteId)
@@ -54,8 +70,8 @@ public class PedidoService {
     }
 
     @Transactional
-    public Pedido criarPedidoComVendas(PedidoRequest request) {
-        Cliente cliente = clienteService.buscarPorId(request.getClienteId())
+    public Pedido criarPedidoComVendas(PedidoRequest request, HttpSession session) {
+        Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         var endereco = enderecoService.buscarPorId(request.getEnderecoId())
@@ -187,14 +203,15 @@ public class PedidoService {
     }
 
     @Transactional
-    public Pedido criarPedidoDoCarrinho(PedidoCarrinhoRequest request) {
-        Cliente cliente = clienteService.buscarPorId(request.getClienteId())
+    public Pedido criarPedidoDoCarrinho(PedidoCarrinhoRequest request, HttpSession session) {
+        Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         var endereco = enderecoService.buscarPorId(request.getEnderecoId())
                 .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
 
-        List<Carrinho> itensCarrinho = carrinhoService.listarCarrinho(cliente.getId());
+        List<Carrinho> itensCarrinho = carrinhoService.listarCarrinho(session)
+            .orElseThrow(() -> new RuntimeException("Carrinho não encontrado ou vazio"));
 
         if (itensCarrinho.isEmpty()) {
             throw new RuntimeException("Carrinho vazio");
@@ -306,7 +323,7 @@ public class PedidoService {
         pedido = pedidoRepository.save(pedido);
 
         // Após criar o pedido, limpar o carrinho do cliente
-        carrinhoService.limparCarrinhoDoCliente(cliente.getId().longValue());
+        carrinhoService.limparCarrinhoDoCliente(session);
 
         return pedido;
     }

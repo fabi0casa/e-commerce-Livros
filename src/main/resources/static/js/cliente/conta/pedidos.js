@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
             carregarPedidos(); // mostra todos
         } else {
             try {
-                const response = await fetch(`/pedidos/codigo/${codigo}?clienteId=${clienteId}`);
+                const response = await fetch(`/pedidos/codigo/${codigo}`);
                 if (!response.ok) {
                     throw new Error("Pedido não encontrado");
                 }
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     
     async function carregarPedidos() {
-        const response = await fetch(`/pedidos/cliente/${clienteId}`);
+        const response = await fetch(`/pedidos/me`);
         const pedidos = await response.json();
         renderizarPedidos(pedidos);
         mensagemContainer.textContent = ""; // limpa mensagem
