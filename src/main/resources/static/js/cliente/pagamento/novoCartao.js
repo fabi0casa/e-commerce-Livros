@@ -8,15 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const livroId = urlParams.get("livroId");
     const quantidade = urlParams.get("quantidade") || 1;
-    const clienteId = window.clienteId;
-
-    if (!clienteId) {
-        alert("Erro: Cliente não identificado!");
-        return;
-    }
 
     // Buscar nome do cliente
-    fetch(`/clientes/${clienteId}`)
+    fetch(`/clientes/me`)
         .then(response => response.json())
         .then(cliente => {
             document.getElementById("tituloCadastro").textContent = `Cadastrar Cartão para ${cliente.nome}`;
@@ -46,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
 
         const cartaoData = {
-            clienteId: clienteId,
             numeroCartao: document.getElementById("numeroCartao").value,
             nomeImpresso: document.getElementById("nomeImpresso").value,
             bandeiraId: document.getElementById("bandeira").value,
@@ -54,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
             preferencial: document.getElementById("preferencial").value === "sim"
         };
 
-        fetch("/cartoes/add", {
+        fetch("/cartoes/me/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

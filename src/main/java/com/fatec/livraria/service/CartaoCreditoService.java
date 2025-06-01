@@ -2,12 +2,15 @@ package com.fatec.livraria.service;
 
 import org.springframework.stereotype.Service;
 
+import com.fatec.livraria.dto.request.CartaoClienteLogadoRequest;
 import com.fatec.livraria.dto.request.CartaoRequest;
 import com.fatec.livraria.entity.Bandeira;
 import com.fatec.livraria.entity.CartaoCredito;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.repository.CartaoCreditoRepository;
 import com.fatec.livraria.repository.ClienteRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -91,6 +94,41 @@ public class CartaoCreditoService {
         cartao.setNomeImpresso(cartaoRequest.getNomeImpresso());
         cartao.setCodigoSeguranca(cartaoRequest.getCodigoSeguranca());
         cartao.setPreferencial(cartaoRequest.isPreferencial());
+        cartao.setCliente(cliente);
+        cartao.setBandeira(bandeira);
+
+        cartaoCreditoRepository.save(cartao);
+    }
+
+    public void adicionarCartaoAoClienteLogado(CartaoClienteLogadoRequest cartaoClienteLogadoRequest, HttpSession session) {
+        // Validações de formato
+        if (cartaoClienteLogadoRequest.getNumeroCartao().length() < 13 || cartaoClienteLogadoRequest.getNumeroCartao().length() > 19) {
+            throw new IllegalArgumentException("Número do cartão inválido. O número deve ter entre 13 e 19 dígitos.");
+        }
+
+        if (cartaoClienteLogadoRequest.getCodigoSeguranca().length() < 3 || cartaoClienteLogadoRequest.getCodigoSeguranca().length() > 4) {
+            throw new IllegalArgumentException("Código de segurança inválido.");
+        }
+
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+
+        // Validações de existência
+        Cliente cliente = clienteService.buscarPorId(clienteId)
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        Bandeira bandeira = bandeiraService.getBandeiraById(cartaoClienteLogadoRequest.getBandeiraId())
+                .orElseThrow(() -> new IllegalArgumentException("Bandeira do cartão não encontrada."));
+
+        // Se for preferencial, remover dos outros
+        if (cartaoClienteLogadoRequest.isPreferencial()) {
+            removerPreferencialDosOutrosCartoes(clienteId);
+        }
+
+        CartaoCredito cartao = new CartaoCredito();
+        cartao.setNumeroCartao(cartaoClienteLogadoRequest.getNumeroCartao());
+        cartao.setNomeImpresso(cartaoClienteLogadoRequest.getNomeImpresso());
+        cartao.setCodigoSeguranca(cartaoClienteLogadoRequest.getCodigoSeguranca());
+        cartao.setPreferencial(cartaoClienteLogadoRequest.isPreferencial());
         cartao.setCliente(cliente);
         cartao.setBandeira(bandeira);
 
