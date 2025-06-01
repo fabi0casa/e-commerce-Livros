@@ -1,4 +1,4 @@
-package com.fatec.livraria.dto;
+package com.fatec.livraria.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnderecoDTO {
+public class EnderecoRequest {
 
     @NotBlank(message = "O tipo de logradouro é obrigatório.")
     @Size(min = 3, max = 50, message = "O tipo de logradouro deve ter entre 3 e 50 caracteres.")

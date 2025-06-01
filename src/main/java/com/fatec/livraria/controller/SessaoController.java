@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.fatec.livraria.dto.ClienteLoginDTO;
+import com.fatec.livraria.dto.request.ClienteLoginRequest;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.service.ClienteService;
 
@@ -19,7 +19,7 @@ public class SessaoController {
     @Autowired private ClienteService clienteService;
 
     @PostMapping("/logar")
-    public ResponseEntity<Map<String, Object>> logarComoCliente(@RequestBody ClienteLoginDTO cliente, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> logarComoCliente(@RequestBody ClienteLoginRequest cliente, HttpSession session) {
         session.setAttribute("clienteId", cliente.getClienteId());
 
         Cliente clienteEntity = clienteService.buscarPorId(cliente.getClienteId()).orElse(null);

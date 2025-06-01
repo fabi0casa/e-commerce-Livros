@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.fatec.livraria.dto.CartaoDTO;
+import com.fatec.livraria.dto.request.CartaoRequest;
 import com.fatec.livraria.entity.CartaoCredito;
 import com.fatec.livraria.service.BandeiraService;
 import com.fatec.livraria.service.CartaoCreditoService;
@@ -47,9 +47,9 @@ public class CartaoCreditoController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> adicionarCartao(@RequestBody CartaoDTO cartaoDTO) {
+    public ResponseEntity<?> adicionarCartao(@RequestBody CartaoRequest cartaoRequest) {
         try {
-            cartaoCreditoService.adicionarCartao(cartaoDTO);
+            cartaoCreditoService.adicionarCartao(cartaoRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("mensagem", "Cartão cadastrado com sucesso!"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));

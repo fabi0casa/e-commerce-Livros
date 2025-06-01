@@ -1,7 +1,6 @@
-package com.fatec.livraria.dto;
+package com.fatec.livraria.dto.request;
 
 import java.util.Date;
-import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -10,7 +9,11 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClienteDTO {
+public class AtualizarClienteRequest {
+
+    // ✅ ID obrigatório para identificar o cliente a ser atualizado
+    @NotNull(message = "O ID do cliente é obrigatório.")
+    private int id;
 
     @NotBlank(message = "O nome não pode estar vazio.")
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres.")
@@ -35,19 +38,5 @@ public class ClienteDTO {
     @NotBlank(message = "O telefone é obrigatório.")
     @Pattern(regexp = "\\(\\d{2}\\) \\d{4,5}-\\d{4}", message = "Telefone inválido. Formato esperado: (XX) XXXXX-XXXX")
     private String telefone;
-
-    @Min(value = 0, message = "O ranking deve ser no mínimo 0.")
-    private int ranking;
-
-    @NotBlank(message = "A senha é obrigatória.")
-    @Size(min = 8, message = "A senha deve ter pelo menos 8 caracteres.")
-    @Pattern(
-        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]+$",
-        message = "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial."
-    )
-    private String senha;
-
-    @NotNull(message = "O endereço é obrigatório.")
-    @Size(min = 1, message = "Pelo menos um endereço deve ser informado.")
-    private List<EnderecoDTO> enderecos;
 }
+

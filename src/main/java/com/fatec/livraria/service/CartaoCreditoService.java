@@ -2,7 +2,7 @@ package com.fatec.livraria.service;
 
 import org.springframework.stereotype.Service;
 
-import com.fatec.livraria.dto.CartaoDTO;
+import com.fatec.livraria.dto.request.CartaoRequest;
 import com.fatec.livraria.entity.Bandeira;
 import com.fatec.livraria.entity.CartaoCredito;
 import com.fatec.livraria.entity.Cliente;
@@ -64,33 +64,33 @@ public class CartaoCreditoService {
         cartaoCreditoRepository.saveAll(cartoesDoCliente);
     }
 
-    public void adicionarCartao(CartaoDTO cartaoDTO) {
+    public void adicionarCartao(CartaoRequest cartaoRequest) {
         // Validações de formato
-        if (cartaoDTO.getNumeroCartao().length() < 13 || cartaoDTO.getNumeroCartao().length() > 19) {
+        if (cartaoRequest.getNumeroCartao().length() < 13 || cartaoRequest.getNumeroCartao().length() > 19) {
             throw new IllegalArgumentException("Número do cartão inválido. O número deve ter entre 13 e 19 dígitos.");
         }
 
-        if (cartaoDTO.getCodigoSeguranca().length() < 3 || cartaoDTO.getCodigoSeguranca().length() > 4) {
+        if (cartaoRequest.getCodigoSeguranca().length() < 3 || cartaoRequest.getCodigoSeguranca().length() > 4) {
             throw new IllegalArgumentException("Código de segurança inválido.");
         }
 
         // Validações de existência
-        Cliente cliente = clienteService.buscarPorId(cartaoDTO.getClienteId())
+        Cliente cliente = clienteService.buscarPorId(cartaoRequest.getClienteId())
                 .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado."));
 
-        Bandeira bandeira = bandeiraService.getBandeiraById(cartaoDTO.getBandeiraId())
+        Bandeira bandeira = bandeiraService.getBandeiraById(cartaoRequest.getBandeiraId())
                 .orElseThrow(() -> new IllegalArgumentException("Bandeira do cartão não encontrada."));
 
         // Se for preferencial, remover dos outros
-        if (cartaoDTO.isPreferencial()) {
-            removerPreferencialDosOutrosCartoes(cartaoDTO.getClienteId());
+        if (cartaoRequest.isPreferencial()) {
+            removerPreferencialDosOutrosCartoes(cartaoRequest.getClienteId());
         }
 
         CartaoCredito cartao = new CartaoCredito();
-        cartao.setNumeroCartao(cartaoDTO.getNumeroCartao());
-        cartao.setNomeImpresso(cartaoDTO.getNomeImpresso());
-        cartao.setCodigoSeguranca(cartaoDTO.getCodigoSeguranca());
-        cartao.setPreferencial(cartaoDTO.isPreferencial());
+        cartao.setNumeroCartao(cartaoRequest.getNumeroCartao());
+        cartao.setNomeImpresso(cartaoRequest.getNomeImpresso());
+        cartao.setCodigoSeguranca(cartaoRequest.getCodigoSeguranca());
+        cartao.setPreferencial(cartaoRequest.isPreferencial());
         cartao.setCliente(cliente);
         cartao.setBandeira(bandeira);
 

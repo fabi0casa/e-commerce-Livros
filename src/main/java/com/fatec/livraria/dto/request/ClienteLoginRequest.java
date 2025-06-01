@@ -1,6 +1,6 @@
-package com.fatec.livraria.dto;
+package com.fatec.livraria.dto.request;
 
-public class ClienteLoginDTO {
+public class ClienteLoginRequest {
     private Integer clienteId;
     
     public Integer getClienteId() {

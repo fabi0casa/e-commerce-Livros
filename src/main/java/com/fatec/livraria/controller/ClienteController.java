@@ -1,9 +1,9 @@
 package com.fatec.livraria.controller;
 
-import com.fatec.livraria.dto.AlterarSenhaDTO;
-import com.fatec.livraria.dto.AtualizarClienteDTO;
-import com.fatec.livraria.dto.ClienteDTO;
-import com.fatec.livraria.dto.EnderecoDTO;
+import com.fatec.livraria.dto.request.AlterarSenhaRequest;
+import com.fatec.livraria.dto.request.AtualizarClienteRequest;
+import com.fatec.livraria.dto.request.ClienteRequest;
+import com.fatec.livraria.dto.request.EnderecoRequest;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.service.ClienteService;
 
@@ -54,9 +54,9 @@ public class ClienteController {
 
     // Cadastro (com Thymeleaf)
     @PostMapping("/add")
-    public ResponseEntity<?> adicionarCliente(@ModelAttribute ClienteDTO clienteDTO, Model model, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> adicionarCliente(@ModelAttribute ClienteRequest clienteRequest, Model model, RedirectAttributes redirectAttributes) {
         try {
-            clienteService.cadastrarNovoCliente(clienteDTO);
+            clienteService.cadastrarNovoCliente(clienteRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body("{\"mensagem\": \"Cliente cadastrado com sucesso!\"}");
         } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
@@ -67,9 +67,9 @@ public class ClienteController {
 
     // Atualizar cliente
     @PutMapping("/update")
-    public ResponseEntity<?> atualizarCliente(@RequestBody AtualizarClienteDTO clienteDTO) {
+    public ResponseEntity<?> atualizarCliente(@RequestBody AtualizarClienteRequest clienteRequest) {
         try {
-            clienteService.atualizarDadosCliente(clienteDTO);
+            clienteService.atualizarDadosCliente(clienteRequest);
             return ResponseEntity.ok("{\"mensagem\": \"Cliente atualizado com sucesso!\"}");
         } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
@@ -80,9 +80,9 @@ public class ClienteController {
 
     // Atualizar senha
     @PutMapping("/alterarSenha")
-    public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaDTO alterarSenhaDTO) {
+    public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaRequest alterarSenhaRequest) {
         try {
-            clienteService.alterarSenha(alterarSenhaDTO);
+            clienteService.alterarSenha(alterarSenhaRequest);
             return ResponseEntity.ok("{\"mensagem\": \"Senha alterada com sucesso!\"}");
         } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
@@ -93,9 +93,9 @@ public class ClienteController {
 
     // Adicionar novo endereço
     @PostMapping("/{clienteId}/enderecos/add")
-    public ResponseEntity<?> adicionarEndereco(@PathVariable int clienteId, @RequestBody EnderecoDTO enderecoDTO) {
+    public ResponseEntity<?> adicionarEndereco(@PathVariable int clienteId, @RequestBody EnderecoRequest enderecoRequest) {
         try {
-            clienteService.adicionarEnderecoAoCliente(clienteId, enderecoDTO);
+            clienteService.adicionarEnderecoAoCliente(clienteId, enderecoRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body("{\"mensagem\": \"Endereço cadastrado com sucesso!\"}");
         } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
@@ -107,9 +107,9 @@ public class ClienteController {
     }
 
     @PostMapping("/me/enderecos/add")
-    public ResponseEntity<?> adicionarEnderecoAoClienteLogado(HttpSession session, @RequestBody EnderecoDTO enderecoDTO) {
+    public ResponseEntity<?> adicionarEnderecoAoClienteLogado(HttpSession session, @RequestBody EnderecoRequest enderecoRequest) {
         try {
-            clienteService.adicionarEnderecoAoClienteLogado(enderecoDTO, session);
+            clienteService.adicionarEnderecoAoClienteLogado(enderecoRequest, session);
             return ResponseEntity.status(HttpStatus.CREATED).body("{\"mensagem\": \"Endereço cadastrado com sucesso!\"}");
         } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));

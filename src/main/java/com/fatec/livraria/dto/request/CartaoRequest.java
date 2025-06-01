@@ -1,4 +1,4 @@
-package com.fatec.livraria.dto;
+package com.fatec.livraria.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartaoDTO {
+public class CartaoRequest {
 
     @NotNull(message = "O ID do cliente é obrigatório.")
     private int clienteId;

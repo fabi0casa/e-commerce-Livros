@@ -1,6 +1,6 @@
 package com.fatec.livraria.controller;
 
-import com.fatec.livraria.dto.EnderecoDTO;
+import com.fatec.livraria.dto.request.EnderecoRequest;
 import com.fatec.livraria.entity.Endereco;
 import com.fatec.livraria.service.EnderecoService;
 import com.fatec.livraria.service.EnderecoValidator;
@@ -54,9 +54,9 @@ public class EnderecoController {
     @PutMapping("/{enderecoId}/update")
     public ResponseEntity<?> atualizarEndereco(
             @PathVariable int enderecoId,
-            @RequestBody EnderecoDTO enderecoDTO) {
+            @RequestBody EnderecoRequest enderecoRequest) {
         try {
-            enderecoService.atualizarEndereco(enderecoId, enderecoDTO);
+            enderecoService.atualizarEndereco(enderecoId, enderecoRequest);
             return ResponseEntity.ok(Map.of("mensagem", "Endereço atualizado com sucesso!"));
         } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));

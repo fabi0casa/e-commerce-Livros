@@ -1,4 +1,4 @@
-package com.fatec.livraria.dto;
+package com.fatec.livraria.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;

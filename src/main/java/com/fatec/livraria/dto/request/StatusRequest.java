@@ -1,4 +1,4 @@
-package com.fatec.livraria.dto;
+package com.fatec.livraria.dto.request;
 
 import java.util.List;
 

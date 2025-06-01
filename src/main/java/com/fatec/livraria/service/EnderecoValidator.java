@@ -1,6 +1,6 @@
 package com.fatec.livraria.service;
 
-import com.fatec.livraria.dto.EnderecoDTO;
+import com.fatec.livraria.dto.request.EnderecoRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -17,11 +17,11 @@ public class EnderecoValidator {
         this.validator = validator;
     }
 
-    public void validarEndereco(EnderecoDTO enderecoDTO) {
-        Set<ConstraintViolation<EnderecoDTO>> violacoes = validator.validate(enderecoDTO);
+    public void validarEndereco(EnderecoRequest enderecoRequest) {
+        Set<ConstraintViolation<EnderecoRequest>> violacoes = validator.validate(enderecoRequest);
         if (!violacoes.isEmpty()) {
             StringBuilder mensagemErro = new StringBuilder();
-            for (ConstraintViolation<EnderecoDTO> violacao : violacoes) {
+            for (ConstraintViolation<EnderecoRequest> violacao : violacoes) {
                 mensagemErro.append(violacao.getMessage()).append("\n");
             }
             throw new ConstraintViolationException(mensagemErro.toString(), violacoes);

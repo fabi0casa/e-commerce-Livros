@@ -1,6 +1,6 @@
 package com.fatec.livraria.service;
 
-import com.fatec.livraria.dto.EnderecoDTO;
+import com.fatec.livraria.dto.request.EnderecoRequest;
 import com.fatec.livraria.entity.Endereco;
 import com.fatec.livraria.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,33 +39,33 @@ public class EnderecoService {
         enderecoRepository.deleteById(id);
     }
 
-    public void atualizarEndereco(int enderecoId, EnderecoDTO enderecoDTO) {
+    public void atualizarEndereco(int enderecoId, EnderecoRequest enderecoRequest) {
         Endereco enderecoExistente = enderecoRepository.findById(enderecoId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
 
         // Validação dos dados com o validador customizado
-        enderecoValidator.validarEndereco(enderecoDTO);
+        enderecoValidator.validarEndereco(enderecoRequest);
 
         // Atualização dos campos
-        enderecoExistente.setTipo(enderecoDTO.getTipo());
-        enderecoExistente.setLogradouro(enderecoDTO.getLogradouro());
-        enderecoExistente.setNumero(enderecoDTO.getNumero());
-        enderecoExistente.setBairro(enderecoDTO.getBairro());
-        enderecoExistente.setCep(enderecoDTO.getCep());
-        enderecoExistente.setCidade(enderecoDTO.getCidade());
-        enderecoExistente.setEstado(enderecoDTO.getEstado());
-        enderecoExistente.setPais(enderecoDTO.getPais());
-        enderecoExistente.setObservacoes(enderecoDTO.getObservacoes());
-        enderecoExistente.setResidencial(enderecoDTO.getResidencial());
-        enderecoExistente.setEntrega(enderecoDTO.getEntrega());
-        enderecoExistente.setCobranca(enderecoDTO.getCobranca());
+        enderecoExistente.setTipo(enderecoRequest.getTipo());
+        enderecoExistente.setLogradouro(enderecoRequest.getLogradouro());
+        enderecoExistente.setNumero(enderecoRequest.getNumero());
+        enderecoExistente.setBairro(enderecoRequest.getBairro());
+        enderecoExistente.setCep(enderecoRequest.getCep());
+        enderecoExistente.setCidade(enderecoRequest.getCidade());
+        enderecoExistente.setEstado(enderecoRequest.getEstado());
+        enderecoExistente.setPais(enderecoRequest.getPais());
+        enderecoExistente.setObservacoes(enderecoRequest.getObservacoes());
+        enderecoExistente.setResidencial(enderecoRequest.getResidencial());
+        enderecoExistente.setEntrega(enderecoRequest.getEntrega());
+        enderecoExistente.setCobranca(enderecoRequest.getCobranca());
 
         enderecoExistente.gerarFraseIdentificadora();
 
         enderecoRepository.save(enderecoExistente);
     }
     
-    public Endereco converterDTOParaEndereco(EnderecoDTO dto) {
+    public Endereco converterRequestParaEndereco(EnderecoRequest dto) {
         Endereco endereco = new Endereco();
         endereco.setTipo(dto.getTipo());
         endereco.setLogradouro(dto.getLogradouro());

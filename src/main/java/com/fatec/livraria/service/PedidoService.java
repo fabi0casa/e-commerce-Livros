@@ -1,9 +1,9 @@
 package com.fatec.livraria.service;
 
-import com.fatec.livraria.dto.CartaoPagamentoRequest;
-import com.fatec.livraria.dto.PedidoCarrinhoRequest;
-import com.fatec.livraria.dto.PedidoRequest;
-import com.fatec.livraria.dto.VendaRequest;
+import com.fatec.livraria.dto.request.CartaoPagamentoRequest;
+import com.fatec.livraria.dto.request.PedidoCarrinhoRequest;
+import com.fatec.livraria.dto.request.PedidoRequest;
+import com.fatec.livraria.dto.request.VendaRequest;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.entity.Venda;
 import com.fatec.livraria.entity.Carrinho;

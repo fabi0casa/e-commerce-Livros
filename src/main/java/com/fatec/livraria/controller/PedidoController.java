@@ -1,9 +1,9 @@
 package com.fatec.livraria.controller;
 
-import com.fatec.livraria.dto.PedidoCarrinhoRequest;
-import com.fatec.livraria.dto.PedidoRequest;
-import com.fatec.livraria.dto.PedidoResponse;
-import com.fatec.livraria.dto.StatusRequest;
+import com.fatec.livraria.dto.request.PedidoCarrinhoRequest;
+import com.fatec.livraria.dto.request.PedidoRequest;
+import com.fatec.livraria.dto.response.PedidoResponse;
+import com.fatec.livraria.dto.request.StatusRequest;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.service.PedidoService;
 

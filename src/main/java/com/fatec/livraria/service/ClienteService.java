@@ -11,10 +11,10 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fatec.livraria.dto.AlterarSenhaDTO;
-import com.fatec.livraria.dto.AtualizarClienteDTO;
-import com.fatec.livraria.dto.ClienteDTO;
-import com.fatec.livraria.dto.EnderecoDTO;
+import com.fatec.livraria.dto.request.AlterarSenhaRequest;
+import com.fatec.livraria.dto.request.AtualizarClienteRequest;
+import com.fatec.livraria.dto.request.ClienteRequest;
+import com.fatec.livraria.dto.request.EnderecoRequest;
 import com.fatec.livraria.entity.Endereco;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.repository.PedidoRepository;
@@ -81,37 +81,37 @@ public class ClienteService {
         return clienteRepository.findById(clienteId);
     }
 
-    public void cadastrarNovoCliente(ClienteDTO clienteDTO) throws Exception {
-        clienteValidator.validarCliente(clienteDTO);
+    public void cadastrarNovoCliente(ClienteRequest clienteRequest) throws Exception {
+        clienteValidator.validarCliente(clienteRequest);
 
-        for (EnderecoDTO enderecoDTO : clienteDTO.getEnderecos()) {
-            if (enderecoDTO.getResidencial() == null) {
-                enderecoDTO.setResidencial(true);
+        for (EnderecoRequest enderecoRequest : clienteRequest.getEnderecos()) {
+            if (enderecoRequest.getResidencial() == null) {
+                enderecoRequest.setResidencial(true);
             }
-            enderecoValidator.validarEndereco(enderecoDTO);
+            enderecoValidator.validarEndereco(enderecoRequest);
         }
 
-        if (clienteRepository.existsByCpf(clienteDTO.getCpf())) {
+        if (clienteRepository.existsByCpf(clienteRequest.getCpf())) {
             throw new ConstraintViolationException("CPF já cadastrado!", null);
         }
 
-        if (clienteRepository.existsByEmail(clienteDTO.getEmail())) {
+        if (clienteRepository.existsByEmail(clienteRequest.getEmail())) {
             throw new ConstraintViolationException("E-mail já cadastrado!", null);
         }
 
         Cliente cliente = new Cliente();
-        cliente.setNome(clienteDTO.getNome());
-        cliente.setDataNascimento(clienteDTO.getDataNascimento());
-        cliente.setCpf(clienteDTO.getCpf());
-        cliente.setGenero(clienteDTO.getGenero());
-        cliente.setEmail(clienteDTO.getEmail());
-        cliente.setSenha(clienteDTO.getSenha());
-        cliente.setTelefone(clienteDTO.getTelefone());
+        cliente.setNome(clienteRequest.getNome());
+        cliente.setDataNascimento(clienteRequest.getDataNascimento());
+        cliente.setCpf(clienteRequest.getCpf());
+        cliente.setGenero(clienteRequest.getGenero());
+        cliente.setEmail(clienteRequest.getEmail());
+        cliente.setSenha(clienteRequest.getSenha());
+        cliente.setTelefone(clienteRequest.getTelefone());
         cliente.setRanking(0);
 
         List<Endereco> enderecos = new ArrayList<>();
-        for (EnderecoDTO enderecoDTO : clienteDTO.getEnderecos()) {
-            Endereco endereco = enderecoService.converterDTOParaEndereco(enderecoDTO);
+        for (EnderecoRequest enderecoRequest : clienteRequest.getEnderecos()) {
+            Endereco endereco = enderecoService.converterRequestParaEndereco(enderecoRequest);
             endereco.setCliente(cliente);
             enderecos.add(endereco);
         }
@@ -121,23 +121,23 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
-    public void atualizarDadosCliente(AtualizarClienteDTO clienteDTO) throws Exception {
-        Cliente cliente = clienteRepository.findById(clienteDTO.getId())
+    public void atualizarDadosCliente(AtualizarClienteRequest clienteRequest) throws Exception {
+        Cliente cliente = clienteRepository.findById(clienteRequest.getId())
                 .orElseThrow(() -> new Exception("Cliente não encontrado!"));
 
-        clienteValidator.validarAtualizacaoCliente(clienteDTO);
+        clienteValidator.validarAtualizacaoCliente(clienteRequest);
 
-        cliente.setNome(clienteDTO.getNome());
-        cliente.setDataNascimento(clienteDTO.getDataNascimento());
-        cliente.setCpf(clienteDTO.getCpf());
-        cliente.setGenero(clienteDTO.getGenero());
-        cliente.setEmail(clienteDTO.getEmail());
-        cliente.setTelefone(clienteDTO.getTelefone());
+        cliente.setNome(clienteRequest.getNome());
+        cliente.setDataNascimento(clienteRequest.getDataNascimento());
+        cliente.setCpf(clienteRequest.getCpf());
+        cliente.setGenero(clienteRequest.getGenero());
+        cliente.setEmail(clienteRequest.getEmail());
+        cliente.setTelefone(clienteRequest.getTelefone());
 
         clienteRepository.save(cliente);
     }
 
-    public void alterarSenha(AlterarSenhaDTO dto) throws Exception {
+    public void alterarSenha(AlterarSenhaRequest dto) throws Exception {
         Cliente cliente = clienteRepository.findById(dto.getId())
                 .orElseThrow(() -> new Exception("Cliente não encontrado!"));
 
@@ -151,32 +151,32 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
-    public void adicionarEnderecoAoCliente(int clienteId, EnderecoDTO enderecoDTO) throws Exception {
-        enderecoValidator.validarEndereco(enderecoDTO);
+    public void adicionarEnderecoAoCliente(int clienteId, EnderecoRequest enderecoRequest) throws Exception {
+        enderecoValidator.validarEndereco(enderecoRequest);
 
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
 
-        Endereco endereco = enderecoService.converterDTOParaEndereco(enderecoDTO);
+        Endereco endereco = enderecoService.converterRequestParaEndereco(enderecoRequest);
         endereco.setCliente(cliente);
         cliente.getEnderecos().add(endereco);
 
         enderecoService.salvar(endereco);
     }
 
-    public void adicionarEnderecoAoClienteLogado(EnderecoDTO enderecoDTO, HttpSession session) throws Exception {
-        enderecoValidator.validarEndereco(enderecoDTO);
+    public void adicionarEnderecoAoClienteLogado(EnderecoRequest enderecoRequest, HttpSession session) throws Exception {
+        enderecoValidator.validarEndereco(enderecoRequest);
     
         Cliente cliente = buscarPorId((Integer) session.getAttribute("clienteId"))
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-                
+
         if (cliente == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Cliente não está logado");
     
         // Busca atualizada do cliente no banco (opcional se necessário)
         Cliente clienteCompleto = clienteRepository.findById(cliente.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     
-        Endereco endereco = enderecoService.converterDTOParaEndereco(enderecoDTO);
+        Endereco endereco = enderecoService.converterRequestParaEndereco(enderecoRequest);
         endereco.setCliente(clienteCompleto);
         clienteCompleto.getEnderecos().add(endereco);
     

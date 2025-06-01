@@ -8,9 +8,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fatec.livraria.dto.AlterarSenhaDTO;
-import com.fatec.livraria.dto.AtualizarClienteDTO;
-import com.fatec.livraria.dto.ClienteDTO;
+import com.fatec.livraria.dto.request.AlterarSenhaRequest;
+import com.fatec.livraria.dto.request.AtualizarClienteRequest;
+import com.fatec.livraria.dto.request.ClienteRequest;
 
 @Component
 public class ClienteValidator {
@@ -21,33 +21,33 @@ public class ClienteValidator {
         this.validator = validator;
     }
 
-    public void validarCliente(ClienteDTO clienteDTO) {
-        Set<ConstraintViolation<ClienteDTO>> violacoes = validator.validate(clienteDTO);
+    public void validarCliente(ClienteRequest clienteRequest) {
+        Set<ConstraintViolation<ClienteRequest>> violacoes = validator.validate(clienteRequest);
         if (!violacoes.isEmpty()) {
             StringBuilder mensagemErro = new StringBuilder();
-            for (ConstraintViolation<ClienteDTO> violacao : violacoes) {
+            for (ConstraintViolation<ClienteRequest> violacao : violacoes) {
                 mensagemErro.append(violacao.getMessage()).append("\n");
             }
             throw new ConstraintViolationException(mensagemErro.toString(), violacoes);
         }
     }
 
-    public void validarAtualizacaoCliente(AtualizarClienteDTO clienteDTO) {
-        Set<ConstraintViolation<AtualizarClienteDTO>> violacoes = validator.validate(clienteDTO);
+    public void validarAtualizacaoCliente(AtualizarClienteRequest clienteRequest) {
+        Set<ConstraintViolation<AtualizarClienteRequest>> violacoes = validator.validate(clienteRequest);
         if (!violacoes.isEmpty()) {
             StringBuilder mensagemErro = new StringBuilder();
-            for (ConstraintViolation<AtualizarClienteDTO> violacao : violacoes) {
+            for (ConstraintViolation<AtualizarClienteRequest> violacao : violacoes) {
                 mensagemErro.append(violacao.getMessage()).append("\n");
             }
             throw new ConstraintViolationException(mensagemErro.toString(), violacoes);
         }
     }   
 
-    public void validarAlteracaoSenha(AlterarSenhaDTO alterarSenhaDTO) {
-        Set<ConstraintViolation<AlterarSenhaDTO>> violacoes = validator.validate(alterarSenhaDTO);
+    public void validarAlteracaoSenha(AlterarSenhaRequest alterarSenhaRequest) {
+        Set<ConstraintViolation<AlterarSenhaRequest>> violacoes = validator.validate(alterarSenhaRequest);
         if (!violacoes.isEmpty()) {
             StringBuilder mensagemErro = new StringBuilder();
-            for (ConstraintViolation<AlterarSenhaDTO> violacao : violacoes) {
+            for (ConstraintViolation<AlterarSenhaRequest> violacao : violacoes) {
                 mensagemErro.append(violacao.getMessage()).append("\n");
             }
             throw new ConstraintViolationException(mensagemErro.toString(), violacoes);
