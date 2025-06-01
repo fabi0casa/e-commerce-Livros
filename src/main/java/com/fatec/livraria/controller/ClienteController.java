@@ -106,6 +106,21 @@ public class ClienteController {
         }
     }
 
+    @PostMapping("/me/enderecos/add")
+    public ResponseEntity<?> adicionarEnderecoAoClienteLogado(HttpSession session, @RequestBody EnderecoDTO enderecoDTO) {
+        try {
+            clienteService.adicionarEnderecoAoClienteLogado(enderecoDTO, session);
+            return ResponseEntity.status(HttpStatus.CREATED).body("{\"mensagem\": \"Endereço cadastrado com sucesso!\"}");
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body("{\"erro\": \"" + e.getReason() + "\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"erro\": \"Erro inesperado ao cadastrar endereço.\"}");
+        }
+    }
+
+
     // Deletar cliente
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletarCliente(@PathVariable Integer id) {

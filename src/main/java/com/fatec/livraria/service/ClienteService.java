@@ -164,6 +164,26 @@ public class ClienteService {
         enderecoService.salvar(endereco);
     }
 
+    public void adicionarEnderecoAoClienteLogado(EnderecoDTO enderecoDTO, HttpSession session) throws Exception {
+        enderecoValidator.validarEndereco(enderecoDTO);
+    
+        Cliente cliente = buscarPorId((Integer) session.getAttribute("clienteId"))
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                
+        if (cliente == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Cliente não está logado");
+    
+        // Busca atualizada do cliente no banco (opcional se necessário)
+        Cliente clienteCompleto = clienteRepository.findById(cliente.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+    
+        Endereco endereco = enderecoService.converterDTOParaEndereco(enderecoDTO);
+        endereco.setCliente(clienteCompleto);
+        clienteCompleto.getEnderecos().add(endereco);
+    
+        enderecoService.salvar(endereco);
+    }
+    
+
     public void excluirCliente(Integer id) {
         Cliente cliente = clienteRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));

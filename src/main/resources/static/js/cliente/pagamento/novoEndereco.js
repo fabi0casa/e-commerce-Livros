@@ -2,15 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const livroId = urlParams.get("livroId");
     const quantidade = urlParams.get("quantidade") || 1;
-    const clienteId = window.clienteId;
 
     document.getElementById("cadastroEnderecoForm").addEventListener("submit", async function (event) {
         event.preventDefault(); // Impede o envio tradicional do formulário
-
-        if (!clienteId) {
-            alert("Erro: ID do cliente não encontrado!");
-            return;
-        }
 
         // Capturando valores do formulário
         let tipoLogradouro = document.querySelectorAll("input")[0].value;
@@ -52,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
             // Enviando os dados via fetch para o backend
-            const response = await fetch(`/clientes/${clienteId}/enderecos/add`, {
+            const response = await fetch(`/clientes/me/enderecos/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -95,16 +89,10 @@ function cancelarCadastro() {
 }
  // Função para buscar e exibir o nome do cliente
 async function carregarNomeCliente() {
-    const clienteId = window.clienteId;
-
-    if (!clienteId) {
-        console.error("Erro: ID do cliente não encontrado na URL.");
-        return;
-    }
 
     try {
         // Requisição ao backend para buscar os dados do cliente
-        const response = await fetch(`/clientes/${clienteId}`);
+        const response = await fetch(`/clientes/me`);
         
         if (!response.ok) {
             throw new Error("Erro ao buscar o cliente.");
