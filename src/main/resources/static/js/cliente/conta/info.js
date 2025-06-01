@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    fetch(`/clientes/${clienteId}`)
+    fetch(`/clientes/me`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Erro ao buscar dados do cliente.');
