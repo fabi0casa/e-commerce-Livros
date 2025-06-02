@@ -4,7 +4,9 @@ import com.fatec.livraria.dto.request.EnderecoRequest;
 import com.fatec.livraria.entity.Endereco;
 import com.fatec.livraria.service.EnderecoService;
 import com.fatec.livraria.service.EnderecoValidator;
+import com.fatec.livraria.service.PermissaoUsuarioService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +29,32 @@ public class EnderecoController {
     @Autowired
     private EnderecoValidator enderecoValidator;
 
+    @Autowired
+    private PermissaoUsuarioService permissaoUsuarioService;
+
     @GetMapping("/all")
-    public ResponseEntity<List<Endereco>> listarTodos() {
+    public ResponseEntity<List<Endereco>> listarTodos(HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         return ResponseEntity.ok(enderecoService.listarTodos());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Endereco> buscarPorId(@PathVariable Integer id) {
+    public ResponseEntity<Endereco> buscarPorId(@PathVariable Integer id, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         Optional<Endereco> endereco = enderecoService.buscarPorId(id);
         return endereco.map(ResponseEntity::ok)
                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/cliente/{clienteId}")
-    public ResponseEntity<List<Endereco>> getEnderecoByCliente(@PathVariable Integer clienteId) {
+    public ResponseEntity<List<Endereco>> getEnderecoByCliente(@PathVariable Integer clienteId, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         return ResponseEntity.ok(enderecoService.getEnderecoByClienteId(clienteId));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Endereco> salvar(@RequestBody Endereco endereco) {
+    public ResponseEntity<Endereco> salvar(@RequestBody Endereco endereco, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         endereco.gerarFraseIdentificadora(); // Gera a frase antes de salvar
         Endereco novoEndereco = enderecoService.salvar(endereco);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoEndereco);
@@ -54,7 +63,9 @@ public class EnderecoController {
     @PutMapping("/{enderecoId}/update")
     public ResponseEntity<?> atualizarEndereco(
             @PathVariable int enderecoId,
-            @RequestBody EnderecoRequest enderecoRequest) {
+            @RequestBody EnderecoRequest enderecoRequest, 
+            HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         try {
             enderecoService.atualizarEndereco(enderecoId, enderecoRequest);
             return ResponseEntity.ok(Map.of("mensagem", "Endereço atualizado com sucesso!"));
@@ -68,7 +79,8 @@ public class EnderecoController {
     }    
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Integer id) {
+    public ResponseEntity<Void> excluir(@PathVariable Integer id, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         enderecoService.excluir(id);
         return ResponseEntity.noContent().build();
     }

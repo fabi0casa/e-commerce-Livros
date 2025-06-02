@@ -6,6 +6,7 @@ import com.fatec.livraria.dto.request.ClienteRequest;
 import com.fatec.livraria.dto.request.EnderecoRequest;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.service.ClienteService;
+import com.fatec.livraria.service.PermissaoUsuarioService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolationException;
@@ -29,6 +30,9 @@ public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+    
+    @Autowired
+    private PermissaoUsuarioService permissaoUsuarioService;
 
     // Listar todos os clientes
     @GetMapping("/all")
@@ -38,7 +42,8 @@ public class ClienteController {
 
     // Buscar cliente por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarPorId(@PathVariable Integer id) {
+    public ResponseEntity<Cliente> buscarPorId(@PathVariable Integer id, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         return clienteService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -67,7 +72,8 @@ public class ClienteController {
 
     // Atualizar cliente
     @PutMapping("/update")
-    public ResponseEntity<?> atualizarCliente(@RequestBody AtualizarClienteRequest clienteRequest) {
+    public ResponseEntity<?> atualizarCliente(@RequestBody AtualizarClienteRequest clienteRequest, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         try {
             clienteService.atualizarDadosCliente(clienteRequest);
             return ResponseEntity.ok("{\"mensagem\": \"Cliente atualizado com sucesso!\"}");
@@ -80,7 +86,8 @@ public class ClienteController {
 
     // Atualizar senha
     @PutMapping("/alterarSenha")
-    public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaRequest alterarSenhaRequest) {
+    public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaRequest alterarSenhaRequest, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         try {
             clienteService.alterarSenha(alterarSenhaRequest);
             return ResponseEntity.ok("{\"mensagem\": \"Senha alterada com sucesso!\"}");
@@ -93,7 +100,8 @@ public class ClienteController {
 
     // Adicionar novo endereço
     @PostMapping("/{clienteId}/enderecos/add")
-    public ResponseEntity<?> adicionarEndereco(@PathVariable int clienteId, @RequestBody EnderecoRequest enderecoRequest) {
+    public ResponseEntity<?> adicionarEndereco(@PathVariable int clienteId, @RequestBody EnderecoRequest enderecoRequest, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         try {
             clienteService.adicionarEnderecoAoCliente(clienteId, enderecoRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body("{\"mensagem\": \"Endereço cadastrado com sucesso!\"}");
@@ -123,7 +131,8 @@ public class ClienteController {
 
     // Deletar cliente
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deletarCliente(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletarCliente(@PathVariable Integer id, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         clienteService.excluirCliente(id);
         return ResponseEntity.noContent().build();
     }
@@ -136,8 +145,10 @@ public class ClienteController {
             @RequestParam(required = false) String telefone,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataNascimento,
-            @RequestParam(required = false) String genero) {
+            @RequestParam(required = false) String genero,
+            HttpSession session) {
 
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         List<Cliente> clientes = clienteService.buscarClientesComFiltro(nome, cpf, telefone, email, dataNascimento, genero);
         return ResponseEntity.ok(clientes);
     }

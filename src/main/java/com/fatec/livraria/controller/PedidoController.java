@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.fatec.livraria.service.PermissaoUsuarioService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,12 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @Autowired
+    private PermissaoUsuarioService permissaoUsuarioService;
+
     @GetMapping("/all")
-    public List<Pedido> listarTodos() {
+    public List<Pedido> listarTodos(HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         return pedidoService.listarTodos();
     }
 
@@ -41,6 +46,7 @@ public class PedidoController {
     
     @GetMapping("/all/codigo/{codigo}")
     public ResponseEntity<Pedido> buscarPorCodigoAdmin(@PathVariable String codigo, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         try {
             Pedido pedido = pedidoService.buscarPorCodigoComoAdmin(codigo, session);
             return ResponseEntity.ok(pedido);
@@ -51,7 +57,8 @@ public class PedidoController {
     
 
     @GetMapping("/cliente/{clienteId}")
-    public List<Pedido> listarPorCliente(@PathVariable Integer clienteId) {
+    public List<Pedido> listarPorCliente(@PathVariable Integer clienteId, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
         return pedidoService.listarPorClienteId(clienteId);
     }
 
