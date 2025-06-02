@@ -36,20 +36,26 @@ public class LivroService {
 
     public String gerarContextoLivros() {
         List<Livro> livros = listarTodos();
-        
+    
         String contexto = livros.stream()
                 .filter(livro -> livro.getEstoque() > 0)
                 .map(livro -> {
                     String categorias = livro.getCategorias().stream()
                             .map(Categoria::getNome)
                             .collect(Collectors.joining(", "));
-                    return "- " + livro.getNome() + " de " + livro.getAutor().getNome() + 
-                        " (Editora: " + livro.getEditora().getNome() + 
-                        ", Categorias: " + categorias + ")";
+    
+                    return "- \"" + livro.getNome() + "\" de " + livro.getAutor().getNome() +
+                           " (Editora: " + livro.getEditora().getNome() +
+                           ", Ano: " + livro.getAnoPublicacao() +
+                           ", Nº Páginas: " + livro.getNumPaginas() +
+                           ", Preço: R$ " + livro.getPrecoVenda() +
+                           ", Grupo: " + livro.getGrupoPrecificacao().getNome() +
+                           ", Categorias: " + categorias + ").\n" +
+                           "Sinopse: " + livro.getSinopse();
                 })
-                .collect(Collectors.joining("\n"));
-        
+                .collect(Collectors.joining("\n\n"));
+    
         return contexto.isEmpty() ? "Nenhum livro disponível no sistema." : contexto;
-    }
+    }    
 
 }
