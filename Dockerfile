@@ -27,6 +27,9 @@ WORKDIR /app
 # Copiar o .jar gerado pela etapa anterior
 COPY --from=build /app/target/livraria-0.0.1-SNAPSHOT.jar app.jar
 
+# Copiar o .env para o container
+COPY .env .env
+
 # Expor a porta 8080
 EXPOSE 8080
 
