@@ -161,10 +161,15 @@ function setupAccordions() {
         acc[i].addEventListener("click", function () {
             this.classList.toggle("active");
             const panel = this.nextElementSibling;
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
+
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+                panel.style.paddingTop = "0";
+                panel.style.paddingBottom = "0";
             } else {
-                panel.style.display = "block";
+                panel.style.maxHeight = panel.scrollHeight + "px";
+                panel.style.paddingTop = "10px";
+                panel.style.paddingBottom = "10px";
             }
         });
     }

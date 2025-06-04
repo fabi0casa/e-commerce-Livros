@@ -198,7 +198,7 @@ input, button {
     text-align: left;
     outline: none;
     font-size: 16px;
-    transition: 0.4s;
+    transition: background-color 0.4s;
     margin-bottom: 5px;
 }
 
@@ -207,12 +207,14 @@ input, button {
 }
 
 .panel {
-    padding: 0 18px;
-    display: none;
-    background-color: white;
+    max-height: 0;
     overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 18px;
+    background-color: white;
     border-left: 2px solid #ddd;
     margin-bottom: 10px;
+    border-radius: 5px;
 }
 
 .isAdmin {

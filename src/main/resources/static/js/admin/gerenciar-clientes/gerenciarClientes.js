@@ -13,14 +13,20 @@ document.addEventListener("DOMContentLoaded", function () {
     accordions.forEach(button => {
         button.addEventListener("click", function () {
             let panel = this.nextElementSibling;
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
+
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+                panel.style.paddingTop = "0";
+                panel.style.paddingBottom = "0";
             } else {
-                panel.style.display = "block";
+                panel.style.maxHeight = panel.scrollHeight + "px";
+                panel.style.paddingTop = "10px";
+                panel.style.paddingBottom = "10px";
             }
         });
     });
 });
+
 
 function redirecioarAoTransacoes(){
     window.location.href = "/ver-transacoes-cliente";
@@ -53,7 +59,7 @@ function openClientModal(cliente) {
 
 function openAddressModal(enderecos) {
     let enderecosContainer = document.getElementById("enderecosContainer");
-    enderecosContainer.innerHTML = ""; 
+    enderecosContainer.innerHTML = "";
 
     enderecos.forEach(endereco => {
         let button = document.createElement("button");
@@ -75,7 +81,15 @@ function openAddressModal(enderecos) {
         `;
 
         button.addEventListener("click", () => {
-            panel.style.display = panel.style.display === "block" ? "none" : "block";
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+                panel.style.paddingTop = "0";
+                panel.style.paddingBottom = "0";
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+                panel.style.paddingTop = "10px";
+                panel.style.paddingBottom = "10px";
+            }
         });
 
         enderecosContainer.appendChild(button);
@@ -84,6 +98,7 @@ function openAddressModal(enderecos) {
 
     openModal("addressModal");
 }
+
 
 function openCardModal(cartoes) {
     let cartoesContainer = document.getElementById("cartoesContainer");
@@ -104,7 +119,15 @@ function openCardModal(cartoes) {
         `;
 
         button.addEventListener("click", () => {
-            panel.style.display = panel.style.display === "block" ? "none" : "block";
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+                panel.style.paddingTop = "0";
+                panel.style.paddingBottom = "0";
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+                panel.style.paddingTop = "10px";
+                panel.style.paddingBottom = "10px";
+            }
         });
 
         cartoesContainer.appendChild(button);
