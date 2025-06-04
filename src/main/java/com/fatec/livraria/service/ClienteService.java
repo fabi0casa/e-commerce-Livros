@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.fatec.livraria.dto.request.AlterarSenhaRequest;
@@ -64,7 +65,7 @@ public class ClienteService {
     }
 
     public List<Cliente> listarTodos() {
-        return clienteRepository.findAll();
+        return clienteRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public Optional<Cliente> buscarPorId(Integer id) {
@@ -198,7 +199,7 @@ public class ClienteService {
     
 
     public List<Cliente> buscarClientesComFiltro(String nome, String cpf, String telefone, String email, LocalDate dataNascimento, String genero) {
-        return clienteRepository.findAll(ClienteSpecification.filtrarClientes(nome, cpf, telefone, email, dataNascimento, genero));
+        return clienteRepository.findAll(ClienteSpecification.filtrarClientes(nome, cpf, telefone, email, dataNascimento, genero), Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public String gerarContextoCliente(Integer clienteId) {
