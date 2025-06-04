@@ -54,16 +54,17 @@ public class CarrinhoController {
     // Atualizar quantidade de um item
     @PutMapping("/atualizar/{carrinhoId}")
     public ResponseEntity<Carrinho> atualizarQuantidade(@PathVariable Integer carrinhoId,
-                                                        @RequestParam Integer novaQuantidade) {
-        return ResponseEntity.ok(carrinhoService.atualizarQuantidade(carrinhoId, novaQuantidade));
+                                                        @RequestParam Integer novaQuantidade,
+                                                        HttpSession session) {
+        return ResponseEntity.ok(carrinhoService.atualizarQuantidade(carrinhoId, novaQuantidade, session));
     }
-
+    
     // Remover item do carrinho
     @DeleteMapping("/remover/{carrinhoId}")
-    public ResponseEntity<Void> removerDoCarrinho(@PathVariable Integer carrinhoId) {
-        carrinhoService.removerDoCarrinho(carrinhoId);
+    public ResponseEntity<Void> removerDoCarrinho(@PathVariable Integer carrinhoId, HttpSession session) {
+        carrinhoService.removerDoCarrinho(carrinhoId, session);
         return ResponseEntity.noContent().build();
-    }
+    }    
 
     // Limpar carrinho do cliente logado
     @DeleteMapping("/limpar")

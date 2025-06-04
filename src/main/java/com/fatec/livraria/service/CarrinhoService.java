@@ -35,6 +35,20 @@ public class CarrinhoService {
         return clienteRepository.findById(clienteId);
     }
 
+    private Carrinho validarPertinenciaECapturar(Integer carrinhoId, HttpSession session) {
+        Cliente cliente = getClienteDaSessao(session)
+                .orElseThrow(() -> new RuntimeException("Cliente não autenticado"));
+
+        Carrinho carrinho = carrinhoRepository.findById(carrinhoId)
+                .orElseThrow(() -> new RuntimeException("Item do carrinho não encontrado"));
+
+        if (!carrinho.getCliente().getId().equals(cliente.getId())) {
+            throw new RuntimeException("Este item não pertence ao cliente logado.");
+        }
+
+        return carrinho;
+    }
+
     public Optional<Integer> calcularQuantidadeTotal(HttpSession session) {
         return getClienteDaSessao(session)
                 .map(cliente -> {
@@ -76,18 +90,15 @@ public class CarrinhoService {
         return Optional.of(carrinhoRepository.save(novoItem));
     }
 
-    public Carrinho atualizarQuantidade(Integer carrinhoId, Integer novaQuantidade) {
-        Carrinho carrinho = carrinhoRepository.findById(carrinhoId)
-                .orElseThrow(() -> new RuntimeException("Item do carrinho não encontrado"));
+    public Carrinho atualizarQuantidade(Integer carrinhoId, Integer novaQuantidade, HttpSession session) {
+        Carrinho carrinho = validarPertinenciaECapturar(carrinhoId, session);
         carrinho.setQuantidade(novaQuantidade);
         return carrinhoRepository.save(carrinho);
     }
 
-    public void removerDoCarrinho(Integer carrinhoId) {
-        if (!carrinhoRepository.existsById(carrinhoId)) {
-            throw new RuntimeException("Item do carrinho não encontrado");
-        }
-        carrinhoRepository.deleteById(carrinhoId);
+    public void removerDoCarrinho(Integer carrinhoId, HttpSession session) {
+        Carrinho carrinho = validarPertinenciaECapturar(carrinhoId, session);
+        carrinhoRepository.delete(carrinho);
     }
 
     public boolean limparCarrinhoDoCliente(HttpSession session) {
