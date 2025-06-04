@@ -61,83 +61,92 @@ function openAddressModal(enderecos) {
     let enderecosContainer = document.getElementById("enderecosContainer");
     enderecosContainer.innerHTML = "";
 
-    enderecos.forEach(endereco => {
-        let button = document.createElement("button");
-        button.className = "accordion";
-        button.textContent = endereco.fraseIdentificadora || "Endereço";
+    if (!enderecos || enderecos.length === 0) {
+        let msg = document.createElement("p");
+        msg.textContent = "Nenhum endereço cadastrado.";
+        enderecosContainer.appendChild(msg);
+    } else {
+        enderecos.forEach(endereco => {
+            let button = document.createElement("button");
+            button.className = "accordion";
+            button.textContent = endereco.fraseIdentificadora || "Endereço";
 
-        let panel = document.createElement("div");
-        panel.className = "panel";
-        panel.innerHTML = `
-            <p><strong>Tipo:</strong> ${endereco.tipo}</p>
-            <p><strong>Logradouro:</strong> ${endereco.logradouro}</p>
-            <p><strong>Número:</strong> ${endereco.numero}</p>
-            <p><strong>Bairro:</strong> ${endereco.bairro}</p>
-            <p><strong>CEP:</strong> ${endereco.cep}</p>
-            <p><strong>Cidade:</strong> ${endereco.cidade}</p>
-            <p><strong>Estado:</strong> ${endereco.estado}</p>
-            <p><strong>País:</strong> ${endereco.pais}</p>
-            <p><strong>Observação:</strong> ${endereco.observacoes || "Nenhuma"}</p>
-        `;
+            let panel = document.createElement("div");
+            panel.className = "panel";
+            panel.innerHTML = `
+                <p><strong>Tipo:</strong> ${endereco.tipo}</p>
+                <p><strong>Logradouro:</strong> ${endereco.logradouro}</p>
+                <p><strong>Número:</strong> ${endereco.numero}</p>
+                <p><strong>Bairro:</strong> ${endereco.bairro}</p>
+                <p><strong>CEP:</strong> ${endereco.cep}</p>
+                <p><strong>Cidade:</strong> ${endereco.cidade}</p>
+                <p><strong>Estado:</strong> ${endereco.estado}</p>
+                <p><strong>País:</strong> ${endereco.pais}</p>
+                <p><strong>Observação:</strong> ${endereco.observacoes || "Nenhuma"}</p>
+            `;
 
-        button.addEventListener("click", () => {
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-                panel.style.paddingTop = "0";
-                panel.style.paddingBottom = "0";
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-                panel.style.paddingTop = "10px";
-                panel.style.paddingBottom = "10px";
-            }
+            button.addEventListener("click", () => {
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                    panel.style.paddingTop = "0";
+                    panel.style.paddingBottom = "0";
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                    panel.style.paddingTop = "10px";
+                    panel.style.paddingBottom = "10px";
+                }
+            });
+
+            enderecosContainer.appendChild(button);
+            enderecosContainer.appendChild(panel);
         });
-
-        enderecosContainer.appendChild(button);
-        enderecosContainer.appendChild(panel);
-    });
+    }
 
     openModal("addressModal");
 }
 
-
 function openCardModal(cartoes) {
     let cartoesContainer = document.getElementById("cartoesContainer");
-    cartoesContainer.innerHTML = ""; 
+    cartoesContainer.innerHTML = "";
 
-    cartoes.forEach(cartao => {
-        let button = document.createElement("button");
-        button.className = "accordion";
-        button.textContent = `**** **** **** ${cartao.numeroCartao.slice(-4)}`;
+    if (!cartoes || cartoes.length === 0) {
+        let msg = document.createElement("p");
+        msg.textContent = "Nenhum cartão cadastrado.";
+        cartoesContainer.appendChild(msg);
+    } else {
+        cartoes.forEach(cartao => {
+            let button = document.createElement("button");
+            button.className = "accordion";
+            button.textContent = `**** **** **** ${cartao.numeroCartao.slice(-4)}`;
 
-        let panel = document.createElement("div");
-        panel.className = "panel";
-        panel.innerHTML = `
-            <p><strong>Nome Impresso:</strong> ${cartao.nomeImpresso}</p>
-            <p><strong>Bandeira:</strong> ${cartao.bandeira ? cartao.bandeira.nome : "Desconhecida"}</p>
-            <p><strong>Código de Segurança:</strong> ${cartao.codigoSeguranca}</p>
-            <p><strong>Preferencial:</strong> ${cartao.preferencial ? "Sim" : "Não"}</p>
-        `;
+            let panel = document.createElement("div");
+            panel.className = "panel";
+            panel.innerHTML = `
+                <p><strong>Nome Impresso:</strong> ${cartao.nomeImpresso}</p>
+                <p><strong>Bandeira:</strong> ${cartao.bandeira ? cartao.bandeira.nome : "Desconhecida"}</p>
+                <p><strong>Código de Segurança:</strong> ${cartao.codigoSeguranca}</p>
+                <p><strong>Preferencial:</strong> ${cartao.preferencial ? "Sim" : "Não"}</p>
+            `;
 
-        button.addEventListener("click", () => {
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-                panel.style.paddingTop = "0";
-                panel.style.paddingBottom = "0";
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-                panel.style.paddingTop = "10px";
-                panel.style.paddingBottom = "10px";
-            }
+            button.addEventListener("click", () => {
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                    panel.style.paddingTop = "0";
+                    panel.style.paddingBottom = "0";
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                    panel.style.paddingTop = "10px";
+                    panel.style.paddingBottom = "10px";
+                }
+            });
+
+            cartoesContainer.appendChild(button);
+            cartoesContainer.appendChild(panel);
         });
-
-        cartoesContainer.appendChild(button);
-        cartoesContainer.appendChild(panel);
-    });
+    }
 
     openModal("cardModal");
 }
-
-
 
 let clienteIdSelecionado = null; // Variável global para armazenar o ID do cliente
 
