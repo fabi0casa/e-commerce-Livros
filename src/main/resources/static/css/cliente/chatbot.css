@@ -164,3 +164,26 @@ body {
         transform: translateY(-8px);
     }
 }
+
+.bot-message a {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4f4cff;
+    color: white;
+    text-decoration: none;
+    border-radius: 7px;
+    border: none; /* ou: 1px solid #5029ff */
+    font-weight: 600;
+    font-size: 0.9em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.bot-message a:hover {
+    background-color: #5121ff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    filter: brightness(1.1);
+}

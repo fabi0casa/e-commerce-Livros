@@ -51,7 +51,8 @@ public class LivroService {
                            ", Preço: R$ " + livro.getPrecoVenda() +
                            ", Grupo: " + livro.getGrupoPrecificacao().getNome() +
                            ", Categorias: " + categorias + ").\n" +
-                           "Sinopse: " + livro.getSinopse();
+                           "Sinopse: " + livro.getSinopse() + "\n" +
+                           "Link: /anuncio?livroId=" + livro.getId();
                 })
                 .collect(Collectors.joining("\n\n"));
     
