@@ -18,7 +18,7 @@
             <button onclick="mostrarSecao('endereco')">Novo Endereço</button>
             <button onclick="mostrarSecao('cartao')">Novo Cartão</button>
             <button onclick="mostrarSecao('pedidos')">Meus Pedidos</button>
-            <button class="dashboard" onclick="window.location.href = '/dashboard'">Dashboard</button>
+            <button id="dashboardBtn" class="dashboard" onclick="window.location.href = '/dashboard'" style="display: none;">Dashboard</button>
             <button onclick="openModal('modalConfirmarLogout')">Sair</button>
         </nav>
         
@@ -54,6 +54,7 @@
     </div>
 
     <script src="/js/cliente/conta/conta.js/"></script>
+    <script src="/js/cliente/conta/verificarAdmin.js/"></script>
 
 </body>
 </html>

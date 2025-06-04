@@ -56,9 +56,9 @@
 }
 
 .menu .dashboard:hover {
-    background: linear-gradient(135deg, #a100ff, #dd00ff);
+    background: linear-gradient(135deg, #5029ff, #8629ff);
     color: #fff;
-    box-shadow: 0 0 20px #dd00ff, 0 0 40px #ff00ff, 0 0 60px #ff66ff;
+    box-shadow: 0 0 20px #4015ff, 0 0 40px #6f15ff, 0 0 60px #8215ff;
     transform: scale(1.05);
 }
 
