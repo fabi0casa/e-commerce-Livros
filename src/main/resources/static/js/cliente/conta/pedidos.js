@@ -216,35 +216,37 @@ document.addEventListener("DOMContentLoaded", function() {
     
             if (vendas.length > 1) {
                 const subRow = document.createElement("tr");
-                subRow.className = "sub-rows hidden";
+                subRow.className = "sub-rows collapsed-style";
                 subRow.innerHTML = `
                     <td colspan="7">
-                        <table class="sub-table">
-                            <thead>
-                                <th>Livro</th>
-                                <th>Valor</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </thead>
-                            <tbody>
-                                ${vendas.map((v, i) => `
-                                    <tr>
-                                        <td>${v.livro.nome} - ${i + 1}º</td>
-                                        <td>R$ ${v.valor.toFixed(2)}</td>
-                                        <td class="status-cell">
-                                            <span class="status-btn ${getClass(v.status)}" 
-                                                data-venda-id="${v.id}" 
-                                                data-original-status="${v.status}">
-                                                ${v.status}
-                                            </span>
-                                        </td>
-                                        <td>${gerarBotoes(v.status, [v.id])}</td>
-                                    </tr>
-                                `).join("")}
-                            </tbody>
-                        </table>
+                        <div class="sub-row-content">
+                            <table class="sub-table">
+                                <thead>
+                                    <th>Livro</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </thead>
+                                <tbody>
+                                    ${vendas.map((v, i) => `
+                                        <tr>
+                                            <td>${v.livro.nome} - ${i + 1}º</td>
+                                            <td>R$ ${v.valor.toFixed(2)}</td>
+                                            <td class="status-cell">
+                                                <span class="status-btn ${getClass(v.status)}" 
+                                                    data-venda-id="${v.id}" 
+                                                    data-original-status="${v.status}">
+                                                    ${v.status}
+                                                </span>
+                                            </td>
+                                            <td>${gerarBotoes(v.status, [v.id])}</td>
+                                        </tr>
+                                    `).join("")}
+                                </tbody>
+                            </table>
+                        </div>
                     </td>
-                `;
+                `;           
                 tabelaBody.appendChild(subRow);
             }
         });
@@ -392,7 +394,24 @@ document.addEventListener("DOMContentLoaded", function() {
     function toggleSubRows(row) {
         const next = row.nextElementSibling;
         if (next && next.classList.contains("sub-rows")) {
-            next.classList.toggle("hidden");
+            const content = next.querySelector('.sub-row-content');
+            if (!content) return;
+    
+            if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+                // Está aberto -> fecha
+                content.style.maxHeight = "0";
+                content.style.paddingTop = "0";
+                content.style.paddingBottom = "0";
+    
+                next.classList.add('collapsed-style');
+            } else {
+                // Está fechado -> abre
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.style.paddingTop = "10px";
+                content.style.paddingBottom = "10px";
+    
+                next.classList.remove('collapsed-style');
+            }
         }
     }
     

@@ -502,9 +502,20 @@ input:focus, select:focus, textarea:focus {
 
 .sub-rows {
     background-color: #f7f7f7;
+    padding: 0 0;
 }
-.hidden {
-    display: none;
+
+.sub-row-content {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 0;
+}
+
+.sub-rows.collapsed-style > td {
+    padding: 0;
+    margin: 0;
+    border: none;
 }
 
 .sub-table {
