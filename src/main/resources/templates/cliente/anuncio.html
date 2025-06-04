@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/cliente/livraria.css/">
     <link rel="stylesheet" href="/css/cliente/chatbot.css/">
     <link rel="stylesheet" href="/css/cliente/anuncio.css/">
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js" defer></script>
     <script src="/js/marked.min.js/"></script>
 </head>
 <body>
@@ -41,15 +42,20 @@
                 <p id="livro-sinopse">Carregando sinopse...</p>
             </div>
             <div class="detalhes-adicionais" id="livro-detalhes">
-                <p><strong>Autor:</strong> --</p>
-                <p><strong>Editora:</strong> --</p>
-                <p><strong>Fornecedor:</strong> --</p>
-                <p><strong>Ano de Publicação:</strong> --</p>
-                <p><strong>Edição:</strong> --</p>
-                <p><strong>ISBN:</strong> --</p>
-                <p><strong>Número de Páginas:</strong> --</p>
-                <p><strong>Categoria:</strong> --</p>
-            </div>
+                <div class="detalhes-texto">
+                    <p><strong>Autor:</strong> --</p>
+                    <p><strong>Editora:</strong> --</p>
+                    <p><strong>Fornecedor:</strong> --</p>
+                    <p><strong>Ano de Publicação:</strong> --</p>
+                    <p><strong>Edição:</strong> --</p>
+                    <p><strong>ISBN:</strong> --</p>
+                    <p><strong>Número de Páginas:</strong> --</p>
+                    <p><strong>Categoria:</strong> --</p>
+                </div>
+                <div class="codigo-barras-container">
+                    <svg id="barcode"></svg>
+                </div>      
+            </div> 
         </div>
     </div>
 

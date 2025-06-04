@@ -33,18 +33,18 @@ async function carregarLivro() {
         const nomesCategorias = livro.categorias.map(cat => cat.nome).join(", ");
         const labelCategoria = livro.categorias.length === 1 ? "Categoria" : "Categorias";
 
-        document.getElementById("livro-detalhes").innerHTML = `
-            <p><strong>Autor:</strong> ${livro.autor.nome}</p>
-            <p><strong>Editora:</strong> ${livro.editora.nome}</p>
-            <p><strong>Fornecedor:</strong> ${livro.fornecedor.nome}</p>
-            <p><strong>Ano de Publicação:</strong> ${livro.anoPublicacao}</p>
-            <p><strong>Edição:</strong> ${livro.edicao}</p>
-            <p><strong>ISBN:</strong> ${livro.isbn}</p>
-            <p><strong>Número de Páginas:</strong> ${livro.numPaginas}</p>
-            <p><strong>${labelCategoria}:</strong> ${nomesCategorias}</p>
-        `;
+        // Atualiza os parágrafos já existentes
+        const detalhesDiv = document.getElementById("livro-detalhes");
+        const paragrafos = detalhesDiv.querySelectorAll("p");
 
-
+        paragrafos[0].innerHTML = `<strong>Autor:</strong> ${livro.autor.nome}`;
+        paragrafos[1].innerHTML = `<strong>Editora:</strong> ${livro.editora.nome}`;
+        paragrafos[2].innerHTML = `<strong>Fornecedor:</strong> ${livro.fornecedor.nome}`;
+        paragrafos[3].innerHTML = `<strong>Ano de Publicação:</strong> ${livro.anoPublicacao}`;
+        paragrafos[4].innerHTML = `<strong>Edição:</strong> ${livro.edicao}`;
+        paragrafos[5].innerHTML = `<strong>ISBN:</strong> ${livro.isbn}`;
+        paragrafos[6].innerHTML = `<strong>Número de Páginas:</strong> ${livro.numPaginas}`;
+        paragrafos[7].innerHTML = `<strong>${labelCategoria}:</strong> ${nomesCategorias}`;
 
         //calcula o valor do estoque do livro
         const quantidadeTotal = livro.estoque;
@@ -77,9 +77,45 @@ async function carregarLivro() {
         // Aplica o novo valor de margin-top
         acoesProduto.style.marginTop = `${marginTop}px`;
 
+        // Gera o código de barras
+        let codigoBarras = livro.codigoBarras;
+
+        // Se tiver 13 dígitos, corta para 12
+        if (codigoBarras.length === 13) {
+            codigoBarras = codigoBarras.slice(0, 12);
+        }
+        
+        // Se tiver 12 dígitos, calcula o verificador e usa.
+        if (codigoBarras.length === 12) {
+            codigoBarras = calcularDigitoEAN13(codigoBarras);
+        }
+        
+        JsBarcode("#barcode", codigoBarras, {
+            format: "EAN13",
+            lineColor: "#000",
+            width: 2,
+            height: 50,
+            displayValue: true
+        });
+
     } catch (error) {
         console.error("Erro ao carregar livro:", error);
     }
+}
+
+function calcularDigitoEAN13(codigo12) {
+    if (!/^\d{12}$/.test(codigo12)) {
+        throw new Error("Código precisa ter 12 dígitos numéricos.");
+    }
+
+    let soma = 0;
+    for (let i = 0; i < 12; i++) {
+        const num = parseInt(codigo12[i]);
+        soma += (i % 2 === 0) ? num : num * 3;
+    }
+    const resto = soma % 10;
+    const digitoVerificador = (resto === 0) ? 0 : (10 - resto);
+    return codigo12 + digitoVerificador;
 }
 
 async function adicionarAoCarrinho() {

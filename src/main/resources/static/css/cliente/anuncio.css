@@ -148,15 +148,42 @@ input[type="number"] {
 }
 
 .detalhes-adicionais {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+
     max-width: 93%;
     padding: 20px;
     background: #5900ff0d;
     border-radius: 10px;
     margin-top: 20px;
     text-align: left;
+    flex-wrap: wrap; /* Responsivo: quebra se faltar espaço */
 }
 
-.detalhes-adicionais p {
+.detalhes-texto {
+    flex: 1 1 60%;  /* ocupa 60% ou mais se puder */
+}
+
+.detalhes-texto p {
     margin: 5px 0;
     font-size: 16px;
+}
+
+.codigo-barras-container {
+    flex: 0 0 auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4.5%;
+    margin-right: 4%;
+}
+
+#barcode {
+    max-width: 100%;
+    height: auto;
 }
