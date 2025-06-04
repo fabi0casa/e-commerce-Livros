@@ -1,32 +1,62 @@
 .info-container {
     display: flex;
-    align-items: flex-start; /* Alinha no topo */
-    gap: 40px; /* Espaço entre a coluna de texto e botões */
+    align-items: flex-start;
+    gap: 30px; /* Diminuí um pouco para compactar */
     margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.info-avatar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
 }
 
 .info-text {
-    flex: 2; /* Dá mais espaço para os dados */
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.info-text strong {
+    color: #111;
 }
 
 .info-buttons {
-    flex: 1; /* Menos espaço para os botões */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Espaço entre botões */
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: stretch; /* Ocupa toda a largura disponível */
 }
 
 .info-buttons button {
-    padding: 10px 15px;
+    padding: 10px 12px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s;
+    font-size: 14px;
+    transition: background 0.3s, transform 0.2s;
+    width: 100%;
 }
 
 .info-buttons button:hover {
     background-color: #45a049;
+    transform: translateY(-2px);
 }

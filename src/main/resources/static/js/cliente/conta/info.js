@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div id="info" class="secao ativa">
                     <h2>Minha Conta</h2>
                     <div class="info-container">
+                        <div class="info-avatar">
+                            ${gerarAvatarCliente(cliente.nome)}
+                        </div>
                         <div class="info-text">
                             <p><strong>Nome:</strong> ${cliente.nome}</p>
                             <p><strong>Email:</strong> ${cliente.email}</p>
@@ -26,11 +29,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         </div>
                     </div>
                 </div>
-
+            
                 ${gerarModalEnderecos(cliente.enderecos)}
                 ${gerarModalCartoes(cliente.cartoes)}
                 ${gerarModalCupons(cliente.cupons)}
             `;
+        
 
             document.getElementById("contaInfo").innerHTML = contaInfo;
 
@@ -164,4 +168,20 @@ function setupAccordions() {
             }
         });
     }
+}
+
+function gerarAvatarCliente(nome) {
+    const primeiroNome = nome.split(" ")[0];
+    const inicial = primeiroNome.charAt(0).toUpperCase();
+
+    // Cor determinística
+    const charCode = inicial.charCodeAt(0);
+    const hue = (charCode * 15) % 360;
+    const corVibrante = `hsl(${hue}, 100%, 50%)`;
+
+    return `
+        <div class="account-circle" style="background-color: ${corVibrante}; width: 80px; height: 80px; font-size: 32px;">
+            ${inicial}
+        </div>
+    `;
 }
