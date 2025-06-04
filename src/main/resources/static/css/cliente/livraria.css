@@ -17,6 +17,29 @@ header {
     padding: 10px 20px;
 }
 
+/* Estilo para o contêiner do avatar */
+.account-avatar {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Estilo do círculo que vai dentro do account-avatar */
+.account-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #666; /* fallback caso JS não aplique */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    user-select: none; /* impede seleção do texto */
+}
+
 .text-container{
     width: 80%;
     margin-left: 10%;

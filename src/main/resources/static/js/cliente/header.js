@@ -15,8 +15,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     <span class="cart-badge" id="cartBadge">0</span> <!-- Começa como 0 -->
                 </button>
                 <button class="btn" onclick="window.location.href='/conta'">
-										<img src="/img//account.png" alt="Conta">
-                    <span id="accountText" >Conta</span>
+                    <span class="account-avatar" id="accountAvatar">
+                        <img src="/img/account.png/" alt="Conta">
+                    </span>
+                    <span id="accountText">Conta</span>
                 </button>
             </div>
             <div class="notification-popup" id="notificationPopup">
@@ -45,8 +47,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function atualizarBotaoConta(nomeCliente) {
         if (nomeCliente) {
-            const primeiroNome = nomeCliente.split(" ")[0]; // Pega apenas o primeiro nome
+            const primeiroNome = nomeCliente.split(" ")[0];
+            const inicial = primeiroNome.charAt(0).toUpperCase();
+    
             document.getElementById("accountText").textContent = primeiroNome;
+    
+            const avatar = document.getElementById("accountAvatar");
+    
+            // Gera uma cor determinística baseada na inicial
+            const charCode = inicial.charCodeAt(0);
+            const hue = (charCode * 15) % 360;  // Multiplica pra espaçar bem, e pega o resto de 360
+            const corVibrante = `hsl(${hue}, 100%, 50%)`;
+    
+            // Cria o círculo com a inicial
+            avatar.innerHTML = `<div class="account-circle" style="background-color: ${corVibrante};">${inicial}</div>`;
         }
     }
 
