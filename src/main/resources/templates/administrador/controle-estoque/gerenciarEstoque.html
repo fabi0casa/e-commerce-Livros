@@ -17,7 +17,7 @@
         <h2>Controle do Estoque</h2>
 
         <h3>Itens em Estoque</h3>
-        <table>
+        <table id="tabela-estoque">
             <thead>
                 <tr>
                     <th>Livro</th>
@@ -30,29 +30,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>O Senhor dos Anéis</td>
-                    <td>15</td>
-                    <td>45,00</td>
-                    <td>67,50</td>
-                    <td>Popular</td>
-                    <td>5%</td>
-                    <td>Distribuidora Alpha</td>
-                </tr>
-                <!-- outras linhas da tabela -->
+                <!-- As linhas vão ser inseridas aqui pelo JS -->
             </tbody>
         </table>
+        
 
     </div>
 
-    <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = "flex";
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = "none";
-        }
+    <script src="/js/admin/estoque/listarEstoque.js/">
     </script>
 
     <script type="module">

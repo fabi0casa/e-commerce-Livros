@@ -58,7 +58,7 @@ public class LivroController {
         return ResponseEntity.ok(livrosEstoque);
     }
 
-    @PatchMapping("/entrada-estoque")
+    @PatchMapping("/estoque/entrada")
     public ResponseEntity<Void> atualizarEstoque(@RequestBody EntradaEstoqueRequest dto, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
         boolean atualizado = livroService.atualizarEstoque(dto);
