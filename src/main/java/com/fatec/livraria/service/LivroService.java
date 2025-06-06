@@ -1,7 +1,10 @@
 package com.fatec.livraria.service;
 
+import com.fatec.livraria.dto.request.EntradaEstoqueRequest;
 import com.fatec.livraria.dto.response.LivroEstoqueResponse;
 import com.fatec.livraria.entity.Categoria;
+import com.fatec.livraria.entity.Fornecedor;
+import com.fatec.livraria.entity.GrupoPrecificacao;
 import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.repository.LivroRepository;
 import org.springframework.stereotype.Service;
@@ -49,6 +52,30 @@ public class LivroService {
         ).collect(Collectors.toList());
     }
     
+    public boolean atualizarEstoque(EntradaEstoqueRequest dto) {
+        Optional<Livro> livroOpt = livroRepository.findById(dto.getLivroId());
+        if (livroOpt.isEmpty()) {
+            return false;
+        }
+
+        Livro livro = livroOpt.get();
+
+        // Atualizações
+        livro.setEstoque(livro.getEstoque() + dto.getQuantidadeAdicional());
+        livro.setPrecoCusto(dto.getNovoPrecoCusto());
+
+        GrupoPrecificacao grupo = new GrupoPrecificacao();
+        grupo.setId(dto.getGrupoPrecificacaoId());
+        livro.setGrupoPrecificacao(grupo);
+
+        Fornecedor fornecedor = new Fornecedor();
+        fornecedor.setId(dto.getFornecedorId());
+        livro.setFornecedor(fornecedor);
+
+        livroRepository.save(livro);
+
+        return true;
+    }
 
     public String gerarContextoLivros() {
         List<Livro> livros = listarTodos();

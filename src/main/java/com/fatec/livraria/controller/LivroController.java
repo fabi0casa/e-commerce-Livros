@@ -1,5 +1,6 @@
 package com.fatec.livraria.controller;
 
+import com.fatec.livraria.dto.request.EntradaEstoqueRequest;
 import com.fatec.livraria.dto.response.LivroEstoqueResponse;
 import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.service.LivroService;
@@ -55,6 +56,17 @@ public class LivroController {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
         List<LivroEstoqueResponse> livrosEstoque = livroService.listarLivrosParaEstoque();
         return ResponseEntity.ok(livrosEstoque);
+    }
+
+    @PatchMapping("/entrada-estoque")
+    public ResponseEntity<Void> atualizarEstoque(@RequestBody EntradaEstoqueRequest dto, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
+        boolean atualizado = livroService.atualizarEstoque(dto);
+        if (atualizado) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
