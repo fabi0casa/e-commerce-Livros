@@ -1,5 +1,6 @@
 package com.fatec.livraria.service;
 
+import com.fatec.livraria.dto.response.LivroEstoqueResponse;
 import com.fatec.livraria.entity.Categoria;
 import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.repository.LivroRepository;
@@ -33,6 +34,21 @@ public class LivroService {
     public List<Livro> buscarPorIds(List<Integer> ids) {
         return livroRepository.findAllById(ids);
     }
+
+    public List<LivroEstoqueResponse> listarLivrosParaEstoque() {
+        return livroRepository.findAll().stream().map(livro ->
+            new LivroEstoqueResponse(
+                livro.getNome(),
+                livro.getEstoque(),
+                livro.getPrecoCusto(),
+                livro.getPrecoVenda(),
+                livro.getGrupoPrecificacao().getNome(),
+                livro.getGrupoPrecificacao().getMargemLucro(),
+                livro.getFornecedor().getNome()
+            )
+        ).collect(Collectors.toList());
+    }
+    
 
     public String gerarContextoLivros() {
         List<Livro> livros = listarTodos();
