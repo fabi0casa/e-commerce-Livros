@@ -62,7 +62,6 @@ window.addEventListener("DOMContentLoaded", carregarPedidos);
 const pedidosMap = new Map();
 const listaContainer = document.querySelector(".pedido-list");
 const mensagemContainer = document.getElementById("mensagem");
-const clienteId = params.get("clienteId");
 
 async function carregarPedidos() {
     const params = new URLSearchParams(window.location.search);
