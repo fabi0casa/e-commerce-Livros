@@ -39,7 +39,7 @@ public class CartaoCreditoService {
         return cartaoCreditoRepository.findAll();
     }
 
-    public Optional<CartaoCredito> getCartaoById(Integer id) {
+    public Optional<CartaoCredito> buscarPorId(Integer id) {
         return cartaoCreditoRepository.findById(id);
     }
 

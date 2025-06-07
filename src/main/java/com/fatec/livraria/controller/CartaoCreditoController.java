@@ -51,7 +51,7 @@ public class CartaoCreditoController {
     @GetMapping("/{id}")
     public ResponseEntity<CartaoCredito> getCartaoById(@PathVariable Integer id, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
-        return cartaoCreditoService.getCartaoById(id)
+        return cartaoCreditoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

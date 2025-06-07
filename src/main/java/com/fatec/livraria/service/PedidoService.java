@@ -11,6 +11,7 @@ import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Cupom;
 import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.repository.PedidoRepository;
+import com.fatec.livraria.repository.LivroRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -28,7 +29,9 @@ import java.util.*;
 public class PedidoService {
 
     @Autowired private PedidoRepository pedidoRepository;
+    @Autowired private LivroRepository livroRepository;
     @Autowired private ClienteService clienteService;
+    @Autowired private CartaoCreditoService cartaoService;
     @Autowired private EnderecoService enderecoService;
     @Autowired private LivroService livroService;
     @Autowired private VendaService vendaService;
@@ -103,6 +106,14 @@ public class PedidoService {
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("Livro não encontrado: " + vendaReq.getLivroId()));
 
+            if (livro.getEstoque() < vendaReq.getQuantidade()) {
+                throw new RuntimeException("Estoque insuficiente para o livro: " + livro.getNome());
+            }
+        
+            // Desconta do estoque
+            livro.setEstoque(livro.getEstoque() - vendaReq.getQuantidade());
+            livroRepository.save(livro);
+
             for (int i = 0; i < vendaReq.getQuantidade(); i++) {
                 Venda venda = new Venda();
                 venda.setStatus("Em Processamento");
@@ -164,6 +175,7 @@ public class PedidoService {
             }
         }
 
+        // Carttões
         BigDecimal valorFinal = valorTotal.subtract(valorDescontos);
 
         if (valorFinal.compareTo(BigDecimal.ZERO) < 0) {
@@ -171,6 +183,16 @@ public class PedidoService {
         }
 
         if (valorFinal.compareTo(BigDecimal.ZERO) > 0) {
+
+            for (CartaoPagamentoRequest cartaoReq : request.getCartoes()) {
+                var cartao = cartaoService.buscarPorId(cartaoReq.getCartaoId())
+                        .orElseThrow(() -> new RuntimeException("Cartão não encontrado: " + cartaoReq.getCartaoId()));
+            
+                if (!cartao.getCliente().getId().equals(cliente.getId())) {
+                    throw new RuntimeException("Cartão de pagamento não pertence ao cliente.");
+                }
+            }
+            
             if (request.getCartoes() == null || request.getCartoes().isEmpty()) {
                 throw new RuntimeException("Pagamento com cartão é obrigatório para o valor restante.");
             }
@@ -296,6 +318,16 @@ public class PedidoService {
         }
 
         if (valorFinal.compareTo(BigDecimal.ZERO) > 0) {
+            
+            for (CartaoPagamentoRequest cartaoReq : request.getCartoes()) {
+                var cartao = cartaoService.buscarPorId(cartaoReq.getCartaoId())
+                        .orElseThrow(() -> new RuntimeException("Cartão não encontrado: " + cartaoReq.getCartaoId()));
+            
+                if (!cartao.getCliente().getId().equals(cliente.getId())) {
+                    throw new RuntimeException("Cartão de pagamento não pertence ao cliente.");
+                }
+            }
+
             if (request.getCartoes() == null || request.getCartoes().isEmpty()) {
                 throw new RuntimeException("Pagamento com cartão é obrigatório para o valor restante.");
             }
