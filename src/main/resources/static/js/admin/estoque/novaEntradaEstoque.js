@@ -72,10 +72,24 @@ async function carregarDados() {
 document.getElementById("entradaEstoqueForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
+    const quantidade = parseInt(document.getElementById("quantidade").value);
+    const valorCusto = parseFloat(document.getElementById("valorCusto").value);
+
+    // Validações
+    if (isNaN(quantidade) || quantidade < 1) {
+        alert("❌ Quantidade deve ser um número inteiro positivo.");
+        return;
+    }
+
+    if (isNaN(valorCusto) || valorCusto <= 0) {
+        alert("❌ Valor de custo deve ser um número positivo maior que zero.");
+        return;
+    }
+
     const dados = {
         livroId: document.getElementById("livro").value,
-        quantidadeAdicional: document.getElementById("quantidade").value,
-        novoPrecoCusto: document.getElementById("valorCusto").value,
+        quantidadeAdicional: quantidade,
+        novoPrecoCusto: valorCusto,
         grupoPrecificacaoId: document.getElementById("precificacao").value,
         fornecedorId: document.getElementById("fornecedor").value
     };
@@ -115,6 +129,35 @@ function openModal(modalId) {
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = "none";
 }
+
+document.getElementById("quantidade").addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, ''); // só números
+
+    if (this.value !== '' && parseInt(this.value) < 1) {
+        this.value = '';
+    }
+});
+
+document.getElementById("valorCusto").addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9.,]/g, ''); // só números e vírgula/ponto
+
+    // Troca vírgula por ponto, se necessário
+    this.value = this.value.replace(',', '.');
+
+    const valor = parseFloat(this.value);
+    if (!isNaN(valor) && valor <= 0) {
+        this.value = '';
+    }
+});
+
+const bloquearTeclasInvalidas = (e) => {
+    if (["-", "e", "E"].includes(e.key)) {
+        e.preventDefault();
+    }
+};
+
+document.getElementById("quantidade").addEventListener("keydown", bloquearTeclasInvalidas);
+document.getElementById("valorCusto").addEventListener("keydown", bloquearTeclasInvalidas);
 
 // Inicializa
 carregarDados();
