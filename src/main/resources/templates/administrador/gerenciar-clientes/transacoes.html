@@ -10,30 +10,73 @@
     <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
 </head>
 <body>
-    <header>
-        <a th:href="@{/dashboard}"><img src="/img/home.png/" alt="home" class="header-logo"></a>
-        Página do Administrador
-    </header>
+
     <a th:href="@{/gerenciar-clientes}"><button class="botao-return">Voltar</button></a>
 
     <div class="container">
         <h2>Transações de <span id="clienteNome"></span></h2>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Data e Hora</th>
-                    <th>Tipo de Operação</th>
-                    <th>Produto</th>
+            <!-- Lista dinâmica de pedidos -->
+            <div id="listaPedidos" class="pedido-list"></div>
+            <div id="mensagem" class="mensagem-erro" style="color: rgb(0, 31, 4); margin-top: 10px;"></div>
+
+            <!-- Modal de Tabela de Pedido -->
+            <div id="modalTabela" class="modal-tabela">
+            <div class="modal-tabela-content">
+                <span class="close" onclick="closeModal('modalTabela')">&times;</span>
+                <h2 id="tituloPedido">Pedido</h2>
+                <p><strong>Cliente:</strong> <span id="modalNome"></span></p>
+                <p><strong>Data:</strong> <span id="modalData"></span></p>
+                <p><strong>Valor Total:</strong> <span id="modalValor"></span></p>
+                <p><strong>Forma de Pagamento:</strong> <span id="modalPagamento"></span></p>
+                <p><strong>Endereço de Entrega:</strong> <span id="modalEndereco"></span></p>
+
+                <!-- Tabela opicional para editar status de todos os pedidos se forem iguais-->
+                <table class="optional-table" style="display: none;">
+                    <tr>
+                        <th>Status Geral</th>
+                        <th>Ações</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                
+                
+                <table id="tabelaPedido">
+                <thead>
+                    <tr>
+                    <th>Foto</th>
+                    <th>Livro</th>
+                    <th>Valor</th>
                     <th>Quantidade</th>
-                    <th>Valor Total</th>
-                    <th>Forma de Pagamento</th>
-                </tr>
-            </thead>
-            <tbody id="transacoesBody">
-                <!-- Os dados serão carregados aqui via AJAX -->
-            </tbody>
-        </table>        
+                    <th>Status</th>
+                    <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTabelaPedido">
+                    <!-- Preenchido dinamicamente via JS -->
+                </tbody>
+                </table>
+            </div>
+            </div>
+
+            <!-- Modal de Confirmação -->
+            <div id="modalConfirmacao" class="modal">
+            <div class="modal-content">
+                <h2>Confirmar Ação</h2>
+                <p id="modalText"></p>
+                <div id="checkboxContainer" style="display: none;">
+                <input type="checkbox" id="retornaEstoque">
+                <label for="retornaEstoque">Retornar itens ao estoque</label>
+                </div>
+                <br />
+                <button id="confirmarBtn">Confirmar</button>
+                <button onclick="closeModal('modalConfirmacao')">Cancelar</button>
+            </div>
+            </div>
+        </div>     
     </div>
 
     <script src="/js/admin/gerenciar-clientes/transacoes.js/"></script>

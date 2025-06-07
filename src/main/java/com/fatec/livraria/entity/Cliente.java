@@ -66,9 +66,6 @@ public class Cliente {
     private List<Endereco> enderecos = new ArrayList<>();
     
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<TransacaoCliente> transacoes = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<CartaoCredito> cartoes = new ArrayList<>();
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
