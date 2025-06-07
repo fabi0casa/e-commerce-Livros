@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class LivroEstoqueResponse {
 
+    private Integer livroId;
     private String nome;
     private Integer estoque;
     private BigDecimal precoCusto;

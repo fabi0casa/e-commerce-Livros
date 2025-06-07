@@ -14,3 +14,34 @@ h3 {
     border-bottom: 2px solid #1e1e2f;
     padding-bottom: 5px;
 }
+
+.td-entrada {
+    text-align: center;
+}
+
+.botao-entrada {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 9px;
+    line-height: 24px;
+    text-align: center;
+    background-color: #5900ff;
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+.botao-entrada:hover {
+    background-color: #4319ff;
+}
+
+select:disabled {
+    background-color: #f0edff;
+    border: 1px solid #5900ff;
+    color: #000000;
+    cursor: not-allowed;
+}

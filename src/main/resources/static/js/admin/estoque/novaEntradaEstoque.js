@@ -1,10 +1,54 @@
 async function carregarDados() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const livroId = urlParams.get("livroId");
+
     const endpoints = {
-        livro: '/livros/lista',
         precificacao: '/grupo-precificacao/lista',
         fornecedor: '/fornecedor/lista'
     };
 
+    // Caso tenha livroId na URL, carrega apenas o nome desse livro
+    if (livroId) {
+        try {
+            const resp = await fetch(`/livros/buscar-nome/${livroId}`);
+            if (!resp.ok) throw new Error("Livro não encontrado.");
+
+            const livro = await resp.json();
+
+            const selectLivro = document.getElementById("livro");
+            selectLivro.innerHTML = ""; // limpa opções anteriores
+
+            const opt = document.createElement("option");
+            opt.value = livroId;
+            opt.textContent = livro.nome;
+            opt.selected = true;
+            selectLivro.appendChild(opt);
+
+            selectLivro.disabled = true; // trava o select
+        } catch (err) {
+            console.error("Erro ao buscar livro por ID:", err);
+            alert("Erro ao carregar o livro selecionado.");
+        }
+    } else {
+        // Caso NÃO tenha livroId, carrega a lista normalmente
+        try {
+            const resp = await fetch('/livros/lista');
+            const dados = await resp.json();
+
+            const select = document.getElementById("livro");
+            dados.forEach(item => {
+                const opt = document.createElement("option");
+                opt.value = item.id;
+                opt.textContent = item.nome;
+                select.appendChild(opt);
+            });
+        } catch (err) {
+            console.error("Erro ao carregar livros:", err);
+            alert("Erro ao carregar a lista de livros.");
+        }
+    }
+
+    // Carrega os demais selects (grupo de precificação e fornecedor)
     for (const [campo, url] of Object.entries(endpoints)) {
         try {
             const resp = await fetch(url);
@@ -12,7 +56,7 @@ async function carregarDados() {
 
             const select = document.getElementById(campo);
             dados.forEach(item => {
-                const opt = document.createElement('option');
+                const opt = document.createElement("option");
                 opt.value = item.id;
                 opt.textContent = item.nome;
                 select.appendChild(opt);

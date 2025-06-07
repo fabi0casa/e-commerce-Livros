@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${livro.grupoPrecificacao}</td>
                     <td>${livro.margemLucro}%</td>
                     <td>${livro.fornecedor}</td>
+                    <td class="td-entrada">
+                        <a href="/entrada-estoque?livroId=${livro.livroId}" class="botao-entrada">+</a>
+                    </td>
                 `;
 
                 tbody.appendChild(tr);

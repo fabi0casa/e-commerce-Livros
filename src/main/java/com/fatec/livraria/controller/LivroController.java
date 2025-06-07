@@ -75,4 +75,11 @@ public class LivroController {
         return livroService.listarNomeEId();
     }
 
+    @GetMapping("/buscar-nome/{id}")
+    public ResponseEntity<NomeIdResponse> buscarNomePorId(@PathVariable Integer id) {
+        return livroService.buscarNomePorId(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
 }

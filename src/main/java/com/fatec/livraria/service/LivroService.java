@@ -7,9 +7,12 @@ import com.fatec.livraria.entity.Categoria;
 import com.fatec.livraria.entity.Fornecedor;
 import com.fatec.livraria.entity.GrupoPrecificacao;
 import com.fatec.livraria.entity.Livro;
+import com.fatec.livraria.repository.GrupoPrecificacaoRepository;
 import com.fatec.livraria.repository.LivroRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,9 +21,11 @@ import java.util.stream.Collectors;
 public class LivroService {
 
     private final LivroRepository livroRepository;
+    private final GrupoPrecificacaoRepository grupoPrecificacaoRepository;
 
-    public LivroService(LivroRepository livroRepository) {
+    public LivroService(LivroRepository livroRepository, GrupoPrecificacaoRepository grupoPrecificacaoRepository) {
         this.livroRepository = livroRepository;
+        this.grupoPrecificacaoRepository = grupoPrecificacaoRepository;
     }
 
     public List<Livro> listarTodos() {
@@ -42,6 +47,7 @@ public class LivroService {
     public List<LivroEstoqueResponse> listarLivrosParaEstoque() {
         return livroRepository.findAll().stream().map(livro ->
             new LivroEstoqueResponse(
+                livro.getId(),
                 livro.getNome(),
                 livro.getEstoque(),
                 livro.getPrecoCusto(),
@@ -61,13 +67,21 @@ public class LivroService {
 
         Livro livro = livroOpt.get();
 
-        // Atualizações
         livro.setEstoque(livro.getEstoque() + dto.getQuantidadeAdicional());
         livro.setPrecoCusto(dto.getNovoPrecoCusto());
 
-        GrupoPrecificacao grupo = new GrupoPrecificacao();
-        grupo.setId(dto.getGrupoPrecificacaoId());
+        Optional<GrupoPrecificacao> grupoOpt = grupoPrecificacaoRepository.findById(dto.getGrupoPrecificacaoId());
+        if (grupoOpt.isEmpty()) {
+            return false;
+        }
+
+        GrupoPrecificacao grupo = grupoOpt.get();
         livro.setGrupoPrecificacao(grupo);
+
+        BigDecimal margem = grupo.getMargemLucro(); 
+        BigDecimal fator = margem.divide(BigDecimal.valueOf(100)).add(BigDecimal.ONE);
+        BigDecimal novoPrecoVenda = livro.getPrecoCusto().multiply(fator).setScale(2, RoundingMode.HALF_UP);
+        livro.setPrecoVenda(novoPrecoVenda);
 
         Fornecedor fornecedor = new Fornecedor();
         fornecedor.setId(dto.getFornecedorId());
@@ -78,11 +92,17 @@ public class LivroService {
         return true;
     }
 
+
     public List<NomeIdResponse> listarNomeEId() {
         return livroRepository.findAll()
             .stream()
             .map(f -> new NomeIdResponse(f.getId(), f.getNome()))
             .toList();
+    }
+
+    public Optional<NomeIdResponse> buscarNomePorId(Integer id) {
+        return livroRepository.findById(id)
+            .map(livro -> new NomeIdResponse(livro.getId(), livro.getNome()));
     }
 
     public String gerarContextoLivros() {
