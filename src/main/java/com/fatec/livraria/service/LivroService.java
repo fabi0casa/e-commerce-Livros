@@ -68,7 +68,7 @@ public class LivroService {
         Livro livro = livroOpt.get();
 
         livro.setEstoque(livro.getEstoque() + dto.getQuantidadeAdicional());
-        livro.setPrecoCusto(dto.getNovoPrecoCusto());
+        if (dto.getNovoPrecoCusto().compareTo(livro.getPrecoCusto()) > 0) livro.setPrecoCusto(dto.getNovoPrecoCusto());
 
         Optional<GrupoPrecificacao> grupoOpt = grupoPrecificacaoRepository.findById(dto.getGrupoPrecificacaoId());
         if (grupoOpt.isEmpty()) {
