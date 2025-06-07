@@ -51,6 +51,20 @@ async function carregarLivro() {
         document.getElementById("estoque").textContent = `${quantidadeTotal} unidades em Estoque`;
         document.getElementById("quantidade").max = quantidadeTotal;
 
+        const inputQuantidade = document.getElementById("quantidade");
+
+        inputQuantidade.addEventListener("input", () => {
+            const max = parseInt(inputQuantidade.max);
+            const valor = parseInt(inputQuantidade.value);
+
+            if (valor > max) {
+                inputQuantidade.value = max;
+            } else if (valor < 1 || isNaN(valor)) {
+                inputQuantidade.value = 1;
+            }
+        });
+
+
         // Seleciona o elemento da classe "acoes-produto"
         const acoesProduto = document.querySelector(".acoes-produto");
 
@@ -152,14 +166,19 @@ async function adicionarAoCarrinho() {
     }
 }
 
-
 function comprarLivro() {
     const urlParams = new URLSearchParams(window.location.search);
     const livroId = urlParams.get("livroId");
     const quantidade = document.getElementById("quantidade").value;
-
+    const max = parseInt(document.getElementById("quantidade").max);
+    
     if (!livroId || !quantidade || quantidade <= 0) {
         alert("ID do livro ou quantidade inválida.");
+        return;
+    }
+
+    if (isNaN(quantidade) || quantidade < 1 || quantidade > max) {
+        alert("Por favor, insira uma quantidade válida (até " + max + ").");
         return;
     }
 
