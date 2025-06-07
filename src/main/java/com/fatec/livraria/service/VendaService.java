@@ -5,6 +5,7 @@ import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.entity.Venda;
 import com.fatec.livraria.repository.ClienteRepository;
+import com.fatec.livraria.repository.LivroRepository;
 import com.fatec.livraria.repository.VendaRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -19,12 +20,10 @@ import java.util.*;
 public class VendaService {
 
     @Autowired private VendaRepository vendaRepository;
-
     @Autowired private LivroService livroService;
-
     @Autowired private CupomService cupomService;
-
     @Autowired private ClienteRepository clienteRepository;
+    @Autowired private LivroRepository livroRepository;
 
     public void criarVenda(Livro livro, Pedido pedido) {
         Venda venda = new Venda();
@@ -40,7 +39,7 @@ public class VendaService {
         vendaRepository.saveAll(vendas);
     }
 
-    public void atualizarStatus(List<Integer> vendaIds, String novoStatus, HttpSession session) {
+    public void atualizarStatus(List<Integer> vendaIds, String novoStatus, Boolean retornarEstoque, HttpSession session) {
         Integer clienteId = (Integer) session.getAttribute("clienteId");
         if (clienteId == null) {
             throw new IllegalStateException("Cliente não está logado.");
@@ -58,6 +57,8 @@ public class VendaService {
         boolean gerarCupom = false;
         String tipoCupom = "";
 
+        Map<Integer, Integer> livrosParaAtualizar = new HashMap<>();
+
         for (Venda venda : vendas) {
             String statusAtual = venda.getStatus();
 
@@ -72,10 +73,24 @@ public class VendaService {
                 cliente = venda.getPedido().getCliente();
                 gerarCupom = true;
                 tipoCupom = novoStatus.equals("Troca Aceita") ? "Troca" : "Devolução";
+
+                if (Boolean.TRUE.equals(retornarEstoque)) {
+                    Livro livro = venda.getLivro();
+                    livrosParaAtualizar.merge(livro.getId(), 1, Integer::sum);
+                }
             }
         }
 
         vendaRepository.saveAll(vendas);
+
+        if (!livrosParaAtualizar.isEmpty()) {
+            List<Livro> livros = livroRepository.findAllById(livrosParaAtualizar.keySet());
+            for (Livro livro : livros) {
+                Integer quantidade = livrosParaAtualizar.get(livro.getId());
+                livro.setEstoque(livro.getEstoque() + quantidade);
+            }
+            livroRepository.saveAll(livros);
+        }
 
         if (gerarCupom && cliente != null && valorTotal.compareTo(BigDecimal.ZERO) > 0) {
             cupomService.gerarCupom(valorTotal, tipoCupom, cliente);
