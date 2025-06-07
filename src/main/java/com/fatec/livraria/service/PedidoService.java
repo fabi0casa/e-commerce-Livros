@@ -360,8 +360,8 @@ public class PedidoService {
         return pedido;
     }
 
-    public void atualizarStatusVendas(List<Integer> vendaId, String novoStatus) {
-        vendaService.atualizarStatus(vendaId, novoStatus);
+    public void atualizarStatusVendas(List<Integer> vendaId, String novoStatus, HttpSession session) {
+        vendaService.atualizarStatus(vendaId, novoStatus, session);
     }
 
     private String gerarCodigoPedido() {

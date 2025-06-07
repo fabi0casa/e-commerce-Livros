@@ -110,9 +110,9 @@ public class PedidoController {
     }
 
     @PatchMapping("/vendas/status")
-    public ResponseEntity<?> atualizarStatusVendas(@RequestBody StatusRequest request) {
+    public ResponseEntity<?> atualizarStatusVendas(@RequestBody StatusRequest request, HttpSession session) {
         try {
-            pedidoService.atualizarStatusVendas(request.getVendaIds(), request.getStatus());
+            pedidoService.atualizarStatusVendas(request.getVendaIds(), request.getStatus(), session);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));

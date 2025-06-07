@@ -4,7 +4,11 @@ import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.entity.Venda;
+import com.fatec.livraria.repository.ClienteRepository;
 import com.fatec.livraria.repository.VendaRepository;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,8 @@ public class VendaService {
 
     @Autowired private CupomService cupomService;
 
+    @Autowired private ClienteRepository clienteRepository;
+
     public void criarVenda(Livro livro, Pedido pedido) {
         Venda venda = new Venda();
         venda.setStatus("Em Processamento");
@@ -33,9 +39,18 @@ public class VendaService {
     public void criarVendasEmLote(List<Venda> vendas) {
         vendaRepository.saveAll(vendas);
     }
-    
 
-    public void atualizarStatus(List<Integer> vendaIds, String novoStatus) {
+    public void atualizarStatus(List<Integer> vendaIds, String novoStatus, HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        if (clienteId == null) {
+            throw new IllegalStateException("Cliente não está logado.");
+        }
+    
+        Cliente clienteLogado = clienteRepository.findById(clienteId)
+            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado."));
+    
+        boolean isAdmin = Boolean.TRUE.equals(clienteLogado.isAdmin());
+
         List<Venda> vendas = vendaRepository.findAllById(vendaIds);
 
         BigDecimal valorTotal = BigDecimal.ZERO;
@@ -47,6 +62,8 @@ public class VendaService {
             String statusAtual = venda.getStatus();
 
             validarTransicaoStatus(statusAtual, novoStatus);
+
+            if (!isAdmin) validarTransicaoCliente(venda, novoStatus, clienteId);
 
             venda.setStatus(novoStatus);
 
@@ -96,4 +113,27 @@ public class VendaService {
             ));
         }
     }
+
+    private void validarTransicaoCliente(Venda venda, String novoStatus, Integer clienteId) {
+        String statusAtual = venda.getStatus();
+        Cliente clientePedido = venda.getPedido().getCliente();
+    
+        if (!clientePedido.getId().equals(clienteId)) {
+            throw new SecurityException("Você não tem permissão para alterar este pedido.");
+        }
+    
+        // Regras permitidas para cliente comum
+        boolean permitido = switch (statusAtual) {
+            case "Em Processamento", "Aprovado", "Em Transporte" -> novoStatus.equals("Cancelado");
+            case "Entregue" -> novoStatus.equals("Troca Solicitada") || novoStatus.equals("Devolução Solicitada");
+            default -> false;
+        };
+    
+        if (!permitido) {
+            throw new IllegalArgumentException(String.format(
+                "Clientes só podem alterar de %s para %s.", statusAtual, novoStatus
+            ));
+        }
+    }
+    
 }
