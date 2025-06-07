@@ -131,7 +131,7 @@ public class VendaService {
     
         if (!permitido) {
             throw new IllegalArgumentException(String.format(
-                "Clientes só podem alterar de %s para %s.", statusAtual, novoStatus
+                "Clientes não podem alterar de %s para %s.", statusAtual, novoStatus
             ));
         }
     }
