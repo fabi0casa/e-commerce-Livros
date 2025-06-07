@@ -328,7 +328,6 @@ public class PedidoService {
         return pedido;
     }
 
-
     public void atualizarStatusVendas(List<Integer> vendaId, String novoStatus) {
         vendaService.atualizarStatus(vendaId, novoStatus);
     }
