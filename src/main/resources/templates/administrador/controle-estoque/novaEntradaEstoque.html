@@ -11,48 +11,48 @@
 </head>
 <body>
     <div class="container">
-        <form>
+        <form id="entradaEstoqueForm">
             <h3>Nova Entrada no Estoque</h3>
+    
             <label for="livro">Livro:</label>
             <select id="livro" required>
                 <option value="">Selecione um livro</option>
-                <option value="livro1">Livro 1</option>
-                <option value="livro2">Livro 2</option>
             </select>
-
+    
             <label for="quantidade">Quantidade:</label>
             <input type="number" id="quantidade" min="1" required>
-
+    
             <label for="valorCusto">Valor de Custo (R$):</label>
             <input type="number" id="valorCusto" step="0.01" min="0.01" required>
-
+    
             <label for="precificacao">Grupo de Precificação:</label>
             <select id="precificacao" required>
                 <option value="">Selecione um Grupo de Precificação</option>
-                <option value="promocional">Promocional (lucro de 5%)</option>
-                <option value="normal">Normal (lucro de 10%)</option>
-                <option value="raridade">Raridade (lucro de 30%)</option>
             </select>
-
+    
             <label for="fornecedor">Fornecedor:</label>
             <select id="fornecedor" required>
                 <option value="">Selecione um Fornecedor</option>
-                <option value="fornecedorA">Fornecedor A</option>
-                <option value="fornecedorB">Fornecedor B</option>
             </select>
-
+    
             <button type="submit">Adicionar ao Estoque</button>
-            <div class="botaoCancelar"><button type="submit" onclick="cancelarAlteracaoSenha()">Cancelar</button></div>
+            <div class="botaoCancelar"><button type="submit" onclick="cancelar()">Cancelar</button></div>
         </form>
     </div>
 
-    <script>
-        function cancelarAlteracaoSenha() {
-            if (confirm("Tem certeza que deseja cancelar? As alterações não serão salvas.")) {
-                window.history.back(); // Volta para a página anterior
-            }
-        }
+    <div id="modalSucesso" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Sucesso!</h2>
+            <p id="modalText">Entrada de estoque registrada com sucesso!</p>
+            <div id="checkboxContainer" style="display: none;"></div>
+            <br />
+            <button onclick="window.location.href = '/estoque'">OK</button>
+        </div>
+    </div>
+
+    <script src="/js/admin/estoque/novaEntradaEstoque.js/">
     </script>
+
 
     <script type="module">
         import { loadSidebar } from '/js/admin/sidebar-header.js';

@@ -1,5 +1,6 @@
 package com.fatec.livraria.service;
 
+import com.fatec.livraria.dto.response.NomeIdResponse;
 import com.fatec.livraria.entity.Fornecedor;
 import com.fatec.livraria.repository.FornecedorRepository;
 import jakarta.annotation.PostConstruct;
@@ -28,4 +29,12 @@ public class FornecedorService {
             System.out.println("✅ Fornecedores cadastrados automaticamente.");
         }
     }
+
+    public List<NomeIdResponse> listarTodos() {
+        return fornecedorRepository.findAll()
+            .stream()
+            .map(f -> new NomeIdResponse(f.getId(), f.getNome()))
+            .toList();
+    }
+
 }

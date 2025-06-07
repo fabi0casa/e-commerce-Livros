@@ -1,5 +1,6 @@
 package com.fatec.livraria.service;
 
+import com.fatec.livraria.dto.response.NomeIdResponse;
 import com.fatec.livraria.entity.GrupoPrecificacao;
 import com.fatec.livraria.repository.GrupoPrecificacaoRepository;
 import jakarta.annotation.PostConstruct;
@@ -29,4 +30,12 @@ public class GrupoPrecificacaoService {
             System.out.println("✅ Grupos de precificação cadastrados automaticamente.");
         }
     }
+
+    public List<NomeIdResponse> listarTodos() {
+        return grupoPrecificacaoRepository.findAll()
+            .stream()
+            .map(g -> new NomeIdResponse(g.getId(), g.getNome()))
+            .toList();
+    }
+
 }

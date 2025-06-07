@@ -2,6 +2,7 @@ package com.fatec.livraria.service;
 
 import com.fatec.livraria.dto.request.EntradaEstoqueRequest;
 import com.fatec.livraria.dto.response.LivroEstoqueResponse;
+import com.fatec.livraria.dto.response.NomeIdResponse;
 import com.fatec.livraria.entity.Categoria;
 import com.fatec.livraria.entity.Fornecedor;
 import com.fatec.livraria.entity.GrupoPrecificacao;
@@ -75,6 +76,13 @@ public class LivroService {
         livroRepository.save(livro);
 
         return true;
+    }
+
+    public List<NomeIdResponse> listarNomeEId() {
+        return livroRepository.findAll()
+            .stream()
+            .map(f -> new NomeIdResponse(f.getId(), f.getNome()))
+            .toList();
     }
 
     public String gerarContextoLivros() {

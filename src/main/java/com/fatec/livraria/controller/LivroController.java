@@ -2,6 +2,7 @@ package com.fatec.livraria.controller;
 
 import com.fatec.livraria.dto.request.EntradaEstoqueRequest;
 import com.fatec.livraria.dto.response.LivroEstoqueResponse;
+import com.fatec.livraria.dto.response.NomeIdResponse;
 import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.service.LivroService;
 import com.fatec.livraria.service.PermissaoUsuarioService;
@@ -67,6 +68,11 @@ public class LivroController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/lista")
+    public List<NomeIdResponse> listarNomeEId() {
+        return livroService.listarNomeEId();
     }
 
 }
