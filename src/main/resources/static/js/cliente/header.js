@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Gera uma cor determinística baseada na inicial
             const charCode = inicial.charCodeAt(0);
             const hue = (charCode * 15) % 360;  // Multiplica pra espaçar bem, e pega o resto de 360
-            const corVibrante = `hsl(${hue}, 100%, 50%)`;
+            const corVibrante = `hsl(${hue}, 100%, 45%)`;
     
             // Cria o círculo com a inicial
             avatar.innerHTML = `<div class="account-circle" style="background-color: ${corVibrante};">${inicial}</div>`;
