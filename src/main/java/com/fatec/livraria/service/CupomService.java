@@ -16,8 +16,8 @@ import java.util.UUID;
 @Service
 public class CupomService {
 
-    @Autowired
-    private CupomRepository cupomRepository;
+    @Autowired private CupomRepository cupomRepository;
+    @Autowired private NotificacaoService notificacaoService;
 
     @Transactional
     public void excluirCupom(Integer id) {
@@ -45,8 +45,16 @@ public class CupomService {
         cupom.setTipo(tipo);
         cupom.setCliente(cliente);
         cupom.setCodigo(codigo);
-    
-        return cupomRepository.save(cupom);
+
+        Cupom cupomSalvo = cupomRepository.save(cupom);
+
+        notificacaoService.criarNotificacao(
+            "🎫 Cupom",
+            "Um cupom de " + cupom.getTipo() + "Foi adicionado a sua conta com o valor de R$" + cupom.getValor() + "!",
+            cliente.getId()
+        );
+
+        return cupomSalvo;
     }
 
     public List<Cupom> buscarPorIds(List<Integer> ids) {

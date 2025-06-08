@@ -38,6 +38,7 @@ public class ClienteService {
     @Autowired private ClienteValidator clienteValidator;
     @Autowired private EnderecoValidator enderecoValidator;
     @Autowired private PedidoRepository pedidoRepository;
+    @Autowired private NotificacaoService notificacaoService;
 
     @PostConstruct
     public void criarUsuarioRootSeNaoExistir() {
@@ -120,6 +121,12 @@ public class ClienteService {
         cliente.setEnderecos(enderecos);
 
         clienteRepository.save(cliente);
+
+        notificacaoService.criarNotificacao(
+            "🎉 Bem-vindo à Livraria!",
+            "Olá " + cliente.getNome() + ", sua conta foi criada com sucesso. Aproveite nossos livros!",
+            cliente.getId()
+        );
     }
 
     public void atualizarDadosCliente(AtualizarClienteRequest clienteRequest) throws Exception {
@@ -169,6 +176,12 @@ public class ClienteService {
 
         cliente.setSenha(dto.getNovaSenha());
         clienteRepository.save(cliente);
+
+        notificacaoService.criarNotificacao(
+            "Senha Alterada",
+            "Olá " + cliente.getNome() + ", sua senha foi alterada com sucesso, se não foi você entre em contato conosco o mais rápido possível!",
+            cliente.getId()
+        );
     }
 
     public void adicionarEnderecoAoCliente(int clienteId, EnderecoRequest enderecoRequest) throws Exception {
@@ -182,6 +195,12 @@ public class ClienteService {
         cliente.getEnderecos().add(endereco);
 
         enderecoService.salvar(endereco);
+        
+        notificacaoService.criarNotificacao(
+            "🏡 Novo Endereco",
+            "Um novo Endereço foi adicionado a sua conta!",
+            cliente.getId()
+        );
     }
 
     public void adicionarEnderecoAoClienteLogado(EnderecoRequest enderecoRequest, HttpSession session) throws Exception {
@@ -201,6 +220,11 @@ public class ClienteService {
         clienteCompleto.getEnderecos().add(endereco);
     
         enderecoService.salvar(endereco);
+        notificacaoService.criarNotificacao(
+            "🏡 Novo Endereco",
+            "Um novo Endereço foi adicionado a sua conta!",
+            cliente.getId()
+        );
     }
     
 

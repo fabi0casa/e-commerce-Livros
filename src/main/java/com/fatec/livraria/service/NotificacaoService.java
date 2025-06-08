@@ -2,6 +2,7 @@ package com.fatec.livraria.service;
 
 import com.fatec.livraria.entity.Notificacao;
 import com.fatec.livraria.entity.Cliente;
+import com.fatec.livraria.repository.ClienteRepository;
 import com.fatec.livraria.repository.NotificacaoRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -16,18 +17,18 @@ import java.util.List;
 public class NotificacaoService {
 
     private final NotificacaoRepository notificacaoRepository;
-    private final ClienteService clienteService;
+    private final ClienteRepository clienteRepository;
 
     public List<Notificacao> buscarNaoVistasPorCliente(HttpSession session) {
 
-        Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
+        Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("clienteId"))
             .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         return notificacaoRepository.findByClienteAndIsVistoFalse(cliente);
     }
 
     public void criarNotificacao(String titulo, String descricao, Integer clienteId) {
-        Cliente cliente = clienteService.buscarPorId(clienteId)
+        Cliente cliente = clienteRepository.findById(clienteId)
             .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Notificacao notificacao = new Notificacao();
@@ -40,7 +41,7 @@ public class NotificacaoService {
     }
 
     public Notificacao marcarComoVisto(Integer id, HttpSession session) {
-        Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
+        Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("clienteId"))
             .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
     
         Notificacao notificacao = notificacaoRepository.findById(id)

@@ -1,5 +1,7 @@
 package com.fatec.livraria.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +28,7 @@ public class Notificacao {
     private boolean isVisto = false;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "not_cli_id", nullable = false)
     private Cliente cliente;
 }

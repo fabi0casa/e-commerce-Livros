@@ -37,6 +37,7 @@ public class PedidoService {
     @Autowired private VendaService vendaService;
     @Autowired private CupomService cupomService;
     @Autowired private CarrinhoService carrinhoService;
+    @Autowired private NotificacaoService notificacaoService;
 
     public List<Pedido> listarTodos() {
         return pedidoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
@@ -220,7 +221,13 @@ public class PedidoService {
         pedido = pedidoRepository.save(pedido);
 
         clienteService.buscarPorId(cliente.getId());
-        
+
+        notificacaoService.criarNotificacao(
+            "🛍️ Pedido",
+            "Sua compra foi realizada com sucesso! Você pode ver seu pedido com código #" + pedido.getCodigo() + " em 'Meus Pedidos' na página da Conta!",
+            cliente.getId()
+        );
+
         return pedido;
     }
 
@@ -357,6 +364,11 @@ public class PedidoService {
         // Após criar o pedido, limpar o carrinho do cliente
         carrinhoService.limparCarrinhoDoCliente(session);
 
+        notificacaoService.criarNotificacao(
+            "🛍️ Pedido",
+            "Sua compra do carrinho foi realizada com sucesso! Você pode ver seu pedido com código #" + pedido.getCodigo() + " em 'Meus Pedidos' na página da Conta!",
+            cliente.getId()
+        );
         return pedido;
     }
 

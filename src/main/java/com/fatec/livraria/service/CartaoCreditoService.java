@@ -19,17 +19,11 @@ import java.util.Optional;
 @Service
 public class CartaoCreditoService {
 
-    @Autowired
-    private CartaoCreditoRepository cartaoCreditoRepository;
-    
-    @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private BandeiraService bandeiraService;
-
-    @Autowired
-    private ClienteService clienteService;
+    @Autowired private CartaoCreditoRepository cartaoCreditoRepository;
+    @Autowired private ClienteRepository clienteRepository;
+    @Autowired private BandeiraService bandeiraService;
+    @Autowired private ClienteService clienteService;
+    @Autowired private NotificacaoService notificacaoService;
 
     public List<CartaoCredito> getCartaoByClienteId(Integer clienteId) {
         return cartaoCreditoRepository.findByCliente_Id(clienteId);
@@ -98,6 +92,12 @@ public class CartaoCreditoService {
         cartao.setBandeira(bandeira);
 
         cartaoCreditoRepository.save(cartao);
+
+        notificacaoService.criarNotificacao(
+            "💳 Novo Cartão",
+            "Um novo Cartão foi adicionado a sua conta!",
+            cliente.getId()
+        );
     }
 
     public void adicionarCartaoAoClienteLogado(CartaoClienteLogadoRequest cartaoClienteLogadoRequest, HttpSession session) {
@@ -133,5 +133,11 @@ public class CartaoCreditoService {
         cartao.setBandeira(bandeira);
 
         cartaoCreditoRepository.save(cartao);
+        
+        notificacaoService.criarNotificacao(
+            "💳 Novo Cartão",
+            "Um novo Cartão foi adicionado a sua conta!",
+            cliente.getId()
+        );
     }
 }

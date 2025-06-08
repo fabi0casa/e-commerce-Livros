@@ -24,6 +24,7 @@ public class VendaService {
     @Autowired private CupomService cupomService;
     @Autowired private ClienteRepository clienteRepository;
     @Autowired private LivroRepository livroRepository;
+    @Autowired private NotificacaoService notificacaoService;
 
     public void criarVenda(Livro livro, Pedido pedido) {
         Venda venda = new Venda();
