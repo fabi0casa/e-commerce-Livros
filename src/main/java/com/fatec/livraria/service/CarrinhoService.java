@@ -20,13 +20,16 @@ public class CarrinhoService {
     private final CarrinhoRepository carrinhoRepository;
     private final ClienteRepository clienteRepository;
     private final LivroRepository livroRepository;
+    private final NotificacaoService notificacaoService;
 
     public CarrinhoService(CarrinhoRepository carrinhoRepository,
                            ClienteRepository clienteRepository,
-                           LivroRepository livroRepository) {
+                           LivroRepository livroRepository,
+                           NotificacaoService notificacaoService) {
         this.carrinhoRepository = carrinhoRepository;
         this.clienteRepository = clienteRepository;
         this.livroRepository = livroRepository;
+        this.notificacaoService = notificacaoService;
     }
 
     private Optional<Cliente> getClienteDaSessao(HttpSession session) {
@@ -91,6 +94,7 @@ public class CarrinhoService {
             livroRepository.save(livro);
     
             carrinho.setQuantidade(novaQuantidade);
+            carrinho.setData(new Date());
             return Optional.of(carrinhoRepository.save(carrinho));
         }
     
@@ -104,7 +108,25 @@ public class CarrinhoService {
         novoItem.setData(new Date());
     
         return Optional.of(carrinhoRepository.save(novoItem));
-    }    
+    }
+
+    public void removerItensAntigosDoCarrinho() {
+        Date limite = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+
+        List<Carrinho> itensAntigos = carrinhoRepository.findByDataBefore(limite);
+
+        for (Carrinho carrinho : itensAntigos) {
+            Cliente cliente = carrinho.getCliente();
+            String titulo = "🛒 Carrinho";
+            String descricao = String.format(
+                "O livro \"%s\" foi removido do seu carrinho por inatividade de 24 horas.",
+                carrinho.getLivro().getNome()
+            );
+            notificacaoService.criarNotificacao(titulo, descricao, cliente.getId());
+        }
+        carrinhoRepository.deleteByDataBefore(limite);
+    }
+    
 
     public Carrinho atualizarQuantidade(Integer carrinhoId, Integer novaQuantidade, HttpSession session) {
         Carrinho carrinho = validarPertinenciaECapturar(carrinhoId, session);
@@ -125,7 +147,10 @@ public class CarrinhoService {
         }
     
         livroRepository.save(livro);
+
         carrinho.setQuantidade(novaQuantidade);
+        carrinho.setData(new Date());
+
         return carrinhoRepository.save(carrinho);
     }    
 
