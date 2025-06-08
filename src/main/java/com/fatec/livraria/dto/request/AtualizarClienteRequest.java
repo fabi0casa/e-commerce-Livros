@@ -11,9 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class AtualizarClienteRequest {
 
-    // ✅ ID obrigatório para identificar o cliente a ser atualizado
-    @NotNull(message = "O ID do cliente é obrigatório.")
-    private int id;
+    private Integer id;
 
     @NotBlank(message = "O nome não pode estar vazio.")
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres.")

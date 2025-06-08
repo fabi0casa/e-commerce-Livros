@@ -34,13 +34,11 @@ public class ClienteController {
     @Autowired
     private PermissaoUsuarioService permissaoUsuarioService;
 
-    // Listar todos os clientes
     @GetMapping("/all")
     public ResponseEntity<List<Cliente>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 
-    // Buscar cliente por ID
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> buscarPorId(@PathVariable Integer id, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
@@ -56,7 +54,6 @@ public class ClienteController {
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
     
-
     // Cadastro (com Thymeleaf)
     @PostMapping("/add")
     public ResponseEntity<?> adicionarCliente(@ModelAttribute ClienteRequest clienteRequest, Model model, RedirectAttributes redirectAttributes) {
@@ -70,7 +67,7 @@ public class ClienteController {
         }
     }
 
-    // Atualizar cliente
+
     @PutMapping("/update")
     public ResponseEntity<?> atualizarCliente(@RequestBody AtualizarClienteRequest clienteRequest, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
@@ -84,7 +81,18 @@ public class ClienteController {
         }
     }
 
-    // Atualizar senha
+    @PutMapping("/update/me")
+    public ResponseEntity<?> atualizarClienteLogado(@RequestBody AtualizarClienteRequest clienteRequest, HttpSession session) {
+        try {
+            clienteService.atualizarDadosClienteLogado(clienteRequest, session);
+            return ResponseEntity.ok("{\"mensagem\": \"Cliente atualizado com sucesso!\"}");
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"erro\": \"Erro inesperado ao atualizar cliente.\"}");
+        }
+    }
+
     @PutMapping("/alterarSenha")
     public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaRequest alterarSenhaRequest, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
@@ -98,7 +106,6 @@ public class ClienteController {
         }
     }
 
-    // Adicionar novo endereço
     @PostMapping("/{clienteId}/enderecos/add")
     public ResponseEntity<?> adicionarEndereco(@PathVariable int clienteId, @RequestBody EnderecoRequest enderecoRequest, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
@@ -128,8 +135,6 @@ public class ClienteController {
         }
     }
 
-
-    // Deletar cliente
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletarCliente(@PathVariable Integer id, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
@@ -137,7 +142,6 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
-    // Filtro
     @GetMapping("/filtro")
     public ResponseEntity<List<Cliente>> filtrarClientes(
             @RequestParam(required = false) String nome,

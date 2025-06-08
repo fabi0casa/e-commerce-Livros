@@ -123,7 +123,26 @@ public class ClienteService {
     }
 
     public void atualizarDadosCliente(AtualizarClienteRequest clienteRequest) throws Exception {
+        if (clienteRequest.getId() == null || clienteRequest.getId() <= 0) throw new Exception("Cliente não encontrado!");
+        
         Cliente cliente = clienteRepository.findById(clienteRequest.getId())
+                .orElseThrow(() -> new Exception("Cliente não encontrado!"));
+
+        clienteValidator.validarAtualizacaoCliente(clienteRequest);
+
+        cliente.setNome(clienteRequest.getNome());
+        cliente.setDataNascimento(clienteRequest.getDataNascimento());
+        cliente.setCpf(clienteRequest.getCpf());
+        cliente.setGenero(clienteRequest.getGenero());
+        cliente.setEmail(clienteRequest.getEmail());
+        cliente.setTelefone(clienteRequest.getTelefone());
+
+        clienteRepository.save(cliente);
+    }
+
+    public void atualizarDadosClienteLogado(AtualizarClienteRequest clienteRequest, HttpSession session) throws Exception {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new Exception("Cliente não encontrado!"));
 
         clienteValidator.validarAtualizacaoCliente(clienteRequest);
