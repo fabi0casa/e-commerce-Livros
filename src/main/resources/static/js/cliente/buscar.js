@@ -29,18 +29,31 @@ async function buscarLivros() {
         livros.forEach(livro => {
             const card = document.createElement("a");
             card.href = `/anuncio?livroId=${livro.id}`;
-            card.classList.add("product-card");
-            
+            card.classList.add("product-card-buscar");
+        
+            const categorias = livro.categorias.map(cat => cat.nome).join(", ");
+        
             card.innerHTML = `
                 <img src="${livro.caminhoImagem}" alt="${livro.nome}">
                 <div class="product-info">
                     <h3>${livro.nome}</h3>
-                    <p class="price">R$ ${livro.precoVenda.toFixed(2)}</p>
+                    <div class="price">R$ ${livro.precoVenda.toFixed(2)}</div>
+                    <div class="details">
+                        <strong>Autor:</strong> ${livro.autor?.nome || "N/A"}<br>
+                        <strong>Editora:</strong> ${livro.editora?.nome || "N/A"}<br>
+                        <strong>Ano:</strong> ${livro.anoPublicacao}<br>
+                        <strong>Edição:</strong> ${livro.edicao}<br>
+                        <strong>Páginas:</strong> ${livro.numPaginas}<br>
+                        <strong>Categoria:</strong> ${categorias}
+                    </div>
+                    <div class="sinopse">
+                        ${livro.sinopse.length > 200 ? livro.sinopse.substring(0, 200) + "..." : livro.sinopse}
+                    </div>
                 </div>
             `;
-            
+        
             container.appendChild(card);
-        });
+        });        
     } catch (error) {
         console.error("Erro ao buscar livros:", error);
     }
