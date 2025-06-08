@@ -78,6 +78,12 @@ public class PageController {
         model.addAttribute("cliente", new Cliente());
         return "administrador/gerenciar-clientes/cadastrarCliente";
     }
+
+    @GetMapping("/cadastro")
+    public String exibirTelaCadastroDoCliente(Model model, HttpSession session) {
+        model.addAttribute("cliente", new Cliente());
+        return "cliente/cadastro";
+    }
     
     @GetMapping("/{rota}")
     public String renderizarRotaPersonalizada(@PathVariable String rota, Model model, HttpSession session) {

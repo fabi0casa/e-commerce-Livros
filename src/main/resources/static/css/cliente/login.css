@@ -10,14 +10,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-a {
-    display: flex;
-    align-items: center; /* Garante o alinhamento do link */
-    text-decoration: none; /* Opcional: remove o sublinhado do link */
-    color: white; /* Garantir que o texto do link seja visível */
-    font-size: 20px; /* Ajuste o tamanho do texto conforme necessário */
-    margin-left: 10px; /* Se quiser um pequeno espaço entre o logo e o link */
-}
 .container {
     margin-top: 60px;
     width: 80%;
@@ -78,4 +70,32 @@ a {
         opacity: 1;
         text-shadow: 0 0 3px #00ff00;
     }
+}
+
+.text-container {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.text-container h2 {
+    margin-top: 20px;
+    color: #000023;
+    font-size: 14px;
+    padding-bottom: 5px;
+    font-weight: normal;
+    font-style: italic; 
+    color: #1b1830;
+}
+
+.text-container h2 a {
+    color: #4a2aff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.text-container h2 a:hover {
+    color: #1c3eff;
+    text-decoration: underline;
 }
