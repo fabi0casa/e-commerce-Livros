@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import static java.util.Map.entry;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -96,6 +97,8 @@ public class VendaService {
         if (gerarCupom && cliente != null && valorTotal.compareTo(BigDecimal.ZERO) > 0) {
             cupomService.gerarCupom(valorTotal, tipoCupom, cliente);
         }
+
+        notificarMudancaStatus(novoStatus, cliente);
     }
 
     private void validarTransicaoStatus(String statusAtual, String novoStatus) {
@@ -149,6 +152,29 @@ public class VendaService {
             throw new IllegalArgumentException(String.format(
                 "Clientes não podem alterar de %s para %s.", statusAtual, novoStatus
             ));
+        }
+    }
+
+    private void notificarMudancaStatus(String novoStatus, Cliente cliente) {
+        Map<String, String[]> mensagens = Map.ofEntries(
+            entry("Aprovado", new String[]{"✅ Pedido Aprovado", "Seu pedido foi aprovado e logo será enviado!"}),
+            entry("Reprovado", new String[]{"❌ Pedido Reprovado", "Infelizmente seu pedido não foi aprovado. Verifique os detalhes na sua conta."}),
+            entry("Cancelado", new String[]{"✖️ Pedido Cancelado", "Você cancelou o seu pedido. Esperamos vê-lo em breve novamente!"}),
+            entry("Em Transporte", new String[]{"📦 Pedido a Caminho", "Seu pedido está a caminho! Fique de olho no rastreio."}),
+            entry("Entregue", new String[]{"📬 Pedido Entregue", "Seu pedido foi entregue! Esperamos que goste."}),
+            entry("Troca Solicitada", new String[]{"🔄 Troca Solicitada", "Você solicitou uma troca. Estamos analisando seu pedido."}),
+            entry("Troca Aceita", new String[]{"💎 Troca Aceita", "Sua solicitação de troca foi aceita. Em breve daremos continuidade."}),
+            entry("Troca Recusada", new String[]{"😵 Troca Recusada", "Sua solicitação de troca foi recusada. Verifique mais detalhes em Meus Pedidos."}),
+            entry("Troca Concluida", new String[]{"☑️ Troca Concluída", "Sua troca foi concluída com sucesso!"}),
+            entry("Devolução Solicitada", new String[]{"↩️ Devolução Solicitada", "Você solicitou uma devolução. Analisaremos o pedido."}),
+            entry("Devolução Aceita", new String[]{"👑 Devolução Aceita", "Sua devolução foi aceita. O valor será devolvido conforme política."}),
+            entry("Devolução Recusada", new String[]{"😵‍💫 Devolução Recusada", "Sua devolução foi recusada. Verifique mais detalhes em Meus Pedidos."}),
+            entry("Devolução Concluida", new String[]{"☑️ Devolução Concluída", "A devolução foi concluída. Esperamos vê-lo novamente!"})
+        );
+    
+        String[] mensagem = mensagens.get(novoStatus);
+        if (mensagem != null) {
+            notificacaoService.criarNotificacao(mensagem[0], mensagem[1], cliente.getId());
         }
     }
     
