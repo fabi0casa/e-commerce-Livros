@@ -22,6 +22,9 @@ public class Notificacao {
     @Column(name = "not_descricao", nullable = false)
     private String descricao;
 
+    @Column(name = "not_visto", nullable = false)
+    private boolean isVisto = false;
+
     @ManyToOne
     @JoinColumn(name = "not_cli_id", nullable = false)
     private Cliente cliente;
