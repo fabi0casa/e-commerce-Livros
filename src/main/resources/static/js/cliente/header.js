@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function atualizarBotaoConta(nomeCliente) {
         if (nomeCliente) {
             const primeiroNome = nomeCliente.split(" ")[0];
-            const inicial = primeiroNome.charAt(0).toUpperCase();
+            const inicial = primeiroNome.charAt(0);
     
             document.getElementById("accountText").textContent = primeiroNome;
     

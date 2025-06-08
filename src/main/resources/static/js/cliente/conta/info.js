@@ -177,7 +177,7 @@ function setupAccordions() {
 
 function gerarAvatarCliente(nome) {
     const primeiroNome = nome.split(" ")[0];
-    const inicial = primeiroNome.charAt(0).toUpperCase();
+    const inicial = primeiroNome.charAt(0);
 
     // Cor determinística
     const charCode = inicial.charCodeAt(0);
