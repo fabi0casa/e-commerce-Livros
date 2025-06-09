@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="btn" id="notificationBtn">
 										<img src="/img//notification.png" alt="Notificações">
                     <span>Notificações</span>
-                    <!--<span class="notification-badge" id="notificationBadge">3</span>-->
+                    <span class="notification-badge" id="notificationBadge">3</span>
                 </button>
                 <button class="btn" onclick="window.location.href='/carrinho'">
 										<img src="/img//cart.png" alt="Carrinho">
@@ -23,21 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
             <div class="notification-popup" id="notificationPopup">
                 <ul id="notificationList">
-                    <li>
-                        <div class="notification-title">⚠️ Carrinho</div>
-                        <span>O produto 'Senhor dos Anéis' no seu carrinho foi removido por ultrapassar o limite de tempo de 5 dias</span>
-                        <button class="ok-btn">OK</button>
-                    </li>
-                    <li>
-                        <div class="notification-title">✅ Troca</div>
-                        <span>A troca do seu pedido (1x Dom Quixote) foi autorizada!</span>
-                        <button class="ok-btn">OK</button>
-                    </li>
-                    <li>
-                        <div class="notification-title">⚠️ Carrinho</div>
-                        <span>O Produto 'Diário de um Banana 7' foi removido do seu carrinho devido à falta no estoque.</span>
-                        <button class="ok-btn">OK</button>
-                    </li>
                 </ul>
             </div>
         </header>
@@ -112,6 +97,44 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // Buscar e exibir notificações não vistas
+    fetch('/notificacoes/nao-vistas')
+        .then(response => response.json())
+        .then(notificacoes => {
+            notificationList.innerHTML = ""; // Limpa notificações fixas
+            notificacoes.forEach(n => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <div class="notification-title">${n.titulo}</div>
+                    <span>${n.descricao}</span>
+                    <button class="ok-btn" data-id="${n.id}">OK</button>
+                `;
+                notificationList.appendChild(li);
+            });
+
+            updateNotificationCount();
+
+            // Adiciona listener a cada botão OK
+            document.querySelectorAll(".ok-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    const id = this.getAttribute("data-id");
+
+                    fetch(`/notificacoes/${id}/marcar-visto`, {
+                        method: "PUT"
+                    }).then(() => {
+                        this.parentElement.remove();
+                        updateNotificationCount();
+                    }).catch(err => {
+                        console.error("Erro ao marcar notificação como vista:", err);
+                    });
+                });
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao buscar notificações:", error);
+        });
+
+
     const notificationBtn = document.getElementById("notificationBtn");
     const notificationPopup = document.getElementById("notificationPopup");
     const notificationBadge = document.getElementById("notificationBadge");
@@ -124,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
             notificationBadge.style.display = "block";
         } else {
             notificationBadge.style.display = "none";
+            notificationPopup.classList.remove("active");
         }
     }
 
