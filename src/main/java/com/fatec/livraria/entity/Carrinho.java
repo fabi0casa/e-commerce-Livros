@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "CARRINHO")
 @Getter
@@ -21,11 +23,12 @@ public class Carrinho {
     @Column(name = "car_quantidade", nullable = false)
     private Integer quantidade;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "car_data", nullable = false)
-    private Date data;
+    private Date data;    
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "car_cli_id", nullable = false)
     private Cliente cliente;
 

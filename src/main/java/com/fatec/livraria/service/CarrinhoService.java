@@ -7,7 +7,7 @@ import com.fatec.livraria.repository.CarrinhoRepository;
 import com.fatec.livraria.repository.ClienteRepository;
 import com.fatec.livraria.repository.LivroRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Date;
@@ -110,6 +110,7 @@ public class CarrinhoService {
         return Optional.of(carrinhoRepository.save(novoItem));
     }
 
+    @Transactional
     public void removerItensAntigosDoCarrinho() {
         Date limite = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
 
@@ -127,7 +128,6 @@ public class CarrinhoService {
         carrinhoRepository.deleteByDataBefore(limite);
     }
     
-
     public Carrinho atualizarQuantidade(Integer carrinhoId, Integer novaQuantidade, HttpSession session) {
         Carrinho carrinho = validarPertinenciaECapturar(carrinhoId, session);
         Livro livro = carrinho.getLivro();
