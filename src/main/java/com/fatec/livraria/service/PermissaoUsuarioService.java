@@ -14,13 +14,19 @@ public class PermissaoUsuarioService {
     @Autowired private ClienteService clienteService;
 
     public void checarPermissaoDoUsuario(HttpSession session) {
-        Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
-            .orElseThrow(() -> new AcessoNegadoException());
-
-        if (cliente == null || !cliente.isAdmin()) {
+        Object clienteIdObj = session.getAttribute("clienteId");
+    
+        if (clienteIdObj == null) {
             throw new AcessoNegadoException();
         }
-
-        return;
-    }
+    
+        Integer clienteId = (Integer) clienteIdObj;
+    
+        Cliente cliente = clienteService.buscarPorId(clienteId)
+            .orElseThrow(AcessoNegadoException::new);
+    
+        if (!cliente.isAdmin()) {
+            throw new AcessoNegadoException();
+        }
+    }    
 }
