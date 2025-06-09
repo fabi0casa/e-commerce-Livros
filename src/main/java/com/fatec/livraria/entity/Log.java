@@ -9,13 +9,14 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Log {
+public class Log { 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_id")
     private Integer id;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "log_data_hora", nullable = false)
     private String dataHora;
 
