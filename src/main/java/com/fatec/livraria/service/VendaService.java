@@ -98,7 +98,7 @@ public class VendaService {
             cupomService.gerarCupom(valorTotal, tipoCupom, cliente);
         }
 
-        notificarMudancaStatus(novoStatus, cliente);
+        notificarMudancaStatus(novoStatus, clienteLogado);
     }
 
     private void validarTransicaoStatus(String statusAtual, String novoStatus) {
