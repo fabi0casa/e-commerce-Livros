@@ -8,6 +8,8 @@ import com.fatec.livraria.repository.NotificacaoRepository;
 import jakarta.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class NotificacaoService {
         Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("clienteId"))
             .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        return notificacaoRepository.findByClienteAndIsVistoFalse(cliente);
+        return notificacaoRepository.findByClienteAndIsVistoFalse(cliente, Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public void criarNotificacao(String titulo, String descricao, Integer clienteId) {
