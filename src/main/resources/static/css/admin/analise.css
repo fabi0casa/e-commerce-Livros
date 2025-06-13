@@ -1,0 +1,57 @@
+.selecao-produtos-categorias {
+    display: flex;
+    gap: 20px; /* Espaço entre os grupos */
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.selecao-produtos-categorias label{
+    font-weight: bold;
+}
+
+.selecao-produtos, .selecao-categorias {
+    flex: 1; /* Ocupa espaço de forma equilibrada */
+    min-width: 250px; /* Evita que fiquem muito estreitos */
+}
+
+.lista-checkbox {
+    display: flex;
+    flex-direction: column;
+    max-height: 150px; /* Limita a altura */
+    overflow-y: auto; /* Ativa rolagem vertical caso tenha muitos itens */
+    max-width: 290px;
+    width: 290px;
+    overflow-x: auto; /* Ativa rolagem horizontal caso os títulos sejam longos */
+    border: 1px solid #abafb1;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f6fbffcf;
+    white-space: nowrap; /* Impede quebra de linha */
+}
+
+.lista-checkbox::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.lista-checkbox::-webkit-scrollbar-thumb {
+    background: #000222;
+    border-radius: 20px;
+}
+.lista-checkbox::-webkit-scrollbar-track {
+    background: #00022225;
+}
+
+.lista-checkbox label{
+    font-weight: normal;
+    display: block; /* Faz com que cada checkbox fique numa linha separada */
+    white-space: nowrap; /* Mantém o texto em uma única linha */
+    overflow: visible; /* Impede que o texto ultrapasse os limites do contêiner */
+}
+
+.filtro-input {
+    width: 95%;
+    padding: 5px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+}

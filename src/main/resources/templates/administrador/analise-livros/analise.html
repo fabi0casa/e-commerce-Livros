@@ -7,6 +7,7 @@
     <title>Análise</title>
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
     <link rel="stylesheet" href="/css/admin/tabelaTransacoes.css/">
+    <link rel="stylesheet" href="/css/admin/analise.css/">
     <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
     <script src="/js/chart.min.js/"></script>
 </head>
@@ -18,6 +19,7 @@
             <div class="selecao-produtos">
                 <label>Selecione os Livros:</label>
                 <div class="lista-checkbox">
+                    <input type="text" placeholder="Pesquisar livro..." class="filtro-input" oninput="filtrarCheckboxes(this, 'lista-livros')">
                     <label><input type="checkbox" value="livro1"> Os Elementos de Euclides</label>
                     <label><input type="checkbox" value="livro2"> Herobrine a Lenda</label>
                     <label><input type="checkbox" value="livro3"> A Droga da Obediência</label>
@@ -27,6 +29,7 @@
             <div class="selecao-categorias">
                 <label>Selecione as Categorias:</label>
                 <div class="lista-checkbox">
+                    <input type="text" placeholder="Pesquisar categoria..." class="filtro-input" oninput="filtrarCheckboxes(this, 'lista-categorias')">
                     <label><input type="checkbox" value="categoria1"> Fantasia</label>
                     <label><input type="checkbox" value="categoria2"> Ficção Científica</label>
                     <label><input type="checkbox" value="categoria3"> História</label>
