@@ -215,6 +215,8 @@ header {
     display: none;
     border-radius: 5px;
     z-index: 1000;
+    max-height: 80%; /* Limita a altura */
+    overflow-y: auto; /* Ativa rolagem vertical caso tenha muitos itens */
 }
 
 .notification-popup ul {
