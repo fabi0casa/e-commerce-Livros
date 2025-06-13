@@ -6,12 +6,15 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.hibernate.envers.Audited;
+
 @Entity
 @Table(name = "LIVROS")
 @Getter
 @Setter
 //@AllArgsConstructor
 @NoArgsConstructor
+@Audited
 public class Livro {
 
     @Id

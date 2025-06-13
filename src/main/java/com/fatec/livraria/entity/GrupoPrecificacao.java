@@ -5,12 +5,15 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+import org.hibernate.envers.Audited;
+
 @Entity
 @Table(name = "GRUPO_PRECIFICACAO")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Audited
 public class GrupoPrecificacao {
 
     @Id

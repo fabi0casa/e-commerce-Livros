@@ -1,5 +1,7 @@
 package com.fatec.livraria.entity;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -12,6 +14,7 @@ import lombok.Setter;
 @Table(name = "CARTOES_DE_CREDITO")
 @Getter
 @Setter
+@Audited
 public class CartaoCredito {
 
     @Id

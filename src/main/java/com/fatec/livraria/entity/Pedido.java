@@ -3,6 +3,8 @@ package com.fatec.livraria.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.hibernate.envers.Audited;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +14,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Audited
 public class Pedido {
 
     @Id
