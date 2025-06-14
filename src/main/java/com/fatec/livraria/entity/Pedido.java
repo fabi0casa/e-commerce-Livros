@@ -1,9 +1,12 @@
 package com.fatec.livraria.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.envers.Audited;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,6 +33,10 @@ public class Pedido {
 
     @Column(name = "ped_forma_pagamento", nullable = false, length = 45)
     private String formaPagamento;
+
+    @Column(name = "ped_data_criacao", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private Date dataCriacao = new Date();
 
     @ManyToOne
     @JoinColumn(name = "ped_end_id", nullable = true)
