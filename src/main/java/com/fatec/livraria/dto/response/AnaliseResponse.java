@@ -1,3 +1,24 @@
 package com.fatec.livraria.dto.response;
 
-public record AnaliseResponse(Integer id, String nome, Long totalVendas) {}
+import java.time.LocalDate;
+import java.util.List;
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class AnaliseResponse {
+    private Integer id;
+    private String nome;
+    private List<DadoTemporal> dados;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DadoTemporal {
+        private LocalDate data;
+        private Long total;
+    }
+}

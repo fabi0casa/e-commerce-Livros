@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.fatec.livraria.dto.response.AnaliseResponse;
-
+import com.fatec.livraria.dto.response.NomeIdResponse;
 import com.fatec.livraria.service.AnaliseService;
 import com.fatec.livraria.service.PermissaoUsuarioService;
 
@@ -26,26 +26,45 @@ public class AnaliseController {
     private PermissaoUsuarioService permissaoUsuarioService;
 
     @GetMapping("/livros")
-    public ResponseEntity<List<AnaliseResponse>> listarLivros(
+    public ResponseEntity<List<NomeIdResponse>> listarLivros(
         @RequestParam(required = false) String nome,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
         HttpSession session
     ) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
-        List<AnaliseResponse> response = analiseService.analisarLivros(nome, dataInicio, dataFim);
+        List<NomeIdResponse> response = analiseService.analisarLivros(nome);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/categorias")
-    public ResponseEntity<List<AnaliseResponse>> listarCategorias(
+    public ResponseEntity<List<NomeIdResponse>> listarCategorias(
         @RequestParam(required = false) String nome,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim, 
         HttpSession session
     ) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
-        List<AnaliseResponse> response = analiseService.analisarCategorias(nome, dataInicio, dataFim);
+        List<NomeIdResponse> response = analiseService.analisarCategorias(nome);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/livros/por-data")
+    public ResponseEntity<List<AnaliseResponse>> vendasPorLivroAoLongoDoTempo(
+        @RequestParam List<Integer> ids,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+        HttpSession session
+    ) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
+        return ResponseEntity.ok(analiseService.analisarVendasLivroPorData(ids, dataInicio, dataFim));
+    }
+
+    @GetMapping("/categorias/por-data")
+    public ResponseEntity<List<AnaliseResponse>> vendasPorCategoriaAoLongoDoTempo(
+        @RequestParam List<Integer> ids,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+        HttpSession session
+    ) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
+        return ResponseEntity.ok(analiseService.analisarVendasCategoriaPorData(ids, dataInicio, dataFim));
+    }
+
 }

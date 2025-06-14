@@ -44,39 +44,59 @@ async function gerarGrafico() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
-    const parametros = new URLSearchParams();
-    if (startDate) parametros.append("dataInicio", startDate);
-    if (endDate) parametros.append("dataFim", endDate);
-
-    const dadosLivros = await fetch('/analise/livros?' + parametros.toString()).then(res => res.json());
-    const dadosCategorias = await fetch('/analise/categorias?' + parametros.toString()).then(res => res.json());
-
+    const labels = []; // datas no eixo X
     const datasets = [];
 
-    livrosSelecionados.forEach(livro => {
-        const item = dadosLivros.find(l => l.id == livro.id);
-        if (item) {
+    // === Requisição de livros ao longo do tempo ===
+    if (livrosSelecionados.length > 0 && startDate && endDate) {
+        const paramsLivros = new URLSearchParams();
+        livrosSelecionados.forEach(l => paramsLivros.append("ids", l.id));
+        paramsLivros.append("dataInicio", startDate);
+        paramsLivros.append("dataFim", endDate);
+
+        const dadosLivros = await fetch('/analise/livros/por-data?' + paramsLivros.toString())
+            .then(res => res.json());
+
+        dadosLivros.forEach(livro => {
+            // Preencher labels apenas uma vez (assumindo todas as listas têm as mesmas datas)
+            if (labels.length === 0 && livro.dados.length > 0) {
+                livro.dados.forEach(ponto => labels.push(ponto.data));
+            }
+
             datasets.push({
                 label: `Livro: ${livro.nome}`,
-                data: [item.totalVendas],
+                data: livro.dados.map(p => p.total),
                 borderColor: gerarCor(),
                 fill: false
             });
-        }
-    });
+        });
+    }
 
-    categoriasSelecionadas.forEach(categoria => {
-        const item = dadosCategorias.find(c => c.id == categoria.id);
-        if (item) {
+    // === Requisição de categorias ao longo do tempo ===
+    if (categoriasSelecionadas.length > 0 && startDate && endDate) {
+        const paramsCategorias = new URLSearchParams();
+        categoriasSelecionadas.forEach(c => paramsCategorias.append("ids", c.id));
+        paramsCategorias.append("dataInicio", startDate);
+        paramsCategorias.append("dataFim", endDate);
+
+        const dadosCategorias = await fetch('/analise/categorias/por-data?' + paramsCategorias.toString())
+            .then(res => res.json());
+
+        dadosCategorias.forEach(categoria => {
+            // Preencher labels apenas se ainda estiverem vazias
+            if (labels.length === 0 && categoria.dados.length > 0) {
+                categoria.dados.forEach(ponto => labels.push(ponto.data));
+            }
+
             datasets.push({
                 label: `Categoria: ${categoria.nome}`,
-                data: [item.totalVendas],
+                data: categoria.dados.map(p => p.total),
                 borderColor: gerarCor(),
-                borderDash: [5, 5],
+                borderDash: [5, 5], // estilo tracejado para categorias
                 fill: false
             });
-        }
-    });
+        });
+    }
 
     if (window.graficoVendasInstance) {
         window.graficoVendasInstance.destroy();
@@ -85,7 +105,7 @@ async function gerarGrafico() {
     window.graficoVendasInstance = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Total de Vendas'], // aqui você pode incluir datas específicas no futuro
+            labels: labels,
             datasets: datasets
         },
         options: {
@@ -93,7 +113,22 @@ async function gerarGrafico() {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Análise de Vendas'
+                    text: 'Análise de Vendas ao Longo do Tempo'
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Data'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Quantidade de Vendas'
+                    },
+                    beginAtZero: true
                 }
             }
         }
