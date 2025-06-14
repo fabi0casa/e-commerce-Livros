@@ -14,12 +14,44 @@
     <a id="cadastrarEndereco"><button class="new-client">Cadastrar Novo Endereço</button></a>
     <a th:href ="@{/gerenciar-clientes}"><button class="botao-return">Voltar</button></a>
     <div class="container">
-        <h2>Gerenciamento de Endereços de 'João Silva'</h2>
+        <h2>Gerenciamento de Endereços de '...'</h2>
 
         <script src="/js/admin/gerenciar-clientes/listarEndereco.js/"></script>
 
         <div class="client-list"></div>
     </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="detalhesModal" class="modal" style="display:none;">
+        <div class="modal-content">
+        <span class="close" onclick="closeModal('detalhesModal')">&times;</span>
+        <h2>Detalhes do Endereço</h2>
+        <p><strong>Tipo:</strong> <span id="detalheTipo"></span></p>
+        <p><strong>Logradouro:</strong> <span id="detalheLogradouro"></span></p>
+        <p><strong>Número:</strong> <span id="detalheNumero"></span></p>
+        <p><strong>Bairro:</strong> <span id="detalheBairro"></span></p>
+        <p><strong>CEP:</strong> <span id="detalheCep"></span></p>
+        <p><strong>Cidade:</strong> <span id="detalheCidade"></span></p>
+        <p><strong>Estado:</strong> <span id="detalheEstado"></span></p>
+        <p><strong>País:</strong> <span id="detalhePais"></span></p>
+        <p><strong>Observações:</strong> <span id="detalheObservacoes"></span></p>
+        <p><strong>Finalidades:</strong> 
+            <span id="detalheFinalidades"></span>
+        </p>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmação de Exclusão -->
+    <div id="confirmDeleteModal" class="modal" style="display:none;">
+        <div class="modal-content">
+        <span class="close" onclick="closeModal('confirmDeleteModal')">&times;</span>
+        <h2>Aviso!</h2>
+        <p>Tem certeza que deseja excluir este endereço?</p>
+        <button onclick="excluirEnderecoConfirmado()">Sim, excluir</button>
+        <button onclick="closeModal('confirmDeleteModal')">Cancelar</button>
+        </div>
+    </div>
+  
 
     <script type="module">
         import { loadSidebar } from '/js/admin/sidebar-header.js';
