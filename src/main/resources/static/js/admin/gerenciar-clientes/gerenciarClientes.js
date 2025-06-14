@@ -186,6 +186,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.getElementById("pesquisar").addEventListener("click", function () {
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     let nome = document.getElementById("nome").value;
     let email = document.getElementById("email").value;
     let telefone = document.getElementById("telefone").value;
@@ -226,7 +229,13 @@ document.getElementById("pesquisar").addEventListener("click", function () {
             }
             atualizarListaClientes(clientes);
         })
-        .catch(error => console.error("Erro ao buscar clientes:", error));
+        .catch(error => {
+            console.error("Erro ao buscar clientes:", error);
+            alert("Erro ao buscar clientes. Veja o console.");
+        })
+        .finally(() => {
+            loader.style.display = "none";
+        });
 });
 
 
