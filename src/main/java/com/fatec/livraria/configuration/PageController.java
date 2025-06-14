@@ -41,6 +41,7 @@ public class PageController {
         Map.entry("gerenciar-clientes", "administrador/gerenciar-clientes/gerenciarClientes"),
         Map.entry("ver-transacoes-cliente", "administrador/gerenciar-clientes/transacoes"),
         Map.entry("enderecos-cliente", "administrador/gerenciar-clientes/listarEndereco"),
+        Map.entry("cartoes-cliente", "administrador/gerenciar-clientes/listarCartoes"),
         Map.entry("editar-endereco-cliente", "administrador/gerenciar-clientes/editarEndereco"),
         Map.entry("editar-cliente", "administrador/gerenciar-clientes/editarCliente"),
         Map.entry("criar-endereco-cliente", "administrador/gerenciar-clientes/cadastrarEndereco"),
@@ -57,7 +58,8 @@ public class PageController {
     private static final Set<String> rotasAdmin = Set.of(
         "dashboard", "analise", "estoque", "entrada-estoque", "gerenciar-pedidos", "logs",
         "gerenciar-clientes", "ver-transacoes-cliente", "enderecos-cliente", "editar-endereco-cliente",
-        "editar-cliente", "criar-endereco-cliente", "criar-cartao-cliente", "alterar-senha-cliente"
+        "editar-cliente", "criar-endereco-cliente", "criar-cartao-cliente", "alterar-senha-cliente",
+        "cartoes-cliente"
     );
 
 

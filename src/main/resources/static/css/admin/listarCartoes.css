@@ -1,0 +1,11 @@
+.new-client {
+    background-color: rgb(97, 73, 255); /* violeta azulado forte */
+}
+
+.client-item {
+    background-color: rgba(120, 99, 255, 0.3); /* translúcido suave */
+}
+
+.client-actions button {
+    background-color: rgba(120, 99, 255, 0.12); /* mais suave ainda */
+}
