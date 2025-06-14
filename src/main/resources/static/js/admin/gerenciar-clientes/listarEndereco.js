@@ -7,17 +7,34 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
     
-    fetch(`/clientes/${clienteId}`)
-        .then(response => response.json())
-        .then(cliente => {
-            document.querySelector("h2").textContent = `Gerenciamento de Endereços de ${cliente.nome}`;
-            const listaEnderecos = document.querySelector(".client-list");
-            listaEnderecos.innerHTML = ""; 
+    // Buscar nome do cliente
+    fetch(`/clientes/${clienteId}/nome`)
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao buscar nome do cliente");
+            return response.text(); // Supondo que o endpoint retorna apenas uma string
+        })
+        .then(nome => {
+            document.querySelector("h2").textContent = `Gerenciamento de Endereços de ${nome}`;
+        })
+        .catch(error => {
+            console.error("Erro ao buscar nome:", error);
+            document.querySelector("h2").textContent = "Gerenciamento de Endereços";
+        });
 
-            cliente.enderecos.forEach(endereco => {
+    // Buscar endereços do cliente
+    fetch(`/enderecos/cliente/${clienteId}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao buscar endereços");
+            return response.json();
+        })
+        .then(enderecos => {
+            const listaEnderecos = document.querySelector(".client-list");
+            listaEnderecos.innerHTML = "";
+
+            enderecos.forEach(endereco => {
                 const enderecoItem = document.createElement("div");
                 enderecoItem.classList.add("client-item");
-            
+
                 enderecoItem.innerHTML = `
                     <div class="client-info">
                         <div class="client-name">${endereco.fraseIdentificadora}</div>
@@ -26,19 +43,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="client-actions">
                         <button onclick='abrirModalDetalhes(${JSON.stringify(endereco)})'>Detalhes</button>
                         <button onclick="redirecionarEditarEndereco(${endereco.id}, ${clienteId})">Editar</button>
-                        <button onclick="abrirConfirmacaoExclusao(${endereco.id})">Excluir</button>
+                        <button onclick="abrirConfirmacaoExclusao(${endereco.id}, '${endereco.fraseIdentificadora.replace(/'/g, "\\'")}')">Excluir</button>
                     </div>
                 `;
-            
+
                 listaEnderecos.appendChild(enderecoItem);
             });
-            
-            document.getElementById("cadastrarEndereco").href = `/criar-endereco-cliente?clienteId=${clienteId}`;
         })
-        .catch(error => console.error("Erro ao buscar cliente:", error));
+        .catch(error => console.error("Erro ao buscar endereços:", error));
 
-
-    
+    document.getElementById("cadastrarEndereco").href = `/criar-endereco-cliente?clienteId=${clienteId}`;
 });
 
 function redirecionarEditarEndereco(enderecoId, clienteId) {
@@ -68,10 +82,15 @@ function abrirModalDetalhes(endereco) {
     openModal("detalhesModal");
 }
 
-function abrirConfirmacaoExclusao(enderecoId) {
+function abrirConfirmacaoExclusao(enderecoId, fraseIdentificadora) {
     enderecoIdSelecionado = enderecoId;
+
+    const mensagem = `Tem certeza que deseja excluir o endereço "${fraseIdentificadora}"?`;
+    document.querySelector("#confirmDeleteModal p").textContent = mensagem;
+
     openModal("confirmDeleteModal");
 }
+
 
 function excluirEnderecoConfirmado() {
     if (!enderecoIdSelecionado) {
