@@ -45,7 +45,16 @@ public class ClienteController {
         return clienteService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    } 
+    }
+
+    @GetMapping("/{id}/nome")
+    public ResponseEntity<String> buscarNomePorId(@PathVariable Integer id, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
+    
+        return clienteService.buscarNomePorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }    
 
     @GetMapping("/me")
     public ResponseEntity<Cliente> buscarClienteLogado(HttpSession session) {

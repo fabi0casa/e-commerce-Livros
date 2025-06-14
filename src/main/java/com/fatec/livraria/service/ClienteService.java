@@ -73,6 +73,11 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
+    public Optional<String> buscarNomePorId(Integer id) {
+        return clienteRepository.findById(id)
+                .map(Cliente::getNome);
+    }    
+
     public Optional<Cliente> buscarClienteLogado(HttpSession session) {
         Integer clienteId = (Integer) session.getAttribute("clienteId");
         
