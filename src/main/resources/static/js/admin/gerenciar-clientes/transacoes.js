@@ -90,6 +90,9 @@ async function carregarPedidos() {
 }
 
 function renderizarPedidos(pedidos) {
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     listaContainer.innerHTML = "";
     pedidosMap.clear();
 
@@ -120,6 +123,8 @@ function renderizarPedidos(pedidos) {
             mostrarPedido(pedido);
         });
     });
+
+    loader.style.display = "none";
 }
 
 function mostrarPedido(pedido) {
@@ -284,6 +289,9 @@ function confirmarMudancaStatus(event, novoStatus, vendaIds) {
 }
 
 document.getElementById("confirmarBtn").addEventListener("click", async () => {
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     const retornaEstoque = document.getElementById("retornaEstoque").checked;
 
     // Faz uma única chamada para atualizar todos os IDs de uma vez
@@ -320,6 +328,7 @@ document.getElementById("confirmarBtn").addEventListener("click", async () => {
 
     closeModal("modalConfirmacao");
     mostrarPedido(pedidoAtualPendentes);
+    loader.style.display = "none";
 });
 
 function getClass(status) {

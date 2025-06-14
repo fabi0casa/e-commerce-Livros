@@ -125,6 +125,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function renderizarPedidos(pedidos) {
+        const loader = document.getElementById("loader");
+        loader.style.display = "flex";
+
         listaContainer.innerHTML = "";
         pedidosMap.clear();
     
@@ -155,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 mostrarPedido(pedido);
             });
         });
+        loader.style.display = "none";
     }
     
     function mostrarPedido(pedido) {
@@ -318,6 +322,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     document.getElementById("confirmarBtn").addEventListener("click", async () => {
+        const loader = document.getElementById("loader");
+        loader.style.display = "flex";
+
         const retornaEstoque = document.getElementById("retornaEstoque").checked;
     
         // Faz uma única chamada para atualizar todos os IDs de uma vez
@@ -354,6 +361,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         closeModal("modalConfirmacao");
         mostrarPedido(pedidoAtualPendentes);
+        loader.style.display = "none";
     });
     
     
