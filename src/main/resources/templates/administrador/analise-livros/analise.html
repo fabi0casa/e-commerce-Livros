@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
     <link rel="stylesheet" href="/css/admin/tabelaTransacoes.css/">
     <link rel="stylesheet" href="/css/admin/analise.css/">
+    <link rel="stylesheet" href="/css/loading.css/">
     <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
     <script src="/js/chart.min.js/"></script>
 </head>
@@ -46,7 +47,11 @@
             <button onclick="gerarGrafico()">Pesquisar</button>
         </div>
 
-        <canvas id="graficoVendas"></canvas>
+        <canvas id="graficoVendas"></canvas>    
+    </div>
+
+    <div id="loader" class="loader">
+        <img src="/img/loading.gif/" alt="Carregando...">
     </div>
 
     <script src="/js/admin/analise.js/">

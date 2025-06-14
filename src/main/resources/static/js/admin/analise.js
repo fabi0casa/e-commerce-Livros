@@ -45,111 +45,125 @@ function filtrarCheckboxes(input, containerId) {
 }
 
 async function gerarGrafico() {
-    const ctx = document.getElementById('graficoVendas').getContext('2d');
+    const loader = document.getElementById('loader');
+    loader.style.display = 'flex';
+    
+    // Limpa o canvas visualmente
+    const canvas = document.getElementById('graficoVendas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
 
-    const livrosSelecionados = Array.from(document.querySelectorAll('#lista-livros input[type="checkbox"]:checked')).map(cb => ({
-        id: cb.value,
-        nome: cb.dataset.nome
-    }));
+    try {
+        const ctx = document.getElementById('graficoVendas').getContext('2d');
 
-    const categoriasSelecionadas = Array.from(document.querySelectorAll('#lista-categorias input[type="checkbox"]:checked')).map(cb => ({
-        id: cb.value,
-        nome: cb.dataset.nome
-    }));
+        const livrosSelecionados = Array.from(document.querySelectorAll('#lista-livros input[type="checkbox"]:checked')).map(cb => ({
+            id: cb.value,
+            nome: cb.dataset.nome
+        }));
 
-    const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
+        const categoriasSelecionadas = Array.from(document.querySelectorAll('#lista-categorias input[type="checkbox"]:checked')).map(cb => ({
+            id: cb.value,
+            nome: cb.dataset.nome
+        }));
 
-    const labels = []; // datas no eixo X
-    const datasets = [];
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
 
-    // === Requisição de livros ao longo do tempo ===
-    if (livrosSelecionados.length > 0 && startDate && endDate) {
-        const paramsLivros = new URLSearchParams();
-        livrosSelecionados.forEach(l => paramsLivros.append("ids", l.id));
-        paramsLivros.append("dataInicio", startDate);
-        paramsLivros.append("dataFim", endDate);
+        const labels = [];
+        const datasets = [];
 
-        const dadosLivros = await fetch('/analise/livros/por-data?' + paramsLivros.toString())
-            .then(res => res.json());
+        if (livrosSelecionados.length > 0 && startDate && endDate) {
+            const paramsLivros = new URLSearchParams();
+            livrosSelecionados.forEach(l => paramsLivros.append("ids", l.id));
+            paramsLivros.append("dataInicio", startDate);
+            paramsLivros.append("dataFim", endDate);
 
-        dadosLivros.forEach(livro => {
-            // Preencher labels apenas uma vez (assumindo todas as listas têm as mesmas datas)
-            if (labels.length === 0 && livro.dados.length > 0) {
-                livro.dados.forEach(ponto => labels.push(ponto.label));
-            }
+            const dadosLivros = await fetch('/analise/livros/por-data?' + paramsLivros.toString())
+                .then(res => res.json());
 
-            datasets.push({
-                label: `Livro: ${livro.nome}`,
-                data: livro.dados.map(p => p.total),
-                borderColor: gerarCor(),
-                fill: false
-            });
-        });
-    }
-
-    // === Requisição de categorias ao longo do tempo ===
-    if (categoriasSelecionadas.length > 0 && startDate && endDate) {
-        const paramsCategorias = new URLSearchParams();
-        categoriasSelecionadas.forEach(c => paramsCategorias.append("ids", c.id));
-        paramsCategorias.append("dataInicio", startDate);
-        paramsCategorias.append("dataFim", endDate);
-
-        const dadosCategorias = await fetch('/analise/categorias/por-data?' + paramsCategorias.toString())
-            .then(res => res.json());
-
-        dadosCategorias.forEach(categoria => {
-            // Preencher labels apenas se ainda estiverem vazias
-            if (labels.length === 0 && categoria.dados.length > 0) {
-                categoria.dados.forEach(ponto => labels.push(ponto.label));
-            }
-
-            datasets.push({
-                label: `Categoria: ${categoria.nome}`,
-                data: categoria.dados.map(p => p.total),
-                borderColor: gerarCor(),
-                borderDash: [5, 5], // estilo tracejado para categorias
-                fill: false
-            });
-        });
-    }
-
-    if (window.graficoVendasInstance) {
-        window.graficoVendasInstance.destroy();
-    }
-
-    window.graficoVendasInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: datasets
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Análise de Vendas ao Longo do Tempo'
+            dadosLivros.forEach(livro => {
+                if (labels.length === 0 && livro.dados.length > 0) {
+                    livro.dados.forEach(ponto => labels.push(ponto.label));
                 }
+
+                datasets.push({
+                    label: `Livro: ${livro.nome}`,
+                    data: livro.dados.map(p => p.total),
+                    borderColor: gerarCor(),
+                    fill: false
+                });
+            });
+        }
+
+        if (categoriasSelecionadas.length > 0 && startDate && endDate) {
+            const paramsCategorias = new URLSearchParams();
+            categoriasSelecionadas.forEach(c => paramsCategorias.append("ids", c.id));
+            paramsCategorias.append("dataInicio", startDate);
+            paramsCategorias.append("dataFim", endDate);
+
+            const dadosCategorias = await fetch('/analise/categorias/por-data?' + paramsCategorias.toString())
+                .then(res => res.json());
+
+            dadosCategorias.forEach(categoria => {
+                if (labels.length === 0 && categoria.dados.length > 0) {
+                    categoria.dados.forEach(ponto => labels.push(ponto.label));
+                }
+
+                datasets.push({
+                    label: `Categoria: ${categoria.nome}`,
+                    data: categoria.dados.map(p => p.total),
+                    borderColor: gerarCor(),
+                    borderDash: [5, 5],
+                    fill: false
+                });
+            });
+        }
+
+        if (window.graficoVendasInstance) {
+            window.graficoVendasInstance.destroy();
+        }
+
+        window.graficoVendasInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
             },
-            scales: {
-                x: {
+            options: {
+                responsive: true,
+                plugins: {
                     title: {
                         display: true,
-                        text: 'Data'
+                        text: 'Análise de Vendas ao Longo do Tempo'
                     }
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Quantidade de Vendas'
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Data'
+                        }
                     },
-                    beginAtZero: true
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Quantidade de Vendas'
+                        },
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
+
+    } catch (error) {
+        console.error("Erro ao gerar gráfico:", error);
+        alert("Ocorreu um erro ao gerar o gráfico.");
+    } finally {
+        loader.style.display = 'none'; // esconde o loader
+    }
 }
+
 
 function gerarCor() {
     const r = Math.floor(Math.random() * 156 + 100);

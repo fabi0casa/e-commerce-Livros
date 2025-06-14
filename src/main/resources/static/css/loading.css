@@ -1,0 +1,17 @@
+.loader {
+    display: none;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* fundo escuro semi-transparente */
+    z-index: 9999; /* garantir que fique por cima de tudo */
+    align-items: center;
+    justify-content: center;
+}
+
+.loader img {
+    width: 100px;
+    height: 100px;
+}
