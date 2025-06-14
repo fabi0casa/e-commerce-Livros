@@ -132,16 +132,10 @@ document.addEventListener("DOMContentLoaded", function() {
             const div = document.createElement("div");
             div.className = "pedido-item";
     
-            const raw = pedido.codigo.substring(0, 8);
-            const ano = parseInt(raw.substring(0, 4));
-            const mes = parseInt(raw.substring(4, 6)) - 1;
-            const dia = parseInt(raw.substring(6, 8));
-            const dataPedido = new Date(ano, mes, dia).toLocaleDateString();
-    
             const info = `
                 <div class="pedido-info">
                     <div class="pedido-name">Pedido Nº ${pedido.codigo}</div>
-                    <div class="pedido-details">${dataPedido} - ${pedido.vendas.length} produto(s)</div>
+                    <div class="pedido-details">${pedido.dataCriacao} - ${pedido.vendas.length} produto(s)</div>
                 </div>
                 <div class="pedido-actions">
                     <button class="ver-pedido-btn" data-id="${index}">Ver</button>
@@ -165,15 +159,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function mostrarPedido(pedido) {
         document.querySelector("#modalTabela h2").innerText = `Pedido Nº ${pedido.codigo}`;
-        //document.getElementById("modalNome").innerText = pedido.cliente.nome;
-    
-        const raw = pedido.codigo.substring(0, 8); // ex: "20250421"
-        const ano = parseInt(raw.substring(0, 4));
-        const mes = parseInt(raw.substring(4, 6)) - 1; // meses começam do 0 no JS
-        const dia = parseInt(raw.substring(6, 8));
-        const dataPedido = new Date(ano, mes, dia).toLocaleDateString();
-    
-        document.getElementById("modalData").innerText = dataPedido;
+        document.getElementById("modalData").innerText = pedido.dataCriacao;
         document.getElementById("modalValor").innerText = pedido.valor;
         document.getElementById("modalPagamento").innerText = pedido.formaPagamento;
         document.getElementById("modalEndereco").innerText = pedido.endereco?.fraseIdentificadora || "Endereço não disponível";
