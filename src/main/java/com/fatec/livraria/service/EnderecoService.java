@@ -1,8 +1,12 @@
 package com.fatec.livraria.service;
 
 import com.fatec.livraria.dto.request.EnderecoRequest;
+import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Endereco;
 import com.fatec.livraria.repository.EnderecoRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -36,7 +40,17 @@ public class EnderecoService {
     }
 
     public void excluir(Integer id) {
-        enderecoRepository.deleteById(id);
+        Endereco endereco = enderecoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado"));
+
+        // Remove o endereço da lista do cliente, se ainda estiver nela
+        Cliente cliente = endereco.getCliente();
+        if (cliente != null) {
+            cliente.getEnderecos().remove(endereco);
+        }
+
+        endereco.setCliente(null); // remove vínculo com cliente (boa prática)
+        enderecoRepository.delete(endereco);
     }
 
     public void atualizarEndereco(int enderecoId, EnderecoRequest enderecoRequest) {

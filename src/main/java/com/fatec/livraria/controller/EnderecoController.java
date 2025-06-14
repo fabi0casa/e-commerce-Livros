@@ -79,9 +79,9 @@ public class EnderecoController {
     }    
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Integer id, HttpSession session) {
+    public ResponseEntity<String> excluir(@PathVariable Integer id, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
         enderecoService.excluir(id);
-        return ResponseEntity.noContent().build();
-    }
+        return ResponseEntity.ok("Endereço excluído");
+    }    
 }

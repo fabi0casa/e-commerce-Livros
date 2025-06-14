@@ -64,8 +64,8 @@ public class Cliente {
     @JsonIgnore
     private List<Carrinho> carrinhos = new ArrayList<>();
     
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Endereco> enderecos = new ArrayList<>();
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Endereco> enderecos = new ArrayList<>();    
     
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<CartaoCredito> cartoes = new ArrayList<>();
