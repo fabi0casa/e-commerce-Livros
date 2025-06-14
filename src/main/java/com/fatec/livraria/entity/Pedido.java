@@ -1,10 +1,11 @@
 package com.fatec.livraria.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.envers.Audited;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -36,7 +37,8 @@ public class Pedido {
 
     @Column(name = "ped_data_criacao", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dataCriacao = new Date();
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dataCriacao = LocalDate.now();
 
     @ManyToOne
     @JoinColumn(name = "ped_end_id", nullable = true)

@@ -18,23 +18,19 @@
         <div class="selecao-produtos-categorias">
             <div class="selecao-produtos">
                 <label>Selecione os Livros:</label>
-                <div class="lista-checkbox">
+                <div class="lista-checkbox" id="lista-livros">
                     <input type="text" placeholder="Pesquisar livro..." class="filtro-input" oninput="filtrarCheckboxes(this, 'lista-livros')">
-                    <label><input type="checkbox" value="livro1"> Os Elementos de Euclides</label>
-                    <label><input type="checkbox" value="livro2"> Herobrine a Lenda</label>
-                    <label><input type="checkbox" value="livro3"> A Droga da Obediência</label>
-                    <label><input type="checkbox" value="livro4"> Diário de um Banana 9</label>
+                    <!-- Os checkboxes serão injetados aqui -->
                 </div>
+                
             </div>
             <div class="selecao-categorias">
                 <label>Selecione as Categorias:</label>
-                <div class="lista-checkbox">
+                <div class="lista-checkbox" id="lista-categorias">
                     <input type="text" placeholder="Pesquisar categoria..." class="filtro-input" oninput="filtrarCheckboxes(this, 'lista-categorias')">
-                    <label><input type="checkbox" value="categoria1"> Fantasia</label>
-                    <label><input type="checkbox" value="categoria2"> Ficção Científica</label>
-                    <label><input type="checkbox" value="categoria3"> História</label>
-                    <label><input type="checkbox" value="categoria4"> Terror</label>
+                    <!-- Os checkboxes serão injetados aqui -->
                 </div>
+                
             </div>
         </div>
 
@@ -53,40 +49,7 @@
         <canvas id="graficoVendas"></canvas>
     </div>
 
-    <script>
-        //gerando um gráfico de exemplo
-        function gerarGrafico() {
-            const ctx = document.getElementById('graficoVendas').getContext('2d');
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ["01/03", "02/03", "03/03", "04/03", "05/03"],
-                    datasets: [
-                        {
-                            label: "Livro A",
-                            data: [10, 20, 15, 30, 25],
-                            borderColor: "orange",
-                            fill: false
-                        },
-                        {
-                            label: "Livro B",
-                            data: [5, 15, 10, 20, 30],
-                            borderColor: "purple",
-                            fill: false
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true
-                        }
-                    }
-                }
-            });
-        }
+    <script src="/js/admin/analise.js/">
     </script>
     
     <script type="module">
