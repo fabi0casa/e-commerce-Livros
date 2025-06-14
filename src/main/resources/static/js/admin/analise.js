@@ -1,7 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
     carregarCheckboxes('/analise/livros', 'lista-livros');
     carregarCheckboxes('/analise/categorias', 'lista-categorias');
+
+    // Preenche os campos de data
+    const hoje = new Date();
+    const trintaDiasAtras = new Date();
+    trintaDiasAtras.setDate(hoje.getDate() - 30);
+
+    const formatarData = (data) => {
+        const ano = data.getFullYear();
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const dia = String(data.getDate()).padStart(2, '0');
+        return `${ano}-${mes}-${dia}`;
+    };
+
+    document.getElementById('endDate').value = formatarData(hoje);
+    document.getElementById('startDate').value = formatarData(trintaDiasAtras);
 });
+
 
 async function carregarCheckboxes(url, containerId) {
     const container = document.getElementById(containerId);
