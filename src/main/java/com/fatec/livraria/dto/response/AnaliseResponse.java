@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnaliseResponse {
-    private Integer id;
     private String nome;
     private List<DadoTemporal> dados;
 
@@ -18,7 +17,7 @@ public class AnaliseResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class DadoTemporal {
-        private LocalDate data;
+        private String label;
         private Long total;
     }
 }

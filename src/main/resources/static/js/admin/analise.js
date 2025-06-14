@@ -60,7 +60,7 @@ async function gerarGrafico() {
         dadosLivros.forEach(livro => {
             // Preencher labels apenas uma vez (assumindo todas as listas têm as mesmas datas)
             if (labels.length === 0 && livro.dados.length > 0) {
-                livro.dados.forEach(ponto => labels.push(ponto.data));
+                livro.dados.forEach(ponto => labels.push(ponto.label));
             }
 
             datasets.push({
@@ -85,7 +85,7 @@ async function gerarGrafico() {
         dadosCategorias.forEach(categoria => {
             // Preencher labels apenas se ainda estiverem vazias
             if (labels.length === 0 && categoria.dados.length > 0) {
-                categoria.dados.forEach(ponto => labels.push(ponto.data));
+                categoria.dados.forEach(ponto => labels.push(ponto.label));
             }
 
             datasets.push({

@@ -9,17 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface VendaRepository extends JpaRepository<Venda, Integer> {
-    @Query("""
-        SELECT COUNT(v) FROM Venda v
-        WHERE v.livro.id = :livroId
-        AND (:dataInicio IS NULL OR v.pedido.valor IS NOT NULL AND v.pedido.dataCriacao >= :dataInicio)
-        AND (:dataFim IS NULL OR v.pedido.valor IS NOT NULL AND v.pedido.dataCriacao <= :dataFim)
-        """)
-    Long countByLivroAndPeriodo(
-        @Param("livroId") Integer livroId,
-        @Param("dataInicio") LocalDate dataInicio,
-        @Param("dataFim") LocalDate dataFim
-    );
 
     @Query("""
         SELECT COUNT(v) FROM Venda v
@@ -29,21 +18,6 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
     Long countVendasLivroNoPeriodo(@Param("livroId") Integer livroId,
                                     @Param("inicio") LocalDate inicio,
                                     @Param("fim") LocalDate fim);
-
-
-    @Query("""
-        SELECT COUNT(v) FROM Venda v
-        JOIN v.livro l
-        JOIN l.categorias c
-        WHERE c.id = :categoriaId
-        AND (:dataInicio IS NULL OR v.pedido.valor IS NOT NULL AND v.pedido.dataCriacao >= :dataInicio)
-        AND (:dataFim IS NULL OR v.pedido.valor IS NOT NULL AND v.pedido.dataCriacao <= :dataFim)
-        """)
-    Long countByCategoriaAndPeriodo(
-        @Param("categoriaId") Integer categoriaId,
-        @Param("dataInicio") LocalDate dataInicio,
-        @Param("dataFim") LocalDate dataFim
-    );
 
     @Query("""
         SELECT COUNT(v) FROM Venda v
