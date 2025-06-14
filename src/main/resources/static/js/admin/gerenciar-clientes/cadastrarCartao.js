@@ -14,15 +14,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Buscar nome do cliente
-    fetch(`/clientes/${clienteId}`)
-        .then(response => response.json())
-        .then(cliente => {
-            document.getElementById("tituloCadastro").textContent = `Cadastrar Cartão para ${cliente.nome}`;
+    fetch(`/clientes/${clienteId}/nome`)
+        .then(response => response.text())
+        .then(nome => {
+            document.getElementById("tituloCadastro").textContent = `Cadastrar Cartão para ${nome}`;
         })
         .catch(error => {
             console.error("Erro ao buscar cliente:", error);
             document.getElementById("tituloCadastro").textContent = "Cadastrar Cartão";
         });
+
 
     // Buscar bandeiras do backend
     fetch("/bandeiras/all")

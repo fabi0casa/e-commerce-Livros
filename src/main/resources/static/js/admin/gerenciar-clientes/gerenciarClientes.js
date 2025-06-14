@@ -298,9 +298,9 @@ document.addEventListener("DOMContentLoaded", function () {
 function openEditionModal(clienteId) {
     // Atualiza os links do modal com o ID do cliente
     document.getElementById("editarDadosLink").href = `/editar-cliente?clienteId=${clienteId}`;
-    document.getElementById("alterarSenhaLink").href = `/alterar-senha?-clienteclienteId=${clienteId}`;
+    document.getElementById("alterarSenhaLink").href = `/alterar-senha-cliente?clienteId=${clienteId}`;
     document.getElementById("editarEnderecoLink").href = `/enderecos-cliente?clienteId=${clienteId}`;
-    document.getElementById("cadastrarCartaoLink").href = `/criar-cartao-cliente?clienteId=${clienteId}`;
+    document.getElementById("editarCartaoLink").href = `/cartoes-cliente?clienteId=${clienteId}`;
 
     // Abre o modal
     openModal('editionModal');

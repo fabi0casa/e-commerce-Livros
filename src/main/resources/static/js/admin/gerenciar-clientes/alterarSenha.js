@@ -76,10 +76,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    fetch(`/clientes/${clienteId}`)
-        .then(response => response.json())
-        .then(cliente => {
-            document.getElementById("clienteNome").innerText = cliente.nome;
+    fetch(`/clientes/${clienteId}/nome`)
+        .then(response => response.text())
+        .then(nome => {
+            document.getElementById("clienteNome").innerText = nome;
         })
         .catch(error => {
             console.error("Erro ao buscar cliente:", error);

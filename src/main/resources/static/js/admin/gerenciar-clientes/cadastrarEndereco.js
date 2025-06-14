@@ -85,7 +85,7 @@ function cancelarCadastro() {
         window.history.back(); // Volta para a página anterior
     }
 }
- // Função para buscar e exibir o nome do cliente
+// Função para buscar e exibir o nome do cliente
 async function carregarNomeCliente() {
     // Obtém o clienteId da URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -97,18 +97,18 @@ async function carregarNomeCliente() {
     }
 
     try {
-        // Requisição ao backend para buscar os dados do cliente
-        const response = await fetch(`/clientes/${clienteId}`);
+        // Requisição ao backend para buscar apenas o nome do cliente
+        const response = await fetch(`/clientes/${clienteId}/nome`);
         
         if (!response.ok) {
-            throw new Error("Erro ao buscar o cliente.");
+            throw new Error("Erro ao buscar o nome do cliente.");
         }
 
-        // Converte resposta para JSON
-        const cliente = await response.json();
+        // Converte resposta para texto
+        const nome = await response.text();
 
         // Atualiza o título da página com o nome do cliente
-        document.getElementById("tituloEndereco").textContent = `Novo Endereço para ${cliente.nome}`;
+        document.getElementById("tituloEndereco").textContent = `Novo Endereço para ${nome}`;
     } catch (error) {
         console.error("Erro ao carregar o nome do cliente:", error);
     }

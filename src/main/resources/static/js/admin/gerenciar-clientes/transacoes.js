@@ -8,12 +8,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Buscar nome do cliente
-    fetch(`/clientes/${clienteId}`)
-        .then(response => response.json())
-        .then(cliente => {
-            document.getElementById("clienteNome").textContent = cliente.nome;
-        })
-        .catch(error => console.error("Erro ao carregar nome do cliente:", error));
+    fetch(`/clientes/${clienteId}/nome`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erro ao buscar nome do cliente");
+        }
+        return response.text(); // <- agora é .text() em vez de .json()
+    })
+    .then(nome => {
+        document.getElementById("clienteNome").textContent = nome;
+    })
+    .catch(error => console.error("Erro ao carregar nome do cliente:", error));
+
 });
 
 function checkZoomAndSize() {
