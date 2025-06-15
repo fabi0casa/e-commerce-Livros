@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/icon.png/">
+    <title>Editar Endereço</title>
+    <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
+    <link rel="stylesheet" href="/css/admin/formulario.css/">
+    <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
+    <link rel="stylesheet" href="/css/loading.css/">
+</head>
+<body>
+    <div class="container">
+        <h2>Atualização de Endereço</h2>
+        <form id="cadastroEnderecoForm">
+            <h3>Edição de Endereço</h3>
+
+            <label>Tipo de Logradouro:</label>
+            <input type="text" id="tipoLogradouro" required placeholder="Ex: Rua, Avenida...">
+
+            <label>Logradouro:</label>
+            <input type="text" id="logradouro" required>
+
+            <label>Número:</label>
+            <input type="text" id="numero" required>
+
+            <label>Bairro:</label>
+            <input type="text" id="bairro" required>
+
+            <label>CEP:</label>
+            <input type="text" id="cep" required placeholder="00000-000">
+
+            <label>Cidade:</label>
+            <input type="text" id="cidade" required>
+
+            <label>Estado:</label>
+            <input type="text" id="estado" required>
+
+            <label>País:</label>
+            <input type="text" id="pais" required value="Brasil">
+
+            <label>Observação (Opcional):</label>
+            <textarea id="observacoes"></textarea>
+
+            <h3>Tipos de Endereço</h3>
+            <label>Usar como Endereço de Residência?</label>
+            <select id="residencia" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Usar como Endereço de Entrega?</label>
+            <select id="entrega" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <label>Usar como Endereço de Cobrança?</label>
+            <select id="cobranca" required>
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+
+            <h6>*O endereço precisa ser pelo menos uma dessas opções acima</h6>
+
+            <button type="submit">Salvar Alterações</button>
+            <div class="botaoCancelar"><button type="submit" onclick="cancelarCadastro()">Cancelar</button></div>
+        </form>
+    </div>
+
+    <div id="loader" class="loader">
+        <img src="/img/loading.gif/" alt="Carregando...">
+    </div>
+
+    <!-- Modal de Erro -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2>Erro!</h2>
+            <p>Você deve selecionar "Sim" em pelo menos um tipo de endereço.</p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+    <script src="/js/admin/gerenciar-clientes/validarCadastro.js"></script>
+    <script src="/js/cliente/gerenciar/editarEndereco.js"></script>
+
+    <script type="module">
+        import { loadSidebar } from '/js/admin/sidebar-header.js';
+        loadSidebar();
+      </script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/icon.png/">
+    <title>Listagem de Cartões</title>
+    <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
+    <link rel="stylesheet" href="/css/admin/listarCartoes.css/">
+    <link rel="stylesheet" href="/css/admin/sidebar-header.css/"> 
+    <link rel="stylesheet" href="/css/loading.css/">
+</head>
+<body>
+    <a id="cadastrarCartao"><button class="new-client">Cadastrar Novo Cartão</button></a>
+    <a th:href ="@{/gerenciar-clientes}"><button class="botao-return">Voltar</button></a>
+    <div class="container">
+        <h2>Gerenciamento de Cartões de '...'</h2>
+
+        <script src="/js/cliente/gerenciar/listarCartoes.js/"></script>
+
+        <div class="client-list"></div>
+    </div>
+
+    <div id="loader" class="loader">
+        <img src="/img/loading.gif/" alt="Carregando...">
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="detalhesModal" class="modal" style="display:none;">
+        <div class="modal-content">
+        <span class="close" onclick="closeModal('detalhesModal')">&times;</span>
+        <h2>Detalhes do Cartão</h2>
+        <p><strong>Nome Impresso:</strong> <span id="nomeImpresso"></span> </p>
+        <p><strong>Numero:</strong> <span id="numero"></span> </p>
+        <p><strong>Bandeira:</strong> <span id="bandeira"></span> </p>
+        <p><strong>Código de Segurança:</strong> <span id="codigo"></span> </p>
+        <p><strong>Preferencial:</strong> <span id="preferencial"></span> </p>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmação de Exclusão -->
+    <div id="confirmDeleteModal" class="modal" style="display:none;">
+        <div class="modal-content">
+        <span class="close" onclick="closeModal('confirmDeleteModal')">&times;</span>
+        <h2>Aviso!</h2>
+        <p>Tem certeza que deseja excluir este cartão?</p>
+        <button onclick="excluirCartaoConfirmado()">Sim, excluir</button>
+        <button onclick="closeModal('confirmDeleteModal')">Cancelar</button>
+        </div>
+    </div>
+  
+
+    <script type="module">
+        import { loadSidebar } from '/js/admin/sidebar-header.js';
+        loadSidebar();
+        </script>
+</body>
+</html>

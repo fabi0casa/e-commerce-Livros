@@ -30,6 +30,10 @@ public class PageController {
         Map.entry("pagar-carrinho", "cliente/pagamento/comprarDoCarrinho"),
         Map.entry("novo-cartao", "cliente/pagamento/novoCartao"),
         Map.entry("novo-endereco", "cliente/pagamento/novoEndereco"),
+        Map.entry("gerenciar-enderecos", "cliente/gerenciar/listarEndereco"),
+        Map.entry("gerenciar-cartoes", "cliente/gerenciar/listarCartao"),
+        Map.entry("editar-endereco", "cliente/gerenciar/editarEndereco"),
+        Map.entry("editar-cartao", "cliente/gerenciar/editarCartao"),
 
         Map.entry("dashboard", "dashboard"),
         Map.entry("analise", "administrador/analise-livros/analise"),
@@ -53,7 +57,8 @@ public class PageController {
     );
 
     private static final Set<String> rotasPrivadas = Set.of(
-        "carrinho", "conta", "pagamento", "pagar-carrinho", "novo-cartao", "novo-endereco"
+        "carrinho", "conta", "pagamento", "pagar-carrinho", "novo-cartao", "novo-endereco",
+        "gerenciar-enderecos", "gerenciar-cartoes", "editar-endereco", "editar-cartao"
     );
 
     private static final Set<String> rotasAdmin = Set.of(
