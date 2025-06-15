@@ -31,8 +31,8 @@ public class CartaoCreditoService {
     @Autowired private NotificacaoService notificacaoService;
 
     public List<CartaoCredito> getCartaoByClienteId(Integer clienteId) {
-        return cartaoCreditoRepository.findByCliente_Id(clienteId);
-    }
+        return cartaoCreditoRepository.findByCliente_IdOrderByPreferencialDesc(clienteId);
+    }    
 
     public List<CartaoCredito> getAllCartoes() {
         return cartaoCreditoRepository.findAll();
