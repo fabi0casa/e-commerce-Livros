@@ -10,6 +10,7 @@ import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.repository.CartaoCreditoRepository;
 import com.fatec.livraria.repository.ClienteRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,16 @@ public class CartaoCreditoService {
 
 
     public void deletarCartao(Integer id) {
-        if (cartaoCreditoRepository.existsById(id)) {
-            cartaoCreditoRepository.deleteById(id);
+        CartaoCredito cartao = cartaoCreditoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Cartão não encontrado"));
+
+        Cliente cliente = cartao.getCliente();
+        if (cliente != null) {
+            cliente.getCartoes().remove(cartao);
         }
+
+        cartao.setCliente(null);
+        cartaoCreditoRepository.delete(cartao);
     }
 
     public void removerPreferencialDosOutrosCartoes(Integer clienteId) {
