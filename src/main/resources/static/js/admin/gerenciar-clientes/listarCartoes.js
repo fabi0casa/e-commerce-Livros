@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function redirecionarEditarCartao(cartaoId, clienteId) {
-    window.location.href = `/editar-cartao-cliente?enderecoId=${cartaoId}&clienteId=${clienteId}`;
+    window.location.href = `/editar-cartao-cliente?cartaoId=${cartaoId}&clienteId=${clienteId}`;
 }
 
 let cartaoIdSelecionado = null;

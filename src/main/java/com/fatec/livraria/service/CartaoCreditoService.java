@@ -1,9 +1,11 @@
 package com.fatec.livraria.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fatec.livraria.dto.request.CartaoClienteLogadoRequest;
 import com.fatec.livraria.dto.request.CartaoRequest;
+import com.fatec.livraria.dto.request.CartaoUpdateRequest;
 import com.fatec.livraria.entity.Bandeira;
 import com.fatec.livraria.entity.CartaoCredito;
 import com.fatec.livraria.entity.Cliente;
@@ -14,6 +16,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -148,4 +152,46 @@ public class CartaoCreditoService {
             cliente.getId()
         );
     }
+
+    public void atualizarCartao(Integer cartaoId, CartaoUpdateRequest request, HttpSession session) {
+        CartaoCredito cartao = cartaoCreditoRepository.findById(cartaoId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
+
+        Integer clienteId = cartao.getCliente().getId();
+
+        // Validações
+        if (request.getNumeroCartao().length() < 13 || request.getNumeroCartao().length() > 19) {
+            throw new IllegalArgumentException("Número do cartão inválido. O número deve ter entre 13 e 19 dígitos.");
+        }
+
+        if (request.getCodigoSeguranca().length() < 3 || request.getCodigoSeguranca().length() > 4) {
+            throw new IllegalArgumentException("Código de segurança inválido.");
+        }
+
+        Bandeira bandeira = bandeiraService.getBandeiraById(request.getBandeiraId())
+            .orElseThrow(() -> new IllegalArgumentException("Bandeira do cartão não encontrada."));
+
+        // Atualiza os dados
+        cartao.setNumeroCartao(request.getNumeroCartao());
+        cartao.setNomeImpresso(request.getNomeImpresso());
+        cartao.setCodigoSeguranca(request.getCodigoSeguranca());
+        cartao.setBandeira(bandeira);
+
+        // Se for preferencial, remover dos outros
+        if (request.isPreferencial()) {
+            removerPreferencialDosOutrosCartoes(clienteId);
+            cartao.setPreferencial(true);
+        } else {
+            cartao.setPreferencial(false);
+        }
+
+        cartaoCreditoRepository.save(cartao);
+
+        notificacaoService.criarNotificacao(
+            "💳 Cartão Atualizado",
+            "Um dos seus cartões foi atualizado.",
+            clienteId
+        );
+    }
+
 }

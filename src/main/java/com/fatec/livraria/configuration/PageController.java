@@ -43,6 +43,7 @@ public class PageController {
         Map.entry("enderecos-cliente", "administrador/gerenciar-clientes/listarEndereco"),
         Map.entry("cartoes-cliente", "administrador/gerenciar-clientes/listarCartoes"),
         Map.entry("editar-endereco-cliente", "administrador/gerenciar-clientes/editarEndereco"),
+        Map.entry("editar-cartao-cliente", "administrador/gerenciar-clientes/editarCartao"),
         Map.entry("editar-cliente", "administrador/gerenciar-clientes/editarCliente"),
         Map.entry("criar-endereco-cliente", "administrador/gerenciar-clientes/cadastrarEndereco"),
         Map.entry("criar-cartao-cliente", "administrador/gerenciar-clientes/cadastrarCartao"),
@@ -59,7 +60,7 @@ public class PageController {
         "dashboard", "analise", "estoque", "entrada-estoque", "gerenciar-pedidos", "logs",
         "gerenciar-clientes", "ver-transacoes-cliente", "enderecos-cliente", "editar-endereco-cliente",
         "editar-cliente", "criar-endereco-cliente", "criar-cartao-cliente", "alterar-senha-cliente",
-        "cartoes-cliente"
+        "cartoes-cliente", "editar-cartao-cliente"
     );
 
 

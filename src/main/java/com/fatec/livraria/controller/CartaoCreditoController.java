@@ -3,9 +3,11 @@ package com.fatec.livraria.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fatec.livraria.dto.request.CartaoClienteLogadoRequest;
 import com.fatec.livraria.dto.request.CartaoRequest;
+import com.fatec.livraria.dto.request.CartaoUpdateRequest;
 import com.fatec.livraria.entity.CartaoCredito;
 import com.fatec.livraria.service.BandeiraService;
 import com.fatec.livraria.service.CartaoCreditoService;
@@ -80,6 +82,28 @@ public class CartaoCreditoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erro", "Erro ao cadastrar cartão."));
         }
     }
+
+    @PutMapping("/{cartaoId}/update")
+    public ResponseEntity<?> atualizarCartao(
+            @PathVariable Integer cartaoId,
+            @RequestBody CartaoUpdateRequest request,
+            HttpSession session) {
+
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
+
+        try {
+            cartaoCreditoService.atualizarCartao(cartaoId, request, session);
+            return ResponseEntity.ok(Map.of("mensagem", "Cartão atualizado com sucesso!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("erro", e.getReason()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("erro", "Erro inesperado ao atualizar o cartão."));
+        }
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletarCartao(@PathVariable Integer id, HttpSession session) {
