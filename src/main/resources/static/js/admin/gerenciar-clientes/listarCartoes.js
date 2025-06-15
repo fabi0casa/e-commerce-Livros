@@ -22,91 +22,80 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     // Buscar endereços do cliente
-    fetch(`/enderecos/cliente/${clienteId}`)
+    fetch(`/cartoes/cliente/${clienteId}`)
         .then(response => {
             if (!response.ok) throw new Error("Erro ao buscar endereços");
             return response.json();
         })
-        .then(enderecos => {
-            const listaEnderecos = document.querySelector(".client-list");
-            listaEnderecos.innerHTML = "";
+        .then(cartoes => {
+            const listaCartoes = document.querySelector(".client-list");
+            listaCartoes.innerHTML = "";
 
-            enderecos.forEach(endereco => {
-                const enderecoItem = document.createElement("div");
-                enderecoItem.classList.add("client-item");
+            cartoes.forEach(cartao => {
+                const cartaoItem = document.createElement("div");
+                cartaoItem.classList.add("client-item");
 
-                enderecoItem.innerHTML = `
+                cartaoItem.innerHTML = `
                     <div class="client-info">
-                        <div class="client-name">${endereco.fraseIdentificadora}</div>
-                        <div class="client-details">CEP: ${endereco.cep} - ${endereco.bairro}</div>
+                        <div class="client-name">${cartao.numeroCartao}</div>
+                        <div class="client-details">Bandeira: ${cartao.bandeira ? cartao.bandeira.nome : "Desconhecida"}</div>
                     </div>
                     <div class="client-actions">
-                        <button onclick='abrirModalDetalhes(${JSON.stringify(endereco)})'>Detalhes</button>
-                        <button onclick="redirecionarEditarEndereco(${endereco.id}, ${clienteId})">Editar</button>
-                        <button onclick="abrirConfirmacaoExclusao(${endereco.id}, '${endereco.fraseIdentificadora.replace(/'/g, "\\'")}')">Excluir</button>
+                        <button onclick='abrirModalDetalhes(${JSON.stringify(cartao)})'>Detalhes</button>
+                        <button onclick="redirecionarEditarCartao(${cartao.id}, ${clienteId})">Editar</button>
+                        <button onclick="abrirConfirmacaoExclusao(${cartao.id}, '${cartao.numeroCartao}')">Excluir</button>
                     </div>
                 `;
 
-                listaEnderecos.appendChild(enderecoItem);
+                listaCartoes.appendChild(cartaoItem);
             });
         })
-        .catch(error => console.error("Erro ao buscar endereços:", error));
+        .catch(error => console.error("Erro ao buscar cartões:", error));
 
-    document.getElementById("cadastrarEndereco").href = `/criar-endereco-cliente?clienteId=${clienteId}`;
+    document.getElementById("cadastrarCartao").href = `/criar-cartao-cliente?clienteId=${clienteId}`;
 });
 
-function redirecionarEditarEndereco(enderecoId, clienteId) {
-    window.location.href = `/editar-endereco-cliente?enderecoId=${enderecoId}&clienteId=${clienteId}`;
+function redirecionarEditarCartao(cartaoId, clienteId) {
+    window.location.href = `/editar-cartao-cliente?enderecoId=${cartaoId}&clienteId=${clienteId}`;
 }
 
-let enderecoIdSelecionado = null;
+let cartaoIdSelecionado = null;
 
-function abrirModalDetalhes(endereco) {
-    document.getElementById("detalheTipo").textContent = endereco.tipo;
-    document.getElementById("detalheLogradouro").textContent = endereco.logradouro;
-    document.getElementById("detalheNumero").textContent = endereco.numero;
-    document.getElementById("detalheBairro").textContent = endereco.bairro;
-    document.getElementById("detalheCep").textContent = endereco.cep;
-    document.getElementById("detalheCidade").textContent = endereco.cidade;
-    document.getElementById("detalheEstado").textContent = endereco.estado;
-    document.getElementById("detalhePais").textContent = endereco.pais;
-    document.getElementById("detalheObservacoes").textContent = endereco.observacoes || "-";
-
-    let finalidades = [];
-    if (endereco.residencial) finalidades.push("Residencial");
-    if (endereco.entrega) finalidades.push("Entrega");
-    if (endereco.cobranca) finalidades.push("Cobrança");
-
-    document.getElementById("detalheFinalidades").textContent = finalidades.join(", ") || "-";
+function abrirModalDetalhes(cartao) {
+    document.getElementById("nomeImpresso").textContent =  cartao.nomeImpresso;
+    document.getElementById("numero").textContent = cartao.numeroCartao;
+    document.getElementById("bandeira").textContent = cartao.bandeira ? cartao.bandeira.nome : "Desconhecida";
+    document.getElementById("codigo").textContent = cartao.codigoSeguranca;
+    document.getElementById("preferencial").textContent = cartao.preferencial ? "Sim" : "Não";
 
     openModal("detalhesModal");
 }
 
-function abrirConfirmacaoExclusao(enderecoId, fraseIdentificadora) {
-    enderecoIdSelecionado = enderecoId;
+function abrirConfirmacaoExclusao(cartaoId, numero) {
+    cartaoIdSelecionado = cartaoId;
 
-    const mensagem = `Tem certeza que deseja excluir o endereço "${fraseIdentificadora}"?`;
+    const mensagem = `Tem certeza que deseja excluir o cartão de número "${numero}"?`;
     document.querySelector("#confirmDeleteModal p").textContent = mensagem;
 
     openModal("confirmDeleteModal");
 }
 
 
-function excluirEnderecoConfirmado() {
-    if (!enderecoIdSelecionado) {
-        alert("Endereço não encontrado.");
+function excluirCartaoConfirmado() {
+    if (!cartaoIdSelecionado) {
+        alert("Cartão não encontrado.");
         return;
     }
 
-    fetch(`/enderecos/delete/${enderecoIdSelecionado}`, {
+    fetch(`/cartoes/delete/${cartaoIdSelecionado}`, {
         method: "DELETE"
     })
     .then(response => {
         if (response.ok) {
-            alert("Endereço excluído com sucesso.");
+            alert("Cartão excluído com sucesso.");
             window.location.reload(); // Atualiza lista
         } else {
-            alert("Erro ao excluir endereço.");
+            alert("Erro ao excluir cartão.");
         }
     })
     .catch(error => console.error("Erro ao excluir:", error));

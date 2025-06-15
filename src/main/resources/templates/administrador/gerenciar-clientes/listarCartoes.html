@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <a id="cadastrarEndereco"><button class="new-client">Cadastrar Novo Cartão</button></a>
+    <a id="cadastrarCartao"><button class="new-client">Cadastrar Novo Cartão</button></a>
     <a th:href ="@{/gerenciar-clientes}"><button class="botao-return">Voltar</button></a>
     <div class="container">
         <h2>Gerenciamento de Cartões de '...'</h2>
@@ -25,19 +25,12 @@
     <div id="detalhesModal" class="modal" style="display:none;">
         <div class="modal-content">
         <span class="close" onclick="closeModal('detalhesModal')">&times;</span>
-        <h2>Detalhes do Endereço</h2>
-        <p><strong>Tipo:</strong> <span id="detalheTipo"></span></p>
-        <p><strong>Logradouro:</strong> <span id="detalheLogradouro"></span></p>
-        <p><strong>Número:</strong> <span id="detalheNumero"></span></p>
-        <p><strong>Bairro:</strong> <span id="detalheBairro"></span></p>
-        <p><strong>CEP:</strong> <span id="detalheCep"></span></p>
-        <p><strong>Cidade:</strong> <span id="detalheCidade"></span></p>
-        <p><strong>Estado:</strong> <span id="detalheEstado"></span></p>
-        <p><strong>País:</strong> <span id="detalhePais"></span></p>
-        <p><strong>Observações:</strong> <span id="detalheObservacoes"></span></p>
-        <p><strong>Finalidades:</strong> 
-            <span id="detalheFinalidades"></span>
-        </p>
+        <h2>Detalhes do Cartão</h2>
+        <p><strong>Nome Impresso:</strong> <span id="nomeImpresso"></span> </p>
+        <p><strong>Numero:</strong> <span id="numero"></span> </p>
+        <p><strong>Bandeira:</strong> <span id="bandeira"></span> </p>
+        <p><strong>Código de Segurança:</strong> <span id="codigo"></span> </p>
+        <p><strong>Preferencial:</strong> <span id="preferencial"></span> </p>
         </div>
     </div>
     
@@ -46,8 +39,8 @@
         <div class="modal-content">
         <span class="close" onclick="closeModal('confirmDeleteModal')">&times;</span>
         <h2>Aviso!</h2>
-        <p>Tem certeza que deseja excluir este endereço?</p>
-        <button onclick="excluirEnderecoConfirmado()">Sim, excluir</button>
+        <p>Tem certeza que deseja excluir este cartão?</p>
+        <button onclick="excluirCartaoConfirmado()">Sim, excluir</button>
         <button onclick="closeModal('confirmDeleteModal')">Cancelar</button>
         </div>
     </div>
