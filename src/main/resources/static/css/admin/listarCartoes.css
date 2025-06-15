@@ -8,5 +8,54 @@
 }
 
 .client-actions button {
-    background-color: rgba(255, 251, 0, 0.185);
+    background-color: rgba(255, 187, 0, 0.185);
+    margin-top: 30px;
 }
+
+.cartao-mini {
+    transform: scale(0.5);
+    transform-origin: top left;
+    margin-left: -30px; /* ajusta o deslocamento se necessário */
+    margin-bottom: -60px; /* para reduzir espaço extra do card */
+}
+
+.client-item {
+    align-items: flex-start;
+}
+  .card-wrapper {
+    transform: scale(0.6); /* deixa o cartão menor */
+    transform-origin: left top;
+    margin-bottom: 10px;
+  }
+
+  .cartao-visual {
+    background: linear-gradient(to right, #001133, #444);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 14px;
+    width: 150px;           /* menor largura */
+    height: 80px;          /* menor altura */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: monospace;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    margin-right: 20px;
+}
+
+.cartao-numero {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+}
+
+.cartao-nome {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.cartao-bandeira {
+    font-size: 11px;
+    text-align: right;
+}
+
+  

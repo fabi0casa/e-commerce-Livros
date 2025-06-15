@@ -14,17 +14,17 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.text(); // Supondo que o endpoint retorna apenas uma string
         })
         .then(nome => {
-            document.querySelector("h2").textContent = `Gerenciamento de Endereços de ${nome}`;
+            document.querySelector("h2").textContent = `Gerenciamento de Cartões de ${nome}`;
         })
         .catch(error => {
             console.error("Erro ao buscar nome:", error);
-            document.querySelector("h2").textContent = "Gerenciamento de Endereços";
+            document.querySelector("h2").textContent = "Gerenciamento de Cartões";
         });
 
     // Buscar endereços do cliente
     fetch(`/cartoes/cliente/${clienteId}`)
         .then(response => {
-            if (!response.ok) throw new Error("Erro ao buscar endereços");
+            if (!response.ok) throw new Error("Erro ao buscar Cartões");
             return response.json();
         })
         .then(cartoes => {
@@ -34,11 +34,16 @@ document.addEventListener("DOMContentLoaded", function () {
             cartoes.forEach(cartao => {
                 const cartaoItem = document.createElement("div");
                 cartaoItem.classList.add("client-item");
-
+            
+                // Container visual do cartão
+                const visualId = `visual-cartao-${cartao.id}`;
                 cartaoItem.innerHTML = `
                     <div class="client-info">
-                        <div class="client-name">${cartao.numeroCartao}</div>
-                        <div class="client-details">Bandeira: ${cartao.bandeira ? cartao.bandeira.nome : "Desconhecida"}</div>
+                    <div class="cartao-visual">
+                        <div class="cartao-numero">${cartao.numeroCartao}</div>
+                        <div class="cartao-nome">${cartao.nomeImpresso}</div>
+                        <div class="cartao-bandeira">${cartao.bandeira ? cartao.bandeira.nome : "Desconhecida"}</div>
+                    </div>
                     </div>
                     <div class="client-actions">
                         <button onclick='abrirModalDetalhes(${JSON.stringify(cartao)})'>Detalhes</button>
@@ -46,9 +51,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         <button onclick="abrirConfirmacaoExclusao(${cartao.id}, '${cartao.numeroCartao}')">Excluir</button>
                     </div>
                 `;
-
-                listaCartoes.appendChild(cartaoItem);
+              
+            
+                listaCartoes.appendChild(cartaoItem);                
             });
+            
         })
         .catch(error => console.error("Erro ao buscar cartões:", error));
 
