@@ -7,4 +7,14 @@
 
 .client-actions button {
     background-color: rgba(175, 243, 255, 0.383);
+    color: #000022;
+    border: 1px solid #bbb;             /* borda sutil */
+    border-radius: 6px;                 /* cantos arredondados */
+    margin-right: 5px;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+
+.client-actions button:hover {
+    background-color: rgba(154, 205, 214, 0.383);       /* tom um pouco mais forte ao passar o mouse */
 }

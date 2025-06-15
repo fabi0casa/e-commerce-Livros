@@ -1,15 +1,24 @@
 .new-client {
-    background-color: rgb(255, 243, 73);
-    color: black;
+    background-color: #5900ff;
 }
 
 .client-item {
-    background-color: rgba(255, 251, 0, 0.185);
+    background-color: rgba(8, 0, 39, 0.185);
 }
 
 .client-actions button {
-    background-color: rgba(255, 187, 0, 0.185);
+    background-color: rgba(8, 0, 39, 0.185);
+    color: #000022;
+    border: 1px solid #464646;             /* borda sutil */
+    border-radius: 6px;                 /* cantos arredondados */
+    margin-right: 5px;
     margin-top: 30px;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+
+.client-actions button:hover {
+    background-color: rgba(104, 95, 143, 0.185);      /* tom um pouco mais forte ao passar o mouse */
 }
 
 .cartao-mini {
