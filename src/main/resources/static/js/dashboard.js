@@ -1,64 +1,100 @@
- // Exemplo de dados fictícios para prototipar os gráficos
- document.getElementById("livros-total").innerText = 1820;
- document.getElementById("clientes-total").innerText = 532;
- document.getElementById("vendas-mes").innerText = "R$ 23.440,50";
- document.getElementById("ticket-medio").innerText = "R$ 44,10";
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/dashboard/dados")
+    .then(response => response.json())
+    .then(data => {
+      // KPIs
+      document.getElementById("livros-total").innerText = data.totalLivros;
+      document.getElementById("clientes-total").innerText = data.totalClientes;
+      document.getElementById("vendas-mes").innerText = formatarReal(data.vendasMes);
+      document.getElementById("ticket-medio").innerText = formatarReal(data.ticketMedio);
 
- const ctxReceita = document.getElementById('graficoReceita');
- const receitaChart = new Chart(ctxReceita, {
-   type: 'line',
-   data: {
-     labels: [...Array(30).keys()].map(i => `Dia ${i + 1}`),
-     datasets: [{
-       label: 'R$ Receita',
-       data: [...Array(30)].map(() => Math.floor(Math.random() * 800)),
-       fill: true,
-       backgroundColor: 'rgba(168, 85, 247, 0.2)',
-       borderColor: '#a855f7',
-       tension: 0.3
-     }]
-   },
-   options: { responsive: true }
- });
+      // Gráfico: Receita dos Últimos 30 Dias
+      const ctxReceita = document.getElementById('graficoReceita');
+      new Chart(ctxReceita, {
+        type: 'line',
+        data: {
+          labels: Array.from({ length: 30 }, (_, i) => `Dia ${i + 1}`),
+          datasets: [{
+            label: 'R$ Receita',
+            data: data.receitaUltimos30Dias,
+            fill: true,
+            backgroundColor: 'rgba(168, 85, 247, 0.2)',
+            borderColor: '#a855f7',
+            tension: 0.3
+          }]
+        },
+        options: { responsive: true }
+      });
 
- const ctxStatus = document.getElementById('graficoStatus');
- new Chart(ctxStatus, {
-   type: 'bar',
-   data: {
-     labels: ['Processando', 'Aprovado', 'Transporte', 'Entregue', 'Cancelado'],
-     datasets: [{
-       label: 'Qtd de Pedidos',
-       data: [12, 24, 10, 35, 3],
-       backgroundColor: ['#a855f7', '#00ff88', '#8888ff', '#ffaa00', '#ff4444']
-     }]
-   },
-   options: { responsive: true }
- });
+      // Gráfico: Pedidos por Status
+      const statusLabels = Object.keys(data.pedidosPorStatus);
+      const statusValores = Object.values(data.pedidosPorStatus);
+      const statusCores = gerarCores(statusLabels.length);
 
- const ctxTopLivros = document.getElementById('graficoTopLivros');
- new Chart(ctxTopLivros, {
-   type: 'bar',
-   data: {
-     labels: ['Livro A', 'Livro B', 'Livro C', 'Livro D', 'Livro E', 'Livro F', 'Livro G', 'Livro H', 'Livro I', 'Livro J'],
-     datasets: [{
-       label: 'Vendas',
-       data: [120, 110, 95, 90, 85, 80, 75, 70, 68, 65],
-       backgroundColor: '#00ff88'
-     }]
-   },
-   options: { responsive: true }
- });
+      const ctxStatus = document.getElementById('graficoStatus');
+      new Chart(ctxStatus, {
+        type: 'bar',
+        data: {
+          labels: statusLabels,
+          datasets: [{
+            label: 'Qtd de Pedidos',
+            data: statusValores,
+            backgroundColor: statusCores
+          }]
+        },
+        options: { responsive: true }
+      });
 
- const ctxCategorias = document.getElementById('graficoCategorias');
- new Chart(ctxCategorias, {
-   type: 'doughnut',
-   data: {
-     labels: ['Romance', 'Ficção', 'Autoajuda', 'Tecnologia', 'História'],
-     datasets: [{
-       label: 'Categorias',
-       data: [45, 30, 25, 20, 15],
-       backgroundColor: ['#a855f7', '#00ff88', '#ff8888', '#88ccff', '#ffaa00']
-     }]
-   },
-   options: { responsive: true }
- });
+      // Gráfico: Top 10 Livros Mais Vendidos
+      const livrosLabels = data.topLivros.map(item => item.label);
+      const livrosValores = data.topLivros.map(item => item.valor);
+
+      const ctxTopLivros = document.getElementById('graficoTopLivros');
+      new Chart(ctxTopLivros, {
+        type: 'bar',
+        data: {
+          labels: livrosLabels,
+          datasets: [{
+            label: 'Vendas',
+            data: livrosValores,
+            backgroundColor: '#00ff88'
+          }]
+        },
+        options: { responsive: true }
+      });
+
+      // Gráfico: Categorias Mais Vendidas
+      const categoriasLabels = data.categoriasMaisVendidas.map(item => item.label);
+      const categoriasValores = data.categoriasMaisVendidas.map(item => item.valor);
+      const categoriasCores = gerarCores(categoriasLabels.length);
+
+      const ctxCategorias = document.getElementById('graficoCategorias');
+      new Chart(ctxCategorias, {
+        type: 'doughnut',
+        data: {
+          labels: categoriasLabels,
+          datasets: [{
+            label: 'Categorias',
+            data: categoriasValores,
+            backgroundColor: categoriasCores
+          }]
+        },
+        options: { responsive: true }
+      });
+
+    })
+    .catch(error => {
+      console.error("Erro ao carregar dados do dashboard:", error);
+    });
+});
+
+// Função auxiliar para formatar número em R$ brasileiro
+function formatarReal(valor) {
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+}
+
+// Função para gerar cores aleatórias (usada em gráficos com múltiplas categorias/status)
+function gerarCores(qtd) {
+  const cores = ['#a855f7', '#00ff88', '#8888ff', '#ffaa00', '#ff4444', '#ff8888', '#88ccff', '#66aa55', '#cc66ff', '#ffcc00'];
+  return Array.from({ length: qtd }, (_, i) => cores[i % cores.length]);
+}
