@@ -51,7 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         <button onclick="abrirConfirmacaoExclusao(${cartao.id}, '${cartao.numeroCartao}')">Excluir</button>
                     </div>
                 `;
-              
+
+                const corSecundaria = gerarCorSecundaria(cartao.numeroCartao);
+                const cartaoVisual = cartaoItem.querySelector('.cartao-visual');
+                cartaoVisual.style.background = `linear-gradient(to right, #001133, ${corSecundaria})`;
             
                 listaCartoes.appendChild(cartaoItem);                
             });
@@ -107,6 +110,21 @@ function excluirCartaoConfirmado() {
     })
     .catch(error => console.error("Erro ao excluir:", error));
 }
+
+function gerarCorSecundaria(numeroCartao) {
+    let hash = 0;
+    for (let i = 0; i < numeroCartao.length; i++) {
+        hash = numeroCartao.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    // Gera uma cor entre RGB(100–180)
+    const r = 100 + (hash % 100);        // 100–179
+    const g = 100 + ((hash >> 2) % 100);
+    const b = 100 + ((hash >> 4) % 100);
+
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
 
 function openModal(modalId) {
     document.getElementById(modalId).style.display = "flex";
