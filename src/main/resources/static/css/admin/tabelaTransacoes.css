@@ -139,8 +139,16 @@ th {
     background-color: #d1ffdf;
     margin-right: 5px;
     padding: 5px 10px;
-    cursor: pointer;
     border-radius: 5px;
+    color: #000022;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+
+.pedido-actions button:hover {
+    background-color: #c3ecd0;
 }
 
 .modal-tabela {
