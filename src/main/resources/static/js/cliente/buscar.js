@@ -7,6 +7,9 @@ async function buscarLivros() {
     const query = obterParametroPesquisa();
     if (!query) return;
 
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     // Atualiza o título da busca
     const tituloBusca = document.querySelector(".text-container h2");
     if (tituloBusca) {
@@ -57,6 +60,7 @@ async function buscarLivros() {
     } catch (error) {
         console.error("Erro ao buscar livros:", error);
     }
+    loader.style.display = "none";
 }
 
 document.addEventListener("DOMContentLoaded", buscarLivros);

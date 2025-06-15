@@ -1,6 +1,9 @@
 document.getElementById("alterarSenhaForm").addEventListener("submit", function (event) {
     event.preventDefault(); // Impede o envio do formulário
 
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     const clienteId = new URLSearchParams(window.location.search).get("clienteId");
     const senhaAtual = document.getElementById("senhaAtual").value;
     const novaSenha = document.getElementById("senha").value;
@@ -42,6 +45,9 @@ document.getElementById("alterarSenhaForm").addEventListener("submit", function 
     .catch(error => {
         console.error("Erro ao alterar senha:", error);
         alert("Erro ao alterar senha. Tente novamente.");
+    })    
+    .finally(() => {
+        loader.style.display = "none";
     });
 });
 

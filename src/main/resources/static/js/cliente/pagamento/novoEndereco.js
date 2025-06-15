@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("cadastroEnderecoForm").addEventListener("submit", async function (event) {
         event.preventDefault(); // Impede o envio tradicional do formulário
+        
+        const loader = document.getElementById("loader");
+        loader.style.display = "flex";
 
         // Capturando valores do formulário
         let tipoLogradouro = document.querySelectorAll("input")[0].value;
@@ -71,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Erro inesperado ao cadastrar endereço.");
             console.error("Erro:", error);
         }
+        loader.style.display = "none";
     });
 });
 

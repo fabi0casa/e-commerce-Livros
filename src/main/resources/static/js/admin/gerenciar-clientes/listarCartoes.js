@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("ID do cliente não encontrado!");
         return;
     }
+
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
     
     // Buscar nome do cliente
     fetch(`/clientes/${clienteId}/nome`)
@@ -60,7 +63,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             
         })
-        .catch(error => console.error("Erro ao buscar cartões:", error));
+        .catch(error => console.error("Erro ao buscar cartões:", error))        
+        .finally(() => {
+            loader.style.display = "none";
+        });
 
     document.getElementById("cadastrarCartao").href = `/criar-cartao-cliente?clienteId=${clienteId}`;
 });
@@ -97,6 +103,9 @@ function excluirCartaoConfirmado() {
         return;
     }
 
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     fetch(`/cartoes/delete/${cartaoIdSelecionado}`, {
         method: "DELETE"
     })
@@ -108,7 +117,10 @@ function excluirCartaoConfirmado() {
             alert("Erro ao excluir cartão.");
         }
     })
-    .catch(error => console.error("Erro ao excluir:", error));
+    .catch(error => console.error("Erro ao excluir:", error))
+    .finally(() => {
+        loader.style.display = "none";
+    });
 }
 
 function gerarCorSecundaria(numeroCartao) {

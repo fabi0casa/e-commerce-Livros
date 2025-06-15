@@ -1,5 +1,8 @@
 document.getElementById("cadastroEnderecoForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // Impede o envio tradicional do formulário
+    
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
 
     // Obtendo o ID do cliente da URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -70,6 +73,7 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
         alert("Erro inesperado ao cadastrar endereço.");
         console.error("Erro:", error);
     }
+    loader.style.display = "none";
 });
 
 function abrirModal() {

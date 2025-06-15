@@ -133,6 +133,9 @@ function calcularDigitoEAN13(codigo12) {
 }
 
 async function adicionarAoCarrinho() {
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     const params = new URLSearchParams(window.location.search);
     const livroId = params.get("livroId");
     const quantidade = document.getElementById("quantidade").value;
@@ -164,6 +167,7 @@ async function adicionarAoCarrinho() {
         console.error("Erro na requisição:", error);
         alert("Ocorreu um erro ao tentar adicionar ao carrinho.");
     }
+    loader.style.display = "none";
 }
 
 function comprarLivro() {

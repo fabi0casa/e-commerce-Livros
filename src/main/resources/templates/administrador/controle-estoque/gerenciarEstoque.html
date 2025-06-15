@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/admin/tabelaTransacoes.css/">
     <link rel="stylesheet" href="/css/admin/estoque.css/">
     <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
+    <link rel="stylesheet" href="/css/loading.css/">
 </head>
 <body>
     <a th:href ="@{/entrada-estoque}"><button class="new-client">Nova Entrada no Estoque</button></a>
@@ -34,8 +35,10 @@
                 <!-- As linhas vão ser inseridas aqui pelo JS -->
             </tbody>
         </table>
-        
+    </div>
 
+    <div id="loader" class="loader">
+        <img src="/img/loading.gif/" alt="Carregando...">
     </div>
 
     <script src="/js/admin/estoque/listarEstoque.js/">

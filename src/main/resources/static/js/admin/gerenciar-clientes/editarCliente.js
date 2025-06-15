@@ -46,6 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.getElementById("edicaoClienteForm").addEventListener("submit", function (event) {
     event.preventDefault(); // Impede o envio padrão do formulário
+    
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
 
     // Capturar os valores dos inputs
     const clienteId = new URLSearchParams(window.location.search).get("clienteId");
@@ -92,5 +95,8 @@ document.getElementById("edicaoClienteForm").addEventListener("submit", function
     .catch(error => {
         console.error("Erro ao atualizar cliente:", error);
         alert("Erro ao atualizar cliente. Tente novamente.");
+    })        
+    .finally(() => {
+        loader.style.display = "none";
     });
 });

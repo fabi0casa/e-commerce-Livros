@@ -108,6 +108,9 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("edicaoClienteForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
+        const loader = document.getElementById("loader");
+        loader.style.display = "flex";
+
         const nome = document.getElementById("nomeCliente").value;
         const dataNascimento = document.getElementById("dataNascimento").value;
         const cpf = document.getElementById("cpf").value;
@@ -145,6 +148,9 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => {
             console.error("Erro ao atualizar cliente:", error);
             alert("Erro ao atualizar cliente. Tente novamente.");
+        })        
+        .finally(() => {
+            loader.style.display = "none";
         });
     });
 });

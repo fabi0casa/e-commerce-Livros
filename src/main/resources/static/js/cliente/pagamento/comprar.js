@@ -146,6 +146,9 @@ async function finalizarCompra() {
         return;
     }
 
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     // Coletar os cartões selecionados e valores
     const cartoesSelecionados = [];
     let somaValoresCartao = 0;
@@ -160,6 +163,7 @@ async function finalizarCompra() {
     
         if (isNaN(valor) || valor < 10.00) {
             alert(`Informe um valor válido (mínimo R$ 10,00) para o cartão selecionado.`);
+            loader.style.display = "none";
             return;
         }
     
@@ -174,6 +178,7 @@ async function finalizarCompra() {
     const totalEsperado = (totalCompra - totalDesconto).toFixed(2);
     if (somaValoresCartao.toFixed(2) !== totalEsperado) {
         alert(`A soma dos valores dos cartões deve ser exatamente R$ ${totalEsperado.replace('.', ',')}`);
+        loader.style.display = "none";
         return;
     }
 
@@ -208,6 +213,7 @@ async function finalizarCompra() {
             const mensagemErro = data.erro || data.message || "Erro desconhecido ao criar pedido.";
             console.error("Erro da API:", mensagemErro);
             alert("Erro ao criar pedido: " + mensagemErro);
+            loader.style.display = "none";
             return;
         }
     
@@ -221,6 +227,7 @@ async function finalizarCompra() {
         console.error("Erro ao finalizar a compra:", error);
         alert("Erro ao finalizar a compra. Tente novamente.");
     }
+    loader.style.display = "none";
     
 }
 

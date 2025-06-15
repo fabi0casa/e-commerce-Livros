@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     fetch('/livros/estoque')
         .then(response => {
             if (!response.ok) {
@@ -32,6 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error(error);
             alert('Erro ao carregar os dados do estoque.');
+        })
+        .finally(() => {
+            loader.style.display = "none";
         });
 });
 

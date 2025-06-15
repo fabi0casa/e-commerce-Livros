@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const loader = document.getElementById("loader");
+  loader.style.display = "flex";
+
   fetch("/dashboard/dados")
     .then(response => response.json())
     .then(data => {
@@ -85,6 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(error => {
       console.error("Erro ao carregar dados do dashboard:", error);
+    })
+    .finally(() => {
+      loader.style.display = "none";
     });
 });
 

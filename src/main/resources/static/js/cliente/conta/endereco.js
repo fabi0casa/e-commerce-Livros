@@ -129,6 +129,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("cadastroEnderecoForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     // Capturando valores do formulário
     let tipoLogradouro = document.getElementById("tipoLogradouro");
     let logradouro = document.getElementById("logradouro");
@@ -192,6 +195,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Erro inesperado:", e);
         alert("Erro inesperado ao cadastrar endereço.");
     }
+    loader.style.display = "none";
+
     });
 
     function abrirModal() {

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
     <link rel="stylesheet" href="/css/admin/formulario.css/">
     <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
+    <link rel="stylesheet" href="/css/loading.css/">
 </head>
 <body>
     <div class="container">
@@ -47,6 +48,10 @@
     </div>
     <script src="/js/admin/gerenciar-clientes/validarCadastro.js"></script>
     <script src="/js/admin/gerenciar-clientes/editarCliente.js"></script>
+
+    <div id="loader" class="loader">
+        <img src="/img/loading.gif/" alt="Carregando...">
+    </div>
 
     <script type="module">
         import { loadSidebar } from '/js/admin/sidebar-header.js';

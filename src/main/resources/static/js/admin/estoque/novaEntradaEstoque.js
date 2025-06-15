@@ -72,6 +72,9 @@ async function carregarDados() {
 document.getElementById("entradaEstoqueForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     const quantidade = parseInt(document.getElementById("quantidade").value);
     const valorCusto = parseFloat(document.getElementById("valorCusto").value);
 
@@ -114,6 +117,7 @@ document.getElementById("entradaEstoqueForm").addEventListener("submit", async f
         console.error("Erro na requisição:", err);
         alert("❌ Erro inesperado. Veja o console.");
     }
+    loader.style.display = "none";
 });
 
 function cancelar() {

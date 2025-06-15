@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
     
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     // Buscar nome do cliente
     fetch(`/clientes/${clienteId}/nome`)
         .then(response => {
@@ -50,7 +53,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 listaEnderecos.appendChild(enderecoItem);
             });
         })
-        .catch(error => console.error("Erro ao buscar endereços:", error));
+        .catch(error => console.error("Erro ao buscar endereços:", error))
+        .finally(() => {
+            loader.style.display = "none";
+        });
 
     document.getElementById("cadastrarEndereco").href = `/criar-endereco-cliente?clienteId=${clienteId}`;
 });
@@ -98,6 +104,9 @@ function excluirEnderecoConfirmado() {
         return;
     }
 
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     fetch(`/enderecos/delete/${enderecoIdSelecionado}`, {
         method: "DELETE"
     })
@@ -109,7 +118,10 @@ function excluirEnderecoConfirmado() {
             alert("Erro ao excluir endereço.");
         }
     })
-    .catch(error => console.error("Erro ao excluir:", error));
+    .catch(error => console.error("Erro ao excluir:", error))
+    .finally(() => {
+        loader.style.display = "none";
+    });
 }
 
 function openModal(modalId) {

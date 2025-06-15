@@ -36,6 +36,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 document.getElementById("cadastroEnderecoForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // Impede o envio tradicional do formulário
+    
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
 
     const urlParams = new URLSearchParams(window.location.search);
     const enderecoId = urlParams.get("enderecoId");
@@ -112,6 +115,7 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
         alert("Erro inesperado ao atualizar endereço.");
         console.error("Erro:", error);
     }
+    loader.style.display = "none";
 });
 
 function abrirModal() {

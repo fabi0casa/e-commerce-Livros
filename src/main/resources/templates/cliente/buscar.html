@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/cliente/livraria.css/">
     <link rel="stylesheet" href="/css/cliente/buscar.css/">
     <link rel="stylesheet" href="/css/cliente/chatbot.css/">
+    <link rel="stylesheet" href="/css/loading.css/">
     <script src="/js/marked.min.js/"></script>
 </head>
 <body>
@@ -20,7 +21,11 @@
     <section class="product-list-buscar" id="product-list">
         <!-- Os livros serão carregados aqui dinamicamente -->
     </section>
-    
+
+    <div id="loader" class="loader">
+        <img src="/img/loading.gif/" alt="Carregando...">
+    </div>
+
     <script src="/js/cliente/buscar.js/"></script>
 
     <script src="/js/cliente/chatbot.js/"></script>

@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("cadastroCartaoForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
+        const loader = document.getElementById("loader");
+        loader.style.display = "flex";
+
         const cartaoData = {
             clienteId: clienteId,
             numeroCartao: document.getElementById("numeroCartao").value,
@@ -71,6 +74,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => {
             console.error("Erro ao enviar formulário:", error);
             alert("Erro ao enviar o formulário. Tente novamente mais tarde.");
+        })    
+        .finally(() => {
+            loader.style.display = "none";
         });
     });
 });

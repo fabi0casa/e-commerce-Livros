@@ -58,6 +58,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 document.getElementById("cadastroCartaoForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
+    const loader = document.getElementById("loader");
+    loader.style.display = "flex";
+
     const urlParams = new URLSearchParams(window.location.search);
     const cartaoId = urlParams.get("cartaoId");
     const clienteId = urlParams.get("clienteId");
@@ -96,6 +99,7 @@ document.getElementById("cadastroCartaoForm").addEventListener("submit", async f
         console.error("Erro ao atualizar cartão:", error);
         alert("Erro inesperado ao atualizar cartão.");
     }
+    loader.style.display = "none";
 });
 
 document.addEventListener("DOMContentLoaded", function () {
