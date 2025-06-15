@@ -86,12 +86,13 @@ body {
     font-weight: normal;
     font-style: italic; 
     color: #1b1830;
+    font-weight: 600;
 }
 
 .text-container h2 a {
     color: #4a2aff;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 1200;
     transition: color 0.3s ease;
 }
 
