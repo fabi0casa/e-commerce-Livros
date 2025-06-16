@@ -96,5 +96,50 @@ public class EnderecoService {
         endereco.gerarFraseIdentificadora();
         return endereco;
     }
+
+    public void atualizarEnderecoDoCliente(int enderecoId, EnderecoRequest enderecoRequest, int clienteId) {
+        Endereco endereco = enderecoRepository.findById(enderecoId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
+    
+        if (endereco.getCliente() == null || !endereco.getCliente().getId().equals(clienteId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem permissão para alterar este endereço.");
+        }
+    
+        enderecoValidator.validarEndereco(enderecoRequest);
+    
+        endereco.setTipo(enderecoRequest.getTipo());
+        endereco.setLogradouro(enderecoRequest.getLogradouro());
+        endereco.setNumero(enderecoRequest.getNumero());
+        endereco.setBairro(enderecoRequest.getBairro());
+        endereco.setCep(enderecoRequest.getCep());
+        endereco.setCidade(enderecoRequest.getCidade());
+        endereco.setEstado(enderecoRequest.getEstado());
+        endereco.setPais(enderecoRequest.getPais());
+        endereco.setObservacoes(enderecoRequest.getObservacoes());
+        endereco.setResidencial(enderecoRequest.getResidencial());
+        endereco.setEntrega(enderecoRequest.getEntrega());
+        endereco.setCobranca(enderecoRequest.getCobranca());
+    
+        endereco.gerarFraseIdentificadora();
+    
+        enderecoRepository.save(endereco);
+    }
+    
+    public void excluirEnderecoDoCliente(Integer enderecoId, Integer clienteId) {
+        Endereco endereco = enderecoRepository.findById(enderecoId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
+    
+        if (endereco.getCliente() == null || !endereco.getCliente().getId().equals(clienteId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem permissão para excluir este endereço.");
+        }
+    
+        Cliente cliente = endereco.getCliente();
+        if (cliente != null) {
+            cliente.getEnderecos().remove(endereco);
+        }
+    
+        endereco.setCliente(null);
+        enderecoRepository.delete(endereco);
+    }    
     
 }

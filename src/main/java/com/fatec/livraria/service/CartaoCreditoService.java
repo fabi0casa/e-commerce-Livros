@@ -194,4 +194,73 @@ public class CartaoCreditoService {
         );
     }
 
+    public void atualizarCartaoDoClienteLogado(Integer cartaoId, CartaoUpdateRequest request, HttpSession session) {
+        CartaoCredito cartao = cartaoCreditoRepository.findById(cartaoId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
+    
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+    
+        if (!cartao.getCliente().getId().equals(clienteId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem permissão para atualizar este cartão.");
+        }
+    
+        // Validações
+        if (request.getNumeroCartao().length() < 13 || request.getNumeroCartao().length() > 19) {
+            throw new IllegalArgumentException("Número do cartão inválido. O número deve ter entre 13 e 19 dígitos.");
+        }
+    
+        if (request.getCodigoSeguranca().length() < 3 || request.getCodigoSeguranca().length() > 4) {
+            throw new IllegalArgumentException("Código de segurança inválido.");
+        }
+    
+        Bandeira bandeira = bandeiraService.getBandeiraById(request.getBandeiraId())
+            .orElseThrow(() -> new IllegalArgumentException("Bandeira do cartão não encontrada."));
+    
+        // Atualização
+        cartao.setNumeroCartao(request.getNumeroCartao());
+        cartao.setNomeImpresso(request.getNomeImpresso());
+        cartao.setCodigoSeguranca(request.getCodigoSeguranca());
+        cartao.setBandeira(bandeira);
+    
+        if (request.isPreferencial()) {
+            removerPreferencialDosOutrosCartoes(clienteId);
+            cartao.setPreferencial(true);
+        } else {
+            cartao.setPreferencial(false);
+        }
+    
+        cartaoCreditoRepository.save(cartao);
+    
+        notificacaoService.criarNotificacao(
+            "💳 Cartão Atualizado",
+            "Seu cartão foi atualizado com sucesso.",
+            clienteId
+        );
+    }
+    
+    public void deletarCartaoDoClienteLogado(Integer cartaoId, HttpSession session) {
+        CartaoCredito cartao = cartaoCreditoRepository.findById(cartaoId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
+    
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+    
+        if (!cartao.getCliente().getId().equals(clienteId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem permissão para excluir este cartão.");
+        }
+    
+        Cliente cliente = cartao.getCliente();
+        if (cliente != null) {
+            cliente.getCartoes().remove(cartao);
+        }
+    
+        cartao.setCliente(null);
+        cartaoCreditoRepository.delete(cartao);
+    
+        notificacaoService.criarNotificacao(
+            "🗑️ Cartão Removido",
+            "Um dos seus cartões foi excluído.",
+            clienteId
+        );
+    }    
+
 }

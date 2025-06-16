@@ -9,6 +9,7 @@ import com.fatec.livraria.dto.request.CartaoClienteLogadoRequest;
 import com.fatec.livraria.dto.request.CartaoRequest;
 import com.fatec.livraria.dto.request.CartaoUpdateRequest;
 import com.fatec.livraria.entity.CartaoCredito;
+import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.service.BandeiraService;
 import com.fatec.livraria.service.CartaoCreditoService;
 import com.fatec.livraria.service.ClienteService;
@@ -49,6 +50,15 @@ public class CartaoCreditoController {
         return ResponseEntity.ok(cartaoCreditoService.getCartaoByClienteId(clienteId));
     }
 
+    @GetMapping("/cliente/me")
+    public ResponseEntity<List<CartaoCredito>> getCartoesDoClienteLogado(HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        Cliente cliente = clienteService.buscarPorId(clienteId)
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        
+        List<CartaoCredito> cartoes = cartaoCreditoService.getCartaoByClienteId(cliente.getId());
+        return ResponseEntity.ok(cartoes);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CartaoCredito> getCartaoById(@PathVariable Integer id, HttpSession session) {
@@ -104,6 +114,23 @@ public class CartaoCreditoController {
         }
     }
 
+    @PutMapping("/{cartaoId}/me/update")
+    public ResponseEntity<?> atualizarCartaoDoClienteLogado(
+            @PathVariable Integer cartaoId,
+            @RequestBody CartaoUpdateRequest request,
+            HttpSession session) {
+        try {
+            cartaoCreditoService.atualizarCartaoDoClienteLogado(cartaoId, request, session);
+            return ResponseEntity.ok(Map.of("mensagem", "Cartão atualizado com sucesso!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("erro", e.getReason()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erro", "Erro ao atualizar cartão."));
+        }
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletarCartao(@PathVariable Integer id, HttpSession session) {
@@ -111,5 +138,18 @@ public class CartaoCreditoController {
         cartaoCreditoService.deletarCartao(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/delete/me/{cartaoId}")
+    public ResponseEntity<?> deletarCartaoDoClienteLogado(@PathVariable Integer cartaoId, HttpSession session) {
+        try {
+            cartaoCreditoService.deletarCartaoDoClienteLogado(cartaoId, session);
+            return ResponseEntity.noContent().build();
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("erro", e.getReason()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erro", "Erro ao deletar cartão."));
+        }
+    }
+
 }
 

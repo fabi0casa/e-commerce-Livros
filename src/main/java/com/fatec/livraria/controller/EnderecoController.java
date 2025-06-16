@@ -52,6 +52,12 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecoService.getEnderecoByClienteId(clienteId));
     }
 
+    @GetMapping("/cliente/me")
+    public ResponseEntity<List<Endereco>> getEnderecosDoClienteLogado(HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        return ResponseEntity.ok(enderecoService.getEnderecoByClienteId(clienteId));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Endereco> salvar(@RequestBody Endereco endereco, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
@@ -78,10 +84,50 @@ public class EnderecoController {
         }
     }    
 
+    @PutMapping("/{enderecoId}/me/update")
+    public ResponseEntity<?> atualizarEnderecoDoCliente(
+            @PathVariable int enderecoId,
+            @RequestBody EnderecoRequest enderecoRequest,
+            HttpSession session) {
+
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+
+        try {
+            enderecoService.atualizarEnderecoDoCliente(enderecoId, enderecoRequest, clienteId);
+            return ResponseEntity.ok(Map.of("mensagem", "Endereço atualizado com sucesso!"));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("erro", e.getReason()));
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Erro inesperado ao atualizar endereço."));
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> excluir(@PathVariable Integer id, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
         enderecoService.excluir(id);
         return ResponseEntity.ok("Endereço excluído");
     }    
+
+    @DeleteMapping("/delete/me/{enderecoId}")
+    public ResponseEntity<?> excluirEnderecoDoCliente(
+            @PathVariable Integer enderecoId,
+            HttpSession session) {
+
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+
+        try {
+            enderecoService.excluirEnderecoDoCliente(enderecoId, clienteId);
+            return ResponseEntity.ok("Endereço excluído com sucesso");
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("erro", e.getReason()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Erro inesperado ao excluir endereço."));
+        }
+    }
+
 }
