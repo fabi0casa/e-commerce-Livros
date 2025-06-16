@@ -64,9 +64,9 @@ public class ClienteController {
     }    
 
     @GetMapping("/me/nome")
-    public ResponseEntity<String> buscarNomePorClienteLogado(HttpSession session) {
+    public ResponseEntity<Map<String, String>> buscarNomePorClienteLogado(HttpSession session) {
         return clienteService.buscarNomePorClienteLogado(session)
-                .map(ResponseEntity::ok)
+                .map(nome -> ResponseEntity.ok(Map.of("nome", nome)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }    
     

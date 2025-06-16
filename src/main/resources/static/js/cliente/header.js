@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     }
     
-    fetch("/clientes/me")
+    fetch("/clientes/me/nome")
     .then(response => {
         if (response.status === 401) {
             // Não está logado, não tenta atualizar nada

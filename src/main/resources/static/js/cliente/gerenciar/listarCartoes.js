@@ -6,10 +6,10 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(`/clientes/me/nome`)
         .then(response => {
             if (!response.ok) throw new Error("Erro ao buscar nome do cliente");
-            return response.text(); // Supondo que o endpoint retorna apenas uma string
+            return response.json(); // Agora o retorno é um JSON
         })
-        .then(nome => {
-            document.querySelector("h2").textContent = `Cartões de ${nome}`;
+        .then(data => {
+            document.querySelector("h2").textContent = `Cartões de ${data.nome}`;
         })
         .catch(error => {
             console.error("Erro ao buscar nome:", error);
