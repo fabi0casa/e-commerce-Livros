@@ -47,6 +47,13 @@ public class ClienteController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<Cliente> buscarClienteLogado(HttpSession session) {
+        return clienteService.buscarClienteLogado(session)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
+
     @GetMapping("/{id}/nome")
     public ResponseEntity<String> buscarNomePorId(@PathVariable Integer id, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
@@ -56,12 +63,12 @@ public class ClienteController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }    
 
-    @GetMapping("/me")
-    public ResponseEntity<Cliente> buscarClienteLogado(HttpSession session) {
-        return clienteService.buscarClienteLogado(session)
+    @GetMapping("/me/nome")
+    public ResponseEntity<String> buscarNomePorClienteLogado(HttpSession session) {
+        return clienteService.buscarNomePorClienteLogado(session)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
-    }
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }    
     
     // Cadastro (com Thymeleaf)
     @PostMapping("/add")
