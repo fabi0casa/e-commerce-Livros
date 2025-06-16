@@ -7,10 +7,13 @@
     <title>Alterar Senha</title>
     <link rel="stylesheet" href="/css/admin/menuAdmin.css/">
     <link rel="stylesheet" href="/css/admin/formulario.css/">
-    <link rel="stylesheet" href="/css/admin/sidebar-header.css/">
+    <link rel="stylesheet" href="/css/cliente/header-pagamento.css/">
     <link rel="stylesheet" href="/css/loading.css/">
 </head>
 <body>
+    <header style="display: flex; justify-content: center;">
+        <img src="/img/logo.png/" style="height: 30px; margin-top: 0.5%; margin-bottom: 0.5%;">
+    </header>
     <div class="container">
         <form id="alterarSenhaForm">
             <h2>Alterar Senha de <span id="clienteNome">'...'</span></h2>
@@ -60,11 +63,6 @@
     <script src="/js/admin/gerenciar-clientes/validarCadastro.js/"></script>
     <script src="/js/cliente/gerenciar/alterarSenha.js">
     </script>
-    
-    <script type="module">
-        import { loadSidebar } from '/js/admin/sidebar-header.js';
-        loadSidebar();
-        </script>
 
 </body>
 </html>
