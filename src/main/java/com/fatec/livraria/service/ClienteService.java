@@ -195,6 +195,33 @@ public class ClienteService {
         );
     }
 
+    public void alterarSenhaClienteLogado(HttpSession session, AlterarSenhaRequest dto) throws Exception {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+    
+        if (clienteId == null) {
+            throw new Exception("Cliente não logado.");
+        }
+    
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new Exception("Cliente não encontrado."));
+    
+        // Validação customizada, se você quiser
+        clienteValidator.validarAlteracaoSenha(dto);
+    
+        if (!cliente.getSenha().equals(dto.getSenhaAtual())) {
+            throw new ConstraintViolationException("Senha atual incorreta", null);
+        }
+    
+        cliente.setSenha(dto.getNovaSenha());
+        clienteRepository.save(cliente);
+    
+        notificacaoService.criarNotificacao(
+            "Senha Alterada",
+            "Olá " + cliente.getNome() + ", sua senha foi alterada com sucesso. Se não foi você, entre em contato conosco imediatamente.",
+            cliente.getId()
+        );
+    }
+    
     public void adicionarEnderecoAoCliente(int clienteId, EnderecoRequest enderecoRequest) throws Exception {
         enderecoValidator.validarEndereco(enderecoRequest);
 

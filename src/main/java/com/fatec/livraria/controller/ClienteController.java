@@ -122,6 +122,19 @@ public class ClienteController {
         }
     }
 
+    @PutMapping("/me/alterar-senha")
+    public ResponseEntity<?> alterarSenhaClienteLogado(@RequestBody AlterarSenhaRequest request, HttpSession session) {
+        try {
+            clienteService.alterarSenhaClienteLogado(session, request);
+            return ResponseEntity.ok(Map.of("mensagem", "Senha alterada com sucesso!"));
+
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erro", "Erro ao alterar senha."));
+        }
+    }
+
     @PostMapping("/{clienteId}/enderecos/add")
     public ResponseEntity<?> adicionarEndereco(@PathVariable int clienteId, @RequestBody EnderecoRequest enderecoRequest, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
