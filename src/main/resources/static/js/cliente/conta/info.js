@@ -57,6 +57,7 @@ function gerarModalEnderecos(enderecos) {
     let html = `
         <div id="addressModal" class="modal">
             <div class="modal-content">
+                <a href="/gerenciar-enderecos" class="botao-discreto">Gerenciar endereços</a>
                 <span class="close" onclick="closeModal('addressModal')">&times;</span>
                 <h2>Endereços Cadastrados</h2>
     `;
@@ -94,6 +95,7 @@ function gerarModalCartoes(cartoes) {
     let html = `
         <div id="cardModal" class="modal">
             <div class="modal-content">
+                <a href="/gerenciar-cartoes" class="botao-discreto">Gerenciar cartões</a>
                 <span class="close" onclick="closeModal('cardModal')">&times;</span>
                 <h2>Cartões Cadastrados</h2>
     `;

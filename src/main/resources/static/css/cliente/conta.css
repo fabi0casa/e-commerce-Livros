@@ -145,6 +145,7 @@ input, button {
 
 /* Conteúdo do Modal */
 .modal-content {
+    position: relative;
     max-height: 70vh; /* Define a altura máxima como 70% da tela */
     overflow-y: auto; /* Adiciona a barra de rolagem vertical quando necessário */
     background-color: white;
@@ -190,6 +191,26 @@ input, button {
     font-size: 24px;
     cursor: pointer;
 }
+
+.botao-discreto {
+    position: absolute;
+    top: 10px;
+    left: 2px;
+    font-size: 13px;
+    color: #555;
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    z-index: 1;
+}
+
+.botao-discreto:hover {
+    color: #000;
+}
+
 
 .accordion {
     background-color: #f1f1f1;
