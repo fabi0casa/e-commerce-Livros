@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelector("h2").textContent = "Endereços";
         });
 
+    const mensagemContainer = document.getElementById("mensagem");
     // Buscar endereços do cliente
     fetch(`/enderecos/cliente/me`)
         .then(response => {
@@ -25,6 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(enderecos => {
             const listaEnderecos = document.querySelector(".client-list");
             listaEnderecos.innerHTML = "";
+
+            if (enderecos.length === 0) {
+                mensagemContainer.textContent = "Nenhum endereço encontrado.";
+                return;
+            }
 
             enderecos.forEach(endereco => {
                 const enderecoItem = document.createElement("div");

@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const loader = document.getElementById("loader");
     loader.style.display = "flex";
 
+    const mensagemContainer = document.getElementById("mensagem");
+
     // Buscar nome do cliente
     fetch(`/clientes/${clienteId}/nome`)
         .then(response => {
@@ -33,6 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(enderecos => {
             const listaEnderecos = document.querySelector(".client-list");
             listaEnderecos.innerHTML = "";
+
+            if (enderecos.length === 0) {
+                mensagemContainer.textContent = "Nenhum endereço encontrado para esse cliente.";
+                return;
+            }
 
             enderecos.forEach(endereco => {
                 const enderecoItem = document.createElement("div");

@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelector("h2").textContent = "Gerenciamento de Cartões";
         });
 
+    const mensagemContainer = document.getElementById("mensagem");
+
     // Buscar endereços do cliente
     fetch(`/cartoes/cliente/${clienteId}`)
         .then(response => {
@@ -34,6 +36,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const listaCartoes = document.querySelector(".client-list");
             listaCartoes.innerHTML = "";
 
+            if (cartoes.length === 0) {
+                mensagemContainer.textContent = "Nenhum cartão encontrado para esse cliente.";
+                return;
+            }
             cartoes.forEach(cartao => {
                 const cartaoItem = document.createElement("div");
                 cartaoItem.classList.add("client-item");
