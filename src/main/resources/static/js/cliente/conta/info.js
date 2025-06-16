@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <p><strong>Data de Nascimento:</strong> ${formatarData(cliente.dataNascimento)}</p>
                             <p><strong>Gênero:</strong> ${cliente.genero}</p>
                             <p><strong>CPF:</strong> ${cliente.cpf}</p>
+                            <p><a href="/alterar-senha" class="botao-senha">Alterar senha</a></p>
                         </div>
                         <div class="info-buttons">
                             <button onclick="openModal('addressModal')">Ver Endereços</button>

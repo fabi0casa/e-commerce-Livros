@@ -4,15 +4,9 @@ document.getElementById("alterarSenhaForm").addEventListener("submit", function 
     const loader = document.getElementById("loader");
     loader.style.display = "flex";
 
-    const clienteId = new URLSearchParams(window.location.search).get("clienteId");
     const senhaAtual = document.getElementById("senhaAtual").value;
     const novaSenha = document.getElementById("senha").value;
     const confirmarNovaSenha = document.getElementById("confirmarSenha").value;
-
-    if (!clienteId) {
-        alert("Erro: ID do cliente não encontrado.");
-        return;
-    }
 
     // Correção: usar novaSenha e confirmarNovaSenha na verificação
     if (novaSenha !== confirmarNovaSenha) {
@@ -21,12 +15,12 @@ document.getElementById("alterarSenhaForm").addEventListener("submit", function 
     }
 
     const dadosSenha = {
-        id: clienteId,
+        id: null,
         senhaAtual: senhaAtual,
         novaSenha: novaSenha
     };
 
-    fetch("/clientes/alterarSenha", {
+    fetch("/clientes/me/alterar-senha", {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -39,7 +33,7 @@ document.getElementById("alterarSenhaForm").addEventListener("submit", function 
             alert("Erro ao alterar senha: " + data.erro);
         } else {
             alert("Senha alterada com sucesso!");
-            window.location.href = "/gerenciar-clientes";
+            window.location.href = "/conta";
         }
     })
     .catch(error => {
@@ -75,20 +69,20 @@ function togglePassword(inputId, icon) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const clienteId = new URLSearchParams(window.location.search).get("clienteId");
 
-    if (!clienteId) {
-        document.getElementById("clienteNome").innerText = "ID não encontrado";
-        return;
-    }
-
-    fetch(`/clientes/${clienteId}/nome`)
-        .then(response => response.text())
-        .then(nome => {
-            document.getElementById("clienteNome").innerText = nome;
+    fetch(`/clientes/me/nome`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erro ao buscar cliente");
+            }
+            return response.json(); // ← parse como JSON
+        })
+        .then(data => {
+            document.getElementById("clienteNome").innerText = data.nome;
         })
         .catch(error => {
             console.error("Erro ao buscar cliente:", error);
             document.getElementById("clienteNome").innerText = "Erro ao carregar";
         });
+
 });
