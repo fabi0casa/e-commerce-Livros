@@ -42,6 +42,17 @@ public class CartaoCreditoService {
         return cartaoCreditoRepository.findById(id);
     }
 
+    public CartaoCredito buscarCartaoDoClienteLogado(Integer cartaoId, Integer clienteId) {
+        CartaoCredito cartao = cartaoCreditoRepository.findById(cartaoId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
+    
+        if (!cartao.getCliente().getId().equals(clienteId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem acesso a este cartão");
+        }
+    
+        return cartao;
+    }    
+
     public CartaoCredito salvarCartao(Integer clienteId, CartaoCredito cartaoCredito) {
         return clienteRepository.findById(clienteId).map(cliente -> {
             cartaoCredito.setCliente(cliente); // Associando o cliente ao cartão

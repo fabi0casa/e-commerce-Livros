@@ -1,31 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const clienteId = urlParams.get("clienteId");
-    
-    if (!clienteId) {
-        alert("ID do cliente não encontrado!");
-        return;
-    }
-    
     const loader = document.getElementById("loader");
     loader.style.display = "flex";
 
     // Buscar nome do cliente
-    fetch(`/clientes/${clienteId}/nome`)
+    fetch(`/clientes/me/nome`)
         .then(response => {
             if (!response.ok) throw new Error("Erro ao buscar nome do cliente");
             return response.text(); // Supondo que o endpoint retorna apenas uma string
         })
         .then(nome => {
-            document.querySelector("h2").textContent = `Gerenciamento de Endereços de ${nome}`;
+            document.querySelector("h2").textContent = `Endereços de ${nome}`;
         })
         .catch(error => {
             console.error("Erro ao buscar nome:", error);
-            document.querySelector("h2").textContent = "Gerenciamento de Endereços";
+            document.querySelector("h2").textContent = "Endereços";
         });
 
     // Buscar endereços do cliente
-    fetch(`/enderecos/cliente/${clienteId}`)
+    fetch(`/enderecos/cliente/me`)
         .then(response => {
             if (!response.ok) throw new Error("Erro ao buscar endereços");
             return response.json();
@@ -45,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                     <div class="client-actions">
                         <button onclick='abrirModalDetalhes(${JSON.stringify(endereco)})'>Detalhes</button>
-                        <button onclick="redirecionarEditarEndereco(${endereco.id}, ${clienteId})">Editar</button>
+                        <button onclick="redirecionarEditarEndereco(${endereco.id})">Editar</button>
                         <button onclick="abrirConfirmacaoExclusao(${endereco.id}, '${endereco.fraseIdentificadora.replace(/'/g, "\\'")}')">Excluir</button>
                     </div>
                 `;
@@ -58,11 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
             loader.style.display = "none";
         });
 
-    document.getElementById("cadastrarEndereco").href = `/criar-endereco-cliente?clienteId=${clienteId}`;
+    document.getElementById("cadastrarEndereco").href = `/novo-endereco?conta=1`;
 });
 
-function redirecionarEditarEndereco(enderecoId, clienteId) {
-    window.location.href = `/editar-endereco-cliente?enderecoId=${enderecoId}&clienteId=${clienteId}`;
+function redirecionarEditarEndereco(enderecoId) {
+    window.location.href = `/editar-endereco?enderecoId=${enderecoId}`;
 }
 
 let enderecoIdSelecionado = null;
@@ -107,7 +99,7 @@ function excluirEnderecoConfirmado() {
     const loader = document.getElementById("loader");
     loader.style.display = "flex";
 
-    fetch(`/enderecos/delete/${enderecoIdSelecionado}`, {
+    fetch(`/enderecos/delete/me/${enderecoIdSelecionado}`, {
         method: "DELETE"
     })
     .then(response => {

@@ -68,6 +68,14 @@ public class CartaoCreditoController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+
+    @GetMapping("/{cartaoId}/me")
+    public ResponseEntity<?> buscarCartaoDoClienteLogado(@PathVariable Integer cartaoId, HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        CartaoCredito cartao = cartaoCreditoService.buscarCartaoDoClienteLogado(cartaoId, clienteId);
+        return ResponseEntity.ok(cartao);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<?> adicionarCartao(@RequestBody CartaoRequest cartaoRequest, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);

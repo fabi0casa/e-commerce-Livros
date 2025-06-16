@@ -1,31 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const clienteId = urlParams.get("clienteId");
-    
-    if (!clienteId) {
-        alert("ID do cliente não encontrado!");
-        return;
-    }
-
     const loader = document.getElementById("loader");
     loader.style.display = "flex";
     
     // Buscar nome do cliente
-    fetch(`/clientes/${clienteId}/nome`)
+    fetch(`/clientes/me/nome`)
         .then(response => {
             if (!response.ok) throw new Error("Erro ao buscar nome do cliente");
             return response.text(); // Supondo que o endpoint retorna apenas uma string
         })
         .then(nome => {
-            document.querySelector("h2").textContent = `Gerenciamento de Cartões de ${nome}`;
+            document.querySelector("h2").textContent = `Cartões de ${nome}`;
         })
         .catch(error => {
             console.error("Erro ao buscar nome:", error);
-            document.querySelector("h2").textContent = "Gerenciamento de Cartões";
+            document.querySelector("h2").textContent = "Cartões";
         });
 
     // Buscar endereços do cliente
-    fetch(`/cartoes/cliente/${clienteId}`)
+    fetch(`/cartoes/cliente/me`)
         .then(response => {
             if (!response.ok) throw new Error("Erro ao buscar Cartões");
             return response.json();
@@ -50,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                     <div class="client-actions">
                         <button onclick='abrirModalDetalhes(${JSON.stringify(cartao)})'>Detalhes</button>
-                        <button onclick="redirecionarEditarCartao(${cartao.id}, ${clienteId})">Editar</button>
+                        <button onclick="redirecionarEditarCartao(${cartao.id})">Editar</button>
                         <button onclick="abrirConfirmacaoExclusao(${cartao.id}, '${cartao.numeroCartao}')">Excluir</button>
                     </div>
                 `;
@@ -68,11 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
             loader.style.display = "none";
         });
 
-    document.getElementById("cadastrarCartao").href = `/criar-cartao-cliente?clienteId=${clienteId}`;
+    document.getElementById("cadastrarCartao").href = `/novo-cartao?conta=1`;
 });
 
-function redirecionarEditarCartao(cartaoId, clienteId) {
-    window.location.href = `/editar-cartao-cliente?cartaoId=${cartaoId}&clienteId=${clienteId}`;
+function redirecionarEditarCartao(cartaoId) {
+    window.location.href = `/editar-cartao?cartaoId=${cartaoId}`;
 }
 
 let cartaoIdSelecionado = null;
@@ -106,7 +98,7 @@ function excluirCartaoConfirmado() {
     const loader = document.getElementById("loader");
     loader.style.display = "flex";
 
-    fetch(`/cartoes/delete/${cartaoIdSelecionado}`, {
+    fetch(`/cartoes/delete/me/${cartaoIdSelecionado}`, {
         method: "DELETE"
     })
     .then(response => {

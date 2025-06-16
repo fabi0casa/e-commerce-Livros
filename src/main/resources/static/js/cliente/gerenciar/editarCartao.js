@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const cartaoId = urlParams.get("cartaoId");
-    const clienteId = urlParams.get("clienteId");
 
-    if (!cartaoId || !clienteId) {
-        alert("Erro: Cartão ou Cliente não encontrado!");
+    if (!cartaoId ) {
+        alert("Erro: Cartão não encontrado!");
         return;
     }
 
@@ -12,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     try {
         // Busca o cartão primeiro
-        const responseCartao = await fetch(`/cartoes/${cartaoId}`);
+        const responseCartao = await fetch(`/cartoes/${cartaoId}/me`);
         if (!responseCartao.ok) throw new Error("Erro ao buscar cartão.");
         cartao = await responseCartao.json();
     } catch (error) {
@@ -63,10 +62,9 @@ document.getElementById("cadastroCartaoForm").addEventListener("submit", async f
 
     const urlParams = new URLSearchParams(window.location.search);
     const cartaoId = urlParams.get("cartaoId");
-    const clienteId = urlParams.get("clienteId");
 
-    if (!cartaoId || !clienteId) {
-        alert("Erro: Cartão ou Cliente não encontrado!");
+    if (!cartaoId ) {
+        alert("Erro: Cartão não encontrado!");
         return;
     }
 
@@ -79,7 +77,7 @@ document.getElementById("cadastroCartaoForm").addEventListener("submit", async f
     };    
 
     try {
-        const response = await fetch(`/cartoes/${cartaoId}/update`, {
+        const response = await fetch(`/cartoes/${cartaoId}/me/update`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -91,7 +89,7 @@ document.getElementById("cadastroCartaoForm").addEventListener("submit", async f
 
         if (response.ok) {
             alert("Cartão atualizado com sucesso!");
-            window.location.href = `/cartoes-cliente?clienteId=${clienteId}`;
+            window.location.href = `/gerenciar-cartoes`;
         } else {
             alert("Erro ao atualizar cartão: " + result.erro);
         }

@@ -35,6 +35,17 @@ public class EnderecoService {
         return enderecoRepository.findById(id);
     }
 
+    public Endereco buscarEnderecoDoClienteLogado(Integer enderecoId, Integer clienteId) {
+        Endereco endereco = enderecoRepository.findById(enderecoId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
+    
+        if (!endereco.getCliente().getId().equals(clienteId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem acesso a este endereço");
+        }
+    
+        return endereco;
+    }    
+
     public Endereco salvar(Endereco endereco) {
         return enderecoRepository.save(endereco);
     }

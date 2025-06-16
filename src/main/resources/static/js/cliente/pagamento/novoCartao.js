@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const livroId = urlParams.get("livroId");
     const quantidade = urlParams.get("quantidade") || 1;
+    const conta = urlParams.get("conta");
 
     // Buscar nome do cliente
     fetch(`/clientes/me`)
@@ -65,7 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert("Cartão cadastrado com sucesso!");
 
                     // Redirecionamento baseado nos parâmetros
-                    if (livroId) {
+                    if (conta) {
+                        window.location.href = `/gerenciar-cartoes`;
+                    } else if (livroId) {
                         window.location.href = `/pagamento?livroId=${livroId}&quantidade=${quantidade}`;
                     } else {
                         window.location.href = `/pagar-carrinho`;

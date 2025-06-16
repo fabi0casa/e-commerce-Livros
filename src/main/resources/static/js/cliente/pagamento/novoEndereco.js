@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const livroId = urlParams.get("livroId");
     const quantidade = urlParams.get("quantidade") || 1;
+    const conta = urlParams.get("conta");
 
     document.getElementById("cadastroEnderecoForm").addEventListener("submit", async function (event) {
         event.preventDefault(); // Impede o envio tradicional do formulário
@@ -61,11 +62,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("Endereço cadastrado com sucesso!");
 
                 // Redirecionamento baseado nos parâmetros
-                if (livroId) {
+                if (conta) {
+                    window.location.href = `/gerenciar-cartoes`;
+                } else if (livroId) {
                     window.location.href = `/pagamento?livroId=${livroId}&quantidade=${quantidade}`;
                 } else {
                     window.location.href = `/pagar-carrinho`;
                 }
+
             } else {
                 const errorData = await response.json();
                 alert(errorData.erro || "Erro ao cadastrar endereço.");

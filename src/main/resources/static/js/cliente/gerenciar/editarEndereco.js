@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     try {
-        const response = await fetch(`/enderecos/${enderecoId}`);
+        const response = await fetch(`/enderecos/${enderecoId}/me`);
         if (!response.ok) throw new Error("Erro ao buscar endereço.");
 
         const endereco = await response.json();
@@ -42,15 +42,9 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
 
     const urlParams = new URLSearchParams(window.location.search);
     const enderecoId = urlParams.get("enderecoId");
-    const clienteId = urlParams.get("clienteId");
 
     if (!enderecoId) {
         alert("Erro: Endereço não encontrado!");
-        return;
-    }
-
-    if (!clienteId) {
-        alert("Erro: Cliente não encontrado!");
         return;
     }
 
@@ -94,7 +88,7 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
 
     try {
         // Enviando os dados via fetch para o backend
-        const response = await fetch(`/enderecos/${enderecoId}/update`, {
+        const response = await fetch(`/enderecos/${enderecoId}/me/update`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -107,7 +101,7 @@ document.getElementById("cadastroEnderecoForm").addEventListener("submit", async
 
         if (response.ok) {
             alert("Endereço atualizado com sucesso!");
-            window.location.href = `/enderecos-cliente?clienteId=${clienteId}`;
+            window.location.href = `/gerenciar-enderecos`;
         } else {
             alert("Erro ao atualizar endereço: " + result.erro);
         }

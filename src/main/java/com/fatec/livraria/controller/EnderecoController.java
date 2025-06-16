@@ -37,13 +37,20 @@ public class EnderecoController {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
         return ResponseEntity.ok(enderecoService.listarTodos());
     }
-
+ 
     @GetMapping("/{id}")
     public ResponseEntity<Endereco> buscarPorId(@PathVariable Integer id, HttpSession session) {
         permissaoUsuarioService.checarPermissaoDoUsuario(session);
         Optional<Endereco> endereco = enderecoService.buscarPorId(id);
         return endereco.map(ResponseEntity::ok)
                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/{enderecoId}/me")
+    public ResponseEntity<?> buscarEnderecoDoClienteLogado(@PathVariable Integer enderecoId, HttpSession session) {
+        Integer clienteId = (Integer) session.getAttribute("clienteId");
+        Endereco endereco = enderecoService.buscarEnderecoDoClienteLogado(enderecoId, clienteId);
+        return ResponseEntity.ok(endereco);
     }
 
     @GetMapping("/cliente/{clienteId}")
