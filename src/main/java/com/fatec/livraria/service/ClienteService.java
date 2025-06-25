@@ -166,7 +166,7 @@ public class ClienteService {
 
         notificacaoService.criarNotificacao(
             "🎉 Bem-vindo à Livraria!",
-            "Administrador " + admin.getNome() + ", sua conta foi criado com sucesso!",
+            "Administrador " + admin.getNome() + ", sua conta foi criada com sucesso!",
             admin.getId()
         );
     }
