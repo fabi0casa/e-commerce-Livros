@@ -1,14 +1,25 @@
-body {
+html, body {
     background-color: #f4f4f4;
     color: #000000;
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
     height: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
-  .col-md-10 {
-    margin-left: 18rem; /* Ajuste de layout para não sobrepor com a sidebar */
+  @media (min-width: 768px) {
+    .col-md-10 {
+      margin-left: 18rem;
+    }
   }
+  
+  @media (max-width: 767.98px) {
+    .col-md-10 {
+      margin-left: 0;
+    }
+  }
+  
   .sidebar {
     background-color: #000000;
     padding-top: 1rem;
@@ -30,6 +41,68 @@ body {
     background-color: #181818;
     color: #24c024;
   }
+
+  /* Acima de 1600px: sidebar padrão */
+  .sidebar {
+    width: 18rem;
+  }
+
+  .col-md-10 {
+    margin-left: 18rem;
+  }
+
+  /* ~133% de zoom em FHD (~1440px) */
+  @media (max-width: 1440px) {
+    .sidebar {
+      width: 16rem;
+    }
+    .col-md-10 {
+      margin-left: 16rem;
+    }
+  }
+
+  /* ~150% de zoom em FHD (~1280px) */
+  @media (max-width: 1280px) {
+    .sidebar {
+      width: 14rem;
+    }
+    .col-md-10 {
+      margin-left: 14rem;
+    }
+  }
+
+  /* ~170% de zoom em FHD (~1120px) */
+  @media (max-width: 1120px) {
+    .sidebar {
+      width: 12rem;
+    }
+    .col-md-10 {
+      margin-left: 12rem;
+    }
+  }
+
+  /* ~200% de zoom em FHD (~960px) */
+  @media (max-width: 960px) {
+    .sidebar {
+      width: 10rem;
+    }
+    .col-md-10 {
+      margin-left: 10rem;
+    }
+  }
+
+  /* Celulares e telas muito estreitas */
+  @media (max-width: 767.98px) {
+    .sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+    }
+    .col-md-10 {
+      margin-left: 0;
+    }
+  }
+      
   .card {
     background-color: #ececec;
     border: none;
