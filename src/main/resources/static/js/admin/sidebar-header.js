@@ -31,6 +31,7 @@ function renderSidebar() {
         <a href="/estoque">Controle de Estoque</a>
         <a href="/analise">Análise de Categorias</a>
         <a href="/home">Acessar Livraria</a>
+        <a href="/cadastrar-admin">Cadastrar Admin</a>
       </nav>
     </div>
   `;

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.fatec.livraria.dto.request.AdminRequest;
 import com.fatec.livraria.dto.request.AlterarSenhaRequest;
 import com.fatec.livraria.dto.request.AtualizarClienteRequest;
 import com.fatec.livraria.dto.request.ClienteRequest;
@@ -139,6 +140,37 @@ public class ClienteService {
             cliente.getId()
         );
     }
+
+    public void cadastrarNovoAdmin(AdminRequest adminRequest) throws Exception {
+
+        if (clienteRepository.existsByCpf(adminRequest.getCpf())) {
+            throw new ConstraintViolationException("CPF já cadastrado!", null);
+        }
+
+        if (clienteRepository.existsByEmail(adminRequest.getEmail())) {
+            throw new ConstraintViolationException("E-mail já cadastrado!", null);
+        }
+
+        Cliente admin = new Cliente();
+        admin.setNome(adminRequest.getNome());
+        admin.setDataNascimento(adminRequest.getDataNascimento());
+        admin.setCpf(adminRequest.getCpf());
+        admin.setGenero(adminRequest.getGenero());
+        admin.setEmail(adminRequest.getEmail());
+        admin.setSenha(adminRequest.getSenha());
+        admin.setTelefone(adminRequest.getTelefone());
+        admin.setRanking(1);
+        admin.setAdmin(true);
+
+        clienteRepository.save(admin);
+
+        notificacaoService.criarNotificacao(
+            "🎉 Bem-vindo à Livraria!",
+            "Administrador " + admin.getNome() + ", sua conta foi criado com sucesso!",
+            admin.getId()
+        );
+    }
+
 
     public void atualizarDadosCliente(AtualizarClienteRequest clienteRequest) throws Exception {
         if (clienteRequest.getId() == null || clienteRequest.getId() <= 0) throw new Exception("Cliente não encontrado!");

@@ -54,6 +54,8 @@ public class PageController {
         Map.entry("criar-cartao-cliente", "administrador/gerenciar-clientes/cadastrarCartao"),
         Map.entry("alterar-senha-cliente", "administrador/gerenciar-clientes/alterarSenha"),
 
+        Map.entry("cadastrar-admin", "administrador/gerenciar-clientes/novoAdmin"),
+
         Map.entry("erro", "erro/erro")
     );
 
@@ -67,7 +69,7 @@ public class PageController {
         "dashboard", "analise", "estoque", "entrada-estoque", "gerenciar-pedidos", "logs",
         "gerenciar-clientes", "ver-transacoes-cliente", "enderecos-cliente", "editar-endereco-cliente",
         "editar-cliente", "criar-endereco-cliente", "criar-cartao-cliente", "alterar-senha-cliente",
-        "cartoes-cliente", "editar-cartao-cliente"
+        "cartoes-cliente", "editar-cartao-cliente", "cadastrar-admin"
     );
 
 

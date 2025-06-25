@@ -4,6 +4,7 @@ import com.fatec.livraria.dto.request.AlterarSenhaRequest;
 import com.fatec.livraria.dto.request.AtualizarClienteRequest;
 import com.fatec.livraria.dto.request.ClienteRequest;
 import com.fatec.livraria.dto.request.EnderecoRequest;
+import com.fatec.livraria.dto.request.AdminRequest;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.service.ClienteService;
 import com.fatec.livraria.service.PermissaoUsuarioService;
@@ -83,6 +84,19 @@ public class ClienteController {
         }
     }
 
+    @PostMapping("/add/admin")
+    public ResponseEntity<?> cadastrarAdminViaJson(@RequestBody AdminRequest adminRequest, HttpSession session) {
+        permissaoUsuarioService.checarPermissaoDoUsuario(session);
+        try {
+            adminRequest.setAdmin(true);
+            clienteService.cadastrarNovoAdmin(adminRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("mensagem", "Administrador cadastrado com sucesso!"));
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erro", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erro", "Erro inesperado ao cadastrar administrador."));
+        }
+    }
 
     @PutMapping("/update")
     public ResponseEntity<?> atualizarCliente(@RequestBody AtualizarClienteRequest clienteRequest, HttpSession session) {
