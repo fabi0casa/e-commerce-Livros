@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Redirecionamento baseado nos parâmetros
                 if (conta) {
-                    window.location.href = `/gerenciar-cartoes`;
+                    window.location.href = `/gerenciar-enderecos`;
                 } else if (livroId) {
                     window.location.href = `/pagamento?livroId=${livroId}&quantidade=${quantidade}`;
                 } else {
