@@ -13,6 +13,7 @@ import com.fatec.livraria.repository.CategoriaRepository;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,8 @@ public class AnaliseService {
     }
 
     public List<AnaliseResponse> analisarVendasLivroPorData(List<Integer> livroIds, LocalDate dataInicio, LocalDate dataFim) {
+        validarPeriodo(dataInicio, dataFim);
+
         List<AnaliseResponse> resultado = new ArrayList<>();
         long dias = ChronoUnit.DAYS.between(dataInicio, dataFim);
     
@@ -91,6 +94,8 @@ public class AnaliseService {
     }
     
     public List<AnaliseResponse> analisarVendasCategoriaPorData(List<Integer> categoriaIds, LocalDate dataInicio, LocalDate dataFim) {
+        validarPeriodo(dataInicio, dataFim);
+
         List<AnaliseResponse> resultado = new ArrayList<>();
         long dias = ChronoUnit.DAYS.between(dataInicio, dataFim);
     
@@ -127,10 +132,24 @@ public class AnaliseService {
     
         return resultado;
     }
+
+    private void validarPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+        LocalDate dataMinima = LocalDate.of(2010, 1, 1);
+    
+        if (dataInicio.isBefore(dataMinima)) {
+            throw new IllegalArgumentException("A data de início não pode ser anterior a 01/01/2010.");
+        }
+    
+        if (dataInicio.isAfter(dataFim)) {
+            throw new IllegalArgumentException("A data de início não pode ser posterior à data de fim.");
+        }
+    }    
     
     private String gerarLabel(LocalDate inicio, LocalDate fim, long dias) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         if (dias <= 90) {
-            return inicio.toString(); // formato yyyy-MM-dd
+            return inicio.format(formatter); // formato dd/MM/yyyy
         } else if (dias < 365 * 3) {
             return String.format("%02d/%d", inicio.getMonthValue(), inicio.getYear()); // ex: 06/2025
         } else if (dias < 365 * 8) {
