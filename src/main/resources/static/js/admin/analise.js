@@ -185,10 +185,17 @@ async function gerarGrafico() {
     }
 }
 
-
 function gerarCor() {
-    const r = Math.floor(Math.random() * 156 + 100);
-    const g = Math.floor(Math.random() * 156 + 100);
-    const b = Math.floor(Math.random() * 156 + 100);
+    let r = Math.floor(Math.random() * 156); // 0–155
+    let g = Math.floor(Math.random() * 156);
+    let b = Math.floor(Math.random() * 156);
+
+    const canalMaisAlto = Math.floor(Math.random() * 3); // força um canal a ser bem alto (180–255)
+
+    if (canalMaisAlto === 0) r += 100 + Math.floor(Math.random() * 56);
+    if (canalMaisAlto === 1) g += 100 + Math.floor(Math.random() * 56);
+    if (canalMaisAlto === 2) b += 100 + Math.floor(Math.random() * 56);
+
     return `rgb(${r}, ${g}, ${b})`;
 }
+
