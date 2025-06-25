@@ -47,7 +47,28 @@ function filtrarCheckboxes(input, containerId) {
 async function gerarGrafico() {
     const loader = document.getElementById('loader');
     loader.style.display = 'flex';
-    
+
+    const startDateInput = document.getElementById('startDate').value;
+    const endDateInput = document.getElementById('endDate').value;
+
+    const startDate = new Date(startDateInput);
+    const endDate = new Date(endDateInput);
+    const dataMinima = new Date('2010-01-01');
+
+    // Validação 1: data início não pode ser antes de 01/01/2010
+    if (startDate < dataMinima) {
+        alert("A data de início não pode ser anterior a 01/01/2010.");
+        loader.style.display = 'none';
+        return;
+    }
+
+    // Validação 2: data início não pode ser depois da data fim
+    if (startDate > endDate) {
+        alert("A data de início não pode ser posterior à data de fim.");
+        loader.style.display = 'none';
+        return;
+    }
+
     // Limpa o canvas visualmente
     const canvas = document.getElementById('graficoVendas');
     const ctx = canvas.getContext('2d');
