@@ -4,12 +4,15 @@ import com.fatec.livraria.dto.request.EnderecoRequest;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Endereco;
 import com.fatec.livraria.repository.EnderecoRepository;
+import com.fatec.livraria.repository.PedidoRepository;
+import com.fatec.livraria.repository.ClienteRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -19,6 +22,12 @@ import java.util.Optional;
 public class EnderecoService {
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
 
     @Autowired
     private EnderecoValidator enderecoValidator;
@@ -50,20 +59,29 @@ public class EnderecoService {
         return enderecoRepository.save(endereco);
     }
 
+    @Transactional
     public void excluir(Integer id) {
         Endereco endereco = enderecoRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado"));
-
-        // Remove o endereço da lista do cliente, se ainda estiver nela
+    
+        boolean temPedido = pedidoRepository.existsByEndereco(endereco);
+    
         Cliente cliente = endereco.getCliente();
         if (cliente != null) {
-            cliente.getEnderecos().remove(endereco);
+            if (temPedido) {
+                endereco.setCliente(null);
+                enderecoRepository.save(endereco);
+            } else {
+                cliente.getEnderecos().removeIf(e -> e.getId().equals(endereco.getId()));
+                clienteRepository.save(cliente);
+            }
         }
 
-        endereco.setCliente(null); // remove vínculo com cliente (boa prática)
-        enderecoRepository.delete(endereco);
-    }
-
+        if (!temPedido && cliente == null) {
+            enderecoRepository.delete(endereco);
+        }
+    }    
+    
     public void atualizarEndereco(int enderecoId, EnderecoRequest enderecoRequest) {
         Endereco enderecoExistente = enderecoRepository.findById(enderecoId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
@@ -136,6 +154,7 @@ public class EnderecoService {
         enderecoRepository.save(endereco);
     }
     
+    @Transactional
     public void excluirEnderecoDoCliente(Integer enderecoId, Integer clienteId) {
         Endereco endereco = enderecoRepository.findById(enderecoId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
@@ -144,13 +163,21 @@ public class EnderecoService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem permissão para excluir este endereço.");
         }
     
+        boolean temPedido = pedidoRepository.existsByEndereco(endereco);
+    
         Cliente cliente = endereco.getCliente();
-        if (cliente != null) {
-            cliente.getEnderecos().remove(endereco);
+    
+        if (temPedido) {
+            endereco.setCliente(null);
+            enderecoRepository.save(endereco);
+        } else {
+            cliente.getEnderecos().removeIf(e -> e.getId().equals(endereco.getId()));
+            clienteRepository.save(cliente);
         }
     
-        endereco.setCliente(null);
-        enderecoRepository.delete(endereco);
+        if (!temPedido && cliente == null) {
+            enderecoRepository.delete(endereco);
+        }
     }    
     
 }

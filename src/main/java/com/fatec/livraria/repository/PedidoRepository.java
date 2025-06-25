@@ -21,6 +21,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
     Optional<Pedido> findByCodigo(String codigo);
     Optional<Pedido> findByCodigoAndClienteId(String codigo, Integer clienteId);
     long countByEndereco(Endereco endereco);
+    boolean existsByEndereco(Endereco endereco);
     
     @Query("SELECT COALESCE(SUM(p.valor), 0) FROM Pedido p WHERE p.dataCriacao BETWEEN :inicio AND :fim")
     BigDecimal findTotalVendasPeriodo(@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);

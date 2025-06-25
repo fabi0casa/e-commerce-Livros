@@ -61,7 +61,7 @@ public class Endereco {
     private Boolean cobranca;
 
     @ManyToOne
-    @JoinColumn(name = "end_cli_id", nullable = false)
+    @JoinColumn(name = "end_cli_id", nullable = true)
     @JsonIgnore
     private Cliente cliente;
 
