@@ -5,12 +5,12 @@ document.addEventListener("DOMContentLoaded", function() {
             <input type="text" class="search-bar" placeholder="Buscar livros..." id="searchInput">
             <div class="header-buttons">
                 <button class="btn" id="notificationBtn">
-										<img src="/img//notification.png" alt="Notificações">
+										<img src="/img/notification.png/" alt="Notificações">
                     <span>Notificações</span>
                     <span class="notification-badge" id="notificationBadge">3</span>
                 </button>
                 <button class="btn" onclick="window.location.href='/carrinho'">
-										<img src="/img//cart.png" alt="Carrinho">
+										<img src="/img/cart.png/" alt="Carrinho">
                     <span>Carrinho</span>
                     <span class="cart-badge" id="cartBadge">0</span> <!-- Começa como 0 -->
                 </button>

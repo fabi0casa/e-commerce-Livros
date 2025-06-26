@@ -55,7 +55,7 @@ header {
 }
 
 .logo {
-	background-image: url('/img//logo.png');
+	background-image: url('/img/logo.png/');
     background-size: contain;
     background-repeat: no-repeat;
     width: 150px;
@@ -137,9 +137,9 @@ header {
     background-position: center;
 }
 
-.carousel-item:nth-child(1) { background-image: url('/banners//banner1.png'); }
-.carousel-item:nth-child(2) { background-image: url('/banners//banner2.png'); }
-.carousel-item:nth-child(3) { background-image: url('/banners//banner3.png'); }
+.carousel-item:nth-child(1) { background-image: url('/banners/banner1.png/'); }
+.carousel-item:nth-child(2) { background-image: url('/banners/banner2.png/'); }
+.carousel-item:nth-child(3) { background-image: url('/banners/banner3.png/'); }
 
 
 .product-list {

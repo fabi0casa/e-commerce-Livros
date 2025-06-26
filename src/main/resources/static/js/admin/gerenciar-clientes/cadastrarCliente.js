@@ -24,9 +24,9 @@ function togglePassword(inputId, icon) {
 
     if (input.type === "password") {
         input.type = "text";
-        img.src = "/img//olhofechado.png"; // Ícone de "olho fechado"
+        img.src = "/img/olhofechado.png/"; // Ícone de "olho fechado"
     } else {
         input.type = "password";
-        img.src = "/img//olhoaberto.png"; // Ícone de "olho aberto"
+        img.src = "/img/olhoaberto.png/"; // Ícone de "olho aberto"
     }
 }
