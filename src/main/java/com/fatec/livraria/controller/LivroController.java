@@ -1,7 +1,9 @@
 package com.fatec.livraria.controller;
 
 import com.fatec.livraria.dto.request.EntradaEstoqueRequest;
+import com.fatec.livraria.dto.response.LivroDetalhadoResponse;
 import com.fatec.livraria.dto.response.LivroEstoqueResponse;
+import com.fatec.livraria.dto.response.LivroResumoResponse;
 import com.fatec.livraria.dto.response.NomeIdResponse;
 import com.fatec.livraria.entity.Livro;
 import com.fatec.livraria.service.LivroService;
@@ -31,11 +33,10 @@ public class LivroController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Livro>> listarTodos() {
-        List<Livro> livros = livroService.listarTodos();
-        return ResponseEntity.ok(livros);
+    public ResponseEntity<List<LivroResumoResponse>> listarTodos() {
+        return ResponseEntity.ok(livroService.listarTodosResumido());
     }
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<Livro> buscarPorId(@PathVariable Integer id) {
         Optional<Livro> livro = livroService.buscarPorId(id);
@@ -44,13 +45,13 @@ public class LivroController {
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Livro>> buscarPorNome(@PathVariable String nome) {
-        List<Livro> livros = livroService.buscarPorNome(nome);
+    public ResponseEntity<List<LivroDetalhadoResponse>> buscarPorNome(@PathVariable String nome) {
+        List<LivroDetalhadoResponse> livros = livroService.buscarPorNome(nome);
         if (livros.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(livros);
-    }
+    }    
 
     @GetMapping("/estoque")
     public ResponseEntity<List<LivroEstoqueResponse>> listarLivrosParaEstoque(HttpSession session) {

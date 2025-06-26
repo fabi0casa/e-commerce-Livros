@@ -1,7 +1,9 @@
 package com.fatec.livraria.service;
 
 import com.fatec.livraria.dto.request.EntradaEstoqueRequest;
+import com.fatec.livraria.dto.response.LivroDetalhadoResponse;
 import com.fatec.livraria.dto.response.LivroEstoqueResponse;
+import com.fatec.livraria.dto.response.LivroResumoResponse;
 import com.fatec.livraria.dto.response.NomeIdResponse;
 import com.fatec.livraria.entity.Categoria;
 import com.fatec.livraria.entity.Fornecedor;
@@ -32,12 +34,38 @@ public class LivroService {
         return livroRepository.findAll();
     }
 
+    public List<LivroResumoResponse> listarTodosResumido() {
+        return livroRepository.findAll().stream()
+            .map(livro -> new LivroResumoResponse(
+                livro.getId(),
+                livro.getNome(),
+                livro.getCaminhoImagem(),
+                livro.getPrecoVenda()))
+            .toList();
+    }
+
     public Optional<Livro> buscarPorId(Integer id) {
         return livroRepository.findById(id);
     }
 
-    public List<Livro> buscarPorNome(String nome) {
-        return livroRepository.findByNomeContainingIgnoreCase(nome);
+    public List<LivroDetalhadoResponse> buscarPorNome(String nome) {
+        return livroRepository.findByNomeContainingIgnoreCase(nome).stream()
+            .map(livro -> new LivroDetalhadoResponse(
+                livro.getId(),
+                livro.getNome(),
+                livro.getCaminhoImagem(),
+                livro.getPrecoVenda(),
+                livro.getAutor().getNome(),
+                livro.getEditora().getNome(),
+                livro.getAnoPublicacao(),
+                livro.getEdicao(),
+                livro.getNumPaginas(),
+                livro.getSinopse(),
+                livro.getCategorias().stream()
+                      .map(c -> c.getNome())
+                      .toList()
+            ))
+            .toList();
     }
 
     public List<Livro> buscarPorIds(List<Integer> ids) {

@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.hibernate.envers.Audited;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "LIVROS")
 @Getter
@@ -47,6 +49,7 @@ public class Livro {
     private String caminhoImagem;
 
     @Column(name = "lvr_preco_custo", nullable = false, precision = 10, scale = 2)
+    @JsonIgnore
     private BigDecimal precoCusto;
 
     @Column(name = "lvr_preco_venda", nullable = false, precision = 10, scale = 2)
