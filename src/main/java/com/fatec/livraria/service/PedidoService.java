@@ -4,6 +4,9 @@ import com.fatec.livraria.dto.request.CartaoPagamentoRequest;
 import com.fatec.livraria.dto.request.PedidoCarrinhoRequest;
 import com.fatec.livraria.dto.request.PedidoRequest;
 import com.fatec.livraria.dto.request.VendaRequest;
+import com.fatec.livraria.dto.response.LivroPedidoResponse;
+import com.fatec.livraria.dto.response.PedidoCompletoResponse;
+import com.fatec.livraria.dto.response.VendaPedidoResponse;
 import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.entity.Venda;
 import com.fatec.livraria.entity.Carrinho;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -39,22 +43,29 @@ public class PedidoService {
     @Autowired private CarrinhoService carrinhoService;
     @Autowired private NotificacaoService notificacaoService;
 
-    public List<Pedido> listarTodos() {
-        return pedidoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    public List<PedidoCompletoResponse> listarTodos() {
+        return pedidoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"))
+        .stream()
+        .map(this::converterPedidoParaResponse)
+        .toList();
     }    
 
-    public Pedido buscarPorCodigoDoCliente(String codigo, HttpSession session) {
+    public PedidoCompletoResponse buscarPorCodigoDoCliente(String codigo, HttpSession session) {
         Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
             .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
         if (cliente == null) {
             throw new RuntimeException("Cliente não está logado");
         }
     
-        return pedidoRepository.findByCodigoAndClienteId(codigo, cliente.getId())
+        Pedido pedido = pedidoRepository.findByCodigoAndClienteId(codigo, cliente.getId())
             .orElseThrow(() -> new RuntimeException("Pedido com código " + codigo + " não encontrado para " + cliente.getNome()));
+    
+        return converterPedidoParaResponse(pedido);
     }
     
-    public Pedido buscarPorCodigoComoAdmin(String codigo, HttpSession session) {
+    
+    public PedidoCompletoResponse buscarPorCodigoComoAdmin(String codigo, HttpSession session) {
         Cliente cliente = clienteService.buscarPorId((Integer) session.getAttribute("clienteId"))
             .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
@@ -62,15 +73,20 @@ public class PedidoService {
             throw new RuntimeException("Acesso negado: apenas administradores podem acessar");
         }
     
-        return pedidoRepository.findByCodigo(codigo)
+        Pedido pedido = pedidoRepository.findByCodigo(codigo)
             .orElseThrow(() -> new NoSuchElementException("Pedido com código " + codigo + " não encontrado"));
+
+        return converterPedidoParaResponse(pedido);
     }
     
-    
-    public List<Pedido> listarPorClienteId(Integer clienteId) {
+    public List<PedidoCompletoResponse> listarPorClienteId(Integer clienteId) {
         Cliente cliente = clienteService.buscarPorId(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-                return pedidoRepository.findByCliente(cliente, Sort.by(Sort.Direction.DESC, "id"));
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+    
+        return pedidoRepository.findByCliente(cliente, Sort.by(Sort.Direction.DESC, "id"))
+            .stream()
+            .map(this::converterPedidoParaResponse)
+            .toList();
     }
 
     @Transactional
@@ -386,8 +402,14 @@ public class PedidoService {
         return codigo;
     }
 
+    public List<Pedido> listarPedidosPorClienteId(Integer clienteId) {
+        Cliente cliente = clienteService.buscarPorId(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                return pedidoRepository.findByCliente(cliente, Sort.by(Sort.Direction.DESC, "id"));
+    }
+
     public String gerarContextoPedidos(Integer clienteId) {
-        List<Pedido> pedidos = listarPorClienteId(clienteId);
+        List<Pedido> pedidos = listarPedidosPorClienteId(clienteId);
         if (pedidos.isEmpty()) {
             return "O usuário ainda não realizou compras.";
         }
@@ -405,4 +427,32 @@ public class PedidoService {
         return contexto.toString();
     }
     
+    public PedidoCompletoResponse converterPedidoParaResponse(Pedido pedido) {
+        String dataFormatada = pedido.getDataCriacao()
+            .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    
+        List<VendaPedidoResponse> vendas = pedido.getVendas().stream().map(venda ->
+            new VendaPedidoResponse(
+                venda.getId(),
+                venda.getStatus(),
+                venda.getValor(),
+                new LivroPedidoResponse(
+                    venda.getLivro().getNome(),
+                    venda.getLivro().getCaminhoImagem()
+                )
+            )
+        ).toList();
+    
+        return new PedidoCompletoResponse(
+            pedido.getId(),
+            pedido.getCodigo(),
+            pedido.getValor(),
+            pedido.getFormaPagamento(),
+            dataFormatada,
+            pedido.getCliente().getNome(),
+            pedido.getEndereco().getFraseIdentificadora(),
+            vendas
+        );
+    }    
+
 }

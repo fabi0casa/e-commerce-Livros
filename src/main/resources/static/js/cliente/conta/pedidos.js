@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("modalData").innerText = pedido.dataCriacao;
         document.getElementById("modalValor").innerText = pedido.valor;
         document.getElementById("modalPagamento").innerText = pedido.formaPagamento;
-        document.getElementById("modalEndereco").innerText = pedido.endereco?.fraseIdentificadora || "Endereço não disponível";
+        document.getElementById("modalEndereco").innerText = pedido.fraseIdentificadoraEndereco || "Endereço não disponível";
     
     
         const tabelaBody = document.querySelector("#corpoTabelaPedido");

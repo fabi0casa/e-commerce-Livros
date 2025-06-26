@@ -135,11 +135,11 @@ function renderizarPedidos(pedidos) {
 
 function mostrarPedido(pedido) {
     document.querySelector("#modalTabela h2").innerText = `Pedido Nº ${pedido.codigo}`;
-    document.getElementById("modalNome").innerText = pedido.cliente.nome;
+    document.getElementById("modalNome").innerText = pedido.nomeCliente;
     document.getElementById("modalData").innerText = pedido.dataCriacao;
     document.getElementById("modalValor").innerText = pedido.valor;
     document.getElementById("modalPagamento").innerText = pedido.formaPagamento;
-    document.getElementById("modalEndereco").innerText = pedido.endereco?.fraseIdentificadora || "Endereço não disponível";
+    document.getElementById("modalEndereco").innerText = pedido.fraseIdentificadoraEndereco || "Endereço não disponível";
 
 
     const tabelaBody = document.querySelector("#corpoTabelaPedido");
