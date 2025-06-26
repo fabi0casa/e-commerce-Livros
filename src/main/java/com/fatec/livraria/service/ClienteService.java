@@ -52,7 +52,7 @@ public class ClienteService {
             root.setCpf("000.000.000-00"); // CPF fictício
             root.setTelefone("(00) 00000-0000");
             root.setEmail("root@admin.com");
-            root.setSenha("root");
+            root.setSenha(passwordEncoder.encode("root"));
             root.setRanking(0);
             root.setGenero("outro");
             root.setAdmin(true);
