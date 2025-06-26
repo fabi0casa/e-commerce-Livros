@@ -43,7 +43,7 @@ public class Cliente {
     @Column(name = "cli_email", nullable = false, length = 45, unique = true)
     private String email;
 
-    @Column(name = "cli_senha", nullable = false, length = 45)
+    @Column(name = "cli_senha", nullable = false, length = 60)
     @JsonIgnore
     private String senha;
 

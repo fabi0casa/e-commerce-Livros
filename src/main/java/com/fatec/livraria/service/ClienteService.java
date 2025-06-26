@@ -22,6 +22,7 @@ import com.fatec.livraria.entity.Pedido;
 import com.fatec.livraria.repository.PedidoRepository;
 import com.fatec.livraria.service.ClienteService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class ClienteService {
     @Autowired private EnderecoValidator enderecoValidator;
     @Autowired private PedidoRepository pedidoRepository;
     @Autowired private NotificacaoService notificacaoService;
+    @Autowired private PasswordEncoder passwordEncoder;
+
 
     @PostConstruct
     public void criarUsuarioRootSeNaoExistir() {
@@ -119,7 +122,7 @@ public class ClienteService {
         cliente.setCpf(clienteRequest.getCpf());
         cliente.setGenero(clienteRequest.getGenero());
         cliente.setEmail(clienteRequest.getEmail());
-        cliente.setSenha(clienteRequest.getSenha());
+        cliente.setSenha(passwordEncoder.encode(clienteRequest.getSenha()));
         cliente.setTelefone(clienteRequest.getTelefone());
         cliente.setRanking(0);
 
@@ -157,7 +160,7 @@ public class ClienteService {
         admin.setCpf(adminRequest.getCpf());
         admin.setGenero(adminRequest.getGenero());
         admin.setEmail(adminRequest.getEmail());
-        admin.setSenha(adminRequest.getSenha());
+        admin.setSenha(passwordEncoder.encode(adminRequest.getSenha()));
         admin.setTelefone(adminRequest.getTelefone());
         admin.setRanking(1);
         admin.setAdmin(true);
@@ -213,10 +216,10 @@ public class ClienteService {
 
         clienteValidator.validarAlteracaoSenha(dto);
 
-        if (!cliente.getSenha().equals(dto.getSenhaAtual())) {
+        if (!passwordEncoder.matches(dto.getSenhaAtual(), cliente.getSenha())) {
             throw new ConstraintViolationException("Senha atual incorreta", null);
         }
-
+        
         cliente.setSenha(dto.getNovaSenha());
         clienteRepository.save(cliente);
 
@@ -240,7 +243,7 @@ public class ClienteService {
         // Validação customizada, se você quiser
         clienteValidator.validarAlteracaoSenha(dto);
     
-        if (!cliente.getSenha().equals(dto.getSenhaAtual())) {
+        if (!passwordEncoder.matches(dto.getSenhaAtual(), cliente.getSenha())) {
             throw new ConstraintViolationException("Senha atual incorreta", null);
         }
     
@@ -296,7 +299,6 @@ public class ClienteService {
             cliente.getId()
         );
     }
-    
 
     public void excluirCliente(Integer id) {
         Cliente cliente = clienteRepository.findById(id)
@@ -310,7 +312,6 @@ public class ClienteService {
         clienteRepository.delete(cliente);
     }
     
-
     public List<Cliente> buscarClientesComFiltro(String nome, String cpf, String telefone, String email, LocalDate dataNascimento, String genero) {
         return clienteRepository.findAll(ClienteSpecification.filtrarClientes(nome, cpf, telefone, email, dataNascimento, genero), Sort.by(Sort.Direction.DESC, "id"));
     }
