@@ -7,6 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LivroPedidoResponse {
+    private Integer id;
     private String nome;
     private String caminhoImagem;
 }

@@ -437,6 +437,7 @@ public class PedidoService {
                 venda.getStatus(),
                 venda.getValor(),
                 new LivroPedidoResponse(
+                    venda.getLivro().getId(),
                     venda.getLivro().getNome(),
                     venda.getLivro().getCaminhoImagem()
                 )

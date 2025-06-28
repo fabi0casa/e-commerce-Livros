@@ -96,9 +96,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             <input type="checkbox" id="${id}" name="cartoes" value="${cartao.id}">
             <label for="${id}">Cartão **** **** **** ${final} (${cartao.bandeira.nome})</label>
 
-            <input type="number" id="valor-cartao-${cartao.id}" placeholder="Valor" min="0.01" step="0.01" 
+            <input type="number" id="valor-cartao-${index + 1}" placeholder="Valor" min="0.01" step="0.01" 
             inputmode="decimal" 
             pattern="^\d+(\.\d{0,2})?$" 
+            data-cartao-id="${cartao.id}"
             oninput="oninput="
                 this.value = this.value
                 .replace(',', '.')
@@ -157,7 +158,7 @@ async function finalizarCompra() {
     
     inputsCartao.forEach((checkbox) => {
         const cartaoId = checkbox.value;
-        const valorInput = document.getElementById(`valor-cartao-${cartaoId}`);
+        const valorInput = document.querySelector(`input[data-cartao-id="${cartaoId}"]`);
     
         const valor = parseFloat(valorInput.value.replace(',', '.'));
     
