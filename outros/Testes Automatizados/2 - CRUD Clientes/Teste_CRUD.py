@@ -3,8 +3,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-#esse teste espera que vc tenha exatos 12 clientes cadastrados antes de executar
-
 class TestTesteCrud():
     def setup_method(self, method):
         self.driver = webdriver.Firefox()
@@ -15,56 +13,76 @@ class TestTesteCrud():
 
     def acessar_pagina(self):
         """Acessa a página de gerenciamento de clientes."""
-        self.driver.get("http://localhost:8080/administrador/gerenciar-clientes/gerenciarClientes")
+        self.driver.get("http://localhost:8080/login")
         self.driver.set_window_size(1600, 864)
+        time.sleep(1)
+        self.driver.find_element(By.CSS_SELECTOR, "button").click()
+        time.sleep(3)
+        self.driver.find_element(By.LINK_TEXT, "Gerenciar Clientes").click()
         time.sleep(1)
 
     def cadastrar_cliente(self):
         """Realiza o cadastro de um novo cliente."""
         self.driver.find_element(By.CSS_SELECTOR, ".new-client").click()
         time.sleep(1)
-
+        self.driver.find_element(By.ID, "nome").click()
         self.driver.find_element(By.ID, "nome").send_keys("Fábio Casagrande")
         time.sleep(1)
+        self.driver.find_element(By.ID, "dataNascimento").click()
         self.driver.find_element(By.ID, "dataNascimento").send_keys("2004-12-21")
         time.sleep(1)
-        self.driver.find_element(By.ID, "cpf").send_keys("875.325.996-65")
+        self.driver.find_element(By.ID, "cpf").click()
+        self.driver.find_element(By.ID, "cpf").send_keys("899.889.982-98")
+        time.sleep(1)
+        self.driver.find_element(By.ID, "genero").click()
+        self.driver.find_element(By.ID, "genero").click()
         time.sleep(1)
         dropdown = self.driver.find_element(By.ID, "genero")
         dropdown.find_element(By.XPATH, "//option[. = 'Masculino']").click()
-        time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "#genero > option:nth-child(2)").click()
         time.sleep(1)
+        self.driver.find_element(By.ID, "telefone").click()
         self.driver.find_element(By.ID, "telefone").send_keys("(11) 97875-6281")
         time.sleep(1)
+        self.driver.find_element(By.ID, "email").click()
         self.driver.find_element(By.ID, "email").send_keys("fabiocasa@gmail.com")
         time.sleep(1)
+        self.driver.find_element(By.ID, "senha").click()
         self.driver.find_element(By.ID, "senha").send_keys("Bauro2332#")
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, ".password-container:nth-child(17) img").click()
-        time.sleep(1)
-        self.driver.find_element(By.ID, "confirmarSenha").send_keys("Bauro2332#")
-        time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, ".password-container:nth-child(20) img").click()
         time.sleep(1)
-        self.driver.find_element(By.ID, "tipoLogradouro").send_keys("Avenida")
+        self.driver.find_element(By.ID, "senha").click()
+        self.driver.find_element(By.ID, "confirmarSenha").click()
+        self.driver.find_element(By.ID, "confirmarSenha").send_keys("Bauro2332#")
         time.sleep(1)
-        self.driver.find_element(By.ID, "logradouro").send_keys("Francisco Rodrigues Filho")
+        self.driver.find_element(By.ID, "tipoLogradouro").click()
+        self.driver.find_element(By.ID, "tipoLogradouro").send_keys("rua")
         time.sleep(1)
-        self.driver.find_element(By.ID, "numero").send_keys("1052")
+        self.driver.find_element(By.ID, "logradouro").click()
+        self.driver.find_element(By.ID, "logradouro").send_keys("flores")
         time.sleep(1)
-        self.driver.find_element(By.ID, "bairro").send_keys("César de Souza")
+        self.driver.find_element(By.ID, "numero").click()
+        self.driver.find_element(By.ID, "numero").send_keys("74")
         time.sleep(1)
-        self.driver.find_element(By.ID, "cep").send_keys("08752-300")
+        self.driver.find_element(By.ID, "bairro").click()
+        self.driver.find_element(By.ID, "bairro").send_keys("centro")
         time.sleep(1)
-        self.driver.find_element(By.ID, "cidade").send_keys("Mogi das Cruzes")
+        self.driver.find_element(By.ID, "cep").click()
+        self.driver.find_element(By.ID, "cep").send_keys("08888-888")
         time.sleep(1)
-        self.driver.find_element(By.ID, "estado").send_keys("São Paulo")
+        self.driver.find_element(By.ID, "cidade").click()
+        self.driver.find_element(By.ID, "cidade").send_keys("mogi das cruzes")
         time.sleep(1)
+        self.driver.find_element(By.ID, "estado").click()
+        self.driver.find_element(By.ID, "estado").send_keys("sp")
+        time.sleep(1)
+        self.driver.find_element(By.ID, "pais").click()
         self.driver.find_element(By.ID, "pais").send_keys("Brasil")
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(46)").click()
-        time.sleep(1)
+        time.sleep(3)
 
         assert self.driver.switch_to.alert.text == "Sucesso! Cliente cadastrado com sucesso!"
         self.driver.switch_to.alert.accept()
@@ -72,7 +90,7 @@ class TestTesteCrud():
     def verificar_cliente(self):
         """Verifica se o cliente cadastrado aparece na lista."""
         time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(13) button:nth-child(1)").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(1) button:nth-child(1)").click()
         time.sleep(1)
         self.driver.find_element(By.ID, "btnVerEnderecos").click()
         time.sleep(1)
@@ -88,7 +106,7 @@ class TestTesteCrud():
 
     def verificar_transacoes(self):
         time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(13) .transacoes-btn").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(1) .transacoes-btn").click()
         time.sleep(4)
         self.driver.find_element(By.CSS_SELECTOR, ".botao-return").click()
 
@@ -178,10 +196,11 @@ class TestTesteCrud():
         time.sleep(1)
 
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(10)").click()
-        time.sleep(2)
+        time.sleep(3)
 
-        assert self.driver.switch_to.alert.text == "Erro ao alterar senha: Senha atual incorreta."
+        assert self.driver.switch_to.alert.text == "Erro ao alterar senha: Senha atual incorreta"
         self.driver.switch_to.alert.accept()
+
         time.sleep(1)
         self.driver.find_element(By.ID, "senhaAtual").clear()
         time.sleep(1)
@@ -194,13 +213,19 @@ class TestTesteCrud():
         self.driver.switch_to.alert.accept()
 
     def cadastrar_endereco_cliente(self):
-        """Cadastra um novo endereço para o cliente."""
         time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(13) button:nth-child(2)").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(1) button:nth-child(2)").click()
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "#editarEnderecoLink > button").click()
         time.sleep(1)
 
+        """Verifica Endereço Existente"""
+        self.driver.find_element(By.CSS_SELECTOR, ".client-actions > button:nth-child(1)").click()
+        time.sleep(2)
+        self.driver.find_element(By.CSS_SELECTOR, "#detalhesModal .close").click()
+        time.sleep(1)
+
+        """Cadastra um novo endereço para o cliente."""
         self.driver.find_element(By.CSS_SELECTOR, ".new-client").click()
         time.sleep(2)
         self.driver.find_element(By.ID, "tipoLogradouro").send_keys("Rua")
@@ -247,7 +272,7 @@ class TestTesteCrud():
         self.driver.find_element(By.CSS_SELECTOR, ".container").click()
         time.sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(28)").click()
-        time.sleep(1)
+        time.sleep(4)
 
         assert self.driver.switch_to.alert.text == "Endereço cadastrado com sucesso!"
         self.driver.switch_to.alert.accept()
@@ -267,58 +292,91 @@ class TestTesteCrud():
         assert self.driver.switch_to.alert.text == "Endereço atualizado com sucesso!"
         self.driver.switch_to.alert.accept()
 
+        """Exclui o primeiro endereço."""
+        time.sleep(1)
+        self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(3)").click()
+        time.sleep(2)
+        self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(4)").click()
+
+        assert self.driver.switch_to.alert.text == "Endereço excluído com sucesso."
+        self.driver.switch_to.alert.accept()
+
         #saindo da página de edição de endereços
         time.sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, ".botao-return").click()
 
-    def cadastrar_cartao(self):
-        """Testa o cadastro de um cartão para um cliente específico."""
-        time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(13) button:nth-child(2)").click()
-        time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, "#cadastrarCartaoLink > button").click()
-        
-        self.driver.find_element(By.ID, "numeroCartao").send_keys("9988 5565 1187 8155")
+    def crud_cartao(self):
+        """Testa o crud de cartões para um cliente específico."""
         time.sleep(1)
-        self.driver.find_element(By.ID, "nomeImpresso").send_keys("Fábio Casagrande")
+        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(1) button:nth-child(2)").click()
+        time.sleep(1)
+        self.driver.find_element(By.CSS_SELECTOR, "#editarCartaoLink > button").click()
+        time.sleep(2)
+        self.driver.find_element(By.CSS_SELECTOR, ".new-client").click()
+        time.sleep(2)
+        self.driver.find_element(By.ID, "numeroCartao").click()
+        self.driver.find_element(By.ID, "numeroCartao").send_keys("4949 4949 4949 4949")
+        time.sleep(1)
+        self.driver.find_element(By.ID, "nomeImpresso").click()
+        self.driver.find_element(By.ID, "nomeImpresso").send_keys("Fabio C")
+        time.sleep(1)
+        self.driver.find_element(By.ID, "bandeira").click()
         time.sleep(1)
         dropdown = self.driver.find_element(By.ID, "bandeira")
+        time.sleep(1)
         dropdown.find_element(By.XPATH, "//option[. = 'Visa']").click()
-        time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "#bandeira > option:nth-child(2)").click()
+        time.sleep(2)
+        self.driver.find_element(By.ID, "codigoSeguranca").click()
+        self.driver.find_element(By.ID, "codigoSeguranca").send_keys("4123")
         time.sleep(1)
-        self.driver.find_element(By.ID, "codigoSeguranca").send_keys("8935")
-        time.sleep(1)
+        self.driver.find_element(By.ID, "preferencial").click()
         dropdown = self.driver.find_element(By.ID, "preferencial")
         time.sleep(1)
-        dropdown = self.driver.find_element(By.ID, "preferencial")
         dropdown.find_element(By.XPATH, "//option[. = 'Sim']").click()
-        time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "#preferencial > option:nth-child(2)").click()
-        
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(12)").click()
         time.sleep(2)
+
         assert self.driver.switch_to.alert.text == "Cartão cadastrado com sucesso!"
         self.driver.switch_to.alert.accept()
 
-    def verificar_cartao(self):
-        """Verifica se o cartão foi criado corretamente."""
+        """Editar cartão."""
         time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(13) button:nth-child(1)").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".client-actions > button:nth-child(1)").click()
+        time.sleep(2)
+        self.driver.find_element(By.CSS_SELECTOR, "#detalhesModal .close").click()
         time.sleep(1)
-        self.driver.find_element(By.ID, "btnVerCartoes").click()
+        self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(2)").click()
         time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, ".accordion").click()
-        time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, "#cardModal .close").click()
+        self.driver.find_element(By.ID, "nomeImpresso").click()
         time.sleep(1)
-        self.driver.find_element(By.CSS_SELECTOR, "#clientModal .close").click()
+        self.driver.find_element(By.ID, "nomeImpresso").send_keys("Fabio Casagrande")
+        time.sleep(1)
+        self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(12)").click()
+        time.sleep(2)
+
+        assert self.driver.switch_to.alert.text == "Cartão atualizado com sucesso!"
+        self.driver.switch_to.alert.accept()
+
+        """Exclui o cartão."""
+        time.sleep(2)
+        self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(3)").click()
+        time.sleep(1)
+        self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(4)").click()
+        time.sleep(2)
+
+        assert self.driver.switch_to.alert.text == "Cartão excluído com sucesso."
+        self.driver.switch_to.alert.accept()
+
+        time.sleep(1)
+        self.driver.find_element(By.CSS_SELECTOR, ".botao-return").click()
 
     def excluir_cliente(self):
         """Testa a exclusão de um cliente."""
         time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(13) button:nth-child(3)").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(1) button:nth-child(3)").click()
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, ".modal-content > button:nth-child(4)").click()
         time.sleep(2)
@@ -338,8 +396,7 @@ class TestTesteCrud():
         self.atualizar_senha_cliente()
         self.cadastrar_endereco_cliente()
         self.editar_endereco()
-        self.cadastrar_cartao()
-        self.verificar_cartao()
+        self.crud_cartao()
         self.excluir_cliente()
 
 # Para rodar os testes
