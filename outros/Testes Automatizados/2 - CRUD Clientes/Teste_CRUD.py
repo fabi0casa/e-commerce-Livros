@@ -82,7 +82,7 @@ class TestTesteCrud():
         self.driver.find_element(By.ID, "pais").send_keys("Brasil")
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(46)").click()
-        time.sleep(3)
+        time.sleep(4)
 
         assert self.driver.switch_to.alert.text == "Sucesso! Cliente cadastrado com sucesso!"
         self.driver.switch_to.alert.accept()
@@ -207,7 +207,7 @@ class TestTesteCrud():
         self.driver.find_element(By.ID, "senhaAtual").send_keys("Bauro2332#")
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(10)").click()
-        time.sleep(1)
+        time.sleep(2)
 
         assert self.driver.switch_to.alert.text == "Senha alterada com sucesso!"
         self.driver.switch_to.alert.accept()
@@ -280,7 +280,7 @@ class TestTesteCrud():
     def editar_endereco(self):
         """Testa a edição do endereço de um cliente."""
         time.sleep(2)
-        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(2) button").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(1) button:nth-child(2)").click()
         time.sleep(2)
         self.driver.find_element(By.ID, "logradouro").clear()
         time.sleep(1)
@@ -293,10 +293,11 @@ class TestTesteCrud():
         self.driver.switch_to.alert.accept()
 
         """Exclui o primeiro endereço."""
-        time.sleep(1)
+        time.sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(3)").click()
         time.sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(4)").click()
+        time.sleep(3)
 
         assert self.driver.switch_to.alert.text == "Endereço excluído com sucesso."
         self.driver.switch_to.alert.accept()
@@ -307,7 +308,7 @@ class TestTesteCrud():
 
     def crud_cartao(self):
         """Testa o crud de cartões para um cliente específico."""
-        time.sleep(1)
+        time.sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(1) button:nth-child(2)").click()
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "#editarCartaoLink > button").click()
@@ -337,7 +338,7 @@ class TestTesteCrud():
         self.driver.find_element(By.CSS_SELECTOR, "#preferencial > option:nth-child(2)").click()
         time.sleep(1)
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(12)").click()
-        time.sleep(2)
+        time.sleep(4)
 
         assert self.driver.switch_to.alert.text == "Cartão cadastrado com sucesso!"
         self.driver.switch_to.alert.accept()
@@ -351,6 +352,7 @@ class TestTesteCrud():
         self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(2)").click()
         time.sleep(2)
         self.driver.find_element(By.ID, "nomeImpresso").click()
+        self.driver.find_element(By.ID, "nomeImpresso").clear()
         time.sleep(1)
         self.driver.find_element(By.ID, "nomeImpresso").send_keys("Fabio Casagrande")
         time.sleep(1)
