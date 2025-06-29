@@ -16,6 +16,7 @@ document.getElementById("alterarSenhaForm").addEventListener("submit", function 
 
     // Correção: usar novaSenha e confirmarNovaSenha na verificação
     if (novaSenha !== confirmarNovaSenha) {
+        loader.style.display = "none";
         document.getElementById("senhaModal").style.display = "flex"; // Exibe o modal
         return;
     }
