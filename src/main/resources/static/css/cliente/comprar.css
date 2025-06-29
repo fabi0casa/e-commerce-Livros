@@ -27,7 +27,7 @@ h4 {
 .cart-item img {
     width: 100px;
     height: 100px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 5px;
     margin-left: 15px;
 }
