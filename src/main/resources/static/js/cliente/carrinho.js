@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     div.innerHTML = `
                         <img src="${item.livro.caminhoImagem}" alt="${item.livro.nome}">
                         <div class="cart-info">
-                            <h3>${item.livro.nome} - ${item.livro.autor.nome}</h3>
+                            <h3>${item.livro.nome} - ${item.livro.autor}</h3>
                             <p class="price">R$ ${preco.toFixed(2).replace('.', ',')}</p>
                         </div>
                         <div class="cart-actions">

@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             cartContainer.innerHTML += `
                 <div class="cart-item">
                     <div class="cart-info">
-                        <h3>${livro.nome} - ${livro.autor.nome}</h3>
+                        <h3>${livro.nome} - ${livro.autor}</h3>
                         <p class="quantidade">Quantidade: ${quantidade}</p>
                         <p class="price">R$ ${preco.toFixed(2).replace('.', ',')}</p>
                     </div>

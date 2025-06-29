@@ -1,5 +1,6 @@
 package com.fatec.livraria.controller;
 
+import com.fatec.livraria.dto.response.CarrinhoResponse;
 import com.fatec.livraria.entity.Carrinho;
 import com.fatec.livraria.service.CarrinhoService;
 
@@ -23,10 +24,10 @@ public class CarrinhoController {
 
     // Listar carrinho do cliente logado
     @GetMapping("/me")
-    public ResponseEntity<List<Carrinho>> listarCarrinho(HttpSession session) {
-        return carrinhoService.listarCarrinho(session)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    public ResponseEntity<List<CarrinhoResponse>> listarCarrinho(HttpSession session) {
+        Optional<List<CarrinhoResponse>> response = carrinhoService.listarCarrinhoResponse(session);
+        return response.map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     // retorna quantidade de itens no carrinho

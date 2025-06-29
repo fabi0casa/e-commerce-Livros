@@ -1,5 +1,7 @@
 package com.fatec.livraria.service;
 
+import com.fatec.livraria.dto.response.CarrinhoResponse;
+import com.fatec.livraria.dto.response.LivroCarrinhoResponse;
 import com.fatec.livraria.entity.Carrinho;
 import com.fatec.livraria.entity.Cliente;
 import com.fatec.livraria.entity.Livro;
@@ -63,6 +65,32 @@ public class CarrinhoService {
     public Optional<List<Carrinho>> listarCarrinho(HttpSession session) {
         return getClienteDaSessao(session)
                 .map(cliente -> carrinhoRepository.findByCliente(cliente));
+    }
+
+    public Optional<List<CarrinhoResponse>> listarCarrinhoResponse(HttpSession session) {
+        return getClienteDaSessao(session)
+                .map(cliente -> {
+                    List<Carrinho> carrinhos = carrinhoRepository.findByCliente(cliente);
+                    return carrinhos.stream()
+                            .map(this::converterParaResponse)
+                            .toList();
+                });
+    }
+
+    private CarrinhoResponse converterParaResponse(Carrinho carrinho) {
+        Livro livro = carrinho.getLivro();
+        LivroCarrinhoResponse livroResumo = new LivroCarrinhoResponse(
+            livro.getNome(),
+            livro.getCaminhoImagem(),
+            livro.getAutor().getNome(),
+            livro.getPrecoVenda()
+        );
+
+        return new CarrinhoResponse(
+            carrinho.getId(),
+            carrinho.getQuantidade(),
+            livroResumo
+        );
     }
 
     public Optional<Carrinho> adicionarAoCarrinho(HttpSession session, Integer livroId, Integer quantidade) {
