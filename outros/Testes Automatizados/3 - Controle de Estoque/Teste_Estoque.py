@@ -18,43 +18,84 @@ class TestEstoque():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_estoque(self):
+  def acessar_pagina(self):
     self.driver.get("http://localhost:8080/login")
     self.driver.set_window_size(1600, 864)
+    time.sleep(4)
     self.driver.find_element(By.CSS_SELECTOR, ".client-item:nth-child(1) button").click()
+    time.sleep(3)
     self.driver.find_element(By.LINK_TEXT, "Controle de Estoque").click()
+    time.sleep(3)
+
+  def entrada_estoque(self):
     self.driver.find_element(By.CSS_SELECTOR, ".new-client").click()
+    time.sleep(1)
     self.driver.find_element(By.ID, "livro").click()
     dropdown = self.driver.find_element(By.ID, "livro")
+    time.sleep(1)
     dropdown.find_element(By.XPATH, "//option[. = '1984']").click()
     self.driver.find_element(By.CSS_SELECTOR, "option:nth-child(7)").click()
+    time.sleep(1)
     self.driver.find_element(By.ID, "quantidade").click()
     self.driver.find_element(By.ID, "quantidade").send_keys("40")
+    time.sleep(1)
     self.driver.find_element(By.ID, "valorCusto").click()
     self.driver.find_element(By.ID, "valorCusto").send_keys("48")
+    time.sleep(1)
     self.driver.find_element(By.ID, "precificacao").click()
     dropdown = self.driver.find_element(By.ID, "precificacao")
+    time.sleep(1)
     dropdown.find_element(By.XPATH, "//option[. = 'Popular']").click()
     self.driver.find_element(By.CSS_SELECTOR, "#precificacao > option:nth-child(2)").click()
+    time.sleep(1)
     self.driver.find_element(By.ID, "fornecedor").click()
     dropdown = self.driver.find_element(By.ID, "fornecedor")
+    time.sleep(1)
     dropdown.find_element(By.XPATH, "//option[. = 'Distribuidora Suzano']").click()
     self.driver.find_element(By.CSS_SELECTOR, "#fornecedor > option:nth-child(2)").click()
+    time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(12)").click()
+    time.sleep(2)
     self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(5)").click()
+    time.sleep(2)
+
+  def entrada_alternativa(self):
     self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(2) .botao-entrada").click()
+    time.sleep(1)
     self.driver.find_element(By.ID, "quantidade").click()
     self.driver.find_element(By.ID, "quantidade").send_keys("55")
+    time.sleep(1)
     self.driver.find_element(By.ID, "valorCusto").click()
     self.driver.find_element(By.ID, "valorCusto").send_keys("57")
+    time.sleep(1)
     self.driver.find_element(By.ID, "precificacao").click()
     dropdown = self.driver.find_element(By.ID, "precificacao")
     dropdown.find_element(By.XPATH, "//option[. = 'Padrão']").click()
+    time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, "#precificacao > option:nth-child(3)").click()
     self.driver.find_element(By.ID, "fornecedor").click()
+    time.sleep(1)
     dropdown = self.driver.find_element(By.ID, "fornecedor")
     dropdown.find_element(By.XPATH, "//option[. = 'Fornecedor Nacional']").click()
+    time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, "#fornecedor > option:nth-child(5)").click()
+    time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(12)").click()
+    time.sleep(2)
     self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(5)").click()
+    time.sleep(3)
+
+  def main(self):
+      self.acessar_pagina()
+      self.entrada_estoque()
+      self.entrada_alternativa()
+
+# Para rodar os testes
+if __name__ == "__main__":
+    test = TestEstoque()
+    test.setup_method(None)
+    try:
+        test.main()
+    finally:
+        test.teardown_method(None)
   
