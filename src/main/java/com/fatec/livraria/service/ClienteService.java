@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -184,7 +185,10 @@ public class ClienteService {
         clienteValidator.validarAtualizacaoCliente(clienteRequest);
 
         cliente.setNome(clienteRequest.getNome());
-        cliente.setDataNascimento(clienteRequest.getDataNascimento());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(clienteRequest.getDataNascimento());
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        cliente.setDataNascimento(cal.getTime());        
         cliente.setCpf(clienteRequest.getCpf());
         cliente.setGenero(clienteRequest.getGenero());
         cliente.setEmail(clienteRequest.getEmail());
@@ -201,7 +205,10 @@ public class ClienteService {
         clienteValidator.validarAtualizacaoCliente(clienteRequest);
 
         cliente.setNome(clienteRequest.getNome());
-        cliente.setDataNascimento(clienteRequest.getDataNascimento());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(clienteRequest.getDataNascimento());
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        cliente.setDataNascimento(cal.getTime());
         cliente.setCpf(clienteRequest.getCpf());
         cliente.setGenero(clienteRequest.getGenero());
         cliente.setEmail(clienteRequest.getEmail());
