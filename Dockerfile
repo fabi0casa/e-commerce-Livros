@@ -1,5 +1,5 @@
 # Etapa 1: Build com Maven e OpenJDK 21
-FROM openjdk:21-slim AS build
+FROM eclipse-temurin:21-jdk-jammy AS build
 
 
 # Instalar Maven
