@@ -21,6 +21,8 @@ services:
     restart: always
     depends_on:
       - mysql
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/livraria_db?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: livraria_user
