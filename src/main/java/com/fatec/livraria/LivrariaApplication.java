@@ -16,7 +16,9 @@ public class LivrariaApplication {
 		
 		//carrega as variáveis do .env
 		Dotenv dotenv = Dotenv.load();
-		System.setProperty("GEMINI_API_KEY", dotenv.get("GEMINI_API_KEY"));
+		dotenv.entries().forEach(entry -> {
+			System.setProperty(entry.getKey(), entry.getValue());
+		});
 
 		SpringApplication.run(LivrariaApplication.class, args);
 	}
