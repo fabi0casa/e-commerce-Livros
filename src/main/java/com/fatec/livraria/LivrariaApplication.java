@@ -16,7 +16,7 @@ public class LivrariaApplication {
 		
 		//carrega as variáveis do .env
 		try {
-			Dotenv dotenv = Dotenv.load()
+			Dotenv dotenv = Dotenv.load();
 			dotenv.entries().forEach(entry -> {
 				System.setProperty(entry.getKey(), entry.getValue());
 			});
