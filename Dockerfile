@@ -19,7 +19,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Runtime
-FROM openjdk:21-slim
+FROM eclipse-temurin:21-jre-jammy
 
 # Definir o diretório de trabalho
 WORKDIR /app
